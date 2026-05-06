@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hay Space – MSS Ekosistem</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="tasklab.css" />
+  <style>
+    /* Additional styles for expand/collapse and clickable project names */
+    .group-content {
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+      max-height: 1000px;
+      /* arbitrary large value for expanded state */
+    }
+
+    .group-content.collapsed {
+      max-height: 0;
+    }
+
+    .group-header .chevron-icon {
+      margin-left: auto;
+      transition: transform 0.3s ease;
+      color: #666;
+    }
+
+    .group-header.collapsed .chevron-icon {
+      transform: rotate(-90deg);
+    }
+
+    .project-link {
+      text-decoration: underline;
+      color: #4F6AF5;
+      cursor: pointer;
+    }
+
+    .project-link:hover {
+      color: #3a55e0;
+    }
+
+    /* Hide group add button for these platforms if unnecessary, or just adapt the header */
+  </style>
+</head>
+
+<body>
+
+  <div class="app">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">T</div>
+        <div class="brand-info">
+          <div class="name">Hay Space Project</div>
+          <div class="sub">Task Management</div>
+        </div>
+        <span style="margin-left:auto;color:#bbb;font-size:12px;">▾</span>
+      </div>
+
+      <div class="sidebar-section-label">Menu</div>
+      <nav>
+        <div class="nav-item active">
+          <span class="icon">⊞</span> MSS Ekosistem
+        </div>
+        <div class="nav-item">
+          <span class="icon">◫</span> Presentation
+        </div>
+      </nav>
+
+      <div class="sidebar-section-label">Topics</div>
+      <div class="topics-list">
+        <div class="nav-item">
+          <span class="topic-dot" style="background:#f5a623;"></span> Branding
+        </div>
+        <div class="nav-item">
+          <span class="topic-dot" style="background:#4F6AF5;"></span> Web Design
+        </div>
+        <div class="nav-item">
+          <span class="topic-dot" style="background:#e84fa3;"></span> App Design
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="avatar"></div>
+        <div class="user-info">
+          <div class="uname">Hay Space</div>
+          <div class="uemail">hayspace.com </div>
+        </div>
+        <span class="chevron">›</span>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <main class="main">
+      <!-- TOP BAR -->
+      <div class="topbar">
+        <div class="search-box">
+          <span style="color:#bbb;">🔍</span>
+          <input type="text" id="searchInput" placeholder="Search here..." />
+          <div class="search-kbd">
+            <span class="kbd">⌘</span>
+            <span class="kbd">K</span>
+          </div>
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn">🔔</button>
+          <button class="btn-primary">+ Create Project</button>
+        </div>
+      </div>
+
+      <!-- CONTENT -->
+      <div class="content">
+        <div class="page-header">
+          <h1 class="page-title">MSS Ekosistem Platforms</h1>
+        </div>
+
+        <div id="platforms-container">
+          <!-- Platform groups will be injected here via JS to keep code clean, or written out directly -->
+        </div>
+
+      </div>
+    </main>
+
+  </div>
+
+  <script>
+    const platforms = [
+      { name: '1000saudara', color: 'blue', projects: [{ name: 'Project Alpha', status: 'progress' }, { name: 'Project Beta', status: 'final' }] },
+      { name: 'mitra1000s', color: 'orange', projects: [{ name: 'Mitra Dashboard', status: 'progress' }] },
+      { name: 'intechgra', color: 'teal', projects: [{ name: 'Intechgra App', status: 'final' }] },
+      { name: 'renov1000s', color: 'blue', projects: [{ name: 'Renov Platform', status: 'progress' }] },
+      { name: 'project1000s', color: 'orange', projects: [{ name: 'Project Hub', status: 'final' }] },
+      { name: 'fintech1000s', color: 'teal', projects: [{ name: 'Payment Gateway', status: 'progress' }] },
+      {
+        name: 'Master MSS', color: 'blue', projects:
+          [
+            { name: 'SKU Management', status: 'final', link: 'centralize sku/wireframe_master_sku_list.html' },
+            { name: 'SKU Grup', status: 'final', link: 'centralize sku/wireframe_sku_group_list.html' },
+            { name: 'Line Approval', status: 'final', link: 'Line approval concept /line_approval.html' }
+          ]
+      }
+    ];
+
+    const container = document.getElementById('platforms-container');
+
+    platforms.forEach(platform => {
+      // Create group container
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'task-group';
+
+      // Create header
+      const headerDiv = document.createElement('div');
+      headerDiv.className = `group-header ${platform.color} collapsed`;
+      headerDiv.innerHTML = `
+        <span class="group-dot ${platform.color}"></span>
+        <span class="group-name">${platform.name} <span style="color:#888; font-weight:normal; font-size:12px;">(${platform.projects.length})</span></span>
+        <span class="chevron-icon">▼</span>
+      `;
+
+      // Create content area (table)
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'group-content collapsed';
+
+      let tableHtml = `
+        <table class="task-table">
+          <thead>
+            <tr>
+              <th style="width:70%">Nama Project</th>
+              <th>Status Project</th>
+            </tr>
+          </thead>
+          <tbody>
+      `;
+
+      if (platform.projects.length > 0) {
+        platform.projects.forEach(p => {
+          let badgeClass = p.status === 'final' ? 'badge-done' : 'badge-ongoing';
+          let badgeText = p.status === 'final' ? 'Final' : 'In Progress';
+          let projectLinkHtml = p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="project-link">${p.name}</a>` : `<span class="project-link">${p.name}</span>`;
+          tableHtml += `
+            <tr>
+              <td class="task-name">${projectLinkHtml}</td>
+              <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+            </tr>
+          `;
+        });
+      } else {
+        tableHtml += `<tr><td colspan="2" style="padding:14px;color:#ccc;font-size:13px;">Belum ada project</td></tr>`;
+      }
+
+      tableHtml += `</tbody></table>`;
+      contentDiv.innerHTML = tableHtml;
+
+      // Toggle functionality
+      headerDiv.addEventListener('click', () => {
+        headerDiv.classList.toggle('collapsed');
+        contentDiv.classList.toggle('collapsed');
+      });
+
+      groupDiv.appendChild(headerDiv);
+      groupDiv.appendChild(contentDiv);
+      container.appendChild(groupDiv);
+    });
+
+    // Search Functionality
+    const searchInput = document.getElementById('searchInput');
+    searchInput.addEventListener('input', function () {
+      const query = this.value.toLowerCase();
+      const groups = container.querySelectorAll('.task-group');
+
+      groups.forEach(group => {
+        const rows = group.querySelectorAll('tbody tr');
+        let hasVisibleRow = false;
+
+        rows.forEach(row => {
+          if (row.cells[0].colSpan > 1) return; // Skip "Belum ada project" placeholder row
+
+          const projectName = row.cells[0].textContent.toLowerCase();
+          if (projectName.includes(query)) {
+            row.style.display = '';
+            hasVisibleRow = true;
+          } else {
+            row.style.display = 'none';
+          }
+        });
+
+        if (query.trim() !== '') {
+          group.style.display = hasVisibleRow ? '' : 'none';
+        } else {
+          group.style.display = '';
+        }
+      });
+    });
+  </script>
+</body>
+
+</html>
