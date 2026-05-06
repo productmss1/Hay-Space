@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe — Master SKU Final Alignment | MSS Holding</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-hover: #1e429f;
+            --bg-body: #f1f5f9;
+            --bg-sidebar: #0f172a;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --info: #3b82f6;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 12px;
+            overflow-y: auto;
+        }
+
+        .nav-group {
+            margin-bottom: 24px;
+        }
+
+        .nav-group-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #64748b;
+            padding: 0 12px 8px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+            margin-bottom: 4px;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: white;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-item.active {
+            background-color: var(--primary);
+        }
+
+        /* Main Content Container */
+        .main-container {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .search-global {
+            display: flex;
+            align-items: center;
+            background: #f1f5f9;
+            padding: 8px 16px;
+            border-radius: 20px;
+            width: 320px;
+        }
+
+        .search-global input {
+            background: transparent;
+            border: none;
+            outline: none;
+            margin-left: 8px;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        /* Content Body */
+        .content {
+            padding: 24px 32px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 32px;
+        }
+
+        .page-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-hover);
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        /* Filter Section */
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+            gap: 20px;
+        }
+
+        .filter-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .filter-item label {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .filter-input {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+            background-color: #ffffff;
+        }
+
+        .filter-input:focus {
+            border-color: var(--primary);
+        }
+
+        /* Table Section */
+        .table-container {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            text-align: left;
+            margin-top: -8px;
+        }
+
+        th {
+            padding: 12px 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 0.95rem;
+            background: white;
+            vertical-align: middle;
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        td:first-child {
+            border-left: 1px solid var(--border);
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+        }
+
+        td:last-child {
+            border-right: 1px solid var(--border);
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 12px;
+        }
+
+        .sku-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1.1rem;
+            flex-shrink: 0;
+        }
+
+        .sku-info {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sku-name-text {
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 1rem;
+            text-decoration: none;
+        }
+
+        .sku-id-text {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-family: 'Inter', sans-serif;
+            font-weight: 500;
+        }
+
+        /* Badges */
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-aktif {
+            background: #dcfce7;
+            color: #059669;
+        }
+
+        .badge-Tidak-aktif {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .badge-diskontiniu {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        /* Action Buttons */
+        .action-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn-action {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            background: white;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-action:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            background: #f0f9ff;
+        }
+
+        /* CREATE SKU FORM SPECIFIC */
+        .view-content { display: none; }
+        .view-content.active { display: block; }
+        
+        .form-layout { display: grid; grid-template-columns: 240px 1fr; gap: 32px; }
+        .form-nav { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 12px; position: sticky; top: 96px; }
+        .form-nav-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-radius: 8px; color: var(--text-muted); text-decoration: none; font-size: 0.85rem; font-weight: 500; margin-bottom: 4px; transition: 0.2s; }
+        .form-nav-item:hover { background: #f1f5f9; color: var(--text-main); }
+        .form-nav-item.active { background: var(--primary); color: white; }
+        .status-indicator { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #cbd5e1; display: flex; align-items: center; justify-content: center; }
+        .status-indicator.complete { background: var(--success); border-color: var(--success); color: white; }
+        .form-section { background: white; border-radius: 12px; border: 1px solid var(--border); padding: 28px; margin-bottom: 32px; scroll-margin-top: 90px; }
+        .form-section-title { font-family: 'Outfit', sans-serif; font-size: 1.1rem; font-weight: 700; margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+        .group-tag { font-size: 0.65rem; background: #f1f5f9; color: var(--text-muted); padding: 2px 6px; border-radius: 4px; font-weight: 800; letter-spacing: 0.5px; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-item { display: flex; flex-direction: column; gap: 8px; }
+        .form-item.full { grid-column: span 2; }
+        .form-item label { font-size: 0.85rem; font-weight: 600; color: #475569; }
+        .form-item label .required { color: var(--danger); margin-left: 4px; }
+        .input-group { display: flex; gap: 0; }
+        .input-addon { background: #f1f5f9; border: 1px solid var(--border); border-right: none; padding: 0 12px; display: flex; align-items: center; font-size: 0.85rem; color: var(--text-muted); border-radius: 8px 0 0 8px; font-weight: 600; }
+        .form-input-addon { border-radius: 0 8px 8px 0 !important; }
+        .repeater-item { padding: 20px; border: 1px solid var(--border); border-radius: 12px; background: #f8fafc; position: relative; }
+        .remove-btn { position: absolute; top: 12px; right: 12px; color: var(--danger); cursor: pointer; padding: 4px; border-radius: 4px; transition: 0.2s; }
+
+        #toast { position: fixed; bottom: 32px; right: 32px; background: #0f172a; color: white; padding: 16px 24px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); display: none; align-items: center; gap: 12px; z-index: 2000; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div
+                style="background: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="layers" style="color: #1a56db; width: 20px;"></i>
+            </div>
+            <h1>SKU MASTER</h1>
+        </div>
+
+        <nav class="nav-menu">
+            <div class="nav-group">
+                <div class="nav-group-title">Main Menu</div>
+                <a href="#" class="nav-item">
+                    <i data-lucide="layout-dashboard" size="18"></i> Dashboard
+                </a>
+                <a href="#" class="nav-item active" onclick="switchView('list')">
+                    <i data-lucide="package" size="18"></i> SKU Management
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="folder-tree" size="18"></i> SKU Grouping
+                </a>
+            </div>
+
+            <div class="nav-group">
+                <div class="nav-group-title">Master Data</div>
+                <a href="#" class="nav-item">
+                    <i data-lucide="tag" size="18"></i> Brand & Principal
+                </a>
+                <a href="#" class="nav-item">
+                    <i data-lucide="grid" size="18"></i> Kategori
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- MAIN CONTAINER -->
+    <div class="main-container">
+        <header>
+            <div class="search-global">
+                <i data-lucide="search" size="16" style="color: #94a3b8;"></i>
+                <input type="text" placeholder="Cari Master SKU, Barcode, atau Brand...">
+            </div>
+            <div class="header-actions">
+                <i data-lucide="bell" size="20" style="color: #64748b; cursor: pointer;"></i>
+                <div class="user-profile">
+                    <div class="user-avatar">AD</div>
+                    <div style="text-align: left;">
+                        <span style="display: block; font-size: 0.8rem; font-weight: 700;">Admin Holding</span>
+                        <span style="display: block; font-size: 0.65rem; color: var(--text-muted);">Super User</span>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- VIEW: SKU LIST (MATCHING REF IMAGE) -->
+        <main id="view-list" class="content view-content active">
+            <div class="page-header">
+                <div class="page-title">
+                    <h2>Master SKU List</h2>
+                    <p>Kelola seluruh katalog produk tunggal di ekosistem MSS.</p>
+                </div>
+                <button class="btn btn-primary" onclick="switchView('create')">
+                    <i data-lucide="plus" size="18"></i> Buat SKU Baru
+                </button>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="card">
+                <div class="filter-grid">
+                    <div class="filter-item">
+                        <label>PENCARIAN</label>
+                        <input type="text" class="filter-input" placeholder="Nama SKU / Barcode / Deskripsi">
+                    </div>
+                    <div class="filter-item">
+                        <label>STATUS</label>
+                        <select class="filter-input">
+                            <option>Semua Status</option>
+                            <option>Aktif</option>
+                            <option>Draf</option>
+                            <option>Tidak Aktif</option>
+                            <option>Diskontiniu</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>KATEGORI</label>
+                        <select class="filter-input">
+                            <option>Semua Kategori</option>
+                            <option>Material Bahan Bangunan</option>
+                            <option>Sanitary</option>
+                            <option>Kategori test 1</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>PARENT BRAND</label>
+                        <select class="filter-input">
+                            <option>Semua Parent</option>
+                            <option>Indocement</option>
+                            <option>Semen Indonesia</option>
+                            <option>Krakatau Steel</option>
+                        </select>
+                    </div>
+                    <div class="filter-item">
+                        <label>BRAND</label>
+                        <select class="filter-input">
+                            <option>Semua Brand</option>
+                            <option>Tiga Roda</option>
+                            <option>Semen Gresik</option>
+                            <option>Nippon Paint</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TABLE -->
+            <div class="table-container">
+                <table id="sku-table">
+                    <thead>
+                        <tr>
+                            <th width="80">GAMBAR</th>
+                            <th width="300">NAMA SKU</th>
+                            <th>KATEGORI</th>
+                            <th>SUB KATEGORI</th>
+                            <th>PARENT BRAND</th>
+                            <th>BRAND</th>
+                            <th>STATUS</th>
+                            <th width="100">AKSI</th>
+                        </tr>
+                    </thead>
+                    <tbody id="sku-body">
+                        <!-- Items loaded via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </main>
+
+        <!-- VIEW: CREATE SKU (REMAINS ALIGNED) -->
+        <main id="view-create" class="content view-content">
+            <div class="page-header">
+                <div class="page-title">
+                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                        <button class="btn btn-secondary" style="padding: 6px;" onclick="switchView('list')">
+                            <i data-lucide="arrow-left" size="18"></i>
+                        </button>
+                        <h2 style="font-size: 1.5rem;">Buat Master SKU Baru</h2>
+                    </div>
+                    <p>Lengkapi informasi sesuai Standar Struktur Data Ideal SKU.</p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="switchView('list')">Batal</button>
+                    <button class="btn btn-primary" onclick="simulateSubmit()">
+                        <i data-lucide="save" size="18"></i> Simpan SKU
+                    </button>
+                </div>
+            </div>
+
+            <div class="form-layout">
+                <nav class="form-nav" id="create-form-nav">
+                    <a href="#sec-identitas" class="form-nav-item active" data-sec="identitas">6a. Identitas Dasar <span class="status-indicator" id="ind-identitas"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-eksternal" class="form-nav-item" data-sec="eksternal">6b. Identifikasi Eksternal <span class="status-indicator" id="ind-eksternal"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-brand" class="form-nav-item" data-sec="brand">6c. Brand & Principal <span class="status-indicator" id="ind-brand"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-kategori" class="form-nav-item" data-sec="kategori">6d. Klasifikasi & Kategori <span class="status-indicator" id="ind-kategori"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-fisik-teknis" class="form-nav-item" data-sec="fisik-teknis">6f. Atribut Fisik & Teknis <span class="status-indicator" id="ind-fisik-teknis"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-kemasan" class="form-nav-item" data-sec="kemasan">6g. Kemasan <span class="status-indicator" id="ind-kemasan"><i data-lucide="check" size="10"></i></span></a>
+                    <a href="#sec-media" class="form-nav-item" data-sec="media">6h. Media <span class="status-indicator" id="ind-media"><i data-lucide="check" size="10"></i></span></a>
+                </nav>
+
+                <div class="form-sections-container" id="sku-form-body">
+                    <!-- Section contents kept from previous implementation but shortened for brevity here -->
+                    <section id="sec-identitas" class="form-section" data-group="identitas">
+                        <div class="form-section-title"><span class="group-tag">6a</span> Identitas Dasar</div>
+                        <div class="form-grid">
+                            <div class="form-item full">
+                                <label>Nama Produk <span class="required">*</span></label>
+                                <input type="text" class="filter-input" id="f-nama" data-required="true" placeholder="Contoh: Semen Indocement Rajawali">
+                            </div>
+                            <div class="form-item">
+                                <label>Status <span class="required">*</span></label>
+                                <select class="filter-input" id="f-status" data-required="true">
+                                    <option value="Draf">Draf</option><option value="Aktif">Aktif</option>
+                                </select>
+                            </div>
+                            <!-- ... other fields ... -->
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast">
+        <div style="background: #166534; width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <i data-lucide="check" size="14" color="white"></i>
+        </div>
+        <div>
+            <span style="display: block; font-weight: 700; font-size: 0.9rem;">SKU Berhasil Disimpan</span>
+        </div>
+    </div>
+
+    <script>
+        const products = [
+            { id: 'TGR.SME.00001', name: 'Semen Tiga Roda 50kg (PCC)', cat: 'Konstruksi', sub: 'Semen & Mortar', parent: 'Indocement', brand: 'Tiga Roda', status: 'Aktif', color: '#882299' },
+            { id: 'AMX.MOR.00001', name: 'AM 80 Mortar Perekat Bata Ringan', cat: 'Konstruksi', sub: 'Semen & Mortar', parent: 'AM Mortar', brand: 'AM', status: 'Aktif', color: '#4466ee' },
+            { id: 'NIP.CAT.00001', name: 'Nippon Paint Vinilex Putih 5kg', cat: 'Finishing', sub: 'Cat Tembok', parent: 'Nippon Paint', brand: 'Vinilex', status: 'Aktif', color: '#ee4422' },
+            { id: 'AND.PIP.00002', name: 'Pipa PVC Rucika Standard D 4 Inch', cat: 'Plumbing', sub: 'Pipa & Fitting', parent: 'Rucika', brand: 'Rucika', status: 'Diskontiniu', color: '#888888' },
+            { id: 'GRC.PLN.00003', name: 'GRC Board 1200x2400x4mm', cat: 'Finishing', sub: 'Plafon & Partisi', parent: 'GRC Board Ind', brand: 'GRC', status: 'Tidak Aktif', color: '#aa22aa' },
+        ];
+
+        function getInitials(name) {
+            const words = name.split(' ');
+            if (words.length >= 2) return (words[0][0] + words[1][0]).toUpperCase();
+            return name.substring(0, 2).toUpperCase();
+        }
+
+        function createRow(item) {
+            const initials = getInitials(item.name);
+            const tr = document.createElement('tr');
+            
+            tr.innerHTML = `
+                <td>
+                    <div class="sku-avatar" style="background-color: ${item.color || '#primary'}">
+                        ${initials}
+                    </div>
+                </td>
+                <td>
+                    <div class="sku-info">
+                        <a href="#" class="sku-name-text" onclick="alert('Open detail for ${item.id}')">${item.name}</a>
+                        <span class="sku-id-text">${item.id}</span>
+                    </div>
+                </td>
+                <td>${item.cat}</td>
+                <td>${item.sub}</td>
+                <td>${item.parent}</td>
+                <td>${item.brand}</td>
+                <td>
+                    <span class="badge badge-${item.status.replace(' ', '-')}">${item.status}</span>
+                </td>
+                <td>
+                    <div class="action-group">
+                        <div class="btn-action"><i data-lucide="edit-3" size="16"></i></div>
+                        <div class="btn-action"><i data-lucide="trash-2" size="16"></i></div>
+                    </div>
+                </td>
+            `;
+            return tr;
+        }
+
+        function renderList() {
+            const body = document.getElementById('sku-body');
+            body.innerHTML = '';
+            products.forEach(p => body.appendChild(createRow(p)));
+            lucide.createIcons();
+        }
+
+        function switchView(view) {
+            document.querySelectorAll('.view-content').forEach(v => v.classList.remove('active'));
+            document.getElementById('view-' + view).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function simulateSubmit() {
+            const nama = document.getElementById('f-nama').value;
+            if (!nama) return alert('Fill name');
+            products.unshift({ id: 'NEW.SKU.00001', name: nama, cat: 'Konstruksi', sub: 'Semen', parent: 'IND', brand: 'TGR', status: 'Aktif', color: '#11aa88' });
+            document.getElementById('toast').style.display = 'flex';
+            setTimeout(() => { document.getElementById('toast').style.display = 'none'; renderList(); switchView('list'); }, 1000);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => { renderList(); lucide.createIcons(); });
+    </script>
+</body>
+
+</html>

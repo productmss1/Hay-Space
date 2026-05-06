@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe — SKU Group Mapping | MSS Holding</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-hover: #1e429f;
+            --bg-body: #f8fafc;
+            --bg-sidebar: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #059669;
+            --danger: #dc2626;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar (Simplified) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .nav-group-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #64748b;
+            padding: 0 12px 8px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 24px;
+        }
+
+        .page-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 4px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-outline-primary {
+            border: 1px dashed var(--primary);
+            color: var(--primary);
+            background: #eff6ff;
+            padding: 8px 16px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-outline-primary:hover {
+            background: #dbeafe;
+        }
+
+        /* Card Form */
+        .card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.95rem;
+            outline: none;
+        }
+
+        .sku-mini-icon {
+            width: 32px;
+            height: 32px;
+            background: var(--primary);
+            color: white;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: bold;
+        }
+
+        .sku-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sku-details .name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #0f172a;
+        }
+
+        .sku-details .id {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* Modal Custom */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: white;
+            width: 600px;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 90vh;
+        }
+
+        .modal-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .seach-sku {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div
+                style="background: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="layers" style="color: #1a56db; width: 20px;"></i>
+            </div>
+            <h1>SKU MASTER</h1>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-group-title">Main Menu</div>
+            <a href="#" class="nav-item"><i data-lucide="package" size="18"></i> SKU Management</a>
+            <a href="#" class="nav-item active"><i data-lucide="folder-tree" size="18"></i> SKU Grouping</a>
+        </nav>
+    </aside>
+
+    <div class="main-container">
+        <header>
+            <div style="font-weight: 600;">Module: Varian Grouping</div>
+            <div class="user-avatar"
+                style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem;">
+                AD</div>
+        </header>
+
+        <main class="content">
+            <div class="page-header">
+                <div class="page-title">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <button class="btn btn-secondary" style="padding: 6px;"
+                            onclick="window.location.href='wireframe_sku_group_list.html'"><i data-lucide="arrow-left"
+                                size="18"></i></button>
+                        <h2 id="page-main-title">Tambah Data Group</h2>
+                    </div>
+                    <p>Kelompokkan SKU menjadi satu kesatuan relasi berdasarkan variannya.</p>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-secondary"
+                        onclick="window.location.href='wireframe_sku_group_list.html'">Batal</button>
+                    <button class="btn btn-secondary" onclick="alert('Draft Group Berhasil Disimpan!')"><i
+                            data-lucide="save" size="18"></i> Simpan Draft</button>
+                    <button class="btn btn-primary" onclick="alert('Group SKU Berhasil Disimpan!')"><i
+                            data-lucide="check" size="18"></i> Simpan Group</button>
+                </div>
+            </div>
+
+            <!-- Bagian 1: Identitas Group -->
+            <div class="card">
+                <div class="card-header"><i data-lucide="info" size="18"></i> 1. Identitas Group SKU</div>
+                <div class="card-body">
+                    <div class="form-group" style="margin: 0; max-width: 600px;">
+                        <label>Nama Group SKU <span style="color:red">*</span></label>
+                        <input type="text" id="group-name-input" class="form-control" value="Cat Nippon Paint Vinilex"
+                            placeholder="Contoh: Semen Tiga Roda (Semua Ukuran)">
+                        <span style="font-size: 0.8rem; color: var(--text-muted); display: block; margin-top: 6px;">Nama
+                            ini yang akan menjadi nama payung/induk saat ditampilkan di E-Commerce.</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bagian 2: Pengaturan Varian & Mapping SKU -->
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="layers" size="18"></i> 2. Pengaturan Varian & Mapping SKU
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div style="margin-bottom: 32px; background: #f8fafc; padding: 24px; border-radius: 12px; border: 1px solid var(--border);">
+                        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+                            <label style="display: block; font-size: 0.9rem; font-weight: 700; color: #1e293b;">
+                                <i data-lucide="settings-2" size="16" style="vertical-align: middle; margin-right: 4px;"></i>
+                                Atribut Varian yang Digunakan:
+                            </label>
+                            <button class="btn btn-secondary" style="padding: 6px 12px; font-size: 0.85rem;" onclick="openAttrModal()">
+                                <i data-lucide="edit-3" size="14"></i> Pilih Atribut
+                            </button>
+                        </div>
+                        <div id="selected-attrs-display" style="display: flex; gap: 8px; flex-wrap: wrap;">
+                            <span style="background: white; border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; color: var(--primary);">Warna</span>
+                        </div>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; padding-top: 12px; border-top: 1px dashed var(--border);">
+                            Atribut di atas akan menjadi dasar pembeda (kombinasi varian) antar SKU di dalam grup ini.
+                        </p>
+                    </div>
+
+                    <!-- SKU Mapping List -->
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;">
+                        <div style="font-size: 1rem; font-weight: 700; color: #0f172a;">
+                            Mapping SKU Master 
+                            <span id="selected-count-badge" style="background: #eff6ff; color: #1a56db; padding: 2px 10px; border-radius: 20px; font-size: 0.8rem; margin-left: 8px;">2 SKU</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="openModal()">
+                            <i data-lucide="plus-circle" size="18"></i> Tambah SKU ke Grup
+                        </button>
+                    </div>                    <div class="table-responsive" style="border: 1px solid var(--border); border-radius: 12px; overflow: hidden; background: white;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead style="background: #f8fafc; border-bottom: 1px solid var(--border);">
+                                <tr>
+                                    <th style="padding: 16px 20px; font-weight: 600; color: #475569; font-size: 0.9rem;">SKU Produk</th>
+                                    <th style="padding: 16px 20px; font-weight: 600; color: #475569; font-size: 0.9rem;">Varian</th>
+                                    <th style="padding: 16px 20px; font-weight: 600; color: #475569; font-size: 0.9rem; text-align: center; width: 140px;">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="sku-mapping-container">
+                                <!-- Initial items for wireframe demo -->
+                                <tr class="sku-mapping-item" style="border-bottom: 1px solid var(--border); transition: 0.2s;">
+                                    <td style="padding: 16px 20px; vertical-align: top;">
+                                        <div style="display: flex; align-items: flex-start; gap: 16px;">
+                                            <div class="sku-mini-icon">NP</div>
+                                            <div class="sku-details">
+                                                <span class="name" style="font-weight: 700; color: #0f172a;">Nippon Paint Vinilex Putih 5 Kg</span>
+                                                <div style="margin-top: 4px;">
+                                                    <span class="id" style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted);">NIP.VIN.00001</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 16px 20px; vertical-align: top;">
+                                        <div class="attr-labels-container" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+                                    </td>
+                                    <td style="padding: 16px 20px; vertical-align: top; text-align: center;">
+                                        <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--text-main); margin-right: 4px;" onclick="openEditConfirmModal()">
+                                            <i data-lucide="edit-3" size="18"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--danger);" onclick="removeSkuItem(this)">
+                                            <i data-lucide="trash-2" size="18"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <tr class="sku-mapping-item" style="border-bottom: 1px solid var(--border); transition: 0.2s;">
+                                    <td style="padding: 16px 20px; vertical-align: top;">
+                                        <div style="display: flex; align-items: flex-start; gap: 16px;">
+                                            <div class="sku-mini-icon" style="background:#eab308;">NP</div>
+                                            <div class="sku-details">
+                                                <span class="name" style="font-weight: 700; color: #0f172a;">Nippon Paint Vinilex Kuning 5 Kg</span>
+                                                <div style="margin-top: 4px;">
+                                                    <span class="id" style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted);">NIP.VIN.00005</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 16px 20px; vertical-align: top;">
+                                        <div class="attr-labels-container" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+                                    </td>
+                                    <td style="padding: 16px 20px; vertical-align: top; text-align: center;">
+                                        <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--text-main); margin-right: 4px;" onclick="openEditConfirmModal()">
+                                            <i data-lucide="edit-3" size="18"></i>
+                                        </button>
+                                        <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--danger);" onclick="removeSkuItem(this)">
+                                            <i data-lucide="trash-2" size="18"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>v>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Pilih Atribut -->
+    <div class="modal-overlay" id="attrModal">
+        <div class="modal" style="width: 450px;">
+            <div class="modal-header">
+                <h3 style="font-family: 'Outfit'; font-size: 1.2rem; font-weight: 700;">Pilih Atribut Varian</h3>
+                <i data-lucide="x" size="20" style="cursor:pointer; color: var(--text-muted);" onclick="closeAttrModal()"></i>
+            </div>
+            <div class="modal-body">
+                <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">Centang atribut yang ingin digunakan sebagai pembeda varian produk dalam grup ini.</p>
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+                        <input type="checkbox" class="attr-modal-checkbox" value="Warna" checked style="width: 18px; height: 18px;">
+                        <span style="font-weight: 600;">Warna</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+                        <input type="checkbox" class="attr-modal-checkbox" value="Kemasan" style="width: 18px; height: 18px;">
+                        <span style="font-weight: 600;">Kemasan</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+                        <input type="checkbox" class="attr-modal-checkbox" value="Ukuran" style="width: 18px; height: 18px;">
+                        <span style="font-weight: 600;">Ukuran</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+                        <input type="checkbox" class="attr-modal-checkbox" value="Material" style="width: 18px; height: 18px;">
+                        <span style="font-weight: 600;">Material</span>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; cursor: pointer;">
+                        <input type="checkbox" class="attr-modal-checkbox" value="Jenis" style="width: 18px; height: 18px;">
+                        <span style="font-weight: 600;">Jenis</span>
+                    </label>
+                </div>
+            </div>
+            <div style="padding: 20px 24px; border-top: 1px solid var(--border); background: #f8fafc; display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn btn-secondary" onclick="closeAttrModal()">Batal</button>
+                <button class="btn btn-primary" onclick="confirmAttributes()">Simpan Atribut</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Pilih SKU -->
+    <div class="modal-overlay" id="skuModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h3 style="font-family: 'Outfit'; font-size: 1.2rem; font-weight: 700;">Pilih Master SKU</h3>
+                <i data-lucide="x" size="20" style="cursor:pointer; color: var(--text-muted);" onclick="closeModal()"></i>
+            </div>
+            <div class="modal-body">
+                <div style="position: sticky; top: 0; background: white; padding-bottom: 16px; z-index: 10;">
+                    <input type="text" class="seach-sku" placeholder="Cari nama SKU, Barcode, atau ID..." autofocus style="margin-bottom: 0;">
+                </div>
+                
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--text-muted); margin: 16px 0 12px; text-transform: uppercase; letter-spacing: 0.05em;">Hasil Pencarian</div>
+                
+                <div class="sku-list">
+                    <label style="display: flex; align-items: center; gap: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <input type="checkbox" style="width: 20px; height: 20px;">
+                        <div class="sku-mini-icon" style="flex-shrink:0; background: #64748b;">NP</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;">Nippon Paint Vinilex Abu-abu 25 Kg Pail</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">NIP.VIN.00004 • Unit: Pail</div>
+                        </div>
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 16px; padding: 14px; border: 1px solid var(--border); border-radius: 10px; margin-bottom: 10px; cursor: pointer; transition: 0.2s;" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+                        <input type="checkbox" style="width: 20px; height: 20px;">
+                        <div class="sku-mini-icon" style="flex-shrink:0; background: #10b981;">NP</div>
+                        <div>
+                            <div style="font-weight: 700; font-size: 0.95rem; color: #0f172a;">Nippon Paint Vinilex Hijau 5 Kg</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">NIP.VIN.00006 • Unit: Kaleng</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+            <div style="padding: 20px 24px; border-top: 1px solid var(--border); background: #f8fafc; display: flex; justify-content: flex-end; gap: 12px;">
+                <button class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                <button class="btn btn-primary" onclick="confirmMapping()">
+                    <i data-lucide="plus" size="18"></i> Masukkan SKU Terpilih
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        function openModal() {
+            document.getElementById('skuModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('skuModal').style.display = 'none';
+        }
+
+        function confirmMapping() {
+            const modalBody = document.querySelector('#skuModal .modal-body');
+            const checkboxes = modalBody.querySelectorAll('input[type="checkbox"]:checked');
+            const container = document.getElementById('sku-mapping-container');
+
+            if (checkboxes.length > 0) {
+                // Remove placeholder if exists
+                const placeholder = document.getElementById('empty-placeholder');
+                if (placeholder) placeholder.remove();
+
+                checkboxes.forEach(cb => {
+                    const skuLabel = cb.closest('label');
+                    const skuName = skuLabel.querySelector('div > div:first-child').innerText;
+                    const skuCode = skuLabel.querySelector('div > div:last-child').innerText.split(' • ')[0];
+                    const iconColor = skuLabel.querySelector('.sku-mini-icon').style.background || 'var(--primary)';
+
+                    const skuItemHtml = `
+                        <tr class="sku-mapping-item" style="border-bottom: 1px solid var(--border); transition: 0.2s;">
+                            <td style="padding: 16px 20px; vertical-align: top;">
+                                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                                    <div class="sku-mini-icon" style="background: ${iconColor}">NP</div>
+                                    <div class="sku-details">
+                                        <span class="name" style="font-weight: 700; color: #0f172a;">${skuName}</span>
+                                        <div style="margin-top: 4px;">
+                                            <span class="id" style="font-family: monospace; background: #f1f5f9; padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted);">${skuCode}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="padding: 16px 20px; vertical-align: top;">
+                                <div class="attr-labels-container" style="display: flex; gap: 6px; flex-wrap: wrap;"></div>
+                            </td>
+                            <td style="padding: 16px 20px; vertical-align: top; text-align: center;">
+                                <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--text-main); margin-right: 4px;" onclick="openEditConfirmModal()">
+                                    <i data-lucide="edit-3" size="18"></i>
+                                </button>
+                                <button class="btn btn-secondary" style="padding: 8px; border:none; color: var(--danger);" onclick="removeSkuItem(this)">
+                                    <i data-lucide="trash-2" size="18"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                    container.insertAdjacentHTML('beforeend', skuItemHtml);
+                    cb.checked = false; // reset
+                });
+                updateCounts();
+                updateSelectedAttributes(); 
+                lucide.createIcons();
+            }
+            closeModal();
+        }
+
+        function removeSkuItem(btn) {
+            btn.closest('.sku-mapping-item').remove();
+            updateCounts();
+            
+            const container = document.getElementById('sku-mapping-container');
+            if (container.children.length === 0) {
+                container.innerHTML = `
+                    <tr id="empty-placeholder">
+                        <td colspan="3" style="padding: 40px; text-align: center; color: var(--text-muted);">
+                            <i data-lucide="package-search" size="48" style="margin-bottom: 12px; opacity: 0.5;"></i>
+                            <p>Belum ada SKU Master yang dipilih. <br>Klik tombol "Tambah SKU ke Grup" untuk memulai.</p>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+            }
+        }
+
+        function openAttrModal() {
+            document.getElementById('attrModal').style.display = 'flex';
+        }
+
+        function closeAttrModal() {
+            document.getElementById('attrModal').style.display = 'none';
+        }
+
+        let selectedAttributes = ["Warna"];
+
+        function confirmAttributes() {
+            const checkboxes = document.querySelectorAll('.attr-modal-checkbox:checked');
+            selectedAttributes = Array.from(checkboxes).map(cb => cb.value);
+            
+            const display = document.getElementById('selected-attrs-display');
+            display.innerHTML = '';
+            
+            selectedAttributes.forEach(attr => {
+                const tag = document.createElement('span');
+                tag.style.cssText = "background: white; border: 1px solid var(--border); padding: 4px 12px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; color: var(--primary);";
+                tag.innerText = attr;
+                display.appendChild(tag);
+            });
+
+            updateSelectedAttributes();
+            closeAttrModal();
+        }
+
+        function updateCounts() {
+            const count = document.querySelectorAll('.sku-mapping-item').length;
+            document.getElementById('selected-count-badge').innerText = `${count} SKU`;
+        }
+
+        function updateSelectedAttributes() {
+            const skuItems = document.querySelectorAll('.sku-mapping-item');
+
+            skuItems.forEach(item => {
+                const labelContainer = item.querySelector('.attr-labels-container');
+                labelContainer.innerHTML = '';
+                
+                selectedAttributes.forEach(attr => {
+                    let val = "—";
+                    const skuName = item.querySelector('.name').innerText;
+                    
+                    // Mock detection logic for wireframe
+                    if (attr === 'Warna') {
+                        if (skuName.includes('Putih')) val = 'Putih';
+                        else if (skuName.includes('Kuning')) val = 'Kuning';
+                        else if (skuName.includes('Abu-abu')) val = 'Abu-abu';
+                        else if (skuName.includes('Hijau')) val = 'Hijau';
+                    } else if (attr === 'Kemasan') {
+                        if (skuName.includes('5 Kg')) val = '5 Kg';
+                        else if (skuName.includes('25 Kg')) val = '25 Kg';
+                        else if (skuName.includes('1 Kg')) val = '1 Kg';
+                    } else if (attr === 'Ukuran') val = 'Standar';
+                    else if (attr === 'Material') val = 'Akrilik';
+
+                    const tag = document.createElement('span');
+                    tag.style.cssText = "padding: 2px 8px; background: #eff6ff; color: #1a56db; border-radius: 4px; font-size: 0.7rem; font-weight: 700; border: 1px solid #dbeafe;";
+                    tag.innerText = `${attr}: ${val}`;
+                    labelContainer.appendChild(tag);
+                });
+            });
+        }
+
+        // Mode Checking URL Parameter
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const mode = urlParams.get('mode');
+            const pageTitle = document.getElementById('page-main-title');
+            const groupNameInput = document.getElementById('group-name-input');
+            const skuContainer = document.getElementById('sku-mapping-container');
+
+            if (mode === 'add') {
+                pageTitle.innerText = 'Tambah Data Group';
+                if (groupNameInput) groupNameInput.value = '';
+                if (skuContainer) skuContainer.innerHTML = `
+                    <tr id="empty-placeholder">
+                        <td colspan="3" style="padding: 40px; text-align: center; color: var(--text-muted);">
+                            <i data-lucide="package-search" size="48" style="margin-bottom: 12px; opacity: 0.5;"></i>
+                            <p>Belum ada SKU Master yang dipilih. <br>Klik tombol "Tambah SKU ke Grup" untuk memulai.</p>
+                        </td>
+                    </tr>
+                `;
+                updateCounts();
+            } else if (mode === 'edit') {
+                pageTitle.innerText = 'Edit Group SKU';
+                updateSelectedAttributes();
+            }
+            lucide.createIcons();
+        });
+
+        // Ensure updateSelectedAttributes is called once to initialize mock data labels
+        setTimeout(updateSelectedAttributes, 100);
+    </script>
+</body>
+
+</html>

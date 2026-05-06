@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe Form Create SKU — Master Catalog</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-hover: #1e429f;
+            --bg-body: #f8fafc;
+            --bg-sidebar: #0f172a;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #059669;
+            --warning: #d97706;
+            --danger: #dc2626;
+            --info: #3b82f6;
+            --nav-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--nav-width);
+            background: white;
+            border-right: 1px solid var(--border);
+            height: 100vh;
+            position: fixed;
+            padding: 32px 24px;
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 40px;
+        }
+
+        .sidebar-brand h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--primary);
+        }
+
+        .nav-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-label {
+            font-size: 0.65rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 16px;
+            border-radius: 10px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-link:hover {
+            background: #f1f5f9;
+            color: var(--text-main);
+        }
+
+        .nav-link.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(26, 86, 219, 0.2);
+        }
+
+        .status-circle {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            border: 2px solid #cbd5e1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .status-circle.complete {
+            background: var(--success);
+            border-color: var(--success);
+            color: white;
+        }
+
+        /* Main Content wrapper */
+        .main-wrapper {
+            margin-left: var(--nav-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header Area */
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            padding: 0 40px;
+            height: 72px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .header-left {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .breadcrumb {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 2px;
+        }
+
+        .page-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        /* Content Sections */
+        .content-area {
+            padding: 40px;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            padding: 32px;
+            margin-bottom: 40px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            scroll-margin-top: 100px;
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .card-title h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        .form-item {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-item.full {
+            grid-column: span 2;
+        }
+
+        .form-item label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #475569;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .required {
+            color: var(--danger);
+            font-weight: 800;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.2s;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(26, 86, 219, 0.1);
+        }
+
+        .form-input:disabled {
+            background: #f8fafc;
+            color: var(--text-muted);
+            cursor: not-allowed;
+        }
+
+        .input-group {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .input-addon {
+            background: #f1f5f9;
+            padding: 0 16px;
+            display: flex;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            border-right: 1px solid var(--border);
+        }
+
+        .input-group .form-input {
+            border: none;
+            border-radius: 0;
+        }
+
+        /* Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 24px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-hover); }
+        .btn-secondary { background: white; border: 1px solid var(--border); color: var(--text-main); }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-muted); }
+
+        /* Repeater */
+        .repeater-item {
+            padding: 24px;
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .remove-btn {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            color: var(--danger);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 6px;
+            transition: 0.2s;
+        }
+
+        .remove-btn:hover { background: #fee2e2; }
+
+        /* Media Upload */
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 14px;
+            padding: 32px;
+            text-align: center;
+            background: #fdfdfd;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .upload-area:hover {
+            border-color: var(--primary);
+            background: #f0f7ff;
+        }
+
+        .upload-area i {
+            margin-bottom: 12px;
+            color: var(--text-muted);
+        }
+
+        .upload-area p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        /* Notification */
+        #toast {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: #0f172a;
+            color: white;
+            padding: 16px 24px;
+            border-radius: 12px;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            z-index: 2000;
+        }
+
+    </style>
+</head>
+
+<body>
+
+    <!-- SIDEBAR NAV -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div style="background: var(--primary); width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="package" size="18" color="white"></i>
+            </div>
+            <h1>SKU BUILDER</h1>
+        </div>
+
+        <div class="nav-links">
+            <div class="nav-label">Form Sections</div>
+            <a href="#sec-identitas" class="nav-link active">Identitas Dasar <span class="status-circle" id="stat-identitas"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-eksternal" class="nav-link">Identifikasi Eksternal <span class="status-circle" id="stat-eksternal"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-brand" class="nav-link">Brand & Principal <span class="status-circle" id="stat-brand"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-kategori" class="nav-link">Klasifikasi & Kategori <span class="status-circle" id="stat-kategori"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-fisik-teknis" class="nav-link">Atribut Fisik & Teknis <span class="status-circle" id="stat-fisik-teknis"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-kemasan" class="nav-link">Kemasan <span class="status-circle" id="stat-kemasan"><i data-lucide="check" size="10"></i></span></a>
+            <a href="#sec-media" class="nav-link">Media & Aset <span class="status-circle" id="stat-media"><i data-lucide="check" size="10"></i></span></a>
+        </div>
+
+        <div style="margin-top: auto; padding-top: 24px; border-top: 1px solid var(--border);">
+            <p style="font-size: 0.7rem; color: var(--text-muted); line-height: 1.5;">Ensure all fields marked with <span class="required">*</span> are filled before submitting.</p>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header>
+            <div class="header-left">
+                <div class="breadcrumb">
+                    <span>Dashboard</span> <i data-lucide="chevron-right" size="12"></i> 
+                    <span>Master SKU</span> <i data-lucide="chevron-right" size="12"></i> 
+                    <span style="color: var(--text-main); font-weight: 600;">Buat SKU Baru</span>
+                </div>
+                <h2 class="page-title">Create Master SKU</h2>
+            </div>
+            <div class="header-actions">
+                <button class="btn btn-secondary">Discard</button>
+                <button class="btn btn-primary" onclick="simulateSubmit()">
+                    <i data-lucide="save" size="18"></i> Simpan SKU
+                </button>
+            </div>
+        </header>
+
+        <main class="content-area">
+
+            <!-- Identitas Dasar -->
+            <section id="sec-identitas" class="form-card" data-group="identitas">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Identitas Dasar</h3>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-item full">
+                        <label>Nama Produk Resmi <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="f-nama" data-required="true" placeholder="Contoh: Semen Indocement Rajawali 50KG">
+                    </div>
+                    <div class="form-item">
+                        <label>URL Slug <span class="required">*</span></label>
+                        <input type="text" class="form-input" id="f-slug" data-required="true" disabled placeholder="auto-generated-slug">
+                    </div>
+                    <div class="form-item">
+                        <label>Status Operasional <span class="required">*</span></label>
+                        <select class="form-input" id="f-status" data-required="true">
+                            <option value="Draf">Draf</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Diskontiniu">Diskontiniu</option>
+                            <option value="Tidak Aktif">Tidak Aktif</option>
+                            <option value="Butuh Persetujuan">Butuh Persetujuan</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Satuan Dasar <span class="required">*</span></label>
+                        <select class="form-input" id="f-satuan" data-required="true">
+                            <option value="">Pilih Satuan...</option>
+                            <option>SAK</option>
+                            <option>PCS</option>
+                            <option>KILO (KG)</option>
+                            <option>BATANG</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Preview SKU ID <span class="required">*</span></label>
+                        <div class="input-group">
+                            <span class="input-addon" id="sku-id-prefix">___ . ___</span>
+                            <input type="text" class="form-input" value="00001" disabled style="background:#f8fafc; font-family: monospace; font-weight: 700;">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Identifikasi Eksternal -->
+            <section id="sec-eksternal" class="form-card" data-group="eksternal">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Identifikasi Eksternal</h3>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label>Barcode / GTIN-13 <span class="required">*</span></label>
+                        <input type="text" class="form-input" data-required="true" placeholder="Scan atau input barcode">
+                    </div>
+                    <div class="form-item">
+                        <label>International GTIN / EAN</label>
+                        <input type="text" class="form-input" placeholder="International code">
+                    </div>
+                    <div class="form-item">
+                        <label>Kode Produk Principal</label>
+                        <input type="text" class="form-input" placeholder="Principal's internal SKU">
+                    </div>
+                    <div class="form-item">
+                        <label>Kode Standar SNI</label>
+                        <input type="text" class="form-input" placeholder="Contoh: SNI 1234:2024">
+                    </div>
+                    <div class="form-item full">
+                        <label>HSN Code (Export/Import)</label>
+                        <input type="text" class="form-input" placeholder="8-digit Harmonized System Code">
+                    </div>
+                </div>
+            </section>
+
+            <!-- Brand & Principal -->
+            <section id="sec-brand" class="form-card" data-group="brand">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Brand & Principal</h3>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label>Parent Brand <span class="required">*</span></label>
+                        <select class="form-input" id="f-parent" data-required="true" onchange="updateSkuPreview()">
+                            <option value="">Pilih Parent...</option>
+                            <option value="IND">Indocement</option>
+                            <option value="SGE">Semen Gresik</option>
+                            <option value="KRA">Krakatau Steel</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Brand <span class="required">*</span></label>
+                        <select class="form-input" id="f-brand" data-required="true" onchange="updateSkuPreview()">
+                            <option value="">Pilih Brand...</option>
+                            <option value="RJW">Rajawali</option>
+                            <option value="TGR">Tiga Roda</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Principal ID <span class="required">*</span></label>
+                        <input type="text" class="form-input" data-required="true" placeholder="Search Principal ID...">
+                    </div>
+                    <div class="form-item">
+                        <label>Negara Asal</label>
+                        <select class="form-input">
+                            <option>Indonesia</option>
+                            <option>China</option>
+                            <option>Jerman</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Klasifikasi & Kategori -->
+            <section id="sec-kategori" class="form-card" data-group="kategori">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Klasifikasi & Kategori</h3>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label>Kategori Utama (L1) <span class="required">*</span></label>
+                        <select class="form-input" data-required="true">
+                            <option value="">Pilih L1...</option>
+                            <option>Konstruksi</option>
+                            <option>Finishing</option>
+                            <option>Sanitasi</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Sub-Kategori (L2) <span class="required">*</span></label>
+                        <select class="form-input" data-required="true">
+                            <option value="">Pilih L2...</option>
+                            <option>Semen & Mortar</option>
+                            <option>Besi & Baja</option>
+                        </select>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Atribut Fisik & Teknis -->
+            <section id="sec-fisik-teknis" class="form-card" data-group="fisik-teknis">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Atribut Fisik & Teknis</h3>
+                    </div>
+                </div>
+                
+                <h4 style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 16px;">Spesifikasi Fisik</h4>
+                <div class="form-grid" style="margin-bottom: 32px;">
+                    <div class="form-item">
+                        <label>Berat Netto</label>
+                        <div class="input-group">
+                            <input type="number" class="form-input">
+                            <span class="input-addon">KG</span>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Berat Brutto</label>
+                        <div class="input-group">
+                            <input type="number" class="form-input">
+                            <span class="input-addon">KG</span>
+                        </div>
+                    </div>
+                    <div class="form-item full">
+                        <label>Dimensi Produk (P x L x T) cm</label>
+                        <div style="display: flex; gap: 12px;">
+                            <input type="text" class="form-input" placeholder="Panjang">
+                            <input type="text" class="form-input" placeholder="Lebar">
+                            <input type="text" class="form-input" placeholder="Tebal / Tinggi">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Volume</label>
+                        <input type="text" class="form-input" placeholder="Liter / M3">
+                    </div>
+                </div>
+
+                <div style="border-top: 1px dashed var(--border); padding-top: 24px;">
+                    <h4 style="font-size: 0.75rem; color: var(--primary); text-transform: uppercase; margin-bottom: 16px;">Spesifikasi Teknis</h4>
+                    <div class="form-grid">
+                        <div class="form-item">
+                            <label>Bahan Berbahaya? <span class="required">*</span></label>
+                            <div style="display: flex; gap: 24px; padding: 12px 0;">
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: 500;">
+                                    <input type="radio" name="hazard" value="ya" data-required="true"> Ya
+                                </label>
+                                <label style="display: flex; align-items: center; gap: 8px; font-weight: 500;">
+                                    <input type="radio" name="hazard" value="tidak" checked> Tidak
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-item">
+                            <label>Material / Komposisi</label>
+                            <input type="text" class="form-input" placeholder="Contoh: Portland Cement">
+                        </div>
+                        <div class="form-item">
+                            <label>Grade / Kekuatan</label>
+                            <input type="text" class="form-input" placeholder="Contoh: SNI K-250">
+                        </div>
+                        <div class="form-item">
+                            <label>Masa Simpan (Shelf Life)</label>
+                            <input type="text" class="form-input" placeholder="Contoh: 12 Bulan">
+                        </div>
+                        <div class="form-item">
+                            <label>Warna</label>
+                            <input type="text" class="form-input" placeholder="Contoh: Abu-abu">
+                        </div>
+                        <div class="form-item">
+                            <label>Ketebalan</label>
+                            <input type="text" class="form-input" placeholder="dalam mm">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Kemasan -->
+            <section id="sec-kemasan" class="form-card" data-group="kemasan">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Struktur Kemasan</h3>
+                    </div>
+                </div>
+                <div id="packaging-repeater">
+                    <div class="repeater-item">
+                        <div class="form-grid">
+                            <div class="form-item">
+                                <label>Tipe Kemasan <span class="required">*</span></label>
+                                <select class="form-input" data-required="true">
+                                    <option value="">Pilih Tipe...</option>
+                                    <option>Karung (Zak)</option>
+                                    <option>Dus (Carton)</option>
+                                    <option>Drum</option>
+                                    <option>Batang</option>
+                                </select>
+                            </div>
+                            <div class="form-item">
+                                <label>Qty per Kemasan <span class="required">*</span></label>
+                                <input type="number" class="form-input" data-required="true" placeholder="Misal: 1 atau 50">
+                            </div>
+                            <div class="form-item">
+                                <label>Bahan Kemasan</label>
+                                <input type="text" class="form-input" placeholder="Contoh: Kraft Paper">
+                            </div>
+                            <div class="form-item">
+                                <label>Dimensi Kemasan (cm)</label>
+                                <div style="display: flex; gap: 8px;">
+                                    <input type="text" class="form-input" placeholder="P">
+                                    <input type="text" class="form-input" placeholder="L">
+                                    <input type="text" class="form-input" placeholder="T">
+                                </div>
+                            </div>
+                            <div class="form-item">
+                                <label>Berat Netto (KG)</label>
+                                <input type="number" class="form-input" placeholder="Net Weight">
+                            </div>
+                            <div class="form-item">
+                                <label>Berat Brutto (KG)</label>
+                                <input type="number" class="form-input" placeholder="Gross Weight">
+                            </div>
+                            <div class="form-item">
+                                <label>Volume</label>
+                                <input type="text" class="form-input" placeholder="M3 / Liter">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-outline" style="width: 100%; border-style: dashed;" onclick="addPackaging()">
+                    <i data-lucide="plus" size="16"></i> Tambah Item Kemasan
+                </button>
+            </section>
+
+            <!-- Media & Aset -->
+            <section id="sec-media" class="form-card" data-group="media">
+                <div class="card-header">
+                    <div class="card-title">
+                        <h3>Media & Aset Visual</h3>
+                    </div>
+                </div>
+                <div class="form-grid">
+                    <div class="form-item full">
+                        <label>Gambar Utama (800x800) <span class="required">*</span></label>
+                        <div class="upload-area" onclick="alert('Choose Image')">
+                            <i data-lucide="upload-cloud" size="32"></i>
+                            <p><strong>Klik untuk upload</strong> atau drag and drop gambar utama</p>
+                            <p style="font-size: 0.7rem;">PNG, JPG atau WebP (Maks. 2MB)</p>
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Datasheet Teknis (PDF)</label>
+                        <div class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                            <i data-lucide="file-text" size="18"></i> Upload PDF
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Safety Data Sheet (SDS)</label>
+                        <div class="btn btn-secondary" style="width: 100%; justify-content: center;">
+                            <i data-lucide="shield-check" size="18"></i> Upload SDS
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast">
+        <i data-lucide="check-circle" size="24" color="#22c55e"></i>
+        <span>Master SKU Berhasil Disimpan!</span>
+    </div>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Auto-Slug Logic
+        document.getElementById('f-nama').addEventListener('input', function() {
+            const val = this.value;
+            const slug = val.toLowerCase()
+                            .replace(/[^a-z0-9]/g, '-')
+                            .replace(/-+/g, '-')
+                            .replace(/^-|-$/g, '');
+            document.getElementById('f-slug').value = slug;
+            validateAll();
+        });
+
+        // SKU ID Preview Logic
+        function updateSkuPreview() {
+            const p = document.getElementById('f-parent').value || '___';
+            const b = document.getElementById('f-brand').value || '___';
+            document.getElementById('sku-id-prefix').innerText = p + ' . ' + b;
+            validateAll();
+        }
+
+        // Packaging Repeater
+        function addPackaging() {
+            const cont = document.getElementById('packaging-repeater');
+            const item = document.createElement('div');
+            item.className = 'repeater-item';
+            item.innerHTML = `
+                <i data-lucide="x" class="remove-btn" onclick="this.parentElement.remove(); validateAll();"></i>
+                <div class="form-grid">
+                    <div class="form-item">
+                        <label>Tipe Kemasan <span class="required">*</span></label>
+                        <select class="form-input" data-required="true">
+                            <option value="">Pilih Tipe...</option>
+                            <option>Karung (Zak)</option><option>Dus (Carton)</option><option>Drum</option><option>Batang</option>
+                        </select>
+                    </div>
+                    <div class="form-item">
+                        <label>Qty per Kemasan <span class="required">*</span></label>
+                        <input type="number" class="form-input" data-required="true" placeholder="Misal: 1 atau 50">
+                    </div>
+                    <div class="form-item">
+                        <label>Bahan Kemasan</label>
+                        <input type="text" class="form-input" placeholder="Contoh: Kraft Paper">
+                    </div>
+                    <div class="form-item">
+                        <label>Dimensi Kemasan (cm)</label>
+                        <div style="display: flex; gap: 8px;">
+                            <input type="text" class="form-input" placeholder="P">
+                            <input type="text" class="form-input" placeholder="L">
+                            <input type="text" class="form-input" placeholder="T">
+                        </div>
+                    </div>
+                    <div class="form-item">
+                        <label>Berat Netto (KG)</label>
+                        <input type="number" class="form-input" placeholder="Net Weight">
+                    </div>
+                    <div class="form-item">
+                        <label>Berat Brutto (KG)</label>
+                        <input type="number" class="form-input" placeholder="Gross Weight">
+                    </div>
+                    <div class="form-item">
+                        <label>Volume</label>
+                        <input type="text" class="form-input" placeholder="M3 / Liter">
+                    </div>
+                </div>
+            `;
+            cont.appendChild(item);
+            lucide.createIcons();
+            attachValidationListeners();
+            validateAll();
+        }
+
+        // Validation Logic for Indicators
+        function validateAll() {
+            const groups = ["identitas", "eksternal", "brand", "kategori", "fisik-teknis", "kemasan", "media"];
+            groups.forEach(gid => {
+                const section = document.querySelector(`[data-group="${gid}"]`);
+                if (!section) return;
+                const reqs = section.querySelectorAll('[data-required="true"]');
+                let allFilled = true;
+                reqs.forEach(el => {
+                    if (el.type === 'radio') {
+                        // radio validation simplified
+                    } else if (!el.value.trim()) {
+                        allFilled = false;
+                    }
+                });
+
+                const indicator = document.getElementById(`stat-${gid}`);
+                if (indicator) {
+                    if (allFilled) indicator.classList.add('complete');
+                    else indicator.classList.remove('complete');
+                }
+            });
+        }
+
+        function attachValidationListeners() {
+            document.querySelectorAll('.form-input').forEach(input => {
+                input.removeEventListener('input', validateAll);
+                input.removeEventListener('change', validateAll);
+                input.addEventListener('input', validateAll);
+                input.addEventListener('change', validateAll);
+            });
+        }
+
+        function simulateSubmit() {
+            document.getElementById('toast').style.display = 'flex';
+            setTimeout(() => {
+                document.getElementById('toast').style.display = 'none';
+                window.location.reload();
+            }, 2000);
+        }
+
+        // Nav Active State on scroll
+        window.addEventListener('scroll', () => {
+            let current = "";
+            document.querySelectorAll('section').forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (pageYOffset >= sectionTop - 150) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href').includes(current)) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        attachValidationListeners();
+        validateAll();
+    </script>
+</body>
+
+</html>

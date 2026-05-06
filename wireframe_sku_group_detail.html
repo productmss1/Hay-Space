@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe — Detail Group SKU | MSS Holding</title>
+
+    <!-- Google Fonts -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        :root {
+            --primary: #1a56db;
+            --primary-hover: #1e429f;
+            --bg-body: #f8fafc;
+            --bg-sidebar: #0f172a;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --success: #059669;
+            --danger: #dc2626;
+            --warning: #d97706;
+            --sidebar-width: 260px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            display: flex;
+            min-height: 100vh;
+            overflow-y: auto;
+        }
+
+        /* Sidebar (Simplified) */
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: var(--bg-sidebar);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 100;
+        }
+
+        .sidebar-header {
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .sidebar-header h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #3b82f6;
+        }
+
+        .nav-menu {
+            flex: 1;
+            padding: 12px;
+        }
+
+        .nav-group-title {
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: #64748b;
+            padding: 0 12px 8px;
+            font-weight: 700;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 12px;
+            border-radius: 8px;
+            color: #94a3b8;
+            text-decoration: none;
+            font-size: 0.9rem;
+            margin-bottom: 4px;
+        }
+
+        .nav-item.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* Main Container */
+        .main-container {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid var(--border);
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 32px;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+        }
+
+        .content {
+            padding: 32px;
+            max-width: 1300px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 24px;
+        }
+
+        .title-wrapper {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .back-btn {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-main);
+            margin-top: 4px;
+        }
+
+        .back-btn:hover {
+            background: #f1f5f9;
+        }
+
+        .page-title h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #0f172a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            margin-top: 8px;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: inline-block;
+        }
+
+        .badge-aktif {
+            background: #dcfce7;
+            color: #059669;
+        }
+
+        .badge-tidak-aktif {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .badge-draft {
+            background: #f1f5f9;
+            color: #64748b;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: white;
+            border: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .btn-warning {
+            background-color: white;
+            border: 1px solid #fcd34d;
+            color: var(--warning);
+        }
+
+        .btn-warning:hover {
+            background-color: #fffbeb;
+        }
+
+        /* Card Setup */
+        .card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+
+        .card-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            background: #f8fafc;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .card-body {
+            padding: 24px;
+        }
+
+        /* Carousel Styles */
+        .carousel-view {
+            width: 100%;
+            background: #f1f5f9;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 32px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .carousel-container {
+            display: flex;
+            gap: 16px;
+            overflow-x: auto;
+            padding: 10px 0;
+            width: 100%;
+            scroll-behavior: smooth;
+        }
+
+        .carousel-container::-webkit-scrollbar {
+            height: 6px;
+        }
+
+        .carousel-container::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+
+        .carousel-item {
+            min-width: 120px;
+            height: 120px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1.5rem;
+            flex-shrink: 0;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .carousel-item:hover {
+            transform: scale(1.05);
+            border-color: var(--primary);
+        }
+
+        /* Variant Selectors as Filters */
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 16px;
+        }
+
+        .filter-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #475569;
+        }
+
+        .variant-selectors {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .variant-field {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .variant-field label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #64748b;
+        }
+
+        .variant-field select {
+            padding: 4px 8px;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            outline: none;
+            background: white;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .variant-field select:hover {
+            background: #f8fafc;
+        }
+
+        /* Table */
+        .table-display {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            background: white;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 14px 20px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            color: #64748b;
+            text-transform: uppercase;
+            background: #f8fafc;
+            border-bottom: 2px solid var(--border);
+        }
+
+        td {
+            padding: 16px 20px;
+            font-size: 0.9rem;
+            vertical-align: middle;
+            color: #1e293b;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: #f1f5f9;
+        }
+
+        .sku-img-box {
+            width: 44px;
+            height: 44px;
+            background: #eff6ff;
+            color: var(--primary);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            border: 1px solid #dbeafe;
+        }
+
+        .sku-code {
+            font-family: 'Inter', monospace;
+            font-size: 0.85rem;
+            color: #64748b;
+            font-weight: 600;
+            background: #f1f5f9;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .sku-name {
+            font-weight: 700;
+            color: #0f172a;
+            margin-bottom: 4px;
+            font-size: 0.95rem;
+        }
+
+        .variant-tag {
+            font-size: 0.8rem;
+            color: #0369a1;
+            background: #e0f2fe;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+        }
+
+        .search-mini {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 8px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: white;
+            width: 250px;
+        }
+
+        .search-mini input {
+            border: none;
+            outline: none;
+            font-size: 0.85rem;
+            width: 100%;
+        }
+    </style>
+</head>
+
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <div
+                style="background: white; width: 32px; height: 32px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                <i data-lucide="layers" style="color: #1a56db; width: 20px;"></i>
+            </div>
+            <h1>SKU MASTER</h1>
+        </div>
+        <nav class="nav-menu">
+            <div class="nav-group-title">Main Menu</div>
+            <a href="#" class="nav-item"><i data-lucide="package" size="18"></i> SKU Management</a>
+            <a href="#" class="nav-item active"><i data-lucide="folder-tree" size="18"></i> SKU Grouping</a>
+        </nav>
+    </aside>
+
+    <div class="main-container">
+        <header>
+            <div style="font-weight: 600;">Module: Detail Group SKU</div>
+            <div
+                style="width: 32px; height: 32px; background: var(--primary); border-radius: 50%; color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight:bold;">
+                AD</div>
+        </header>
+
+        <main class="content">
+
+            <!-- Page Header -->
+            <div class="page-header">
+                <div class="title-wrapper">
+                    <button class="back-btn" onclick="window.location.href='wireframe_sku_group_list.html'">
+                        <i data-lucide="arrow-left" size="18"></i>
+                    </button>
+                    <div>
+                        <div class="page-title">
+                            <h2>
+                                Cat Nippon Paint Vinilex
+                                <span class="badge badge-aktif"
+                                    style="font-size: 0.85rem; transform: translateY(-2px);">Aktif</span>
+                            </h2>
+                            <p>Manajemen relasi varian dan mapping SKU dalam grup produk ini.</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="display: flex; gap: 12px;">
+                    <button class="btn btn-secondary" onclick="openHistoryModal()">
+                        <i data-lucide="history" size="16"></i> Riwayat
+                    </button>
+                    <button class="btn btn-secondary"
+                        onclick="window.location.href='wireframe_sku_group_mapping.html?mode=edit'">
+                        <i data-lucide="edit-3" size="16"></i> Edit Group / Mapping
+                    </button>
+                    <button class="btn btn-warning" onclick="alert('Group dinonaktifkan')">
+                        <i data-lucide="power-off" size="16"></i> Non-aktifkan
+                    </button>
+                </div>
+            </div>
+
+            <!-- Carousel Section -->
+            <div class="carousel-view">
+                <div
+                    style="width: 100%; margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-weight: 700; font-size: 1rem; color: #1e293b;">Galeri Produk Master SKU</span>
+                    <div style="display: flex; gap: 8px;">
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="scrollCarousel(-250)"><i
+                                data-lucide="chevron-left" size="18"></i></button>
+                        <button class="btn btn-secondary" style="padding: 6px 12px;" onclick="scrollCarousel(250)"><i
+                                data-lucide="chevron-right" size="18"></i></button>
+                    </div>
+                </div>
+                <div id="carousel-container" class="carousel-container">
+                    <!-- Global images will be injected -->
+                </div>
+            </div>
+
+            <!-- Table Card -->
+            <div class="card">
+                <div class="card-header">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <i data-lucide="table" size="18" style="color: #0284c7;"></i>
+                        <span>Daftar SKU Termapping (<span id="total-sku">0</span> SKU)</span>
+                    </div>
+                </div>
+                <div class="card-body">
+
+                    <!-- Search & Filter Area -->
+                    <div class="filter-header">
+                        <div class="variant-selectors">
+                            <div class="variant-field">
+                                <label>Filter Warna:</label>
+                                <select id="filter-warna" onchange="applyFilters()">
+                                    <option value="semua">Semua Warna</option>
+                                    <option value="Merah">Merah</option>
+                                    <option value="Putih">Putih</option>
+                                    <option value="Kuning">Kuning</option>
+                                    <option value="Abu-abu">Abu-abu</option>
+                                </select>
+                            </div>
+                            <div class="variant-field">
+                                <label>Filter Kemasan:</label>
+                                <select id="filter-kemasan" onchange="applyFilters()">
+                                    <option value="semua">Semua Ukuran</option>
+                                    <option value="1 kg">1 kg</option>
+                                    <option value="5 kg">5 kg</option>
+                                    <option value="10 kg">10 kg</option>
+                                    <option value="25 kg">25 kg Pail</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="search-mini">
+                            <i data-lucide="search" size="16" style="color: #94a3b8;"></i>
+                            <input type="text" id="search-sku" placeholder="Cari Kode atau Nama SKU..."
+                                oninput="applyFilters()">
+                        </div>
+                    </div>
+
+                    <!-- Table Section -->
+                    <div class="table-display">
+                        <div class="table-wrapper">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th width="160">VARIANT</th>
+                                        <th width="80" style="text-align: center;">GAMBAR</th>
+                                        <th width="140">KODE SKU</th>
+                                        <th>NAMA SKU</th>
+                                        <th>KATEGORI</th>
+                                        <th>PARENT BRAND</th>
+                                        <th>BRAND</th>
+                                        <th>STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="sku-table-body">
+                                    <!-- Dynamic rows -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- History Modal -->
+    <div id="historyModal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5); z-index:200; align-items:center; justify-content:center;">
+        <div style="background:white; width:700px; border-radius:12px; max-height:80vh; display:flex; flex-direction:column; overflow:hidden; box-shadow:0 20px 25px -5px rgba(0,0,0,0.1);">
+            <div style="padding:20px 24px; border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; background:#f8fafc;">
+                <h3 style="font-family:'Outfit'; font-size:1.2rem; display:flex; align-items:center; gap:10px;">
+                    <i data-lucide="history" size="20" style="color:var(--primary);"></i>
+                    Riwayat Perubahan Group SKU
+                </h3>
+                <button onclick="closeHistoryModal()" style="background:none; border:none; cursor:pointer; color:var(--text-muted);">
+                    <i data-lucide="x" size="20"></i>
+                </button>
+            </div>
+            <div style="padding:24px; overflow-y:auto; flex:1;">
+                <div class="table-display">
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th width="180">WAKTU (WIT)</th>
+                                    <th>CATATAN / AKTIVITAS</th>
+                                    <th width="150">USERNAME</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body">
+                                <!-- History rows will be injected here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div style="padding:16px 24px; border-top:1px solid var(--border); background:#f8fafc; display:flex; justify-content:flex-end;">
+                <button class="btn btn-secondary" onclick="closeHistoryModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Mock Data
+        const skuData = [
+            { v: "Merah, 5 kg", c: "NIP.VIN.RED.05.001", n: "Nippon Paint Vinilex Merah 5 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Merah", size: "5 kg", s: "Aktif" },
+            { v: "Putih, 1 kg", c: "NIP.VIN.WHT.01.002", n: "Nippon Paint Vinilex Putih 1 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Putih", size: "1 kg", s: "Aktif" },
+            { v: "Putih, 10 kg", c: "NIP.VIN.WHT.10.003", n: "Nippon Paint Vinilex Putih 10 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Putih", size: "10 kg", s: "Discontinued" },
+            { v: "Kuning, 1 kg", c: "NIP.VIN.YLW.01.004", n: "Nippon Paint Vinilex Kuning 1 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Kuning", size: "1 kg", s: "Aktif" },
+            { v: "Abu-abu, 25 kg", c: "NIP.VIN.GRY.25.005", n: "Nippon Paint Vinilex Abu-abu 25 kg Pail", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Abu-abu", size: "25 kg", s: "Non-Aktif" },
+            { v: "Merah, 1 kg", c: "NIP.VIN.RED.01.006", n: "Nippon Paint Vinilex Merah 1 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Merah", size: "1 kg", s: "Aktif" },
+            { v: "Putih, 5 kg", c: "NIP.VIN.WHT.05.007", n: "Nippon Paint Vinilex Putih 5 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Putih", size: "5 kg", s: "Aktif" },
+            { v: "Kuning, 5 kg", c: "NIP.VIN.YLW.05.008", n: "Nippon Paint Vinilex Kuning 5 kg", cat: "Finishing > Cat Tembok", pb: "Nippon Paint", b: "Vinilex", color: "Kuning", size: "5 kg", s: "Aktif" },
+        ];
+
+        function renderTable(data) {
+            const tbody = document.getElementById('sku-table-body');
+            const totalText = document.getElementById('total-sku');
+            tbody.innerHTML = '';
+            totalText.innerText = data.length;
+
+            data.forEach(item => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><span class="variant-tag">${item.v}</span></td>
+                    <td style="text-align:center;">
+                        <div class="sku-img-box" style="background:${getColorHex(item.color.toLowerCase())}; color: ${item.color.toLowerCase() === 'putih' ? '#333' : '#fff'};">NP</div>
+                    </td>
+                    <td><span class="sku-code">${item.c}</span></td>
+                    <td>
+                        <div class="sku-name">${item.n}</div>
+                        <div style="font-size: 0.75rem; color: #64748b;">Master SKU • Unit: KALENG</div>
+                    </td>
+                    <td>${item.cat}</td>
+                    <td>${item.pb}</td>
+                    <td>${item.b}</td>
+                    <td><span class="badge ${getStatusClass(item.s)}">${item.s}</span></td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function renderCarousel() {
+            const container = document.getElementById('carousel-container');
+            container.innerHTML = '';
+            // Just unique images per variant types for demo
+            const colors = ["Merah", "Putih", "Kuning", "Abu-abu"];
+            colors.forEach(col => {
+                const item = document.createElement('div');
+                item.className = 'carousel-item';
+                item.style.background = getColorHex(col.toLowerCase());
+                item.style.color = (col.toLowerCase() === 'putih' ? '#333' : '#fff');
+                item.innerText = 'NP';
+                item.title = `Varian ${col}`;
+                container.appendChild(item);
+            });
+        }
+
+        function applyFilters() {
+            const warna = document.getElementById('filter-warna').value;
+            const kemasan = document.getElementById('filter-kemasan').value;
+            const search = document.getElementById('search-sku').value.toLowerCase();
+
+            const filteredData = skuData.filter(d => {
+                const matchWarna = warna === 'semua' || d.color === warna;
+                const matchKemasan = kemasan === 'semua' || d.size.toLowerCase() === kemasan.toLowerCase();
+                const matchSearch = d.n.toLowerCase().includes(search) || d.c.toLowerCase().includes(search);
+                return matchWarna && matchKemasan && matchSearch;
+            });
+
+            renderTable(filteredData);
+        }
+
+        function getColorHex(warna) {
+            switch (warna) {
+                case 'merah': return '#ef4444';
+                case 'kuning': return '#eab308';
+                case 'abu-abu': return '#64748b';
+                case 'putih': return '#ffffff';
+                default: return '#eff6ff';
+            }
+        }
+
+        function getStatusClass(status) {
+            switch(status) {
+                case 'Aktif': return 'badge-aktif';
+                case 'Non-Aktif': return 'badge-tidak-aktif'; // Reuse CSS from list if available or need to add
+                case 'Discontinued': return 'badge-draft';
+                default: return 'badge-draft';
+            }
+        }
+
+        function scrollCarousel(dist) {
+            document.getElementById('carousel-container').scrollBy({ left: dist, behavior: 'smooth' });
+        }
+
+        // History Data
+        const historyLogs = [
+            { dt: "2024-04-27 11:00:15", note: "Mengaktifkan kembali grup untuk seasonal lebaran", user: "ahmad_admin" },
+            { dt: "2024-04-27 10:45:00", note: "Menonaktifkan grup karena stok pusat menipis", user: "budi_manager" },
+            { dt: "2024-04-26 15:20:10", note: "Update mapping SKU: Menambah varian Putih 10kg", user: "ahmad_admin" },
+            { dt: "2024-04-25 09:00:00", note: "Group SKU berhasil dibuat oleh sistem", user: "SYSTEM" }
+        ];
+
+        function openHistoryModal() {
+            const tbody = document.getElementById('history-table-body');
+            tbody.innerHTML = '';
+            
+            // Render descending
+            historyLogs.forEach(log => {
+                const row = `
+                    <tr>
+                        <td style="font-size:0.85rem; color:var(--text-muted); font-weight:500;">${log.dt}</td>
+                        <td style="font-weight:600;">${log.note}</td>
+                        <td style="font-size:0.85rem; font-weight:700; color:var(--primary);">${log.user}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+
+            document.getElementById('historyModal').style.display = 'flex';
+            lucide.createIcons();
+        }
+
+        function closeHistoryModal() {
+            document.getElementById('historyModal').style.display = 'none';
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable(skuData);
+            renderCarousel();
+        });
+    </script>
+</body>
+
+</html>

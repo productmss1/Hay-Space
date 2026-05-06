@@ -1,0 +1,1735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wireframe - Pengaturan Line Approval & Metrics (Revised Table)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: { primary: '#1A6B46', 'primary-dark': '#104732', background: '#F8FAFC' }
+                }
+            }
+        }
+    </script>
+    <style>
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .fade-in {
+            animation: fadeIn 0.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.4);
+            backdrop-filter: blur(4px);
+        }
+
+        /* Flowchart Styles */
+        .viewport {
+            overflow: auto;
+            width: 100%;
+            height: 600px;
+            background-color: white;
+            position: relative;
+            cursor: grab;
+            border-radius: 1rem;
+            border: 1px solid #f1f5f9;
+        }
+
+        .viewport:active {
+            cursor: grabbing;
+        }
+
+        #flowchart-wrapper {
+            transform-origin: 0 0;
+            transition: transform 0.15s ease-out;
+            padding: 100px;
+            width: max-content;
+            height: max-content;
+            position: relative;
+        }
+
+        .node {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 11px;
+            font-weight: 600;
+            padding: 12px;
+            position: relative;
+            z-index: 10;
+            width: 130px;
+            min-height: 60px;
+            line-height: 1.4;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .n-start {
+            background-color: #dcfce7;
+            border: 2px solid #22c55e;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            min-height: 60px;
+            color: #166534;
+        }
+
+        .n-start-alt {
+            background-color: #fee2e2;
+            border: 2px solid #ef4444;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            min-height: 60px;
+            color: #991b1b;
+        }
+
+        .n-purple {
+            background-color: #f3e8ff;
+            border: 2px solid #d8b4fe;
+            border-radius: 8px;
+            color: #6b21a8;
+        }
+
+        .n-gray {
+            background-color: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            color: #475569;
+        }
+
+        .n-decision {
+            background-color: #ffedd5;
+            border: 2px solid #fdba74;
+            transform: rotate(45deg);
+            width: 80px;
+            height: 80px;
+            color: #c2410c;
+        }
+
+        .n-decision span {
+            transform: rotate(-45deg);
+            display: block;
+        }
+
+        .n-end {
+            background-color: #fee2e2;
+            border: 2px solid #ef4444;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            min-height: 60px;
+            color: #991b1b;
+        }
+
+        .n-note {
+            background-color: #fce7f3;
+            border: 1px dashed #ec4899;
+            color: #be185d;
+            border-radius: 0;
+            box-shadow: none;
+            width: 100px;
+            padding: 8px;
+            font-size: 10px;
+        }
+
+        .arrow-r {
+            flex-grow: 1;
+            height: 2px;
+            background-color: #94a3b8;
+            min-width: 40px;
+            position: relative;
+        }
+
+        .arrow-r::after {
+            content: '';
+            position: absolute;
+            right: -2px;
+            top: -4px;
+            border-left: 8px solid #94a3b8;
+            border-top: 5px solid transparent;
+            border-bottom: 5px solid transparent;
+        }
+
+        .arrow-d {
+            width: 2px;
+            background-color: #94a3b8;
+            min-height: 40px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .arrow-d::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: -4px;
+            border-top: 8px solid #94a3b8;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+        }
+
+        .arrow-u {
+            width: 2px;
+            background-color: #94a3b8;
+            min-height: 40px;
+            position: relative;
+            margin: 0 auto;
+        }
+
+        .arrow-u::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -4px;
+            border-bottom: 8px solid #94a3b8;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+        }
+
+        .line-h {
+            height: 2px;
+            background-color: #94a3b8;
+            min-width: 20px;
+        }
+
+        .line-v {
+            width: 2px;
+            background-color: #94a3b8;
+            min-height: 20px;
+        }
+
+        /* Template User Flow Styles */
+        .svg-lines {
+            pointer-events: none;
+        }
+
+        .line {
+            fill: none;
+            stroke: #CBD5E1;
+            stroke-width: 1.2;
+        }
+
+        .connection-path {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2;
+        }
+
+        .connection-label {
+            position: absolute;
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            border: 1px solid #e2e8f0;
+        }
+
+        .label-yes {
+            color: #059669;
+            border-color: #10b981;
+        }
+
+        .label-no {
+            color: #dc2626;
+            border-color: #ef4444;
+        }
+
+        .n-pink {
+            background: #fce7f3;
+            border-color: #f9a8d4;
+            color: #9d174d;
+            border-style: dashed;
+            font-size: 10px;
+            min-width: 120px;
+        }
+    </style>
+</head>
+
+<body class="bg-background font-sans text-gray-800 antialiased flex h-screen overflow-hidden">
+
+    <!-- Sidebar -->
+    <aside class="w-64 bg-[#F2F6F4] flex flex-col justify-between border-r border-gray-200 z-10 relative">
+        <div>
+            <div class="p-6 flex items-center gap-3">
+                <div
+                    class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-white font-bold text-sm">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <span class="text-xl font-bold text-gray-800">AdminSys</span>
+            </div>
+            <nav class="px-4 mt-2 space-y-1">
+                <div class="text-[10px] font-bold text-gray-400 mb-3 uppercase tracking-widest pl-3">Menu Utama</div>
+                <a href="#"
+                    class="flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-white hover:text-primary transition-colors">
+                    <i class="fas fa-th-large w-5 text-center text-sm"></i><span
+                        class="font-medium text-sm">Dashboard</span>
+                </a>
+                <div class="text-[10px] font-bold text-gray-400 mt-8 mb-3 uppercase tracking-widest pl-3">Konfigurasi
+                    Approval</div>
+                <a href="#" onclick="switchTab('line-approval-list')" id="nav-line-approval"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg bg-white text-primary relative shadow-sm font-medium text-sm">
+                    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 bg-primary rounded-r-md"
+                        id="nav-indicator"></div>
+                    <i class="fas fa-sitemap w-5 text-center text-sm"></i><span>Line Approval</span>
+                </a>
+
+                <div class="text-[10px] font-bold text-gray-400 mt-8 mb-3 uppercase tracking-widest pl-3">Metrics in
+                    Charge</div>
+                <a href="#" onclick="switchTab('metrics-list')" id="nav-metrics"
+                    class="nav-item flex items-center gap-3 px-3 py-2.5 rounded-lg text-gray-500 hover:bg-white hover:text-primary transition-colors font-medium text-sm">
+                    <i class="fas fa-users-cog w-5 text-center text-sm"></i><span>Metrics in Charge</span>
+                </a>
+            </nav>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col h-screen overflow-hidden">
+        <header class="h-20 bg-white border-b border-gray-100 flex items-center justify-between px-8 shrink-0">
+            <h1 id="header-title" class="text-2xl font-bold text-gray-800">Line Approval</h1>
+            <div class="flex items-center gap-3 pl-2">
+                <p class="text-sm font-semibold text-gray-800">Super Admin</p>
+                <img src="https://i.pravatar.cc/150?img=11" class="w-10 h-10 rounded-full border border-gray-200">
+            </div>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-8 bg-background">
+            <div class="max-w-6xl mx-auto">
+
+                <!-- TAB 1: LIST -->
+                <div id="tab-line-approval-list" class="tab-content active fade-in">
+
+                    <!-- REVISI: Notes Brief UI/UX Section -->
+                    <div
+                        class="bg-primary/5 border border-primary/20 rounded-2xl p-6 mb-8 flex justify-between items-center shadow-sm">
+                        <div class="flex items-center gap-5">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center text-xl shadow-md">
+                                <i class="fas fa-pencil-ruler"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary-dark">Brief UI/UX & Konsep</h3>
+                                <p class="text-sm text-gray-600">Pelajari alur kerja dan konsep high-level line approval
+                                    di sini.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="switchTab('line-approval-flowchart')"
+                                class="bg-white border border-primary/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all flex items-center gap-2 shadow-sm">
+                                <i class="fas fa-project-diagram"></i> Lihat User Flow
+                            </button>
+                            <button onclick="openConceptModal()"
+                                class="bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-dark transition-all flex items-center gap-2 shadow-md">
+                                <i class="fas fa-lightbulb"></i> High Level Concept
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                            <h2 class="text-lg font-bold text-gray-800">Daftar Konfigurasi Menu</h2>
+                            <select id="filter-modul" onchange="filterByModul()"
+                                class="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm text-gray-600 focus:outline-none">
+                                <option value="all">Semua Modul</option>
+                                <option value="SKU Management">SKU Management</option>
+                                <option value="Master Data">Master Data</option>
+                                <option value="Procurement">Procurement</option>
+                            </select>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="bg-gray-50/50 text-gray-500 text-xs uppercase tracking-wider">
+                                        <th class="py-3 px-5">Nama Menu</th>
+                                        <th class="py-3 px-5">Modul</th>
+                                        <th class="py-3 px-5">Konfigurasi Approval (Aksi: Level)</th>
+                                        <th class="py-3 px-5">Status</th>
+                                        <th class="py-3 px-5 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="table-body" class="text-sm divide-y divide-gray-50">
+                                    <tr data-modul="SKU Management">
+                                        <td class="py-4 px-5 font-semibold">SKU Group</td>
+                                        <td class="py-4 px-5">SKU Management</td>
+                                        <td class="py-4 px-5">
+                                            <div class="flex flex-wrap gap-2">
+                                                <span
+                                                    class="text-xs bg-gray-50 border border-gray-200 px-2 py-1 rounded text-gray-600"><b>Create:</b>
+                                                    3 Lvl</span>
+                                                <span
+                                                    class="text-xs bg-gray-50 border border-gray-200 px-2 py-1 rounded text-gray-600"><b>Update:</b>
+                                                    2 Lvl</span>
+                                                <span
+                                                    class="text-xs bg-gray-50 border border-gray-200 px-2 py-1 rounded text-gray-600"><b>Delete:</b>
+                                                    3 Lvl</span>
+                                            </div>
+                                        </td>
+                                        <td class="py-4 px-5 text-green-600 font-semibold">Terkonfigurasi</td>
+                                        <td class="py-4 px-5 text-right">
+                                            <button onclick="editConfig('SKU Group', 'SKU Management')"
+                                                class="bg-white border border-primary text-primary px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-all shadow-sm">Konfigurasi</button>
+                                        </td>
+                                    </tr>
+                                    <tr data-modul="Procurement">
+                                        <td class="py-4 px-5 font-semibold">Supplier Data</td>
+                                        <td class="py-4 px-5">Procurement</td>
+                                        <td class="py-4 px-5 text-gray-400 italic">Belum ada aksi yang dimapping</td>
+                                        <td class="py-4 px-5 text-gray-400">Belum Config</td>
+                                        <td class="py-4 px-5 text-right">
+                                            <button onclick="newConfig('Supplier Data', 'Procurement')"
+                                                class="bg-white border border-primary text-primary px-4 py-1.5 rounded-lg text-xs font-bold hover:bg-primary hover:text-white transition-all shadow-sm">Konfigurasi</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TAB 2: DETAIL -->
+                <div id="tab-line-approval-detail" class="tab-content fade-in">
+                    <button onclick="switchTab('line-approval-list')"
+                        class="mb-5 text-sm font-semibold text-gray-500 hover:text-primary transition-colors"><i
+                            class="fas fa-arrow-left"></i> Kembali ke Daftar</button>
+                    <div
+                        class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 flex justify-between items-center">
+                        <div>
+                            <div class="flex items-center gap-3 mb-1">
+                                <h2 id="detail-menu-name" class="text-xl font-bold">Nama Menu</h2><span
+                                    id="detail-menu-status"
+                                    class="px-2.5 py-0.5 rounded-md text-xs font-semibold"></span>
+                            </div>
+                            <p class="text-sm text-gray-500">Modul: <span id="detail-menu-module"
+                                    class="font-medium"></span></p>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="openSyncModal()"
+                                class="bg-white border border-gray-200 text-gray-700 px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-50 shadow-sm">Samakan
+                                Semua Aksi</button>
+                            <button onclick="showSaveConfirmation()"
+                                class="bg-primary text-white px-5 py-2 rounded-lg font-semibold text-sm hover:bg-primary-dark shadow-sm">Simpan
+                                Konfigurasi</button>
+                        </div>
+                    </div>
+                    <div id="actions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+                </div>
+
+                <!-- METRICS IN CHARGE: LIST -->
+                <div id="tab-metrics-list" class="tab-content fade-in">
+
+                    <!-- Brief UI/UX Section for Metrics -->
+                    <div
+                        class="bg-primary/5 border border-primary/20 rounded-2xl p-6 mb-8 flex justify-between items-center shadow-sm">
+                        <div class="flex items-center gap-5">
+                            <div
+                                class="w-12 h-12 rounded-xl bg-primary text-white flex items-center justify-center text-xl shadow-md">
+                                <i class="fas fa-pencil-ruler"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-bold text-primary-dark">Brief UI/UX & Konsep</h3>
+                                <p class="text-sm text-gray-600">Pelajari alur kerja dan konsep high-level mapping
+                                    metrics
+                                    di sini.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-3">
+                            <button onclick="switchTab('metrics-flowchart')"
+                                class="bg-white border border-primary/30 text-primary px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary hover:text-white transition-all flex items-center gap-2 shadow-sm">
+                                <i class="fas fa-project-diagram"></i> Lihat User Flow
+                            </button>
+                            <button onclick="openMetricsConceptModal()"
+                                class="bg-primary text-white px-4 py-2.5 rounded-xl text-sm font-bold hover:bg-primary-dark transition-all flex items-center gap-2 shadow-md">
+                                <i class="fas fa-lightbulb"></i> High Level Concept
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                        <div class="p-5 border-b border-gray-100 flex justify-between items-center">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">Metrics Mapping per Role</h2>
+                                <p class="text-sm text-gray-500 mt-1">Pilih role user untuk mengatur mapping metrik in
+                                    charge yang aktif.</p>
+                            </div>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left">
+                                <thead>
+                                    <tr class="bg-gray-50/50 text-gray-500 text-xs uppercase tracking-wider">
+                                        <th class="py-3 px-5">Role User</th>
+                                        <th class="py-3 px-5">Status Mapping</th>
+                                        <th class="py-3 px-5 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="metrics-table-body" class="text-sm divide-y divide-gray-50">
+                                    <!-- Populated via JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- METRICS IN CHARGE: DETAIL -->
+                <div id="tab-metrics-detail" class="tab-content fade-in">
+                    <div class="flex justify-between items-start mb-6">
+                        <div>
+                            <button onclick="switchTab('metrics-list')"
+                                class="mb-5 text-sm font-semibold text-gray-500 hover:text-primary transition-colors"><i
+                                    class="fas fa-arrow-left"></i> Kembali ke Daftar Role</button>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="w-12 h-12 bg-primary/10 text-primary rounded-xl flex items-center justify-center text-xl">
+                                    <i class="fas fa-database"></i>
+                                </div>
+                                <div>
+                                    <h2 id="metrics-detail-title" class="text-2xl font-bold text-gray-800">Role: Manager
+                                    </h2>
+                                    <p class="text-sm text-gray-500">Aktivasi Metrics in Charge (Parent & Child)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="pt-10">
+                            <button onclick="showSaveConfirmation()"
+                                class="bg-primary text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-primary-dark transition-all flex items-center gap-2">
+                                <i class="fas fa-save"></i> Simpan Mapping Metrics
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="metrics-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 pb-10">
+                        <!-- Metrics from DB rendered here -->
+                    </div>
+                </div>
+
+                <!-- METRICS IN CHARGE: FLOWCHART -->
+                <div id="tab-metrics-flowchart" class="tab-content fade-in">
+                    <button onclick="switchTab('metrics-list')"
+                        class="mb-5 text-sm font-semibold text-gray-500 hover:text-primary transition-colors"><i
+                            class="fas fa-arrow-left"></i> Kembali ke Daftar Role</button>
+
+                    <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden relative">
+                        <!-- Legend Floating Card (Fixed relative to the tab container) -->
+                        <div
+                            class="absolute bottom-6 left-6 z-50 bg-white/95 backdrop-blur-sm p-5 rounded-2xl border border-gray-200 shadow-xl w-52 pointer-events-none">
+                            <p
+                                class="font-black text-[10px] text-gray-400 uppercase tracking-widest mb-3 border-b border-gray-100 pb-2">
+                                Keterangan Alur</p>
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3.5 h-3.5 rounded-full bg-[#dcfce7] border border-[#22c55e]"></div>
+                                    Titik Mulai
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3.5 h-3.5 rounded-full bg-[#fee2e2] border border-[#ef4444]"></div>
+                                    Titik Akhir
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3.5 h-3.5 rounded bg-[#f3e8ff] border border-[#d8b4fe]"></div> Aksi
+                                    User
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3.5 h-3.5 rounded bg-[#f1f5f9] border border-[#cbd5e1]"></div> Proses
+                                    Sistem
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3 h-3 rotate-45 bg-[#ffedd5] border border-[#fdba74] ml-0.5"></div>
+                                    Keputusan
+                                </div>
+                                <div class="flex items-center gap-3 text-[11px] font-bold text-gray-700">
+                                    <div class="w-3.5 h-3.5 rounded border border-pink-400 border-dashed bg-pink-50">
+                                    </div> Note / Catatan
+                                </div>
+                            </div>
+                        </div>
+
+                        <div
+                            class="p-5 border-b border-gray-100 bg-gray-50 flex flex-wrap gap-4 items-center justify-between">
+                            <div>
+                                <h2 class="text-lg font-bold text-gray-800">User Flow Mapping Metrics in Charge</h2>
+                                <p class="text-xs text-gray-500 mt-1">Gunakan scroll/pan untuk navigasi alur mapping.
+                                </p>
+                            </div>
+                            <div class="flex items-center gap-4">
+                                <div
+                                    class="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                    <button onclick="zoomOut()"
+                                        class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 border-r border-gray-200"><i
+                                            class="fas fa-minus text-xs"></i></button>
+                                    <span id="zoom-level-metrics"
+                                        class="px-3 py-1.5 text-xs font-semibold text-gray-700 w-14 text-center">100%</span>
+                                    <button onclick="zoomIn()"
+                                        class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 border-l border-gray-200"><i
+                                            class="fas fa-plus text-xs"></i></button>
+                                    <button onclick="resetZoom()"
+                                        class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 border-l border-gray-200"><i
+                                            class="fas fa-compress text-xs"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="viewport" id="viewport-metrics"
+                            style="background-image: radial-gradient(#cbd5e1 1px, transparent 1px); background-size: 40px 40px;">
+                            <div id="metrics-flow-canvas"
+                                style="transform-origin: 0 0; transition: transform 0.15s ease-out; padding: 500px; position: relative; min-width: 4000px; min-height: 2000px;">
+                                <svg class="svg-layer" id="svg-layer-metrics"
+                                    style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 5;">
+                                    <defs>
+                                        <marker id="arrow-metrics" viewBox="0 -5 10 10" refX="8" refY="0"
+                                            markerWidth="6" markerHeight="6" orient="auto">
+                                            <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
+                                        </marker>
+                                    </defs>
+                                </svg>
+
+                                <div id="m-node-start" class="node n-start"
+                                    style="position: absolute; left: 500px; top: 500px;">Start</div>
+                                <div id="m-node-menu" class="node n-purple"
+                                    style="position: absolute; left: 660px; top: 500px;">Akses Menu<br>Pengaturan</div>
+                                <div id="m-node-tab" class="node n-purple"
+                                    style="position: absolute; left: 900px; top: 500px;">Pilih Tab<br>Metrics in Charge
+                                </div>
+                                <div id="m-node-render" class="node n-gray"
+                                    style="position: absolute; left: 1140px; top: 500px;">Render Daftar<br>Role User
+                                </div>
+                                <div id="m-node-map" class="node n-purple"
+                                    style="position: absolute; left: 1380px; top: 500px;">Klik Mapping<br>Metrics</div>
+
+                                <div id="m-node-check" class="node n-decision"
+                                    style="position: absolute; left: 1620px; top: 485px;">
+                                    <span>Sudah Ada<br>Mapping?</span>
+                                </div>
+
+                                <div id="m-node-form-filled" class="node n-gray"
+                                    style="position: absolute; left: 1860px; top: 420px;">Render Form<br>(Mapping
+                                    Terisi)</div>
+                                <div id="m-node-form-empty" class="node n-gray"
+                                    style="position: absolute; left: 1860px; top: 580px;">Render Form<br>(Mapping
+                                    Kosong)</div>
+
+                                <div id="m-node-select" class="node n-purple"
+                                    style="position: absolute; left: 2100px; top: 500px;">Pilih Metrics<br>yang
+                                    Diberikan</div>
+                                <div id="m-node-save" class="node n-purple"
+                                    style="position: absolute; left: 2340px; top: 500px;">Klik Simpan</div>
+
+                                <div id="m-node-confirm" class="node n-decision"
+                                    style="position: absolute; left: 2580px; top: 485px;">
+                                    <span>Konfirmasi<br>Simpan?</span>
+                                </div>
+
+                                <div id="m-node-success" class="node n-gray"
+                                    style="position: absolute; left: 2820px; top: 500px;">Tampilkan Form<br>Sukses</div>
+                                <div id="m-node-impl" class="node n-gray"
+                                    style="position: absolute; left: 3060px; top: 500px;">Implementasi<br>Perubahan
+                                    Metrics</div>
+                                <div id="m-node-end" class="node n-end"
+                                    style="position: absolute; left: 3300px; top: 500px;">End</div>
+
+                                <div id="m-node-back" class="node n-purple"
+                                    style="position: absolute; left: 2570px; top: 700px;">Kembali ke Form</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 3: FLOWCHART -->
+            <div id="tab-line-approval-flowchart" class="tab-content fade-in">
+                <button onclick="switchTab('line-approval-list')"
+                    class="mb-5 text-sm font-semibold text-gray-500 hover:text-primary transition-colors"><i
+                        class="fas fa-arrow-left"></i> Kembali ke Daftar</button>
+
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+                    <!-- Controls -->
+                    <div
+                        class="p-5 border-b border-gray-100 bg-gray-50 flex flex-wrap gap-4 items-center justify-between">
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-800">User Flow Konfigurasi Line Approval</h2>
+                            <p class="text-xs text-gray-500 mt-1">Interaktif: Gunakan scroll (atau klik + geser)
+                                untuk menavigasi diagram.</p>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div
+                                class="flex items-center bg-white border border-gray-200 rounded-lg shadow-sm overflow-hidden">
+                                <button onclick="zoomOut()"
+                                    class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors border-r border-gray-200"
+                                    title="Zoom Out"><i class="fas fa-minus text-xs"></i></button>
+                                <span id="zoom-level"
+                                    class="px-3 py-1.5 text-xs font-semibold text-gray-700 w-14 text-center">100%</span>
+                                <button onclick="zoomIn()"
+                                    class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors border-l border-gray-200"
+                                    title="Zoom In"><i class="fas fa-plus text-xs"></i></button>
+                                <button onclick="resetZoom()"
+                                    class="px-3 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-primary transition-colors border-l border-gray-200"
+                                    title="Reset Zoom"><i class="fas fa-compress text-xs"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flowchart Viewport -->
+                    <div class="viewport" id="viewport">
+                        <div id="flowchart-wrapper">
+                            <div class="flex items-start">
+
+                                <!-- 1. START SECTION -->
+                                <div class="flex flex-col gap-12 relative mr-6 mt-16">
+                                    <div class="absolute -top-20 -left-6 node n-note">Konfigurasi Line Approval
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="node n-start">Start</div>
+                                        <div class="arrow-r w-12"></div>
+                                    </div>
+                                    <div class="flex items-center gap-4">
+                                        <div class="node n-start-alt">Alt Start</div>
+                                        <div class="line-h w-12"></div>
+                                    </div>
+                                    <div class="absolute right-0 top-[30px] line-v h-[108px] -z-10"></div>
+                                </div>
+
+                                <!-- 2. MAIN HORIZONTAL SEQUENCE -->
+                                <div class="flex items-center mt-16">
+                                    <div class="node n-purple">Buka Menu Pengaturan</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-gray">Pilih Menu dari Tabel</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-purple">Klik Konfigurasi</div>
+                                    <div class="arrow-r min-w-[60px]"></div>
+
+                                    <!-- 3. DECISION POINT -->
+                                    <div class="flex flex-col items-center relative">
+                                        <div class="node n-decision shadow-md"><span>Pilih Metode</span></div>
+                                        <!-- PATH B: Manual (DOWN BRANCH) -->
+                                        <div class="absolute top-[80px] flex flex-col items-center z-0">
+                                            <div class="arrow-d h-[60px]"></div>
+                                            <span
+                                                class="absolute top-4 bg-white px-2 text-[10px] font-bold text-orange-600">Manual
+                                                (Per Aksi)</span>
+                                            <div class="node n-gray mt-2">Pilih Aksi Tertentu<br>(Create/Update)
+                                            </div>
+                                            <div class="arrow-d h-[30px]"></div>
+                                            <div class="node n-purple mt-2">Aktifkan Toggle Approval</div>
+                                            <div class="arrow-d h-[30px]"></div>
+                                            <div class="node n-gray mt-2">Pilih Role Approver</div>
+                                            <div class="arrow-d h-[30px]"></div>
+                                            <div class="node n-purple mt-2">Ulangi Untuk Aksi Lain</div>
+                                            <div class="line-v h-[40px] mt-2"></div>
+                                            <div class="absolute bottom-0 left-1/2 w-[670px] line-h"></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- PATH A: Sync All (STRAIGHT BRANCH) -->
+                                    <div class="arrow-r min-w-[80px] relative">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white px-2 text-[10px] font-bold text-blue-600 whitespace-nowrap">Samakan
+                                            Semua Aksi</span>
+                                    </div>
+
+                                    <div class="node n-gray">Klik Tombol<br>"Samakan Aksi"</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-purple">Modal Global Terbuka</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-gray">Input Level & Role Global</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-purple">Klik Terapkan</div>
+                                    <div class="arrow-r"></div>
+                                    <div class="node n-gray">Otomatis Ter-Mapping</div>
+                                    <div class="arrow-r min-w-[80px]"></div>
+
+                                    <!-- 4. MERGE POINT & SAVE -->
+                                    <div class="flex flex-col items-center relative">
+                                        <!-- Up Arrow from Manual Branch -->
+                                        <div class="absolute -bottom-[80px] h-[80px] flex items-end">
+                                            <div class="arrow-u h-full"></div>
+                                        </div>
+                                        <div class="node n-purple">Review & Klik Simpan</div>
+                                    </div>
+                                    <div class="arrow-r"></div>
+
+                                    <!-- 5. FINAL DECISION -->
+                                    <div class="flex flex-col items-center relative">
+                                        <div class="node n-decision shadow-md"><span>Konfirmasi?</span></div>
+                                        <!-- NO Path -->
+                                        <div class="absolute top-[80px] flex flex-col items-center">
+                                            <div class="arrow-d h-[40px]"></div>
+                                            <span
+                                                class="absolute top-2 bg-white px-1 text-[10px] font-bold text-red-500">Batal</span>
+                                            <div class="node n-gray mt-2">Kembali ke Form</div>
+                                        </div>
+                                    </div>
+
+                                    <!-- YES Path to END -->
+                                    <div class="arrow-r min-w-[80px] relative">
+                                        <span
+                                            class="absolute -top-6 left-1/2 -translate-x-1/2 bg-white px-2 text-[10px] font-bold text-green-600">Ya,
+                                            Simpan</span>
+                                    </div>
+                                    <div class="node n-end shadow-lg">Berhasil Disimpan</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div
+                        class="bg-gray-50 text-gray-600 p-4 border-t border-gray-100 flex justify-center gap-8 text-xs font-medium">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full bg-[#dcfce7] border border-[#22c55e]"></div> Start /
+                            End
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded bg-[#f3e8ff] border border-[#d8b4fe]"></div> Proses Sistem
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded bg-[#f1f5f9] border border-[#cbd5e1]"></div> Aksi User
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 bg-[#ffedd5] border border-[#fdba74] rotate-45"></div> Keputusan
+                            (Decision)
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </main>
+
+    <!-- Modal Concept Global -->
+    <div id="concept-modal" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-8 fade-in overflow-hidden relative">
+            <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+            <button onclick="closeConceptModal()"
+                class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <i class="fas fa-lightbulb text-primary"></i> High Level Concept
+            </h3>
+
+            <div class="space-y-6 text-sm text-gray-600 leading-relaxed">
+                <section>
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase tracking-wider text-xs">Apa itu Line Approval?
+                    </h4>
+                    <p>Mekanisme kontrol di mana setiap perubahan data (Create, Update, Delete) tidak langsung
+                        dieksekusi ke database, melainkan harus melewati satu atau lebih tahap persetujuan (approval)
+                        oleh role yang telah ditentukan secara sekuensial.</p>
+                </section>
+
+                <section class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-3 text-sm flex items-center gap-2">
+                        <i class="fas fa-info-circle text-blue-500"></i> Contoh Case: Penghapusan SKU Group
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                1</div>
+                            <p><b>Submitter (Staff):</b> Klik tombol Delete pada SKU Group A. Status berubah menjadi
+                                <code>PENDING_L1</code>.
+                            </p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                2</div>
+                            <p><b>Level 1 (Supervisor):</b> Menerima notifikasi email. Memeriksa alasan delete &
+                                menyetujui. Status: <code>PENDING_L2</code>.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                3</div>
+                            <p><b>Level 2 (Manager):</b> Tahap final approval. Begitu Manager menyetujui, sistem secara
+                                otomatis mengeksekusi penghapusan di database. Status: <code>FINAL_APPROVED</code>.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase tracking-wider text-xs">Aturan Utama</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><b>Sekuensial:</b> Level 2 tidak bisa approve jika Level 1 belum selesai.</li>
+                        <li><b>Rejection:</b> Jika Level 2 menolak, status mundur ke Level 1 untuk dikaji ulang (bukan
+                            langsung batal).</li>
+                        <li><b>Dinamis:</b> Approver difilter berdasarkan scope perusahaan (Metrics in Charge).</li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <button onclick="closeConceptModal()"
+                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl transition-all">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Global Config -->
+    <div id="sync-modal" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-lg p-8 fade-in">
+            <h3 class="text-xl font-bold mb-2">Konfigurasi Global</h3>
+            <p class="text-gray-500 text-sm mb-6">Tentukan level yang akan diterapkan ke SEMUA aksi.</p>
+            <div id="sync-levels-container" class="space-y-3 mb-6 max-h-64 overflow-y-auto"></div>
+            <button onclick="addSyncLevel()"
+                class="w-full mb-6 border border-dashed border-gray-300 text-gray-500 font-semibold text-sm rounded-xl py-3 hover:text-primary hover:border-primary transition-all">+
+                Tambah Level Global</button>
+            <div class="flex gap-3">
+                <button onclick="closeSyncModal()"
+                    class="flex-1 bg-gray-100 py-3 rounded-xl font-semibold">Batal</button>
+                <button onclick="applySyncConfig()"
+                    class="flex-1 bg-primary text-white py-3 rounded-xl font-semibold shadow-sm">Terapkan</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Simpan -->
+    <div id="save-modal" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden">
+        <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 fade-in text-center">
+            <div id="modal-confirm-state">
+                <div
+                    class="w-16 h-16 bg-orange-100 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Simpan Perubahan?</h3>
+                <div class="flex gap-3 mt-8">
+                    <button onclick="closeSaveModal()" class="flex-1 bg-gray-100 py-3 rounded-xl">Batal</button>
+                    <button onclick="processSave()" class="flex-1 bg-primary text-white py-3 rounded-xl">Ya,
+                        Simpan</button>
+                </div>
+            </div>
+            <div id="modal-success-state" class="hidden">
+                <div
+                    class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="text-xl font-bold mb-2">Berhasil Disimpan</h3>
+                <button onclick="closeSaveModal(true)" class="w-full bg-primary text-white py-3 mt-8 rounded-xl">Kembali
+                    ke Daftar</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentConfig = { menuName: '', module: '', status: '', actions: {} };
+        let syncLevels = [];
+        const roles = ['Staff Supervisor', 'Manager', 'General Manager', 'Director'];
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabId).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('bg-white', 'text-primary', 'shadow-sm'));
+            document.getElementById('nav-indicator').style.display = 'none';
+
+            if (tabId.includes('line-approval')) {
+                document.getElementById('nav-line-approval').classList.add('bg-white', 'text-primary', 'shadow-sm');
+                document.getElementById('nav-indicator').style.display = 'block';
+                document.getElementById('header-title').textContent = tabId === 'line-approval-flowchart' ? 'User Flow' : 'Line Approval';
+                if (tabId === 'line-approval-flowchart' && typeof resetZoom === 'function') resetZoom();
+            } else if (tabId.includes('metrics')) {
+                document.getElementById('nav-metrics').classList.add('bg-white', 'text-primary', 'shadow-sm');
+                document.getElementById('header-title').textContent = tabId === 'metrics-flowchart' ? 'User Flow (Metrics)' : 'Metrics in Charge';
+                if (tabId === 'metrics-list') renderMetricsList();
+                if (tabId === 'metrics-flowchart') {
+                    if (typeof resetZoom === 'function') resetZoom();
+                    setTimeout(() => {
+                        initDraggableMetrics();
+                        updateConnectionsMetrics();
+                    }, 50);
+                }
+            }
+        }
+
+        function openMetricsConceptModal() { document.getElementById('metrics-concept-modal').classList.remove('hidden'); }
+        function closeMetricsConceptModal() { document.getElementById('metrics-concept-modal').classList.add('hidden'); }
+
+        function filterByModul() {
+            const val = document.getElementById('filter-modul').value;
+            document.querySelectorAll('#table-body tr').forEach(row => {
+                row.style.display = (val === 'all' || row.dataset.modul === val) ? '' : 'none';
+            });
+        }
+
+        function newConfig(name, mod) {
+            currentConfig = {
+                menuName: name, module: mod, status: 'Belum Dikonfigurasi',
+                actions: { 'CREATE': { active: false, levels: [] }, 'UPDATE': { active: false, levels: [] }, 'DELETE': { active: false, levels: [] }, 'OTHER': { active: false, levels: [] } }
+            };
+            openDetail();
+        }
+
+        function editConfig(name, mod) {
+            currentConfig = {
+                menuName: name, module: mod, status: 'Terkonfigurasi',
+                actions: { 'CREATE': { active: true, levels: ['Staff Supervisor', 'Manager'] }, 'UPDATE': { active: true, levels: ['Staff Supervisor'] }, 'DELETE': { active: true, levels: ['General Manager'] } }
+            };
+            openDetail();
+        }
+
+        function openDetail() {
+            document.getElementById('detail-menu-name').textContent = currentConfig.menuName;
+            document.getElementById('detail-menu-module').textContent = currentConfig.module;
+            const statusEl = document.getElementById('detail-menu-status');
+            statusEl.textContent = currentConfig.status;
+            statusEl.className = currentConfig.status === 'Terkonfigurasi' ? 'bg-green-50 text-green-600 px-2 py-0.5 rounded text-xs' : 'bg-gray-100 text-gray-500 px-2 py-0.5 rounded text-xs';
+            renderActions();
+            switchTab('line-approval-detail');
+        }
+
+        function renderActions() {
+            const grid = document.getElementById('actions-grid'); grid.innerHTML = '';
+            Object.keys(currentConfig.actions).forEach(type => {
+                const action = currentConfig.actions[type];
+                const card = document.createElement('div');
+                card.className = `bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden ${!action.active ? 'opacity-60' : ''}`;
+                card.innerHTML = `
+                    <div class="border-b border-gray-100 p-5 bg-gray-50/50 flex justify-between items-center">
+                        <h3 class="font-bold">Aksi: ${type}</h3>
+                        <label class="relative inline-flex items-center cursor-pointer">
+                            <input type="checkbox" class="sr-only peer" ${action.active ? 'checked' : ''} onchange="toggleAction('${type}', this.checked)">
+                            <div class="w-11 h-6 bg-gray-200 rounded-full peer-checked:bg-primary after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-full"></div>
+                        </label>
+                    </div>
+                    <div class="p-5">
+                        ${action.active ? `
+                            <div class="space-y-3">
+                                ${action.levels.length === 0 ? '<p class="text-xs text-gray-400 italic text-center py-4">Pilih role untuk menambah level.</p>' : ''}
+                                ${action.levels.map((role, idx) => `
+                                    <div class="border border-gray-200 rounded-xl p-3 bg-gray-50/50 relative flex items-center gap-2">
+                                        <div class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold shrink-0">${idx + 1}</div>
+                                        <select onchange="updateRole('${type}', ${idx}, this.value)" class="flex-1 bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
+                                            <option value="">Pilih Role...</option>
+                                            ${roles.map(r => `<option ${r === role ? 'selected' : ''}>${r}</option>`).join('')}
+                                        </select>
+                                        <button onclick="removeLevel('${type}', ${idx})" class="text-red-400 px-1"><i class="far fa-trash-alt"></i></button>
+                                    </div>
+                                `).join('')}
+                            </div>
+                            <button onclick="addLevel('${type}')" class="w-full mt-4 border border-dashed border-gray-300 text-gray-500 font-semibold text-xs rounded-xl py-2 hover:text-primary">+ Tambah Level</button>
+                        ` : '<div class="text-center py-10 text-gray-400 text-xs">Approval Dinonaktifkan</div>'}
+                    </div>`;
+                grid.appendChild(card);
+            });
+        }
+
+        function toggleAction(type, active) { currentConfig.actions[type].active = active; currentConfig.actions[type].levels = []; renderActions(); }
+        function addLevel(type) { currentConfig.actions[type].levels.push(''); renderActions(); }
+        function removeLevel(type, idx) { currentConfig.actions[type].levels.splice(idx, 1); renderActions(); }
+        function updateRole(type, idx, val) { currentConfig.actions[type].levels[idx] = val; }
+
+        function openSyncModal() { syncLevels = []; renderSyncLevels(); document.getElementById('sync-modal').classList.remove('hidden'); }
+        function closeSyncModal() { document.getElementById('sync-modal').classList.add('hidden'); }
+
+        function openConceptModal() { document.getElementById('concept-modal').classList.remove('hidden'); }
+        function closeConceptModal() { document.getElementById('concept-modal').classList.add('hidden'); }
+
+        function renderSyncLevels() {
+            const container = document.getElementById('sync-levels-container');
+            container.innerHTML = syncLevels.length === 0 ? '<p class="text-center py-10 text-gray-400 text-sm">Tambah level global...</p>' : '';
+            syncLevels.forEach((role, idx) => {
+                const div = document.createElement('div');
+                div.className = 'border border-gray-200 rounded-xl p-3 bg-gray-50/50 flex gap-2 items-center mb-2';
+                div.innerHTML = `
+                    <div class="w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-xs font-bold">${idx + 1}</div>
+                    <select onchange="syncLevels[${idx}] = this.value" class="flex-1 bg-white border border-gray-200 rounded-lg px-2 py-1.5 text-sm">
+                        <option value="">Pilih Role...</option>
+                        ${roles.map(r => `<option ${r === role ? 'selected' : ''}>${r}</option>`).join('')}
+                    </select>
+                    <button onclick="syncLevels.splice(${idx}, 1); renderSyncLevels();" class="text-red-400 px-2"><i class="far fa-trash-alt"></i></button>`;
+                container.appendChild(div);
+            });
+        }
+        function addSyncLevel() { syncLevels.push(''); renderSyncLevels(); }
+        function applySyncConfig() {
+            Object.keys(currentConfig.actions).forEach(type => {
+                currentConfig.actions[type].active = true;
+                currentConfig.actions[type].levels = [...syncLevels];
+            });
+            renderActions(); closeSyncModal();
+        }
+
+        function showSaveConfirmation() { document.getElementById('save-modal').classList.remove('hidden'); document.getElementById('modal-confirm-state').classList.remove('hidden'); document.getElementById('modal-success-state').classList.add('hidden'); }
+        function closeSaveModal(redir = false) {
+            document.getElementById('save-modal').classList.add('hidden');
+            if (redir) {
+                const activeTab = document.querySelector('.tab-content.active').id;
+                if (activeTab.includes('detail')) {
+                    // Fix: switchTab expects ID without 'tab-' prefix
+                    const backTab = activeTab.replace('-detail', '-list').replace('tab-', '');
+                    switchTab(backTab);
+                }
+            }
+        }
+
+        // METRICS CONCEPT LOGIC
+        const dbMetricsHierarchical = [
+            {
+                platform: 'Master',
+                menus: [
+                    {
+                        name: 'Menu SKU',
+                        groups: [
+                            {
+                                name: 'Akses Laporan',
+                                items: [
+                                    { id: 'm1_p1', name: 'Laporan Perusahaan A' },
+                                    { id: 'm1_p2', name: 'Laporan Perusahaan B' },
+                                    { id: 'm1_p3', name: 'Laporan Perusahaan (Kondisi 1)' },
+                                    { id: 'm1_p4', name: 'Perusahaan 4' },
+                                    { id: 'm1_p5', name: 'Perusahaan 5' },
+                                    { id: 'm1_p6', name: 'Perusahaan 6' }
+                                ]
+                            },
+                            {
+                                name: 'Akses Riwayat',
+                                items: [
+                                    { id: 'm3', name: 'Lihat Riwayat' },
+                                    { id: 'm4', name: 'Audit Log' }
+                                ]
+                            },
+                            {
+                                name: 'Role Metrics',
+                                items: [
+                                    { id: 'rm1', name: 'Metric Role Admin' },
+                                    { id: 'rm2', name: 'Metric Role Manager' },
+                                    { id: 'rm3', name: 'Metric Role Supervisor' }
+                                ]
+                            }
+                        ]
+                    },
+                    {
+                        name: 'Menu Master Data',
+                        groups: [
+                            {
+                                name: 'Akses Data Dasar',
+                                items: [
+                                    { id: 'md1', name: 'Data Supplier' },
+                                    { id: 'md2', name: 'Data Customer' }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                platform: 'Procurement',
+                menus: [
+                    {
+                        name: 'Menu Supplier',
+                        groups: [
+                            {
+                                name: 'Mapping Vendor',
+                                items: [
+                                    { id: 'v1', name: 'Vendor Lokal' },
+                                    { id: 'v2', name: 'Vendor Import' }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        function renderMetricsList() {
+            const body = document.getElementById('metrics-table-body');
+            if (!window.metricRoleState) window.metricRoleState = {
+                'Manager': ['m1_p1', 'm1_p2', 'm3'],
+                'Director': ['m1_p1', 'm1_p2', 'm1_p3', 'm2_p1', 'm3', 'm4']
+            };
+
+            body.innerHTML = roles.map(role => {
+                const activeCount = window.metricRoleState[role] ? window.metricRoleState[role].length : 0;
+                return `
+                <tr class="hover:bg-gray-50 transition-colors">
+                    <td class="py-4 px-5 font-semibold text-gray-800">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 text-xs"><i class="fas fa-user-shield"></i></div>
+                            ${role}
+                        </div>
+                    </td>
+                    <td class="py-4 px-5">
+                        <span class="px-2.5 py-1 rounded-full ${activeCount > 0 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-400'} text-[10px] font-bold uppercase border ${activeCount > 0 ? 'border-green-100' : 'border-gray-100'}">
+                            ${activeCount} Metrics Active
+                        </span>
+                    </td>
+                    <td class="py-4 px-5 text-right">
+                        <button onclick="openMetricsDetail('${role}')" class="text-primary font-bold text-xs hover:underline flex items-center gap-1 ml-auto">
+                            <i class="fas fa-cog"></i> Mapping Metrics
+                        </button>
+                    </td>
+                </tr>
+            `}).join('');
+        }
+
+        function openMetricsDetail(roleName) {
+            document.getElementById('metrics-detail-title').textContent = `Role: ${roleName}`;
+            const container = document.getElementById('metrics-container');
+
+            if (!window.metricRoleState) window.metricRoleState = {};
+            if (!window.metricRoleState[roleName]) window.metricRoleState[roleName] = [];
+
+            // Simpan ke temp agar tidak langsung merubah list sebelum disubmit
+            window.currentEditingRole = roleName;
+            window.tempMetricState = [...window.metricRoleState[roleName]];
+            window.platformState = {}; // Reset platform expand/collapse state on open
+
+            renderMetricsForm();
+            switchTab('metrics-detail');
+        }
+
+        function togglePlatform(pIdx) {
+            window.platformState[pIdx] = window.platformState[pIdx] === false ? true : false;
+            renderMetricsForm();
+        }
+
+        function renderMetricsForm() {
+            const container = document.getElementById('metrics-container');
+            if (!window.platformState) window.platformState = {};
+
+            container.innerHTML = dbMetricsHierarchical.map((platformData, pIdx) => {
+                const isExpanded = window.platformState[pIdx] !== false;
+                return `
+                <div class="col-span-full mt-6 mb-2">
+                    <button onclick="togglePlatform(${pIdx})" class="w-full flex items-center justify-between group p-2 rounded-xl hover:bg-gray-50 transition-all">
+                        <div class="flex items-center gap-3">
+                            <div class="h-8 w-1.5 bg-primary rounded-full transition-all group-hover:scale-y-110"></div>
+                            <h3 class="text-lg font-black text-gray-800 uppercase tracking-tight flex items-center gap-3">
+                                Platform: ${platformData.platform}
+                                <span class="text-[10px] font-bold bg-gray-100 text-gray-500 px-2 py-0.5 rounded-md uppercase tracking-widest">${platformData.menus.length} Menus</span>
+                            </h3>
+                        </div>
+                        <div class="flex items-center gap-2 text-gray-400 font-bold text-xs uppercase tracking-widest">
+                            <span>${isExpanded ? 'Collapse' : 'Expand'}</span>
+                            <div class="w-8 h-8 rounded-full bg-white border border-gray-100 flex items-center justify-center shadow-sm group-hover:border-primary group-hover:text-primary transition-all">
+                                <i class="fas fa-chevron-${isExpanded ? 'up' : 'down'}"></i>
+                            </div>
+                        </div>
+                    </button>
+                </div>
+                ${isExpanded ? platformData.menus.map((menu, mIdx) => `
+                    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden flex flex-col h-full hover:shadow-md transition-shadow fade-in">
+                        <div class="p-4 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
+                            <h4 class="font-bold text-gray-700 flex items-center gap-2">
+                                <i class="fas fa-folder-open text-primary text-xs"></i> ${menu.name}
+                            </h4>
+                            <span class="text-[10px] bg-white px-2 py-0.5 rounded-full border border-gray-200 text-gray-400 font-bold">${platformData.platform}</span>
+                        </div>
+                        <div class="p-5 flex-1 space-y-8">
+                            ${menu.groups.map(group => `
+                                <div>
+                                    <p class="text-[11px] font-black text-gray-400 uppercase tracking-widest mb-4 flex items-center gap-2">
+                                        <span class="w-1.5 h-1.5 rounded-full bg-primary"></span> ${group.name}
+                                    </p>
+                                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                        ${group.items.map(item => {
+                    const isChecked = window.tempMetricState.includes(item.id) ? 'checked' : '';
+                    return `
+                                            <label class="flex items-center gap-3 p-3 rounded-xl border ${isChecked ? 'border-primary bg-primary/5' : 'border-gray-100 hover:bg-gray-50'} transition-all cursor-pointer group">
+                                                <input type="checkbox" 
+                                                       class="w-4 h-4 text-primary rounded border-gray-300 focus:ring-primary cursor-pointer"
+                                                       ${isChecked}
+                                                       onchange="toggleMetricForRole('${item.id}')">
+                                                <span class="text-xs font-bold ${isChecked ? 'text-primary' : 'text-gray-600'}">${item.name}</span>
+                                            </label>
+                                            `
+                }).join('')}
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('') : ''}
+            `;
+            }).join('');
+        }
+
+        function toggleMetricForRole(metricId) {
+            const idx = window.tempMetricState.indexOf(metricId);
+            if (idx > -1) {
+                window.tempMetricState.splice(idx, 1);
+            } else {
+                window.tempMetricState.push(metricId);
+            }
+            renderMetricsForm(); // Re-render local form to show active state
+        }
+
+        // Override processSave for Metrics
+        const originalProcessSave = processSave;
+        processSave = function () {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            if (activeTab === 'tab-metrics-detail') {
+                window.metricRoleState[window.currentEditingRole] = [...window.tempMetricState];
+                renderMetricsList();
+            }
+            originalProcessSave();
+        }
+
+        function showMetricDropdown(idx) {
+            document.querySelectorAll('[id^="dropdown-"]').forEach(d => d.classList.add('hidden'));
+            document.getElementById(`dropdown-${idx}`).classList.remove('hidden');
+        }
+
+        function filterMetricDropdown(idx, query) {
+            const list = document.getElementById(`dropdown-list-${idx}`);
+            if (!list) return;
+            const items = list.querySelectorAll('.dropdown-item');
+            items.forEach(item => {
+                const text = item.querySelector('span').textContent.toLowerCase();
+                item.style.display = text.includes(query.toLowerCase()) ? 'flex' : 'none';
+            });
+        }
+
+        function addRoleToMetric(idx, role) {
+            if (!window.metricState[idx].includes(role)) {
+                window.metricState[idx].push(role);
+                const roleId = role.replace(/\s/g, '');
+
+                // Add tag
+                document.getElementById(`tags-container-${idx}`).insertAdjacentHTML('beforeend', `
+                    <span id="tag-${idx}-${roleId}" class="inline-flex items-center gap-1.5 bg-primary/5 text-primary text-xs font-bold px-3 py-1.5 rounded-lg border border-primary/10 fade-in">
+                        ${role}
+                        <button onclick="event.stopPropagation(); removeRoleFromMetric(${idx}, '${role}')" class="hover:text-primary-dark"><i class="fas fa-times"></i></button>
+                    </span>
+                `);
+
+                // Update Dropdown Item
+                const ddItem = document.getElementById(`dd-item-${idx}-${roleId}`);
+                ddItem.classList.add('text-primary', 'font-bold', 'bg-primary/5');
+                ddItem.classList.remove('text-gray-700');
+                ddItem.querySelector('.icon-indicator').className = 'icon-indicator fas fa-check text-xs text-primary';
+
+                // Add Extra Options if DATA_DIMENSION
+                if (dbMetrics[idx].type === 'DATA_DIMENSION') {
+                    const extraWrap = document.getElementById(`extra-wrap-${idx}`);
+                    extraWrap.classList.remove('hidden');
+                    document.getElementById(`extra-container-${idx}`).insertAdjacentHTML('beforeend', `
+                        <div id="extra-role-${idx}-${roleId}" class="flex flex-col md:flex-row items-start md:items-center gap-4 bg-white p-3 rounded-xl border border-gray-200 shadow-sm fade-in">
+                            <div class="w-full md:w-1/4 flex items-center gap-3 pl-2 shrink-0">
+                                <div class="w-8 h-8 rounded-full bg-primary/10 text-primary flex items-center justify-center text-xs"><i class="fas fa-user-tie"></i></div>
+                                <span class="text-sm font-bold text-gray-800">${role}</span>
+                            </div>
+                            <div class="w-full md:w-3/4 flex flex-wrap gap-2">
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="peer sr-only">
+                                    <div class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 transition-all font-medium select-none">PT. Alpha</div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="peer sr-only">
+                                    <div class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 transition-all font-medium select-none">PT. Beta</div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="peer sr-only">
+                                    <div class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 transition-all font-medium select-none">PT. Charlie</div>
+                                </label>
+                                <label class="cursor-pointer">
+                                    <input type="checkbox" class="peer sr-only">
+                                    <div class="px-3 py-1.5 rounded-lg border border-gray-200 text-xs text-gray-500 peer-checked:bg-primary/10 peer-checked:text-primary peer-checked:border-primary/20 transition-all font-medium select-none">Global (Semua)</div>
+                                </label>
+                            </div>
+                        </div>
+                    `);
+                }
+
+                // Reset Search
+                const searchInput = document.getElementById(`search-input-${idx}`);
+                searchInput.value = '';
+                filterMetricDropdown(idx, '');
+                setTimeout(() => searchInput.focus(), 0);
+            }
+        }
+
+        function removeRoleFromMetric(idx, role) {
+            window.metricState[idx] = window.metricState[idx].filter(r => r !== role);
+            const roleId = role.replace(/\s/g, '');
+
+            // Remove Tag
+            const tag = document.getElementById(`tag-${idx}-${roleId}`);
+            if (tag) tag.remove();
+
+            // Update Dropdown Item
+            const ddItem = document.getElementById(`dd-item-${idx}-${roleId}`);
+            if (ddItem) {
+                ddItem.classList.remove('text-primary', 'font-bold', 'bg-primary/5');
+                ddItem.classList.add('text-gray-700');
+                ddItem.querySelector('.icon-indicator').className = 'icon-indicator fas fa-plus text-xs opacity-0 group-hover:opacity-100 text-gray-300';
+            }
+
+            // Remove Extra Option
+            const extraRole = document.getElementById(`extra-role-${idx}-${roleId}`);
+            if (extraRole) extraRole.remove();
+
+            // Hide Extra Wrap if Empty
+            if (window.metricState[idx].length === 0) {
+                const extraWrap = document.getElementById(`extra-wrap-${idx}`);
+                if (extraWrap) extraWrap.classList.add('hidden');
+            }
+        }
+
+        function filterByModul() {
+            const val = document.getElementById('filter-modul').value;
+            document.querySelectorAll('#table-body tr').forEach(row => {
+                row.style.display = (val === 'all' || row.dataset.modul === val) ? '' : 'none';
+            });
+        }
+        function processSave() {
+            const activeTab = document.querySelector('.tab-content.active').id;
+            if (activeTab.includes('metrics')) {
+                // Implementasi perubahan metrics
+                if (!window.metricRoleState) window.metricRoleState = {};
+                window.metricRoleState[window.currentEditingRole] = [...window.tempMetricState];
+                renderMetricsList();
+            } else {
+                // Mock save for Line Approval
+                currentConfig.status = 'Terkonfigurasi';
+            }
+
+            document.getElementById('modal-confirm-state').classList.add('hidden');
+            document.getElementById('modal-success-state').classList.remove('hidden');
+        }
+
+        // Flowchart Zoom & Pan Script
+        let scale = 1;
+        const MIN_SCALE = 0.3, MAX_SCALE = 2, STEP = 0.1;
+        const wrapper = document.getElementById('flowchart-wrapper');
+        const zoomText = document.getElementById('zoom-level');
+        const viewport = document.getElementById('viewport');
+
+        function updateZoom() {
+            if (!wrapper) return;
+            const activeTab = document.querySelector('.tab-content.active').id;
+            const targetWrapper = activeTab === 'tab-metrics-flowchart' ? document.getElementById('metrics-flow-canvas') : wrapper;
+            const targetZoomText = activeTab === 'tab-metrics-flowchart' ? document.getElementById('zoom-level-metrics') : zoomText;
+
+            if (targetWrapper) targetWrapper.style.transform = `scale(${scale})`;
+            if (targetZoomText) targetZoomText.textContent = `${Math.round(scale * 100)}%`;
+        }
+        function zoomIn() { if (scale < MAX_SCALE) { scale += STEP; updateZoom(); } }
+        function zoomOut() { if (scale > MIN_SCALE) { scale -= STEP; updateZoom(); } }
+        function resetZoom() {
+            scale = 1; updateZoom();
+            const activeTab = document.querySelector('.tab-content.active').id;
+            const targetViewport = activeTab === 'tab-metrics-flowchart' ? document.getElementById('viewport-metrics') : viewport;
+            if (targetViewport) { targetViewport.scrollLeft = 0; targetViewport.scrollTop = 0; }
+        }
+
+        if (viewport) {
+            viewport.addEventListener('wheel', function (e) {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    if (e.deltaY > 0) zoomOut(); else zoomIn();
+                }
+            });
+
+            let isDragging = false;
+            let startX, startY, scrollLeft, scrollTop;
+
+            viewport.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                startX = e.pageX - viewport.offsetLeft;
+                startY = e.pageY - viewport.offsetTop;
+                scrollLeft = viewport.scrollLeft;
+                scrollTop = viewport.scrollTop;
+            });
+
+            viewport.addEventListener('mouseleave', () => { isDragging = false; });
+            viewport.addEventListener('mouseup', () => { isDragging = false; });
+
+            viewport.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - viewport.offsetLeft;
+                const y = e.pageY - viewport.offsetTop;
+                const walkX = (x - startX) * 1.5;
+                const walkY = (y - startY) * 1.5;
+                viewport.scrollLeft = scrollLeft - walkX;
+                viewport.scrollTop = scrollTop - walkY;
+            });
+        }
+
+        // --- ADVANCED FLOWCHART LOGIC (METRICS) ---
+        const connectionsMetrics = [
+            { from: 'm-node-start', to: 'm-node-menu', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-menu', to: 'm-node-tab', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-tab', to: 'm-node-render', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-render', to: 'm-node-map', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-map', to: 'm-node-check', fromEdge: 'right', toEdge: 'left' },
+
+            { from: 'm-node-check', to: 'm-node-form-filled', fromEdge: 'top', toEdge: 'left', label: 'YA', labelClass: 'label-yes' },
+            { from: 'm-node-check', to: 'm-node-form-empty', fromEdge: 'bottom', toEdge: 'left', label: 'TIDAK', labelClass: 'label-no' },
+
+            { from: 'm-node-form-filled', to: 'm-node-select', fromEdge: 'right', toEdge: 'top' },
+            { from: 'm-node-form-empty', to: 'm-node-select', fromEdge: 'right', toEdge: 'bottom' },
+
+            { from: 'm-node-select', to: 'm-node-save', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-save', to: 'm-node-confirm', fromEdge: 'right', toEdge: 'left' },
+
+            { from: 'm-node-confirm', to: 'm-node-success', fromEdge: 'right', toEdge: 'left', label: 'YA', labelClass: 'label-yes' },
+            { from: 'm-node-success', to: 'm-node-impl', fromEdge: 'right', toEdge: 'left' },
+            { from: 'm-node-impl', to: 'm-node-end', fromEdge: 'right', toEdge: 'left' },
+
+            { from: 'm-node-confirm', to: 'm-node-back', fromEdge: 'bottom', toEdge: 'top', label: 'TIDAK', labelClass: 'label-no' },
+            { from: 'm-node-back', to: 'm-node-select', fromEdge: 'left', toEdge: 'bottom' }
+        ];
+
+        function getEdgePoint(el, edge) {
+            const isDiamond = el.classList.contains('n-decision');
+            const isCircle = el.classList.contains('n-start') || el.classList.contains('n-end');
+            const x = el.offsetLeft; const y = el.offsetTop;
+            const w = el.offsetWidth; const h = el.offsetHeight;
+            const cx = x + w / 2; const cy = y + h / 2;
+
+            if (isDiamond) {
+                const offset = (w / 2) * Math.SQRT2;
+                switch (edge) {
+                    case 'top': return { x: cx, y: cy - offset };
+                    case 'bottom': return { x: cx, y: cy + offset };
+                    case 'left': return { x: cx - offset, y: cy };
+                    case 'right': return { x: cx + offset, y: cy };
+                }
+            } else if (isCircle) {
+                const r = w / 2;
+                switch (edge) {
+                    case 'top': return { x: cx, y: cy - r };
+                    case 'bottom': return { x: cx, y: cy + r };
+                    case 'left': return { x: cx - r, y: cy };
+                    case 'right': return { x: cx + r, y: cy };
+                }
+            } else {
+                switch (edge) {
+                    case 'top': return { x: cx, y: y };
+                    case 'bottom': return { x: cx, y: y + h };
+                    case 'left': return { x: x, y: cy };
+                    case 'right': return { x: x + w, y: cy };
+                }
+            }
+            return { x: cx, y: cy };
+        }
+
+        function updateConnectionsMetrics() {
+            const svgLayer = document.getElementById('svg-layer-metrics');
+            const canvas = document.getElementById('metrics-flow-canvas');
+            if (!svgLayer) return;
+
+            while (svgLayer.firstChild) {
+                if (svgLayer.firstChild.tagName === 'defs') {
+                    if (svgLayer.children.length === 1) break;
+                    let defs = svgLayer.firstChild;
+                    svgLayer.innerHTML = '';
+                    svgLayer.appendChild(defs);
+                    break;
+                }
+                svgLayer.removeChild(svgLayer.firstChild);
+            }
+            canvas.querySelectorAll('.connection-label').forEach(l => l.remove());
+
+            connectionsMetrics.forEach(conn => {
+                const fromEl = document.getElementById(conn.from);
+                const toEl = document.getElementById(conn.to);
+                if (!fromEl || !toEl) return;
+
+                const start = getEdgePoint(fromEl, conn.fromEdge);
+                const end = getEdgePoint(toEl, conn.toEdge);
+                const points = [start]; const offset = 25;
+
+                let p1 = { ...start };
+                if (conn.fromEdge === 'top') p1.y -= offset;
+                else if (conn.fromEdge === 'bottom') p1.y += offset;
+                else if (conn.fromEdge === 'left') p1.x -= offset;
+                else if (conn.fromEdge === 'right') p1.x += offset;
+                points.push(p1);
+
+                let p2 = { ...end };
+                if (conn.toEdge === 'top') p2.y -= offset;
+                else if (conn.toEdge === 'bottom') p2.y += offset;
+                else if (conn.toEdge === 'left') p2.x -= offset;
+                else if (conn.toEdge === 'right') p2.x += offset;
+
+                if (conn.fromEdge === 'left' || conn.fromEdge === 'right') {
+                    if (conn.toEdge === 'top' || conn.toEdge === 'bottom') points.push({ x: p2.x, y: p1.y });
+                    else { const midX = (p1.x + p2.x) / 2; points.push({ x: midX, y: p1.y }); points.push({ x: midX, y: p2.y }); }
+                } else {
+                    if (conn.toEdge === 'left' || conn.toEdge === 'right') points.push({ x: p1.x, y: p2.y });
+                    else { const midY = (p1.y + p2.y) / 2; points.push({ x: p1.x, y: midY }); points.push({ x: p2.x, y: midY }); }
+                }
+                points.push(p2); points.push(end);
+
+                let d = `M ${points[0].x} ${points[0].y}`;
+                for (let i = 1; i < points.length; i++) d += ` L ${points[i].x} ${points[i].y}`;
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", d);
+                path.setAttribute("class", "connection-path");
+                path.setAttribute("marker-end", "url(#arrow-metrics)");
+                svgLayer.appendChild(path);
+
+                if (conn.label) {
+                    const label = document.createElement('div');
+                    label.className = `connection-label ${conn.labelClass || ''}`;
+                    label.innerText = conn.label;
+                    let lX, lY;
+                    if (points.length === 6) { lX = (points[2].x + points[3].x) / 2; lY = (points[2].y + points[3].y) / 2; }
+                    else { lX = points[2].x; lY = points[2].y; }
+                    label.style.left = `${lX}px`; label.style.top = `${lY}px`;
+                    canvas.appendChild(label);
+                }
+            });
+        }
+
+        function initDraggableMetrics() {
+            const nodes = document.querySelectorAll('#metrics-flow-canvas .node');
+            nodes.forEach(node => {
+                let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+                node.onmousedown = (e) => {
+                    if (e.button !== 0) return;
+                    e.preventDefault(); e.stopPropagation();
+                    p3 = e.clientX; p4 = e.clientY;
+                    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                    document.onmousemove = (e) => {
+                        e.preventDefault();
+                        p1 = p3 - e.clientX; p2 = p4 - e.clientY;
+                        p3 = e.clientX; p4 = e.clientY;
+                        node.style.top = (node.offsetTop - p2) + "px";
+                        node.style.left = (node.offsetLeft - p1) + "px";
+                        updateConnectionsMetrics();
+                    };
+                };
+            });
+        }
+
+        // Handle Metrics Viewport Panning
+        const viewportMetrics = document.getElementById('viewport-metrics');
+        if (viewportMetrics) {
+            viewportMetrics.addEventListener('wheel', function (e) {
+                if (e.ctrlKey || e.metaKey) {
+                    e.preventDefault();
+                    if (e.deltaY > 0) zoomOut(); else zoomIn();
+                }
+            });
+
+            let isDraggingM = false;
+            let startXM, startYM, scrollLeftM, scrollTopM;
+
+            viewportMetrics.addEventListener('mousedown', (e) => {
+                isDraggingM = true;
+                startXM = e.pageX - viewportMetrics.offsetLeft;
+                startYM = e.pageY - viewportMetrics.offsetTop;
+                scrollLeftM = viewportMetrics.scrollLeft;
+                scrollTopM = viewportMetrics.scrollTop;
+            });
+
+            viewportMetrics.addEventListener('mouseleave', () => { isDraggingM = false; });
+            viewportMetrics.addEventListener('mouseup', () => { isDraggingM = false; });
+
+            viewportMetrics.addEventListener('mousemove', (e) => {
+                if (!isDraggingM) return;
+                e.preventDefault();
+                const x = e.pageX - viewportMetrics.offsetLeft;
+                const y = e.pageY - viewportMetrics.offsetTop;
+                const walkX = (x - startXM) * 1.5;
+                const walkY = (y - startYM) * 1.5;
+                viewportMetrics.scrollLeft = scrollLeftM - walkX;
+                viewportMetrics.scrollTop = scrollTopM - walkY;
+            });
+        }
+    </script>
+
+    <!-- Modal Concept Metrics -->
+    <div id="metrics-concept-modal" class="fixed inset-0 z-50 flex items-center justify-center modal-overlay hidden">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-2xl p-8 fade-in overflow-hidden relative">
+            <div class="absolute top-0 left-0 w-full h-2 bg-primary"></div>
+            <button onclick="closeMetricsConceptModal()"
+                class="absolute top-6 right-6 text-gray-400 hover:text-gray-600 transition-colors">
+                <i class="fas fa-times text-xl"></i>
+            </button>
+
+            <h3 class="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-3">
+                <i class="fas fa-database text-primary"></i> High Level Concept: Metrics in Charge
+            </h3>
+
+            <div class="space-y-6 text-sm text-gray-600 leading-relaxed">
+                <section>
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase tracking-wider text-xs">Apa itu Metrics in Charge?
+                    </h4>
+                    <p>Mekanisme untuk menentukan scope data dan fitur yang dapat diakses oleh user berdasarkan role
+                        mereka. Ini memastikan setiap user hanya melihat metrik dan data yang relevan dengan tanggung
+                        jawab mereka (Principle of Least Privilege).</p>
+                </section>
+
+                <section class="bg-gray-50 p-5 rounded-2xl border border-gray-100">
+                    <h4 class="font-bold text-gray-800 mb-3 text-sm flex items-center gap-2">
+                        <i class="fas fa-info-circle text-blue-500"></i> Contoh Case: Akses Laporan SKU
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                1</div>
+                            <p><b>Manager:</b> Memiliki akses ke laporan untuk PT. Alpha dan PT. Beta.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                2</div>
+                            <p><b>Supervisor:</b> Hanya memiliki akses ke laporan PT. Alpha saja.</p>
+                        </div>
+                        <div class="flex gap-4">
+                            <div
+                                class="shrink-0 w-6 h-6 rounded-full bg-primary text-white flex items-center justify-center text-[10px] font-bold">
+                                3</div>
+                            <p><b>System:</b> Secara otomatis memfilter data di dashboard dan laporan berdasarkan
+                                mapping ini.</p>
+                        </div>
+                    </div>
+                </section>
+
+                <section>
+                    <h4 class="font-bold text-gray-800 mb-2 uppercase tracking-wider text-xs">Struktur Mapping</h4>
+                    <ul class="list-disc pl-5 space-y-1">
+                        <li><b>Platform:</b> Pengelompokan besar (misal: Master, Procurement).</li>
+                        <li><b>Menu:</b> Fitur atau modul spesifik (misal: SKU Management).</li>
+                        <li><b>Group:</b> Kategori akses (misal: Akses Laporan, Akses Riwayat).</li>
+                        <li><b>Item:</b> Data dimension spesifik (misal: PT. Alpha).</li>
+                    </ul>
+                </section>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-gray-100">
+                <button onclick="closeMetricsConceptModal()"
+                    class="w-full bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-2xl transition-all">Tutup</button>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
