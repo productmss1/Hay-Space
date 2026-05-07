@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Holding - SKU Review</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="tasklab.css" />
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  <style>
+    /* Custom Styles for Interactive Prototype */
+    .view-section {
+      display: none;
+    }
+
+    .view-section.active {
+      display: block;
+    }
+
+    .split-view {
+      display: flex;
+      gap: 24px;
+      margin-top: 20px;
+      align-items: flex-start;
+      height: calc(100vh - 180px);
+      /* Allow internal scrolling if needed */
+    }
+
+    .panel-left {
+      flex: 1.2;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 24px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .panel-right {
+      flex: 1;
+      background: #fcfcfd;
+      border: 1px solid #eaecf0;
+      border-radius: 12px;
+      padding: 24px;
+      height: 100%;
+      overflow-y: auto;
+    }
+
+    .panel-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 20px;
+      color: #101828;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .data-group {
+      margin-bottom: 30px;
+    }
+
+    .data-group-title {
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #667085;
+      font-weight: 700;
+      margin-bottom: 12px;
+      border-bottom: 1px solid #f2f4f7;
+      padding-bottom: 8px;
+    }
+
+    .data-row {
+      display: flex;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .data-label {
+      width: 160px;
+      color: #475467;
+      flex-shrink: 0;
+      font-weight: 500;
+    }
+
+    .data-value {
+      color: #101828;
+      font-weight: 600;
+    }
+
+    .sticky-actions {
+      position: sticky;
+      bottom: -24px;
+      /* Offset parent padding */
+      left: -24px;
+      right: -24px;
+      background: #fff;
+      padding: 20px 24px;
+      border-top: 1px solid #eaecf0;
+      display: flex;
+      gap: 12px;
+      margin: 24px -24px -24px -24px;
+      box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+      z-index: 10;
+    }
+
+    /* Duplicate Cards */
+    .kandidat-card {
+      border: 1px solid #eaecf0;
+      background: #fff;
+      border-radius: 10px;
+      padding: 16px;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .kandidat-card:hover {
+      border-color: #4F6AF5;
+      box-shadow: 0 4px 12px rgba(79, 106, 245, 0.08);
+    }
+
+    .kandidat-card.active {
+      border-color: #4F6AF5;
+      background: #f9faff;
+      ring: 2px solid #4F6AF5;
+    }
+
+    .kandidat-header {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .sku-tag {
+      font-family: 'Inter', monospace;
+      font-size: 12px;
+      color: #4F6AF5;
+      background: #eef0fd;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(16, 24, 40, 0.7);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+
+    .modal {
+      background: #fff;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 480px;
+      padding: 24px;
+      box-shadow: 0 20px 24px -4px rgba(16, 24, 40, 0.1), 0 8px 8px -4px rgba(16, 24, 40, 0.04);
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: #101828;
+    }
+
+    .modal-desc {
+      font-size: 14px;
+      color: #475467;
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      height: 120px;
+      padding: 12px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font-family: inherit;
+      margin-bottom: 20px;
+      outline: none;
+    }
+
+    textarea:focus {
+      border-color: #4F6AF5;
+      box-shadow: 0 0 0 4px rgba(79, 106, 245, 0.1);
+    }
+
+    /* Custom Badges */
+    .b-green {
+      background: #ECFDF3;
+      color: #027A48;
+    }
+
+    .b-yellow {
+      background: #FFFAEB;
+      color: #B54708;
+    }
+
+    .b-red {
+      background: #FEF3F2;
+      color: #B42318;
+    }
+
+    .btn-red {
+      background: #D92D20;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-red:hover {
+      background: #B42318;
+    }
+
+    /* Diff Preview */
+    /* Bulk Modal Table */
+    .bulk-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .bulk-table th {
+      text-align: left;
+      padding: 12px;
+      background: #f9fafb;
+      border-bottom: 1px solid #eaecf0;
+      color: #667085;
+    }
+
+    .bulk-table td {
+      padding: 12px;
+      border-bottom: 1px solid #f2f4f7;
+      vertical-align: middle;
+    }
+
+    .bulk-img {
+      width: 40px;
+      height: 40px;
+      border-radius: 4px;
+      object-fit: cover;
+      background: #eee;
+    }
+
+    .bulk-checkbox {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+      accent-color: #4F6AF5;
+    }
+
+    .modal-large {
+      max-width: 800px;
+      width: 90%;
+    }
+    
+    .modal-full {
+      max-width: 95vw;
+      width: 95vw;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .brief-section {
+      background: #f8f9ff;
+      border: 1px solid #eef0fd;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .brief-title { font-size: 14px; font-weight: 700; color: #4F6AF5; margin-right: 8px; }
+
+    /* Tabs Styling */
+    .tabs-container {
+      display: flex;
+      gap: 32px;
+      border-bottom: 1px solid #eaecf0;
+      margin-bottom: 24px;
+    }
+
+    .tab-item {
+      padding: 12px 4px;
+      font-size: 14px;
+      font-weight: 500;
+      color: #667085;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .tab-item:hover {
+      color: #4F6AF5;
+    }
+
+    .tab-item.active {
+      color: #4F6AF5;
+      border-bottom-color: #4F6AF5;
+      font-weight: 600;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-icon">🏛️</div>
+        <div class="brand-info">
+          <div class="name">MSS Holding</div>
+          <div class="sub">Admin Centralized</div>
+        </div>
+      </div>
+
+      <div class="sidebar-section-label">Main Menu</div>
+      <div class="topics-list">
+        <div class="nav-item active" onclick="showView('listView')">
+          <div class="icon">📋</div> Pengajuan SKU
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <div class="avatar"><img src="https://ui-avatars.com/api/?name=Holding+Admin&background=4F6AF5&color=fff"
+            alt=""></div>
+        <div class="user-info">
+          <div class="uname">Super Admin</div>
+          <div class="uemail">holding@mss.com</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="topbar">
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" placeholder="Cari pengajuan..." />
+        </div>
+        <div class="topbar-right">
+          <button class="icon-btn">🔔</button>
+          <button class="icon-btn">⚙️</button>
+        </div>
+      </div>
+
+      <!-- VIEW: LIST -->
+      <div id="listView" class="content view-section active">
+        <div class="page-header">
+          <h1 class="page-title">Daftar Pengajuan SKU</h1>
+          <button class="btn-primary" style="background:#027A48;" onclick="openModal('modalBulkApprove')">🚀 Bulk
+            Approve (Clear SKU)</button>
+        </div>
+
+        <!-- BRIEF UI/UX SECTION -->
+        <div class="brief-section">
+          <div class="brief-title">📚 Brief UI/UX:</div>
+          <button class="btn-outline" style="background:#fff;" onclick="openModal('modalUserFlow')">🧩 User Flow</button>
+          <button class="btn-outline" style="background:#fff;" onclick="openModal('modalHighLevel')">💡 High Level Concept</button>
+        </div>
+
+        <!-- STATUS TABS -->
+        <div class="tabs-container">
+          <button class="tab-item active" onclick="filterByStatus('all', this)">Semua Pengajuan <span id="count-all"></span></button>
+          <button class="tab-item" onclick="filterByStatus('Pengajuan Baru', this)">Pengajuan Baru <span id="count-new"></span></button>
+          <button class="tab-item" onclick="filterByStatus('Proses Persetujuan', this)">Proses Persetujuan <span id="count-process"></span></button>
+          <button class="tab-item" onclick="filterByStatus('Ditolak', this)">Ditolak <span id="count-rejected"></span></button>
+          <button class="tab-item" onclick="filterByStatus('Ditambahkan', this)">Ditambahkan <span id="count-added"></span></button>
+        </div>
+
+        <div class="task-group">
+          <table class="task-table">
+            <thead>
+              <tr>
+                <th>Tanggal Pengajuan</th>
+                <th>Nama Produk</th>
+                <th>Pengaju</th>
+                <th>Masa Tunggu</th>
+                <th>Indikator Duplikasi</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="skuTableBody">
+              <!-- Data dynamically loaded via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- VIEW: DETAIL (SPLIT VIEW) -->
+      <div id="detailView" class="content view-section">
+        <div class="page-header">
+          <div style="display:flex; align-items:center; gap:12px;">
+            <button class="icon-btn" onclick="showView('listView')">←</button>
+            <h1 class="page-title" id="detailProductName">Detail Pengajuan SKU</h1>
+          </div>
+          <span class="badge badge-review" id="detailStatusBadge">Status: -</span>
+        </div>
+
+        <div class="split-view">
+          <!-- PANEL KIRI: Data Platform -->
+          <div class="panel-left">
+            <div class="panel-title">📝 Data Pengajuan dari Platform</div>
+
+            <!-- CATATAN PENOLAKAN (Visible for Rejected status) -->
+            <div id="rejectionNoteContainer" class="data-group" style="display: none; margin-bottom: 24px;">
+              <div class="data-group-title" style="color: #B42318; border-bottom-color: #FEE4E2;">Catatan Penolakan</div>
+              <div style="background: #FEF3F2; border: 1px solid #FEE4E2; border-radius: 8px; padding: 16px; color: #B42318; font-size: 14px; font-weight: 500;">
+                <i class="fas fa-exclamation-circle" style="margin-right: 8px;"></i>
+                <span id="val-rejection-note">Alasan penolakan belum diisi.</span>
+              </div>
+            </div>
+
+            <!-- HEADER CARD (MATCHING IMAGE) -->
+            <div
+              style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px; padding-bottom: 24px; border-bottom: 1px solid #eaecf0;">
+              <div
+                style="width: 48px; height: 48px; background: #f2f4f7; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 24px;">
+                🏗️</div>
+              <div>
+                <div id="val-header-name" style="font-size: 20px; font-weight: 700; color: #101828;">Produk Semen X 50
+                  Kg</div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-top: 4px;">
+                  <span id="val-header-sku"
+                    style="font-size: 13px; color: #667085; font-weight: 500;">XDF.XABC.0001</span>
+                  <span class="badge b-yellow" style="font-size: 11px; padding: 2px 8px;">Draft</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- IDENTITAS DASAR -->
+            <div class="data-group">
+              <div class="data-group-title">Identitas Dasar</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Nama Produk Resmi:</div>
+                  <div class="data-value" id="val-name">Produk Semen X 50 Kg</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">SKU ID:</div>
+                  <div class="data-value">XDF.XABC.0001</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start; grid-column: span 2;">
+                  <div class="data-label">Deskripsi Produk:</div>
+                  <div class="data-value">Lorem Ipsum Dolor Sit Amet</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Satuan Dasar:</div>
+                  <div class="data-value">Karung</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">URL-Slug:</div>
+                  <div class="data-value" style="font-size: 11px; word-break: break-all;">
+                    https://www.1000saudara.com/Produk-Semen-X-50-Kg</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- IDENTIFIKASI EKSTERNAL -->
+            <div class="data-group">
+              <div class="data-group-title">Identifikasi Eksternal</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Barcode / GTIN 13:</div>
+                  <div class="data-value">4006381333931</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">International GTIN / EAN:</div>
+                  <div class="data-value">0123456789012</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kode Produk Principal:</div>
+                  <div class="data-value">4006381333931</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kode Standar SNI:</div>
+                  <div class="data-value">0123456789012</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kose HSN (Export / Import):</div>
+                  <div class="data-value">25232900</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- BRAND & PRINCIPAL -->
+            <div class="data-group">
+              <div class="data-group-title">Brand & Principal</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Parent Brand:</div>
+                  <div class="data-value">Parent Brand X</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Brand:</div>
+                  <div class="data-value">Brand X</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Nama Principal:</div>
+                  <div class="data-value">Principal X</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Negara Asal:</div>
+                  <div class="data-value">Indonesia</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KLASIFIKASI & KATEGORI -->
+            <div class="data-group">
+              <div class="data-group-title">Klasifikasi & Kategori</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kategori:</div>
+                  <div class="data-value">Konstruksi</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kategori L2:</div>
+                  <div class="data-value">Semen</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Kategori 3:</div>
+                  <div class="data-value">Mortar</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- KEMASAN -->
+            <div class="data-group">
+              <div class="data-group-title">Kemasan</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Tipe Kemasan:</div>
+                  <div class="data-value">Karung</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Qty per Kemasan:</div>
+                  <div class="data-value">1</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Barcode:</div>
+                  <div class="data-value">4006381333931</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Bahan Kemasan:</div>
+                  <div class="data-value">Kraft Paper</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Dimensi (P x L x T):</div>
+                  <div class="data-value">70 Cm x 50 Cm x 15 Cm</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Berat Netto:</div>
+                  <div class="data-value">50 Kg</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Berat Brutto:</div>
+                  <div class="data-value">50,2 Kg</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Volume:</div>
+                  <div class="data-value">36 Liter</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ATRIBUT FISIK & TEKNIS -->
+            <div class="data-group">
+              <div class="data-group-title">Atribut Fisik & Teknis</div>
+              <div style="color: #4F6AF5; font-size: 13px; font-weight: 600; margin-bottom: 12px;">Atribut Fisik</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Berat Netto:</div>
+                  <div class="data-value">50 Kg</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Berat Brutto:</div>
+                  <div class="data-value">50,2 Kg</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Dimensi (P x L x T):</div>
+                  <div class="data-value">70 Cm x 50 Cm x 15 Cm</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Volume:</div>
+                  <div class="data-value">36 Liter</div>
+                </div>
+              </div>
+              <div style="color: #4F6AF5; font-size: 13px; font-weight: 600; margin-bottom: 12px;">Atribut Teknis</div>
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Bahan Berbahaya:</div>
+                  <div class="data-value">Tidak</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Material / Komposisi:</div>
+                  <div class="data-value">Portland Cement</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Grade / Kekuatan:</div>
+                  <div class="data-value">SNI K-250</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Masa Simpan (Shelf Life):</div>
+                  <div class="data-value">12 Bulan</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Warna:</div>
+                  <div class="data-value">Abu-abu</div>
+                </div>
+                <div class="data-row" style="flex-direction: column; align-items: flex-start;">
+                  <div class="data-label">Ketebalan:</div>
+                  <div class="data-value">10 Mm</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- MEDIA & ASET VISUAL -->
+            <div class="data-group">
+              <div class="data-group-title">Media & Aset Visual</div>
+              <div class="data-label" style="margin-bottom: 12px;">Gambar Produk Utama</div>
+              <div
+                style="background: #f8f9fa; border: 1px solid #eaecf0; border-radius: 12px; padding: 20px; text-align: center; margin-bottom: 16px;">
+                <div
+                  style="width: 200px; height: 200px; background: #fff; margin: 0 auto; border-radius: 8px; border: 1px solid #eee; display: flex; align-items: center; justify-content: center;">
+                  <img src="https://via.placeholder.com/180?text=Semen+Portland"
+                    style="max-width: 100%; max-height: 100%;">
+                </div>
+              </div>
+              <div style="display: flex; gap: 8px; justify-content: center; align-items: center;">
+                <button class="icon-btn" style="width: 24px; height: 24px; font-size: 12px;">‹</button>
+                <div
+                  style="width: 48px; height: 48px; border: 2px solid #4F6AF5; border-radius: 4px; overflow: hidden;">
+                  <img src="https://via.placeholder.com/48?text=1" style="width: 100%;">
+                </div>
+                <div style="width: 48px; height: 48px; border: 1px solid #eee; border-radius: 4px; overflow: hidden;">
+                  <img src="https://via.placeholder.com/48?text=2" style="width: 100%;"></div>
+                <div style="width: 48px; height: 48px; border: 1px solid #eee; border-radius: 4px; overflow: hidden;">
+                  <img src="https://via.placeholder.com/48?text=3" style="width: 100%;"></div>
+                <div style="width: 48px; height: 48px; border: 1px solid #eee; border-radius: 4px; overflow: hidden;">
+                  <img src="https://via.placeholder.com/48?text=4" style="width: 100%;"></div>
+                <div style="width: 48px; height: 48px; border: 1px solid #eee; border-radius: 4px; overflow: hidden;">
+                  <img src="https://via.placeholder.com/48?text=5" style="width: 100%;"></div>
+                <button class="icon-btn" style="width: 24px; height: 24px; font-size: 12px;">›</button>
+              </div>
+            </div>
+
+            <div class="sticky-actions" id="detailActions">
+              <button id="btnApprove" class="btn-primary" style="background:#027A48;"
+                onclick="alert('SKU Berhasil Disetujui & Diterbitkan')">✅ Setujui (Approve)</button>
+              <button class="btn-outline" style="color:#B42318; border-color:#FDA29B;"
+                onclick="openModal('modalTolak')">❌ Tolak (Reject)</button>
+              <button class="btn-outline" onclick="openModal('modalRevisi')">🔄 Minta Revisi</button>
+            </div>
+          </div>
+
+          <!-- PANEL KANAN: DDE Result -->
+          <div class="panel-right" id="ddePanel">
+            <div class="panel-title">🔍 Duplicate Detection Result</div>
+            <div id="ddeContent">
+              <p style="font-size:14px; color:#475467; margin-bottom:16px;">Sistem menemukan kemiripan tinggi dengan
+                data Master Catalog berikut:</p>
+
+              <div class="kandidat-card active">
+                <div class="kandidat-header">
+                  <span class="sku-tag">IND.TGR.00001</span>
+                  <span class="badge b-red" id="detailMatchScore">92% Match</span>
+                </div>
+                <div class="data-row">
+                  <div class="data-label" style="width:100px;">Nama Master</div>
+                  <div class="data-value">Semen Portland Tiga Roda 50kg</div>
+                </div>
+                <div class="data-row">
+                  <div class="data-label" style="width:100px;">Barcode</div>
+                  <div class="data-value">8991234567890</div>
+                </div>
+                <div class="data-row">
+                  <div class="data-label" style="width:100px;">Status</div>
+                  <div class="data-value"><span class="badge badge-done">Aktif</span></div>
+                </div>
+
+                <div
+                  style="margin-top:16px; background:#fff9f0; padding:12px; border-radius:8px; border:1px solid #fee4e2;">
+                  <div style="font-size:12px; color:#B42318; font-weight:700; margin-bottom:4px;">DIFF ANALYSIS</div>
+                  <div style="font-size:13px; color:#475467;">Nama produk pengaju mengandung kata kunci <span
+                      class="comp-box">"Semen"</span>, <span class="comp-box">"Tiga Roda"</span>, dan <span
+                      class="comp-box">"50kg"</span> yang identik dengan SKU Master.</div>
+                </div>
+
+                <button class="btn-primary" style="width:100%; margin-top:16px; background:#4F6AF5; font-size:12px;"
+                  onclick="alert('Platform diarahkan ke SKU IND.TGR.00001')">🔗 Arahkan ke SKU Existing</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: TOLAK -->
+    <div id="modalTolak" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-title">Konfirmasi Penolakan</div>
+        <div class="modal-desc">Berikan alasan penolakan yang akan dikirimkan ke platform pengaju melalui email resmi.
+        </div>
+        <textarea placeholder="Contoh: Barcode sudah terdaftar dengan merk lain..."></textarea>
+        <div style="display:flex; justify-content:flex-end; gap:12px;">
+          <button class="btn-outline" onclick="closeModals()">Batal</button>
+          <button class="btn-red" style="padding:8px 16px; border-radius:8px;"
+            onclick="alert('Pengajuan Ditolak'); closeModals(); showView('listView')">Tolak Pengajuan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: REVISI -->
+    <div id="modalRevisi" class="modal-overlay">
+      <div class="modal">
+        <div class="modal-title">Minta Revisi Data</div>
+        <div class="modal-desc">Detail perbaikan apa yang perlu dilakukan oleh platform agar pengajuan dapat disetujui?
+        </div>
+        <textarea placeholder="Contoh: Mohon upload ulang foto produk yang lebih jelas..."></textarea>
+        <div style="display:flex; justify-content:flex-end; gap:12px;">
+          <button class="btn-outline" onclick="closeModals()">Batal</button>
+          <button class="btn-primary" style="padding:8px 16px; border-radius:8px;"
+            onclick="alert('Catatan Revisi Dikirim'); closeModals(); showView('listView')">Kirim Catatan</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: BULK APPROVE -->
+    <div id="modalBulkApprove" class="modal-overlay">
+      <div class="modal modal-large">
+        <div class="modal-title">🚀 Bulk Approve SKU (Clear Duplication)</div>
+        <div class="modal-desc">Menampilkan semua pengajuan dengan skor duplikasi 0%. Pastikan data dasar sudah benar
+          sebelum melakukan konfirmasi massal.</div>
+
+        <div
+          style="max-height: 400px; overflow-y: auto; margin-bottom: 24px; border: 1px solid #eaecf0; border-radius: 8px;">
+          <table class="bulk-table">
+            <thead>
+              <tr>
+                <th style="width: 40px;"><input type="checkbox" checked class="bulk-checkbox"></th>
+                <th>Produk</th>
+                <th>Parent / Brand</th>
+                <th>Kategori</th>
+                <th>Indikator</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><input type="checkbox" checked class="bulk-checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div
+                      style="width: 40px; height: 40px; background: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                      🏗️</div>
+                    <div>
+                      <div style="font-weight: 600;">Besi Beton Ulir 12mm</div>
+                      <div style="font-size: 11px; color: #667085;">E-Procurement</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Krakatau Steel / Krakatau</td>
+                <td>Konstruksi > Logam</td>
+                <td><span class="badge b-green">0% Clear</span></td>
+              </tr>
+              <tr>
+                <td><input type="checkbox" checked class="bulk-checkbox"></td>
+                <td>
+                  <div style="display: flex; align-items: center; gap: 12px;">
+                    <div
+                      style="width: 40px; height: 40px; background: #eee; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                      🧱</div>
+                    <div>
+                      <div style="font-weight: 600;">Batu Bata Merah Jumbo</div>
+                      <div style="font-size: 11px; color: #667085;">Platform POS</div>
+                    </div>
+                  </div>
+                </td>
+                <td>Lokal / Non-Brand</td>
+                <td>Konstruksi > Material Dasar</td>
+                <td><span class="badge b-green">0% Clear</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; gap:12px;">
+          <button class="btn-outline" onclick="closeModals()">Batal & Kembali</button>
+          <button class="btn-primary" style="background:#027A48; padding:10px 24px;"
+            onclick="closeModals(); openModal('modalSuccessBulk')">Konfirmasi & Approve (2 SKU)</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODAL: SUCCESS BULK -->
+    <div id="modalSuccessBulk" class="modal-overlay">
+      <div class="modal" style="text-align: center;">
+        <div
+          style="width: 64px; height: 64px; background: #ECFDF3; color: #027A48; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 20px;">
+          ✅</div>
+        <div class="modal-title">Bulk Approval Berhasil!</div>
+        <div class="modal-desc">2 SKU telah berhasil diverifikasi dan diterbitkan ke Master Catalog. Notifikasi telah
+          dikirimkan ke masing-masing pengaju.</div>
+        <button class="btn-primary" style="width: 100%;" onclick="closeModals(); showView('listView')">Selesai</button>
+      </div>
+    </div>
+
+    <!-- MODAL: USER FLOW -->
+    <div id="modalUserFlow" class="modal-overlay">
+      <div class="modal modal-full">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <div class="modal-title" style="margin:0;">🧩 User Flow: SKU Proposal & Approval</div>
+          <button class="icon-btn" onclick="closeModals()">✕</button>
+        </div>
+        <iframe src="userflow_pengajuan SKU.html" style="flex:1; border:1px solid #eee; border-radius:8px;"></iframe>
+      </div>
+    </div>
+
+    <!-- MODAL: HIGH LEVEL CONCEPT -->
+    <div id="modalHighLevel" class="modal-overlay">
+      <div class="modal modal-large" style="max-height:85vh; overflow-y:auto;">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+          <div class="modal-title" style="margin:0;">💡 High Level Concept: SKU Proposal</div>
+          <button class="icon-btn" onclick="closeModals()">✕</button>
+        </div>
+
+        <!-- POINT 1: WORKFLOW SEQUENCE -->
+        <div class="data-group">
+          <div class="data-group-title">1. Workflow Sequence (Alur Pengajuan)</div>
+          <div class="mermaid" style="background:#f9fafb; padding:20px; border-radius:12px; margin-top:12px;">
+sequenceDiagram
+    actor PM as Platform (Requester)
+    participant UI as Platform UI
+    participant DDE as Duplicate Detection Engine
+    participant WF as Approval Line Engine
+    participant DB as Master Catalog
+
+    PM->>UI: Isi form & Submit
+    UI->>DDE: 2. Cek Duplikasi Otomatis
+    
+    DDE->>DDE: Lvl 1: Hard Match (Barcode)
+    alt Skor 100%
+        DDE-->>UI: Blokir: Status Duplicate
+    else Lanjut
+        DDE->>DDE: Lvl 2: Fuzzy Name Match (0-70%)
+        DDE->>DDE: Lvl 3: Attribute Cluster (+30%)
+        DDE-->>UI: Return Skor & List Kandidat
+        UI->>WF: 3. Cek Approval Line
+        
+        alt Role BUKAN Level Tertinggi
+            WF->>DB: Simpan sbg Draf (Waiting Approval)
+            WF-->>PM: Email Notifikasi ke Approver
+        else Role Level Tertinggi
+            WF->>DB: Simpan ke Master & Gen SKU ID
+            WF-->>PM: SKU Aktif & Redirect Master
+        end
+    end
+          </div>
+        </div>
+
+        <!-- POINT 2: DDE LOGIC -->
+        <div class="data-group">
+          <div class="data-group-title">2. Duplicate Detection Engine (DDE) Logic</div>
+          <div style="font-size:14px; color:#475467; line-height:1.6;">
+            <p style="margin-bottom:8px;">Sistem melakukan validasi berlapis untuk menjaga kebersihan data master:</p>
+            <ul style="padding-left:20px; margin-bottom:16px;">
+              <li><strong>Level 1: Hard Match (Barcode)</strong>: Validasi identitas mutlak. Jika barcode sama, sistem memblokir pengajuan 100%.</li>
+              <li><strong>Level 2: Fuzzy Name Matching</strong>: Menggunakan <i>Levenshtein Distance</i> untuk membandingkan kemiripan teks nama produk (0-70%).</li>
+              <li><strong>Level 3: Attribute Clustering</strong>: Penambahan bobot skor jika Brand (+20%) dan Kategori (+10%) cocok dengan data existing.</li>
+            </ul>
+            
+            <table class="repeater-table" style="font-size:12px;">
+              <thead>
+                <tr><th>Total Skor</th><th>Status</th><th>Aksi Sistem / UI</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>0%</strong></td><td>Clear</td><td>Langsung simpan tanpa peringatan.</td></tr>
+                <tr><td><strong>1% - 75%</strong></td><td>Potential</td><td>Tampil tabel peringatan, platform bisa klik "Lanjutkan".</td></tr>
+                <tr><td><strong>> 75%</strong></td><td>High Prob</td><td>Tampil tabel peringatan, butuh atensi ekstra Admin.</td></tr>
+                <tr><td><strong>100%</strong></td><td>Duplicate</td><td><strong>Blokir Keras</strong>: Diarahkan ke SKU Existing.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- POINT 3: APPROVAL LINE -->
+        <div class="data-group">
+          <div class="data-group-title">3. Approval Line & Publishing Logic</div>
+          <div style="font-size:14px; color:#475467; line-height:1.6;">
+            <p>Sistem menggunakan <i>Dynamic Approval Line</i> berdasarkan Role Maksimal di Master Setup:</p>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-top:12px;">
+              <div style="background:#f2f4f7; padding:12px; border-radius:8px;">
+                <div style="font-weight:700; color:#101828; margin-bottom:4px;">A. Role &lt; Max Level</div>
+                <ul style="font-size:12px; padding-left:15px;">
+                  <li>Status: <i>Butuh Persetujuan [Role Selanjutnya]</i></li>
+                  <li>Data masuk antrean <i>Waiting Approval</i></li>
+                  <li>Sistem mengirim notifikasi email otomatis ke Approver.</li>
+                </ul>
+              </div>
+              <div style="background:#ecfdf3; padding:12px; border-radius:8px;">
+                <div style="font-weight:700; color:#027A48; margin-bottom:4px;">B. Role = Max Level</div>
+                <ul style="font-size:12px; padding-left:15px;">
+                  <li>Status: <i>Aktif</i> (Data masuk tabel Master SKU)</li>
+                  <li>Sistem men-generate <strong>SKU ID</strong> unik.</li>
+                  <li>Auto-redirect ke Master SKU Detail dalam 2 detik.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex; justify-content:flex-end; margin-top:20px;">
+          <button class="btn-primary" onclick="closeModals()">Tutup Concept</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const mockData = [
+      { date: '06 May 2026', name: 'Semen Tiga Roda 50kg', platform: 'Platform POS', wait: '2 Hari', indicator: 'High Probability (92%)', score: '92%', status: 'Proses Persetujuan', badge: 'b-red' },
+      { date: '06 May 2026', name: 'Pipa PVC Wavin 1/2', platform: 'E-Commerce', wait: '1 Hari', indicator: 'Potential Duplicate (45%)', score: '45%', status: 'Proses Persetujuan', badge: 'b-yellow' },
+      { date: '05 May 2026', name: 'Besi Beton Ulir 12mm', platform: 'E-Procurement', wait: '0 Hari', indicator: 'Clear (0%)', score: '0%', status: 'Pengajuan Baru', badge: 'b-green' },
+      { date: '04 May 2026', name: 'Semen Gresik 50kg', platform: 'Platform POS', wait: '3 Hari', indicator: 'Duplicate (100%)', score: '100%', status: 'Ditolak', badge: 'b-red', rejectionNote: 'Barcode 899... sudah terdaftar dengan merk Semen Indonesia. Mohon periksa kembali input barcode.' },
+      { date: '03 May 2026', name: 'Cat Avian 1kg Putih', platform: 'E-Commerce', wait: '5 Hari', indicator: 'Clear (0%)', score: '0%', status: 'Ditambahkan', badge: 'b-green' },
+      { date: '02 May 2026', name: 'Paku Beton 5cm', platform: 'E-Procurement', wait: '4 Hari', indicator: 'Clear (0%)', score: '0%', status: 'Pengajuan Baru', badge: 'b-green' },
+      { date: '01 May 2026', name: 'Kawat Las RB-26 2.6mm', platform: 'E-Procurement', wait: '6 Hari', indicator: 'Potential Duplicate (30%)', score: '30%', status: 'Pengajuan Baru', badge: 'b-yellow' },
+      { date: '30 Apr 2026', name: 'Tang Kombinasi 7"', platform: 'Platform POS', wait: '7 Hari', indicator: 'High Probability (85%)', score: '85%', status: 'Pengajuan Baru', badge: 'b-red' },
+      { date: '29 Apr 2026', name: 'Lampu LED Philips 9W', platform: 'E-Commerce', wait: '8 Hari', indicator: 'Duplicate (100%)', score: '100%', status: 'Pengajuan Baru', badge: 'b-red' },
+      { date: '28 Apr 2026', name: 'Kran Air San-Ei', platform: 'Platform POS', wait: '9 Hari', indicator: 'Potential Duplicate (50%)', score: '50%', status: 'Proses Persetujuan', badge: 'b-yellow' },
+      { date: '27 Apr 2026', name: 'Semen Holcim 50kg', platform: 'Platform POS', wait: '10 Hari', indicator: 'Duplicate (100%)', score: '100%', status: 'Ditambahkan', badge: 'b-red' }
+    ];
+
+    function updateCounts() {
+      document.getElementById('count-all').innerText = `(${mockData.length})`;
+      document.getElementById('count-new').innerText = `(${mockData.filter(d => d.status === 'Pengajuan Baru').length})`;
+      document.getElementById('count-process').innerText = `(${mockData.filter(d => d.status === 'Proses Persetujuan').length})`;
+      document.getElementById('count-rejected').innerText = `(${mockData.filter(d => d.status === 'Ditolak').length})`;
+      document.getElementById('count-added').innerText = `(${mockData.filter(d => d.status === 'Ditambahkan').length})`;
+    }
+
+    function renderTable(filter = 'all') {
+      updateCounts();
+      const tbody = document.getElementById('skuTableBody');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+      
+      const filtered = filter === 'all' ? mockData : mockData.filter(d => d.status === filter);
+      
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${item.date}</td>
+          <td class="task-name" style="cursor:pointer; color:#4F6AF5; text-decoration:underline;"
+            onclick="showDetail('${item.name}')">${item.name}</td>
+          <td>${item.platform}</td>
+          <td><span style="font-weight:600; color:${item.wait === '-' ? '#667085' : '#B42318'};">${item.wait}</span></td>
+          <td><span class="badge ${item.badge}">${item.indicator}</span></td>
+          <td><span class="badge badge-review">${item.status}</span></td>
+          <td><button class="btn-outline" onclick="showDetail('${item.name}')">Review</button></td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function filterByStatus(status, el) {
+      document.querySelectorAll('.tab-item').forEach(b => b.classList.remove('active'));
+      el.classList.add('active');
+      renderTable(status);
+    }
+
+    function showView(viewId) {
+      document.querySelectorAll('.view-section').forEach(v => v.classList.remove('active'));
+      document.getElementById(viewId).classList.add('active');
+    }
+
+    function showDetail(name) {
+      const item = mockData.find(d => d.name === name);
+      if (!item) return;
+
+      const score = item.score;
+      const status = item.status;
+
+      if (document.getElementById('detailProductName')) document.getElementById('detailProductName').innerText = "Review: " + name;
+      if (document.getElementById('val-name')) document.getElementById('val-name').innerText = name;
+      if (document.getElementById('val-header-name')) document.getElementById('val-header-name').innerText = name;
+      if (document.getElementById('detailMatchScore')) document.getElementById('detailMatchScore').innerText = score + " Match";
+      if (document.getElementById('detailStatusBadge')) {
+          document.getElementById('detailStatusBadge').innerText = "Status: " + status;
+          document.getElementById('detailStatusBadge').className = `badge ${item.badge}`;
+      }
+
+      const ddePanel = document.getElementById('ddePanel');
+      const actionContainer = document.getElementById('detailActions');
+      const rejectionContainer = document.getElementById('rejectionNoteContainer');
+
+      // Default hidden
+      rejectionContainer.style.display = 'none';
+
+      // Update Actions based on status
+      let actionsHtml = '';
+      if (status === 'Pengajuan Baru') {
+        actionsHtml = `
+          <button class="btn-primary" style="background:#027A48;" onclick="alert('Persetujuan Berhasil')">✅ Setujui Pengajuan</button>
+          <button class="btn-outline" style="color:#B42318; border-color:#FDA29B;" onclick="openModal('modalTolak')">❌ Tolak Pengajuan</button>
+          <button class="btn-outline" onclick="alert('Diarahkan ke SKU Existing')">🔗 Arahkan ke SKU</button>
+        `;
+      } else if (status === 'Proses Persetujuan') {
+        actionsHtml = `
+          <button id="btnApprove" class="btn-primary" style="background:#027A48;" onclick="alert('SKU Berhasil Disetujui')">✅ Setujui</button>
+          <button class="btn-outline" style="color:#B42318; border-color:#FDA29B;" onclick="openModal('modalTolak')">❌ Tolak</button>
+          <button class="btn-outline" onclick="openModal('modalRevisi')">🔄 Minta Revisi</button>
+        `;
+      } else if (status === 'Ditolak') {
+        actionsHtml = `<p style="color:#667085; font-style:italic; font-size:14px;">Mode Lihat Saja (Ditolak)</p>`;
+        rejectionContainer.style.display = 'block';
+        document.getElementById('val-rejection-note').innerText = item.rejectionNote || 'Tidak ada catatan penolakan.';
+      } else {
+        actionsHtml = `<p style="color:#667085; font-style:italic; font-size:14px;">Mode Lihat Saja (Ditambahkan)</p>`;
+      }
+      actionContainer.innerHTML = actionsHtml;
+
+      const btnApprove = document.getElementById('btnApprove');
+
+      // Hide DDE Panel if score is 0% OR status is NOT 'Pengajuan Baru'
+      if (score === '0%' || status !== 'Pengajuan Baru') {
+        ddePanel.style.display = 'none';
+      } else {
+        ddePanel.style.display = 'block';
+        if (score === '100%') {
+          document.getElementById('detailMatchScore').className = "badge b-red";
+          document.getElementById('detailMatchScore').style.background = "#450a0a";
+          document.getElementById('detailMatchScore').style.color = "#fff";
+          
+          if (btnApprove) {
+            btnApprove.disabled = true;
+            btnApprove.style.opacity = "0.5";
+            btnApprove.style.cursor = "not-allowed";
+            btnApprove.title = "Tidak dapat menyetujui data duplikat 100%.";
+          }
+        } else if (parseInt(score) > 75) {
+          document.getElementById('detailMatchScore').className = "badge b-red";
+          document.getElementById('detailMatchScore').style.background = ""; 
+          document.getElementById('detailMatchScore').style.color = "";
+        } else {
+          document.getElementById('detailMatchScore').className = "badge b-yellow";
+          document.getElementById('detailMatchScore').style.background = "";
+          document.getElementById('detailMatchScore').style.color = "";
+        }
+      }
+
+      showView('detailView');
+    }
+
+    function openModal(id) {
+      document.getElementById(id).style.display = 'flex';
+    }
+
+    function closeModals() {
+      document.querySelectorAll('.modal-overlay').forEach(m => m.style.display = 'none');
+    }
+
+    window.onload = () => renderTable('all');
+  </script>
+</body>
+
+</html>

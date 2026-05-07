@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Flow - SKU Proposal Workflow</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            width: 100vw;
+            height: calc(100vh - 60px);
+            overflow: hidden;
+            cursor: grab;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+
+        #flow-area {
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+            padding: 500px;
+            display: inline-block;
+            white-space: nowrap;
+            position: relative;
+            min-width: 4000px;
+            min-height: 2000px;
+        }
+
+        .node {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 15px 20px;
+            min-width: 160px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            position: absolute;
+            z-index: 10;
+            cursor: move;
+            user-select: none;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .node:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            z-index: 20;
+        }
+
+        .n-start {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            border-radius: 50%;
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #166534;
+        }
+
+        .n-end {
+            width: 80px;
+            height: 80px;
+            min-width: 80px;
+            border-radius: 50%;
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .n-purple {
+            background: #f3e8ff;
+            border-color: #d8b4fe;
+            color: #6b21a8;
+        }
+
+        .n-gray {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        .n-decision {
+            width: 100px;
+            height: 100px;
+            min-width: 100px;
+            transform: rotate(45deg);
+            background: #ffedd5;
+            border-color: #fdba74;
+            color: #9a3412;
+            padding: 0;
+            border-radius: 10px;
+        }
+
+        .n-decision span {
+            transform: rotate(-45deg);
+            text-align: center;
+            display: block;
+            width: 100%;
+        }
+
+        .svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .connection-path {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2;
+        }
+
+        .connection-label {
+            position: absolute;
+            background: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 15;
+            border: 1px solid #e2e8f0;
+        }
+
+        .label-yes {
+            color: #059669;
+            border-color: #10b981;
+        }
+
+        .label-no {
+            color: #dc2626;
+            border-color: #ef4444;
+        }
+
+        .tab-bar {
+            height: 60px;
+            background: white;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            padding: 0 20px;
+            gap: 10px;
+            z-index: 200;
+            position: relative;
+        }
+
+        .tab-btn {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: #64748b;
+            transition: all 0.2s;
+        }
+
+        .tab-btn:hover {
+            background: #f1f5f9;
+            color: #4F6AF5;
+        }
+
+        .tab-btn.active {
+            background: #4F6AF5;
+            color: white;
+        }
+
+        .controls {
+            position: fixed;
+            top: 85px;
+            right: 25px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn-ctrl {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .legend {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="loadFlow(1)">Alur 1: Buka Detail</button>
+        <button class="tab-btn" onclick="loadFlow(2)">Alur 2: Setujui</button>
+        <button class="tab-btn" onclick="loadFlow(3)">Alur 3: Tolak</button>
+        <button class="tab-btn" onclick="loadFlow(4)">Alur 4: Arahkan Existing</button>
+        <button class="tab-btn" onclick="loadFlow(5)">Alur 5: Bulk Approve</button>
+    </div>
+
+    <div class="controls">
+        <button class="btn-ctrl" onclick="zoomView(1.2)"><i class="fas fa-search-plus"></i></button>
+        <button class="btn-ctrl" onclick="zoomView(0.8)"><i class="fas fa-search-minus"></i></button>
+        <button class="btn-ctrl" onclick="resetZoom()"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="legend space-y-2">
+        <p class="font-extrabold text-gray-800 mb-2 border-b pb-1">Keterangan Node</p>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-green-200 border border-green-500"></div> Titik Mulai
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded bg-purple-100 border border-purple-400"></div> Aksi User
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded bg-slate-100 border border-slate-400"></div> Proses Sistem
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rotate-45 bg-orange-100 border border-orange-400"></div> Keputusan
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-200 border border-red-500"></div> Titik Akhir
+        </div>
+    </div>
+
+    <div class="canvas-container" id="canvas-container">
+        <div id="flow-area">
+            <svg class="svg-layer" id="svg-layer">
+                <defs>
+                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6"
+                        orient="auto">
+                        <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
+                    </marker>
+                </defs>
+            </svg>
+            <div id="nodes-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const flowData = {
+            1: {
+                nodes: [
+                    { id: 'n1-start', type: 'n-start', text: 'Start', x: 500, y: 500 },
+                    { id: 'n1-list', type: 'n-gray', text: 'Halaman Daftar<br>Pengajuan SKU', x: 660, y: 500 },
+                    { id: 'n1-click', type: 'n-purple', text: 'Klik Nama Produk /<br>Review', x: 900, y: 500 },
+                    { id: 'n1-detail', type: 'n-gray', text: 'Tampilkan Split View<br>(Platform vs DDE)', x: 1140, y: 500 },
+                    { id: 'n1-end', type: 'n-end', text: 'Detail Terbuka', x: 1380, y: 500 }
+                ],
+                connections: [
+                    { from: 'n1-start', to: 'n1-list', f: 'right', t: 'left' },
+                    { from: 'n1-list', to: 'n1-click', f: 'right', t: 'left' },
+                    { from: 'n1-click', to: 'n1-detail', f: 'right', t: 'left' },
+                    { from: 'n1-detail', to: 'n1-end', f: 'right', t: 'left' }
+                ]
+            },
+            2: {
+                nodes: [
+                    { id: 'n2-detail', type: 'n-gray', text: 'Halaman Detail<br>Pengajuan SKU', x: 500, y: 500 },
+                    { id: 'n2-click', type: 'n-purple', text: 'Klik Button<br>Setujui', x: 740, y: 500 },
+                    { id: 'n2-dec-line', type: 'n-decision', text: '<span>Line Approval<br>Aktif?</span>', x: 980, y: 490 },
+                    { id: 'n2-check-lvl', type: 'n-gray', text: 'Cek Level<br>Approval User', x: 1220, y: 350 },
+                    { id: 'n2-dec-max', type: 'n-decision', text: '<span>Level<br>Maksimal?</span>', x: 1460, y: 340 },
+                    { id: 'n2-pop-up', type: 'n-gray', text: 'Pop-up Konfirmasi<br>ke Level Atas<br>*informasikan bahwa<br>harus diapprove<br>oleh atasan dan<br>informasikan role atasan<br>seperti SPV', x: 1700, y: 250 },
+                    { id: 'n2-master', type: 'n-gray', text: 'menampilkan pop-up<br>konfirmasi<br>berhasil tambah data SKU,<br>Data Masuk Master SKU,<br>& Kirim Notif/SKU Code<br>ke platform partner', x: 1700, y: 500 },
+                    { id: 'n2-end', type: 'n-end', text: 'Selesai', x: 1940, y: 500 }
+                ],
+                connections: [
+                    { from: 'n2-detail', to: 'n2-click', f: 'right', t: 'left' },
+                    { from: 'n2-click', to: 'n2-dec-line', f: 'right', t: 'left' },
+                    { from: 'n2-dec-line', to: 'n2-check-lvl', f: 'top', t: 'left', label: 'Ya', lClass: 'label-yes' },
+                    { from: 'n2-dec-line', to: 'n2-master', f: 'right', t: 'left', label: 'Tidak', lClass: 'label-no' },
+                    { from: 'n2-check-lvl', to: 'n2-dec-max', f: 'right', t: 'left' },
+                    { from: 'n2-dec-max', to: 'n2-pop-up', f: 'top', t: 'left', label: 'Bukan', lClass: 'label-no' },
+                    { from: 'n2-dec-max', to: 'n2-master', f: 'bottom', t: 'left', label: 'Maksimal', lClass: 'label-yes' },
+                    { from: 'n2-pop-up', to: 'n2-end', f: 'right', t: 'top' },
+                    { from: 'n2-master', to: 'n2-end', f: 'right', t: 'left' }
+                ]
+            },
+            3: {
+                nodes: [
+                    { id: 'n3-detail', type: 'n-gray', text: 'Halaman Detail<br>Pengajuan SKU', x: 500, y: 500 },
+                    { id: 'n3-click', type: 'n-purple', text: 'Klik Button<br>Tolak', x: 740, y: 500 },
+                    { id: 'n3-modal', type: 'n-gray', text: 'Pop-up Konfirmasi<br>(Wajib Catatan)', x: 980, y: 500 },
+                    { id: 'n3-input', type: 'n-purple', text: 'Input Catatan<br>(10-1000 char)', x: 1220, y: 500 },
+                    { id: 'n3-enable', type: 'n-gray', text: 'Sistem Enable<br>Button Konfirmasi', x: 1460, y: 500 },
+                    { id: 'n3-confirm', type: 'n-purple', text: 'User Klik<br>Konfirmasi', x: 1700, y: 500 },
+                    { id: 'n3-success', type: 'n-gray', text: 'Pop-up Berhasil &<br>Notif Penolakan', x: 1940, y: 500 },
+                    { id: 'n3-end', type: 'n-end', text: 'Selesai', x: 2180, y: 500 }
+                ],
+                connections: [
+                    { from: 'n3-detail', to: 'n3-click', f: 'right', t: 'left' },
+                    { from: 'n3-click', to: 'n3-modal', f: 'right', t: 'left' },
+                    { from: 'n3-modal', to: 'n3-input', f: 'right', t: 'left' },
+                    { from: 'n3-input', to: 'n3-enable', f: 'right', t: 'left' },
+                    { from: 'n3-enable', to: 'n3-confirm', f: 'right', t: 'left' },
+                    { from: 'n3-confirm', to: 'n3-success', f: 'right', t: 'left' },
+                    { from: 'n3-success', to: 'n3-end', f: 'right', t: 'left' }
+                ]
+            },
+            4: {
+                nodes: [
+                    { id: 'n4-detail', type: 'n-gray', text: 'Halaman Detail<br>Pengajuan SKU', x: 500, y: 500 },
+                    { id: 'n4-click', type: 'n-purple', text: 'Klik Button<br>Arahkan SKU', x: 740, y: 500 },
+                    { id: 'n4-dec-line', type: 'n-decision', text: '<span>Line Approval<br>Aktif?</span>', x: 980, y: 490 },
+                    { id: 'n4-check-lvl', type: 'n-gray', text: 'Cek Level<br>Approval User', x: 1220, y: 350 },
+                    { id: 'n4-dec-max', type: 'n-decision', text: '<span>Level<br>Maksimal?</span>', x: 1460, y: 340 },
+                    { id: 'n4-pop-up', type: 'n-gray', text: 'Pop-up Konfirmasi<br>ke Level Atas<br>*informasikan bahwa<br>harus diapprove<br>oleh atasan dan<br>informasikan role atasan<br>seperti SPV', x: 1700, y: 250 },
+                    { id: 'n4-master', type: 'n-gray', text: 'menampilkan pop-up<br>konfirmasi<br>berhasil tambah data SKU,<br>Data Masuk Master SKU,<br>& Kirim Notif/SKU Code<br>ke platform partner', x: 1700, y: 500 },
+                    { id: 'n4-end', type: 'n-end', text: 'Selesai', x: 1940, y: 500 }
+                ],
+                connections: [
+                    { from: 'n4-detail', to: 'n4-click', f: 'right', t: 'left' },
+                    { from: 'n4-click', to: 'n4-dec-line', f: 'right', t: 'left' },
+                    { from: 'n4-dec-line', to: 'n4-check-lvl', f: 'top', t: 'left', label: 'Ya', lClass: 'label-yes' },
+                    { from: 'n4-dec-line', to: 'n4-master', f: 'right', t: 'left', label: 'Tidak', lClass: 'label-no' },
+                    { from: 'n4-check-lvl', to: 'n4-dec-max', f: 'right', t: 'left' },
+                    { from: 'n4-dec-max', to: 'n4-pop-up', f: 'top', t: 'left', label: 'Bukan', lClass: 'label-no' },
+                    { from: 'n4-dec-max', to: 'n4-master', f: 'bottom', t: 'left', label: 'Maksimal', lClass: 'label-yes' },
+                    { from: 'n4-pop-up', to: 'n4-end', f: 'right', t: 'top' },
+                    { from: 'n4-master', to: 'n4-end', f: 'right', t: 'left' }
+                ]
+            },
+            5: {
+                nodes: [
+                    { id: 'n5-list', type: 'n-gray', text: 'Halaman Daftar<br>Pengajuan SKU', x: 500, y: 500 },
+                    { id: 'n5-click', type: 'n-purple', text: 'Klik Button<br>Bulk Approve', x: 740, y: 500 },
+                    { id: 'n5-modal', type: 'n-gray', text: 'Tampilkan Modal<br>Summary (Skor 0%)', x: 980, y: 500 },
+                    { id: 'n5-confirm', type: 'n-purple', text: 'Pilih & Klik<br>Konfirmasi', x: 1220, y: 500 },
+                    { id: 'n5-end', type: 'n-end', text: 'Bulk Success', x: 1460, y: 500 }
+                ],
+                connections: [
+                    { from: 'n5-list', to: 'n5-click', f: 'right', t: 'left' },
+                    { from: 'n5-click', to: 'n5-modal', f: 'right', t: 'left' },
+                    { from: 'n5-modal', to: 'n5-confirm', f: 'right', t: 'left' },
+                    { from: 'n5-confirm', to: 'n5-end', f: 'right', t: 'left' }
+                ]
+            }
+        };
+
+        let currentFlow = 1;
+        let scale = 1;
+        const svgLayer = document.getElementById('svg-layer');
+        const nodesContainer = document.getElementById('nodes-container');
+        const area = document.getElementById('flow-area');
+
+        function loadFlow(id) {
+            currentFlow = id;
+            document.querySelectorAll('.tab-btn').forEach((btn, i) => btn.classList.toggle('active', i + 1 === id));
+            render();
+        }
+
+        function render() {
+            nodesContainer.innerHTML = '';
+            const data = flowData[currentFlow];
+            data.nodes.forEach(n => {
+                const div = document.createElement('div');
+                div.id = n.id;
+                div.className = `node ${n.type}`;
+                div.style.left = n.x + 'px';
+                div.style.top = n.y + 'px';
+                div.innerHTML = n.text;
+                nodesContainer.appendChild(div);
+            });
+            updateConnections();
+            initDraggable();
+            resetZoom();
+        }
+
+        function getEdgePoint(el, edge) {
+            const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+            const cx = x + w / 2, cy = y + h / 2;
+            if (el.classList.contains('n-start') || el.classList.contains('n-end')) {
+                const r = w / 2;
+                switch (edge) { case 'top': return { x: cx, y: cy - r }; case 'bottom': return { x: cx, y: cy + r }; case 'left': return { x: cx - r, y: cy }; case 'right': return { x: cx + r, y: cy }; }
+            } else {
+                switch (edge) { case 'top': return { x: cx, y: y }; case 'bottom': return { x: cx, y: y + h }; case 'left': return { x: x, y: cy }; case 'right': return { x: x + w, y: cy }; }
+            }
+            return { x: cx, y: cy };
+        }
+
+        function updateConnections() {
+            while (svgLayer.children.length > 1) svgLayer.removeChild(svgLayer.lastChild);
+            document.querySelectorAll('.connection-label').forEach(l => l.remove());
+            const data = flowData[currentFlow];
+            data.connections.forEach(conn => {
+                const fromEl = document.getElementById(conn.from), toEl = document.getElementById(conn.to);
+                if (!fromEl || !toEl) return;
+                const start = getEdgePoint(fromEl, conn.f), end = getEdgePoint(toEl, conn.t);
+
+                // Draw path
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                let d = "";
+                if (conn.f === 'right' && conn.t === 'left' && start.y === end.y) {
+                    d = `M ${start.x} ${start.y} L ${end.x} ${end.y}`;
+                } else {
+                    // Orthogonal-ish path
+                    const midX = start.x + (end.x - start.x) / 2;
+                    d = `M ${start.x} ${start.y} L ${midX} ${start.y} L ${midX} ${end.y} L ${end.x} ${end.y}`;
+                }
+
+                path.setAttribute("d", d);
+                path.setAttribute("class", "connection-path");
+                path.setAttribute("marker-end", "url(#arrow)");
+                svgLayer.appendChild(path);
+
+                // Add label if exists
+                if (conn.label) {
+                    const label = document.createElement('div');
+                    label.className = `connection-label ${conn.lClass || ''}`;
+                    const midX = start.x + (end.x - start.x) / 2;
+                    const midY = start.y + (end.y - start.y) / 2;
+                    label.style.left = midX + 'px';
+                    label.style.top = (start.y === end.y ? midY - 15 : midY) + 'px';
+                    label.innerHTML = conn.label;
+                    nodesContainer.appendChild(label);
+                }
+            });
+        }
+
+        function initDraggable() {
+            document.querySelectorAll('.node').forEach(node => {
+                node.onmousedown = (e) => {
+                    if (e.button !== 0) return;
+                    let p3 = e.clientX, p4 = e.clientY;
+                    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                    document.onmousemove = (e) => {
+                        let p1 = p3 - e.clientX, p2 = p4 - e.clientY;
+                        p3 = e.clientX; p4 = e.clientY;
+                        node.style.top = (node.offsetTop - p2) + "px";
+                        node.style.left = (node.offsetLeft - p1) + "px";
+                        updateConnections();
+                    };
+                };
+            });
+        }
+
+        function zoomView(f) { scale *= f; scale = Math.min(Math.max(0.1, scale), 3); area.style.transform = `scale(${scale})`; }
+        function resetZoom() { scale = 1; area.style.transform = `scale(1)`; document.getElementById('canvas-container').scrollLeft = 0; document.getElementById('canvas-container').scrollTop = 0; }
+
+        // --- PANNING LOGIC ---
+        const container = document.getElementById('canvas-container');
+        let isPanning = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        container.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.node')) return;
+            isPanning = true;
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        });
+
+        container.addEventListener('mouseleave', () => isPanning = false);
+        container.addEventListener('mouseup', () => isPanning = false);
+        container.addEventListener('mousemove', (e) => {
+            if (!isPanning) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const y = e.pageY - container.offsetTop;
+            const walkX = (x - startX) * 2;
+            const walkY = (y - startY) * 2;
+            container.scrollLeft = scrollLeft - walkX;
+            container.scrollTop = scrollTop - walkY;
+        });
+
+        window.onload = () => loadFlow(1);
+    </script>
+</body>
+
+</html>
