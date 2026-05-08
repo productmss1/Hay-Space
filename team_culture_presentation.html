@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Product Team Culture — Building Together</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg: #0a0d14;
+      --surface: #111622;
+      --surface2: #161d2e;
+      --border: rgba(255, 255, 255, 0.07);
+      --accent-g: #34d399;
+      --accent-f: #f59e0b;
+      --accent-e: #60a5fa;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --white: #ffffff;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 3rem;
+      background: rgba(10, 13, 20, 0.85);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+
+    nav .logo {
+      font-weight: 800;
+      font-size: 1rem;
+      color: var(--white);
+    }
+
+    nav .logo span {
+      color: var(--accent-g);
+    }
+
+    nav ul {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      transition: color .2s;
+    }
+
+    nav ul a:hover {
+      color: var(--white);
+    }
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 8rem 2rem 4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -200px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 800px;
+      height: 800px;
+      background: radial-gradient(circle, rgba(52, 211, 153, 0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(52, 211, 153, 0.1);
+      border: 1px solid rgba(52, 211, 153, 0.25);
+      color: var(--accent-g);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 100px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 1.5rem;
+      animation: fadeUp .6s ease both;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 900;
+      line-height: 1.1;
+      color: var(--white);
+      animation: fadeUp .7s ease .1s both;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(135deg, var(--accent-g), var(--accent-e));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      max-width: 640px;
+      margin: 1.5rem auto 0;
+      color: var(--muted);
+      font-size: 1.1rem;
+      animation: fadeUp .7s ease .2s both;
+    }
+
+    .scroll-hint {
+      margin-top: 3rem;
+      font-size: 0.78rem;
+      color: var(--muted);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+      animation: fadeUp .7s ease .4s both;
+    }
+
+    .scroll-hint .arrow {
+      animation: bounce 1.5s infinite;
+      font-size: 1.2rem;
+    }
+
+    section {
+      padding: 6rem 2rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent-g);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+      color: var(--white);
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+
+    .section-sub {
+      color: var(--muted);
+      font-size: 1rem;
+      max-width: 600px;
+    }
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.25rem;
+      margin-top: 3rem;
+    }
+
+    .bg-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 1.75rem;
+      transition: transform .25s, border-color .25s;
+    }
+
+    .bg-card:hover {
+      transform: translateY(-4px);
+      border-color: rgba(255, 255, 255, 0.14);
+    }
+
+    .bg-card .icon {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .bg-card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.5rem;
+    }
+
+    .bg-card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    #culture {
+      background: var(--surface2);
+      border-radius: 32px;
+      max-width: 100%;
+      padding: 6rem 2rem;
+    }
+
+    #culture .inner {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .culture-statement {
+      background: linear-gradient(135deg, rgba(52, 211, 153, 0.08), rgba(96, 165, 250, 0.08));
+      border: 1px solid rgba(52, 211, 153, 0.2);
+      border-radius: 20px;
+      padding: 2rem 2.5rem;
+      margin: 2.5rem 0 3.5rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.7;
+      text-align: center;
+    }
+
+    .culture-statement span.g {
+      color: var(--accent-g);
+    }
+
+    .culture-statement span.f {
+      color: var(--accent-f);
+    }
+
+    .culture-statement span.e {
+      color: var(--accent-e);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .pillar-card {
+      border-radius: 20px;
+      padding: 2rem;
+      border: 1px solid;
+      position: relative;
+      overflow: hidden;
+      transition: transform .25s;
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-6px);
+    }
+
+    .pillar-card.growth {
+      background: rgba(52, 211, 153, 0.06);
+      border-color: rgba(52, 211, 153, 0.2);
+    }
+
+    .pillar-card.fun {
+      background: rgba(245, 158, 11, 0.06);
+      border-color: rgba(245, 158, 11, 0.2);
+    }
+
+    .pillar-card.eff {
+      background: rgba(96, 165, 250, 0.06);
+      border-color: rgba(96, 165, 250, 0.2);
+    }
+
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: -60px;
+      right: -60px;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      opacity: 0.08;
+    }
+
+    .pillar-card.growth::before {
+      background: var(--accent-g);
+    }
+
+    .pillar-card.fun::before {
+      background: var(--accent-f);
+    }
+
+    .pillar-card.eff::before {
+      background: var(--accent-e);
+    }
+
+    .pillar-emoji {
+      font-size: 2.2rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .pillar-title {
+      font-size: 1.3rem;
+      font-weight: 800;
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar-card.growth .pillar-title {
+      color: var(--accent-g);
+    }
+
+    .pillar-card.fun .pillar-title {
+      color: var(--accent-f);
+    }
+
+    .pillar-card.eff .pillar-title {
+      color: var(--accent-e);
+    }
+
+    .pillar-tagline {
+      font-size: 0.82rem;
+      color: var(--muted);
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+
+    .pillar-points {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .pillar-points li {
+      display: flex;
+      gap: 0.65rem;
+      align-items: flex-start;
+      font-size: 0.88rem;
+      color: var(--text);
+    }
+
+    .pillar-points li .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 6px;
+    }
+
+    .growth .dot {
+      background: var(--accent-g);
+    }
+
+    .fun .dot {
+      background: var(--accent-f);
+    }
+
+    .eff .dot {
+      background: var(--accent-e);
+    }
+
+    #timeline .tl-header {
+      margin-bottom: 3rem;
+    }
+
+    .timeline-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    .timeline-wrap::before {
+      content: '';
+      position: absolute;
+      left: 48px;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--accent-g), var(--accent-e), transparent);
+    }
+
+    .tl-item {
+      display: flex;
+      gap: 2rem;
+      padding: 0 0 3rem;
+    }
+
+    .tl-month {
+      width: 96px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tl-dot {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 3px solid;
+      background: var(--bg);
+      position: relative;
+      z-index: 1;
+      flex-shrink: 0;
+    }
+
+    .tl-item:nth-child(1) .tl-dot {
+      border-color: var(--accent-g);
+      box-shadow: 0 0 12px rgba(52, 211, 153, 0.4), 0 0 0 4px var(--bg);
+    }
+
+    .tl-item:nth-child(2) .tl-dot {
+      border-color: var(--accent-f);
+      box-shadow: 0 0 12px rgba(245, 158, 11, 0.4), 0 0 0 4px var(--bg);
+    }
+
+    .tl-item:nth-child(3) .tl-dot {
+      border-color: var(--accent-e);
+      box-shadow: 0 0 12px rgba(96, 165, 250, 0.4), 0 0 0 4px var(--bg);
+    }
+
+    .tl-month-label {
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.35rem;
+    }
+
+    .tl-content {
+      flex: 1;
+    }
+
+    .tl-content h3 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-focus {
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+    }
+
+    .tl-item:nth-child(1) .tl-focus {
+      color: var(--accent-g);
+    }
+
+    .tl-item:nth-child(2) .tl-focus {
+      color: var(--accent-f);
+    }
+
+    .tl-item:nth-child(3) .tl-focus {
+      color: var(--accent-e);
+    }
+
+    .tl-programs {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .tl-program {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+    }
+
+    .tl-program h4 {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-program p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .closing {
+      text-align: center;
+      padding: 6rem 2rem 8rem;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .closing h2 {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--white);
+      margin-bottom: 1rem;
+    }
+
+    .closing p {
+      color: var(--muted);
+      font-size: 1rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .closing .tags {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 0.5rem 1.2rem;
+      border-radius: 100px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      border: 1px solid;
+    }
+
+    .tag.g {
+      color: var(--accent-g);
+      border-color: rgba(52, 211, 153, 0.3);
+      background: rgba(52, 211, 153, 0.08);
+    }
+
+    .tag.f {
+      color: var(--accent-f);
+      border-color: rgba(245, 158, 11, 0.3);
+      background: rgba(245, 158, 11, 0.08);
+    }
+
+    .tag.e {
+      color: var(--accent-e);
+      border-color: rgba(96, 165, 250, 0.3);
+      background: rgba(96, 165, 250, 0.08);
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes bounce {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(6px);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="logo">Product <span>Team</span></div>
+    <ul>
+      <li><a href="#background">Background</a></li>
+      <li><a href="#culture">Culture</a></li>
+      <li><a href="#timeline">Timeline</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-badge">📣 Kick-off — Product Team</div>
+    <h1>Membangun Tim yang<br /><em>Solid, Bermakna & Tangguh</em></h1>
+    <p>Ini bukan soal aturan baru. Ini tentang bagaimana kita ingin bekerja bersama — dan siapa kita sebagai sebuah tim.
+    </p>
+    <div class="scroll-hint">
+      <span>Scroll untuk mulai</span>
+      <span class="arrow">↓</span>
+    </div>
+  </div>
+
+  <!-- BACKGROUND -->
+  <section id="background">
+    <div class="section-label">01 — Konteks</div>
+    <h2 class="section-title">Di mana kita sekarang?</h2>
+    <p class="section-sub">Sebelum bicara soal tujuan, penting untuk jujur melihat kondisi hari ini. Tiga realitas ini
+      menjadi alasan kita perlu membangun kultur yang berbeda.</p>
+    <div class="cards-grid">
+      <div class="bg-card">
+        <div class="icon">📉</div>
+        <h3>Pertumbuhan yang Stagnan</h3>
+        <p>Banyak anggota tim belum memiliki jalur pengembangan yang jelas. Tanpa arah yang pasti, orang cenderung
+          berjalan di tempat — menyelesaikan tugas tanpa merasa berkembang secara profesional.</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">🧊</div>
+        <h3>Koneksi Tim yang Lemah</h3>
+        <p>Tim yang baik bukan sekadar kumpulan individu yang mengerjakan task masing-masing. Saat ini kita belum punya
+          ritual bersama yang membangun rasa saling percaya dan semangat kolektif.</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">🐢</div>
+        <h3>Proses yang Belum Optimal</h3>
+        <p>Banyak waktu habis untuk pekerjaan berulang yang sebenarnya bisa diotomasi atau dipercepat. Kita belum
+          memanfaatkan alat dan metode terkini secara maksimal untuk meningkatkan output.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CULTURE -->
+  <div id="culture">
+    <div class="inner">
+      <div class="section-label">02 — Kultur Tim</div>
+      <h2 class="section-title">Tiga Nilai yang Membentuk Kita</h2>
+      <p class="section-sub">Bukan sekadar kata-kata. Ini adalah komitmen yang akan kita hidupi bersama setiap hari.</p>
+      <div class="culture-statement">
+        Growth <span class="g">With</span>, <span class="f">Fun</span>, and <span class="e">Efficient</span>.
+      </div>
+      <div class="pillars-grid">
+        <div class="pillar-card growth">
+          <div class="pillar-emoji">🌱</div>
+          <div class="pillar-title">Growth</div>
+          <div class="pillar-tagline">"Setiap hari adalah kesempatan untuk jadi lebih baik"</div>
+          <ul class="pillar-points">
+            <li><span class="dot"></span>Setiap orang punya jalur pengembangan yang jelas dan didukung tim</li>
+            <li><span class="dot"></span>Belajar dari kesalahan tanpa rasa takut — failure is data</li>
+            <li><span class="dot"></span>Saling berbagi pengetahuan, bukan menyimpannya sendiri</li>
+            <li><span class="dot"></span>Feedback diberikan secara konstruktif dan diterima dengan terbuka</li>
+            <li><span class="dot"></span>Skill individu berkembang → kualitas tim ikut naik</li>
+          </ul>
+        </div>
+        <div class="pillar-card fun">
+          <div class="pillar-emoji">🎉</div>
+          <div class="pillar-title">Fun</div>
+          <div class="pillar-tagline">"Kerja serius, tapi tidak pernah hilang manusianya"</div>
+          <ul class="pillar-points">
+            <li><span class="dot"></span>Ada ruang untuk jadi diri sendiri — tidak perlu selalu formal</li>
+            <li><span class="dot"></span>Pencapaian kecil pun layak dirayakan bersama</li>
+            <li><span class="dot"></span>Tidak ada yang kerja dalam isolasi — kita saling ada</li>
+            <li><span class="dot"></span>Psychological safety: boleh jujur, boleh salah, boleh bertanya</li>
+            <li><span class="dot"></span>Energi positif tim berdampak langsung ke kualitas produk</li>
+          </ul>
+        </div>
+        <div class="pillar-card eff">
+          <div class="pillar-emoji">⚡</div>
+          <div class="pillar-title">Efficient</div>
+          <div class="pillar-tagline">"Kerja lebih cerdas, bukan sekadar lebih keras"</div>
+          <ul class="pillar-points">
+            <li><span class="dot"></span>Manfaatkan AI dan tool terkini untuk tugas-tugas berulang</li>
+            <li><span class="dot"></span>Gunakan template dan sistem yang bisa dipakai ulang</li>
+            <li><span class="dot"></span>Kurangi meeting yang tidak perlu — prioritaskan deep work</li>
+            <li><span class="dot"></span>Proses yang jelas → eksekusi lebih cepat dan minim rework</li>
+            <li><span class="dot"></span>Efisiensi bukan soal buru-buru, tapi soal fokus pada yang benar-benar penting
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LEADER ROLE -->
+  <section id="leader-role">
+    <div class="section-label">03 — Support System</div>
+    <h2 class="section-title">Peran Leader di Tim Ini</h2>
+    <p class="section-sub">Ekspektasi dua arah. Sebagai lead, fungsiku utamanya bukan untuk sekadar memberi perintah,
+      tapi memastikan hal-hal ini berjalan agar kalian bisa fokus dan maksimal.</p>
+
+    <div class="cards-grid">
+      <div class="bg-card">
+        <div class="icon">🤝</div>
+        <h3>Teman Diskusi</h3>
+        <p>Lead nggak selalu benar. Tugasku di sini adalah menjadi partner diskusi yang setara untuk mencari solusi
+          terbaik dalam pekerjaan.</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">🛡️</div>
+        <h3>Kontrol Workload & Prioritas</h3>
+        <p>Menjaga ritme dan memfilter prioritas agar pekerjaan tidak langsung "dilempar" semua ke tim. Tujuannya agar
+          kalian tetap fokus eksekusi.</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">🌉</div>
+        <h3>Gate Integration</h3>
+        <p>Memastikan setiap integrasi antar platform berjalan lancar, aman, dan teknisnya benar-benar sesuai dengan
+          kebutuhan bisnis.</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">🛟</div>
+        <h3>Backup Resource</h3>
+        <p>Siap back up kerjaan kalau ada yang berhalangan, atau jadi resource cadangan kalau timeline dari luar
+          mendadak nggak masuk akal (<i>sometimes shit happens!</i>).</p>
+      </div>
+      <div class="bg-card">
+        <div class="icon">☕</div>
+        <h3>Teman Cerita & Eskalasi</h3>
+        <p>Butuh cerita, eskalasi masalah, mau kasih feedback ke tim/divisi lain, atau ngobrol di luar urusan kerjaan?
+          Pintu selalu terbuka.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIMELINE -->
+  <section id="timeline">
+    <div class="tl-header">
+      <div class="section-label">04 — Roadmap</div>
+      <h2 class="section-title">Program per Fase</h2>
+      <p class="section-sub">Kultur tidak dibangun dalam semalam. Ini adalah langkah-langkah konkret yang akan kita
+        jalani bersama secara bertahap.</p>
+    </div>
+    <div class="timeline-wrap">
+
+      <!-- PHASE 1 -->
+      <div class="tl-item">
+        <div class="tl-month">
+          <div class="tl-dot"></div>
+          <div class="tl-month-label">Phase 1</div>
+        </div>
+        <div class="tl-content">
+          <h3>Bangun Fondasi — Safety & Connection</h3>
+          <div class="tl-focus">🌱 Fokus: Growth Awareness + Fun</div>
+          <div class="tl-programs">
+            <div class="tl-program">
+              <h4>📋 1-on-1 Routine</h4>
+              <p>Sesi 15 menit per orang, dibedakan per hari untuk masing-masing team member. Estimasi dilakukan rutin 2
+                minggu sekali per orang untuk align ekspektasi.</p>
+            </div>
+            <div class="tl-program">
+              <h4>📚 Learning Friday</h4>
+              <p>Belajar bareng mingguan maksimal 1 jam di hari Jumat membahas materi learning source (menggunakan Udemy
+                dari budget kantor).</p>
+            </div>
+            <div class="tl-program">
+              <h4>🔄 Weekly Retrospective</h4>
+              <p>Setiap Jumat selama 30 menit. Timelinenya digabung dengan sesi Learning Friday (total alokasi waktu 1
+                jam 30 menit).</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PHASE 2 -->
+      <div class="tl-item">
+        <div class="tl-month">
+          <div class="tl-dot"></div>
+          <div class="tl-month-label">Phase 2</div>
+        </div>
+        <div class="tl-content">
+          <h3>Akselerasi — Sistem & Efisiensi</h3>
+          <div class="tl-focus">⚡ Fokus: Efficient + Full Culture Integration</div>
+          <div class="tl-programs">
+            <div class="tl-program">
+              <h4>🍽️ Team Lunch / After Working Hour Dinner Wajib</h4>
+              <p>Jadwal makan siang atau nongkrong rutin bulanan (budget masing-masing / split bill hehe) sebagai wadah
+                bonding tim. hehe</p>
+            </div>
+            <div class="tl-program">
+              <h4>📁 Template Library</h4>
+              <p>Penyimpanan data prompt atau aset yang sudah 'works' agar bisa di-share ke tim untuk mempercepat dan
+                mempermudah proses pekerjaan.</p>
+            </div>
+            <div class="tl-program">
+              <h4>🗣️ Friday Sharing Session</h4>
+              <p>Sesi pengganti jika tidak ada materi Learning Friday di jam yang sama. Member tim bergiliran sharing
+                minimal 1 hal untuk meningkatkan skill/knowledge bersama.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- IMPORTANT NOTES -->
+  <section id="notes" style="padding-top: 2rem;">
+    <div class="inner"
+      style="max-width: 900px; margin: 0 auto; background: rgba(245, 158, 11, 0.04); border: 1px solid rgba(245, 158, 11, 0.2); border-radius: 20px; padding: 2.5rem; text-align: center;">
+      <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--accent-f); margin-bottom: 1rem;">⚖️ Komitmen &
+        Tanggung Jawab</h2>
+
+      <p style="color: var(--text); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        <strong>Ownership Penuh:</strong> Setiap pekerjaan yang dikerjakan adalah tanggung jawab yang tidak boleh
+        sengaja ditinggalkan (<em>hit and run</em>). Di tim ini kita menjunjung tinggi asas keadilan — apresiasi
+        (<em>rewards</em>) untuk performa yang baik, dan konsekuensi (<em>punishment</em>) untuk komitmen yang
+        dilanggar, akan selalu berjalan <strong>seimbang dan proporsional</strong>.
+      </p>
+
+      <div
+        style="background: rgba(96, 165, 250, 0.08); border: 1px solid rgba(96, 165, 250, 0.2); padding: 1rem 1.5rem; border-radius: 12px; display: inline-block;">
+        <p style="color: var(--accent-e); font-size: 0.85rem; font-weight: 600; margin: 0;">
+          📌 Note: Untuk panduan detail mengenai Aturan Kerja & SOP operasional akan ada dokumen khusus yang dibagikan
+          terpisah nanti.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <div class="closing">
+    <h2>Kita mulai dari sini. 🚀</h2>
+    <p>Kultur bukan dibentuk oleh kebijakan — tapi oleh kebiasaan kecil yang kita lakukan bersama setiap hari. Dan itu
+      dimulai dari kita semua, hari ini.</p>
+    <div class="tags">
+      <span class="tag g">🌱 Growth</span>
+      <span class="tag f">🎉 Fun</span>
+      <span class="tag e">⚡ Efficient</span>
+    </div>
+  </div>
+
+</body>
+
+</html>

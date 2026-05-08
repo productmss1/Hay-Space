@@ -61,11 +61,11 @@
       </div>
 
       <div class="sidebar-section-label">Menu</div>
-      <nav>
-        <div class="nav-item active">
+      <nav id="sidebar-nav">
+        <div class="nav-item active" data-view="mss">
           <span class="icon">⊞</span> MSS Ekosistem
         </div>
-        <div class="nav-item">
+        <div class="nav-item" data-view="presentation">
           <span class="icon">◫</span> Presentation
         </div>
       </nav>
@@ -137,73 +137,130 @@
       {
         name: 'Master MSS', color: 'blue', projects:
           [
-            { name: 'SKU Management', status: 'final', link: 'wireframe_master_sku_list.html'},
-            { name: 'SKU Grup', status: 'final', link: 'wireframe_sku_group_list.html'},
-            { name: 'Line Approval', status: 'final', link:'line_approval.html'},
-            { name: 'Pengajuan SKU', status: 'final', link:'wireframe_pengajuan_SKU.html'},
+            { name: 'SKU Management', status: 'final', link: 'wireframe_master_sku_list.html' },
+            { name: 'SKU Grup', status: 'final', link: 'wireframe_sku_group_list.html' },
+            { name: 'Line Approval', status: 'final', link: 'line_approval.html' },
+            { name: 'Pengajuan SKU', status: 'final', link: 'wireframe_pengajuan_SKU.html' },
+          ]
+      }
+    ];
+
+    const presentations = [
+      { name: '1000saudara', color: 'blue', projects: [{ name: 'Presentation Strategy Q1', status: 'progress' }] },
+      { name: 'mitra1000s', color: 'orange', projects: [{ name: 'Mitra Onboarding Deck', status: 'final' }] },
+      { name: 'intechgra', color: 'teal', projects: [{ name: 'Technical Architecture Review', status: 'progress' }] },
+      { name: 'renov1000s', color: 'blue', projects: [{ name: 'Renov Roadmap 2024', status: 'progress' }] },
+      { name: 'project1000s', color: 'orange', projects: [{ name: 'Project Hub Overview', status: 'final' }] },
+      { name: 'fintech1000s', color: 'teal', projects: [{ name: 'Payment Flow Analysis', status: 'progress' }] },
+      {
+        name: 'Master MSS', color: 'blue', projects:
+          [
+            { name: 'Ecosystem Master Plan', status: 'final' },
+            { name: 'Stakeholder Presentation', status: 'progress' }
+          ]
+      },
+      {
+        name: 'Product Team', color: 'blue', projects:
+          [
+            { name: 'Product Team Culture', status: 'final', link: 'team_culture_presentation.html' }
           ]
       }
     ];
 
     const container = document.getElementById('platforms-container');
+    const pageTitle = document.querySelector('.page-title');
+    const navItems = document.querySelectorAll('#sidebar-nav .nav-item');
 
-    platforms.forEach(platform => {
-      // Create group container
-      const groupDiv = document.createElement('div');
-      groupDiv.className = 'task-group';
+    function renderList(data) {
+      container.innerHTML = '';
 
-      // Create header
-      const headerDiv = document.createElement('div');
-      headerDiv.className = `group-header ${platform.color} collapsed`;
-      headerDiv.innerHTML = `
-        <span class="group-dot ${platform.color}"></span>
-        <span class="group-name">${platform.name} <span style="color:#888; font-weight:normal; font-size:12px;">(${platform.projects.length})</span></span>
-        <span class="chevron-icon">▼</span>
-      `;
-
-      // Create content area (table)
-      const contentDiv = document.createElement('div');
-      contentDiv.className = 'group-content collapsed';
-
-      let tableHtml = `
-        <table class="task-table">
-          <thead>
-            <tr>
-              <th style="width:70%">Nama Project</th>
-              <th>Status Project</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      if (platform.projects.length > 0) {
-        platform.projects.forEach(p => {
-          let badgeClass = p.status === 'final' ? 'badge-done' : 'badge-ongoing';
-          let badgeText = p.status === 'final' ? 'Final' : 'In Progress';
-          let projectLinkHtml = p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="project-link">${p.name}</a>` : `<span class="project-link">${p.name}</span>`;
-          tableHtml += `
-            <tr>
-              <td class="task-name">${projectLinkHtml}</td>
-              <td><span class="badge ${badgeClass}">${badgeText}</span></td>
-            </tr>
-          `;
-        });
-      } else {
-        tableHtml += `<tr><td colspan="2" style="padding:14px;color:#ccc;font-size:13px;">Belum ada project</td></tr>`;
+      if (data.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding: 40px; color: #888;">
+          <div style="font-size: 48px; margin-bottom: 16px;">📁</div>
+          <p>Belum ada data presentasi.</p>
+        </div>`;
+        return;
       }
 
-      tableHtml += `</tbody></table>`;
-      contentDiv.innerHTML = tableHtml;
+      data.forEach(item => {
+        // Create group container
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'task-group';
 
-      // Toggle functionality
-      headerDiv.addEventListener('click', () => {
-        headerDiv.classList.toggle('collapsed');
-        contentDiv.classList.toggle('collapsed');
+        // Create header
+        const headerDiv = document.createElement('div');
+        headerDiv.className = `group-header ${item.color || 'blue'} collapsed`;
+        headerDiv.innerHTML = `
+          <span class="group-dot ${item.color || 'blue'}"></span>
+          <span class="group-name">${item.name} <span style="color:#888; font-weight:normal; font-size:12px;">(${item.projects ? item.projects.length : 0})</span></span>
+          <span class="chevron-icon">▼</span>
+        `;
+
+        // Create content area (table)
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'group-content collapsed';
+
+        let tableHtml = `
+          <table class="task-table">
+            <thead>
+              <tr>
+                <th style="width:70%">Nama Project</th>
+                <th>Status Project</th>
+              </tr>
+            </thead>
+            <tbody>
+        `;
+
+        if (item.projects && item.projects.length > 0) {
+          item.projects.forEach(p => {
+            let badgeClass = p.status === 'final' ? 'badge-done' : 'badge-ongoing';
+            let badgeText = p.status === 'final' ? 'Final' : 'In Progress';
+            let projectLinkHtml = p.link ? `<a href="${p.link}" target="_blank" rel="noopener noreferrer" class="project-link">${p.name}</a>` : `<span class="project-link">${p.name}</span>`;
+            tableHtml += `
+              <tr>
+                <td class="task-name">${projectLinkHtml}</td>
+                <td><span class="badge ${badgeClass}">${badgeText}</span></td>
+              </tr>
+            `;
+          });
+        } else {
+          tableHtml += `<tr><td colspan="2" style="padding:14px;color:#ccc;font-size:13px;">Belum ada project</td></tr>`;
+        }
+
+        tableHtml += `</tbody></table>`;
+        contentDiv.innerHTML = tableHtml;
+
+        // Toggle functionality
+        headerDiv.addEventListener('click', () => {
+          headerDiv.classList.toggle('collapsed');
+          contentDiv.classList.toggle('collapsed');
+        });
+
+        groupDiv.appendChild(headerDiv);
+        groupDiv.appendChild(contentDiv);
+        container.appendChild(groupDiv);
       });
+    }
 
-      groupDiv.appendChild(headerDiv);
-      groupDiv.appendChild(contentDiv);
-      container.appendChild(groupDiv);
+    // Initial render
+    renderList(platforms);
+
+    // Sidebar navigation logic
+    navItems.forEach(item => {
+      item.addEventListener('click', () => {
+        // Update active state
+        navItems.forEach(nav => nav.classList.remove('active'));
+        item.classList.add('active');
+
+        const view = item.getAttribute('data-view');
+        if (view === 'mss') {
+          pageTitle.textContent = 'MSS Ekosistem Platforms';
+          renderList(platforms);
+        } else if (view === 'presentation') {
+          pageTitle.textContent = 'Presentation List';
+          renderList(presentations);
+        }
+      });
     });
 
     // Search Functionality
@@ -217,7 +274,7 @@
         let hasVisibleRow = false;
 
         rows.forEach(row => {
-          if (row.cells[0].colSpan > 1) return; // Skip "Belum ada project" placeholder row
+          if (row.cells[0].colSpan > 1) return; // Skip placeholder row
 
           const projectName = row.cells[0].textContent.toLowerCase();
           if (projectName.includes(query)) {
