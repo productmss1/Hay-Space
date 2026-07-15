@@ -1,0 +1,1404 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arsitektur Ekosistem MSS: Interkoneksi Bisnis Modular & Terintegrasi</title>
+
+  <!-- Font Google & Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg-light: #F8FAFC;
+      --card-bg: #FFFFFF;
+      --border-color: #E2E8F0;
+
+      --color-blue: #3B82F6;
+      --color-green: #22C55E;
+      --color-orange: #F97316;
+      --color-purple: #A855F7;
+
+      --bg-blue-light: rgba(59, 130, 246, 0.05);
+      --bg-green-light: rgba(34, 197, 94, 0.05);
+      --bg-orange-light: rgba(249, 115, 22, 0.05);
+      --bg-purple-light: rgba(168, 85, 247, 0.05);
+
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --text-main: #334155;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-light);
+      font-family: 'Outfit', sans-serif;
+      color: var(--text-dark);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 20px 40px;
+      background: white;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+    }
+
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-icon {
+      background: linear-gradient(135deg, var(--color-blue), var(--color-orange));
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: white;
+      box-shadow: 0 4px 10px rgba(59, 130, 246, 0.15);
+    }
+
+    .logo-text h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .logo-text p {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .control-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-action {
+      background: white;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.25s ease;
+    }
+
+    .btn-action:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
+
+    .btn-action.active {
+      background: var(--color-blue);
+      border-color: var(--color-blue);
+      color: white;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25);
+    }
+
+    main {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 20px;
+      padding: 24px;
+      max-width: 1750px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Central Workspace: Interactive Network Map */
+    .network-container {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 680px;
+      height: calc(100vh - 120px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+    }
+
+    .network-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      max-width: 1000px;
+      max-height: 600px;
+      aspect-ratio: 1000 / 600;
+    }
+
+    /* Layout Group Containers */
+    .group-box {
+      position: absolute;
+      border-radius: 16px;
+      pointer-events: none;
+      z-index: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      padding-top: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .group-box.b2c {
+      left: 14%;
+      top: 6%;
+      width: 20%;
+      height: 48%;
+      background: rgba(59, 130, 246, 0.015);
+      border: 1px dashed rgba(59, 130, 246, 0.15);
+    }
+
+    .group-box.pos-operasional {
+      left: 39%;
+      top: 6%;
+      width: 22%;
+      height: 48%;
+      background: rgba(34, 197, 94, 0.012);
+      border: 1px dashed rgba(34, 197, 94, 0.15);
+    }
+
+    .group-box.b2b {
+      left: 65%;
+      top: 6%;
+      width: 22%;
+      height: 48%;
+      background: rgba(34, 197, 94, 0.015);
+      border: 1px dashed rgba(34, 197, 94, 0.15);
+    }
+
+    .group-box.transport-warehouse {
+      left: 14%;
+      top: 68%;
+      width: 47%;
+      height: 26%;
+      background: rgba(249, 115, 22, 0.015);
+      border: 1px dashed rgba(249, 115, 22, 0.15);
+    }
+
+    .group-box.finance-enabler {
+      left: 65%;
+      top: 68%;
+      width: 22%;
+      height: 26%;
+      background: rgba(168, 85, 247, 0.015);
+      border: 1px dashed rgba(168, 85, 247, 0.15);
+    }
+
+    .group-pill {
+      color: var(--text-muted);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border: 1px solid var(--border-color);
+      background: white;
+    }
+
+    /* SVG Overlay for Connections */
+    .svg-connections {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .connection-line {
+      fill: none;
+      stroke: #CBD5E1;
+      stroke-width: 2.2;
+      stroke-dasharray: 6 5;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .connection-line.active {
+      stroke-width: 3.8;
+      stroke-dasharray: 8 4;
+      animation: flow-dash 0.6s linear infinite;
+    }
+
+    @keyframes flow-dash {
+      to {
+        stroke-dashoffset: -24;
+      }
+    }
+
+    /* Node Cards styling */
+    .node {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      z-index: 10;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      background: white;
+      border: 1.5px solid var(--border-color);
+      border-radius: 12px;
+      padding: 10px 14px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.02);
+      transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .node-vertical {
+      flex-direction: column;
+      justify-content: center;
+      width: 110px;
+      height: 120px;
+      text-align: center;
+      padding: 10px 6px;
+    }
+
+    .node-horizontal {
+      width: 180px;
+      height: 80px;
+      gap: 10px;
+    }
+
+    .node-wide {
+      width: 185px;
+      height: 80px;
+      gap: 10px;
+    }
+
+    .node-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: #F1F5F9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      color: var(--text-dark);
+      flex-shrink: 0;
+      transition: all 0.3s ease;
+    }
+
+    .node-vertical .node-icon-box {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
+    .node-content {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      text-align: left;
+    }
+
+    .node-title {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      font-family: 'Space Grotesk', sans-serif;
+      line-height: 1.2;
+      white-space: normal;
+    }
+
+    .node-subtitle {
+      font-size: 0.62rem;
+      color: var(--text-muted);
+      line-height: 1.3;
+    }
+
+    /* Specific Node styles */
+    #node-customer {
+      left: 7%;
+      top: 36.6%;
+      border-color: rgba(59, 130, 246, 0.25);
+      background: rgba(240, 246, 255, 0.95);
+    }
+
+    #node-customer .node-icon-box {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--color-blue);
+    }
+
+    #node-supplier {
+      left: 93%;
+      top: 36.6%;
+      border-color: rgba(100, 116, 139, 0.25);
+      background: rgba(248, 250, 252, 0.95);
+    }
+
+    #node-supplier .node-icon-box {
+      background: rgba(100, 116, 139, 0.1);
+      color: var(--text-muted);
+    }
+
+    #node-renov {
+      left: 24%;
+      top: 20%;
+      border-color: rgba(59, 130, 246, 0.25);
+      background: rgba(240, 246, 255, 0.95);
+    }
+
+    #node-renov .node-icon-box {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--color-blue);
+    }
+
+    #node-retail {
+      left: 24%;
+      top: 36.6%;
+      border-color: rgba(59, 130, 246, 0.25);
+      background: rgba(240, 246, 255, 0.95);
+    }
+
+    #node-retail .node-icon-box {
+      background: rgba(59, 130, 246, 0.1);
+      color: var(--color-blue);
+    }
+
+    #node-pos {
+      left: 50%;
+      top: 36.6%;
+      border-color: rgba(34, 197, 94, 0.25);
+      background: rgba(240, 253, 244, 0.95);
+    }
+
+    #node-pos .node-icon-box {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--color-green);
+    }
+
+    #node-b2b {
+      left: 76%;
+      top: 36.6%;
+      border-color: rgba(34, 197, 94, 0.25);
+      background: rgba(240, 253, 244, 0.95);
+    }
+
+    #node-b2b .node-icon-box {
+      background: rgba(34, 197, 94, 0.1);
+      color: var(--color-green);
+    }
+
+    #node-transport {
+      left: 24%;
+      top: 80%;
+      border-color: rgba(249, 115, 22, 0.25);
+      background: rgba(255, 247, 237, 0.95);
+    }
+
+    #node-transport .node-icon-box {
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--color-orange);
+    }
+
+    #node-warehouse {
+      left: 50%;
+      top: 80%;
+      border-color: rgba(249, 115, 22, 0.25);
+      background: rgba(255, 247, 237, 0.95);
+    }
+
+    #node-warehouse .node-icon-box {
+      background: rgba(249, 115, 22, 0.1);
+      color: var(--color-orange);
+    }
+
+    #node-finance {
+      left: 76%;
+      top: 80%;
+      border-color: rgba(168, 85, 247, 0.25);
+      background: rgba(250, 245, 255, 0.95);
+    }
+
+    #node-finance .node-icon-box {
+      background: rgba(168, 85, 247, 0.1);
+      color: var(--color-purple);
+    }
+
+    /* Hover / Active Node Cards */
+    .node:hover {
+      transform: translate(-50%, -50%) scale(1.03);
+      border-color: #94A3B8;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.04);
+    }
+
+    .node.active {
+      border-width: 2px;
+      box-shadow: 0 8px 24px rgba(59, 130, 246, 0.1);
+    }
+
+    #node-customer.active {
+      border-color: var(--color-blue);
+    }
+
+    #node-renov.active {
+      border-color: var(--color-blue);
+    }
+
+    #node-retail.active {
+      border-color: var(--color-blue);
+    }
+
+    #node-pos.active {
+      border-color: var(--color-blue);
+    }
+
+    #node-b2b.active {
+      border-color: var(--color-green);
+    }
+
+    #node-supplier.active {
+      border-color: var(--text-muted);
+    }
+
+    #node-transport.active {
+      border-color: var(--color-orange);
+    }
+
+    #node-warehouse.active {
+      border-color: var(--color-orange);
+    }
+
+    #node-finance.active {
+      border-color: var(--color-purple);
+    }
+
+    /* Interactive Right Detail Panel */
+    .panel-info {
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      max-height: calc(100vh - 120px);
+      overflow-y: auto;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.015);
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      border-left: 4px solid var(--color-blue);
+      padding-left: 10px;
+      margin-bottom: 8px;
+    }
+
+    .info-card-empty {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: var(--text-muted);
+      padding: 40px 10px;
+      border: 1.5px dashed var(--border-color);
+      border-radius: 12px;
+      gap: 12px;
+    }
+
+    .info-card-empty i {
+      font-size: 2.2rem;
+      color: var(--border-color);
+    }
+
+    .info-card-content {
+      display: none;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .info-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+    }
+
+    .info-label {
+      text-transform: uppercase;
+      font-size: 0.68rem;
+      letter-spacing: 1.5px;
+      font-weight: 800;
+      color: var(--color-orange);
+      margin-bottom: 4px;
+    }
+
+    .info-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .flow-cards-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .integration-card {
+      background: #F8FAFC;
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .integration-card:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      transform: translateY(-1.5px);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+
+    .tag {
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .tag-og {
+      background: rgba(52, 199, 89, 0.1);
+      color: #16A34A;
+      border: 1px solid rgba(52, 199, 89, 0.2);
+    }
+
+    .tag-soon {
+      background: rgba(249, 115, 22, 0.1);
+      color: #EA580C;
+      border: 1px solid rgba(249, 115, 22, 0.2);
+    }
+
+    .tag-incoming {
+      background: rgba(59, 130, 246, 0.08);
+      color: #2563EB;
+      border: 1px solid rgba(59, 130, 246, 0.2);
+    }
+
+    .tag-outgoing {
+      background: rgba(168, 85, 247, 0.08);
+      color: #7C3AED;
+      border: 1px solid rgba(168, 85, 247, 0.2);
+    }
+
+    .tag-dir-in {
+      background: rgba(34, 197, 94, 0.08);
+      color: #16A34A;
+      border: 1px solid rgba(34, 197, 94, 0.2);
+    }
+
+    .tag-dir-out {
+      background: rgba(249, 115, 22, 0.08);
+      color: #EA580C;
+      border: 1px solid rgba(249, 115, 22, 0.2);
+    }
+
+    .card-direction {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .card-direction i {
+      font-size: 0.75rem;
+    }
+
+    .card-body {
+      font-size: 0.78rem;
+      color: var(--text-main);
+      line-height: 1.4;
+    }
+
+    .card-impact {
+      margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      border-top: 1px dashed var(--border-color);
+      padding-top: 6px;
+    }
+
+    .card-impact strong {
+      color: var(--text-dark);
+    }
+
+    footer {
+      padding: 16px;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      background: white;
+      z-index: 10;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo-area">
+      <div class="logo-icon"><i class="fa-solid fa-network-wired"></i></div>
+      <div class="logo-text">
+        <h1>Ekosistem Digital Mitra Seribu Saudara</h1>
+        <p>Arsitektur Interkoneksi Bisnis Modular & Terintegrasi</p>
+      </div>
+    </div>
+    <div class="control-actions">
+      <button class="btn-action" id="btn-show-all"><i class="fa-solid fa-eye"></i> Tampilkan Semua</button>
+      <button class="btn-action" id="btn-reset"><i class="fa-solid fa-rotate-left"></i> Bersihkan View</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Central Workspace: Nodes and Connections -->
+    <div class="network-container">
+
+      <div class="network-wrapper" id="network-wrapper">
+        <!-- SVG Connections Background -->
+        <svg class="svg-connections" viewBox="0 0 1000 600" id="svg-view">
+          <defs>
+          </defs>
+
+          <!-- Lines Group -->
+          <g id="connections-group"></g>
+        </svg>
+
+        <!-- Group Box Backgrounds -->
+        <div class="group-box b2c">
+          <div class="group-pill">B2C (Retail & Jasa)</div>
+        </div>
+        <div class="group-box pos-operasional">
+          <div class="group-pill">Operasional Toko</div>
+        </div>
+        <div class="group-box b2b">
+          <div class="group-pill">B2B (Procurement)</div>
+        </div>
+        <div class="group-box transport-warehouse">
+          <div class="group-pill">Logistik & Pergudangan On-Demand</div>
+        </div>
+        <div class="group-box finance-enabler">
+          <div class="group-pill">Finansial & Pembiayaan (BNPL)</div>
+        </div>
+
+        <!-- Node Cards -->
+
+        <!-- Node 1: End Customer -->
+        <div class="node node-vertical" id="node-customer" data-node="customer">
+          <div class="node-icon-box"><i class="fa-solid fa-users"></i></div>
+          <div class="node-title">End Customer</div>
+          <div class="node-subtitle">Pembeli Ritel & Konsumen Proyek</div>
+        </div>
+
+        <!-- Node 2: Supplier -->
+        <div class="node node-vertical" id="node-supplier" data-node="supplier">
+          <div class="node-icon-box"><i class="fa-solid fa-industry"></i></div>
+          <div class="node-title">Supplier</div>
+          <div class="node-subtitle">Pabrikan & Distributor Resmi</div>
+        </div>
+
+        <!-- Node 3: Renov1000s -->
+        <div class="node node-horizontal" id="node-renov" data-node="renov">
+          <div class="node-icon-box"><i class="fa-solid fa-helmet-safety"></i></div>
+          <div class="node-content">
+            <div class="node-title">Renov1000s</div>
+            <div class="node-subtitle">Jasa Renovasi, Design & Build</div>
+          </div>
+        </div>
+
+        <!-- Node 4: 1000saudara.com -->
+        <div class="node node-horizontal" id="node-retail" data-node="retail">
+          <div class="node-icon-box"><i class="fa-solid fa-store"></i></div>
+          <div class="node-content">
+            <div class="node-title">1000saudara.com</div>
+            <div class="node-subtitle">Marketplace Bahan Bangunan Retail B2C</div>
+          </div>
+        </div>
+
+        <!-- Node 5: inTechgra (POS) -->
+        <div class="node node-horizontal" id="node-pos" data-node="pos">
+          <div class="node-icon-box"><i class="fa-solid fa-cash-register"></i></div>
+          <div class="node-content">
+            <div class="node-title">inTechgra (POS)</div>
+            <div class="node-subtitle">Sistem Kasir Ritel Fisik & Sinkronisasi Seller Center</div>
+          </div>
+        </div>
+
+        <!-- Node 6: Mitra1000s -->
+        <div class="node node-horizontal" id="node-b2b" data-node="b2b">
+          <div class="node-icon-box"><i class="fa-solid fa-handshake"></i></div>
+          <div class="node-content">
+            <div class="node-title">Mitra1000s (B2B)</div>
+            <div class="node-subtitle">Portal Belanja Order Online Ke Supplier</div>
+          </div>
+        </div>
+
+        <!-- Node 7: Transport1000s -->
+        <div class="node node-horizontal" id="node-transport" data-node="transport">
+          <div class="node-icon-box"><i class="fa-solid fa-truck"></i></div>
+          <div class="node-content">
+            <div class="node-title">Transport1000s</div>
+            <div class="node-subtitle">Armada Logistik Berat & Last-Mile Delivery</div>
+          </div>
+        </div>
+
+        <!-- Node 8: Warehouse1000s -->
+        <div class="node node-horizontal" id="node-warehouse" data-node="warehouse">
+          <div class="node-icon-box"><i class="fa-solid fa-warehouse"></i></div>
+          <div class="node-content">
+            <div class="node-title">Warehouse1000s</div>
+            <div class="node-subtitle">Gudang Regional & Area Overstock Temporer</div>
+          </div>
+        </div>
+
+        <!-- Node 9: Finance1000s -->
+        <div class="node node-horizontal" id="node-finance" data-node="finance">
+          <div class="node-icon-box"><i class="fa-solid fa-money-check-dollar"></i></div>
+          <div class="node-content">
+            <div class="node-title">Finance1000s</div>
+            <div class="node-subtitle">Paylater Konsumen & Plafon Tempo Toko (BNPL)</div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Right Panel: Active Details Card -->
+    <div class="panel-info">
+      <div class="section-title">Aliran Integrasi</div>
+
+      <!-- Empty state -->
+      <div class="info-card-empty" id="info-empty">
+        <i class="fa-solid fa-circle-nodes"></i>
+        <p>Klik salah satu kartu platform di peta untuk menelusuri hubungan data dan aliran nilai operasional.</p>
+      </div>
+
+      <!-- Active state -->
+      <div class="info-card-content" id="info-active">
+        <div class="info-header">
+          <div class="info-label" id="info-lbl-status">Platform Aktif</div>
+          <h2 class="info-title" id="info-val-title">Platform Name</h2>
+        </div>
+
+        <div class="flow-cards-container" id="flow-cards-list">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2026 PT Mitra Seribu Saudara - Solusi Digital Terintegrasi Bahan Bangunan & Konstruksi</p>
+  </footer>
+
+  <script>
+    // Data Integrasi Ekosistem MSS
+    const integrations = [
+      {
+        id: "customer-to-renov",
+        source: "customer",
+        target: "renov",
+        title: "Order Paket Jasa Konstruksi / Tukang",
+        sourceName: "End Customer",
+        targetName: "Renov1000s",
+        color: "var(--color-blue)",
+        tagType: "On-going",
+        process: "Konsumen ritel atau kontraktor proyek mengajukan pemesanan jasa gambar arsitek, tukang borongan, atau tukang harian melalui platform Renov1000s.",
+        impact: "Mengakomodasi kebutuhan penyediaan jasa tenaga kerja konstruksi berlisensi secara digital."
+      },
+      {
+        id: "customer-to-retail",
+        source: "customer",
+        target: "retail",
+        title: "Belanja Bahan Bangunan Retail B2C",
+        sourceName: "End Customer",
+        targetName: "1000saudara.com",
+        color: "var(--color-blue)",
+        tagType: "On-going",
+        process: "Konsumen ritel membeli komoditas bahan bangunan eceran secara langsung lewat portal e-commerce B2C 1000saudara.com.",
+        impact: "Membuka gerbang transaksi retail bahan bangunan online langsung ke end customer."
+      },
+      {
+        id: "renov-to-retail",
+        source: "renov",
+        target: "retail",
+        title: "Konversi RAB Proyek ke Material Belanja",
+        sourceName: "Renov1000s",
+        targetName: "1000saudara.com",
+        color: "var(--color-blue)",
+        tagType: "On-going",
+        process: "Formulir Rencana Anggaran Biaya (RAB) digital dari estimator proyek di Renov1000s dikonversi otomatis menjadi keranjang belanja material konstruksi di 1000saudara.com.",
+        impact: "Mempercepat konversi tahap jasa perencanaan langsung ke pembelian material resmi."
+      },
+      {
+        id: "retail-to-pos",
+        source: "retail",
+        target: "pos",
+        title: "Penerusan Order Ritel (Fulfillment Toko)",
+        sourceName: "1000saudara.com",
+        targetName: "inTechgra (POS)",
+        color: "var(--color-blue)",
+        tagType: "Soon",
+        process: "Pesanan belanja online di 1000saudara.com diteruskan otomatis ke sistem inTechgra POS ruko bangunan terdekat untuk disiapkan barang fisiknya.",
+        impact: "Mendayagunakan toko bangunan offline sebagai gudang fulfillment lokal demi pengiriman cepat."
+      },
+      {
+        id: "supplier-to-b2b",
+        source: "supplier",
+        target: "b2b",
+        title: "Pemenuhan Pasokan Grosir Pabrikan",
+        sourceName: "Supplier",
+        targetName: "Mitra1000s (B2B)",
+        color: "var(--color-green)",
+        tagType: "On-going",
+        process: "Distributor utama dan pabrikan menyuplai stok grosir bervolume tinggi ke katalog digital platform B2B Mitra1000s.",
+        impact: "Menjamin orisinalitas pasokan material konstruksi langsung dari tangan produsen pertama."
+      },
+      {
+        id: "pos-to-b2b",
+        source: "pos",
+        target: "b2b",
+        title: "Pemesanan Restok Otomatis (Auto-Restock)",
+        sourceName: "inTechgra (POS)",
+        targetName: "Mitra1000s (B2B)",
+        color: "var(--color-green)",
+        tagType: "Soon",
+        process: "Ketika data inventaris stok ruko di inTechgra POS menipis di bawah level aman, sistem otomatis mengirim anjuran restok grosir ke Mitra1000s.",
+        impact: "Mengurangi risiko kehabisan stok (stock-out) barang-barang komoditas bangunan terpopuler di ruko."
+      },
+      {
+        id: "pos-to-transport",
+        source: "pos",
+        target: "transport",
+        title: "Permintaan Kurir Last-Mile Ruko",
+        sourceName: "inTechgra (POS)",
+        targetName: "Transport1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Penjualan ritel offline atau online yang siap dikirim di POS kasir memicu pencarian kurir on-demand di Transport1000s (truk pickup/roda 3).",
+        impact: "Membantu toko ritel mengantarkan barang berat ke alamat pembeli secara praktis dan terpantau GPS."
+      },
+      {
+        id: "pos-to-warehouse",
+        source: "pos",
+        target: "warehouse",
+        title: "Sewa Space Overstock Temporer",
+        sourceName: "inTechgra (POS)",
+        targetName: "Warehouse1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Ruko ritel yang mengalami kelebihan stok musiman dapat memesan ruang sewa gudang temporer di Warehouse1000s langsung lewat menu POS.",
+        impact: "Menyeimbangkan kapasitas ruang display toko ritel agar perputaran barang tetap tertata rapi."
+      },
+      {
+        id: "b2b-to-warehouse",
+        source: "b2b",
+        target: "warehouse",
+        title: "Penempatan Stok Grosir Regional (WaaS)",
+        sourceName: "Mitra1000s (B2B)",
+        targetName: "Warehouse1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Stok grosir dari supplier ditarik dan didistribusikan ke gudang-gudang modular regional milik Warehouse1000s di dekat pasar padat.",
+        impact: "Memotong jarak tempuh pengiriman material curah/berat langsung ke titik ruko pembeli."
+      },
+      {
+        id: "b2b-to-transport",
+        source: "b2b",
+        target: "transport",
+        title: "Pengiriman Logistik B2B ke Toko Bangunan",
+        sourceName: "Mitra1000s (B2B)",
+        targetName: "Transport1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Pemesanan grosir toko bahan bangunan yang dikonfirmasi di portal Mitra1000s memicu penugasan logistik kurir armada Transport1000s untuk mengirimkan muatan besar dari supplier/gudang ke ruko toko bangunan.",
+        impact: "Menyediakan pemenuhan pengiriman logistik B2B secara terpadu dan efisien."
+      },
+      {
+        id: "warehouse-to-transport",
+        source: "warehouse",
+        target: "transport",
+        title: "Alokasi Truk Heavy Cargo Outbound",
+        sourceName: "Warehouse1000s",
+        targetName: "Transport1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Perintah barang keluar (outbound) di Warehouse1000s memicu pencarian dan penunjukan unit truk angkutan berat (Heavy Cargo) di Transport1000s.",
+        impact: "Mengurangi muatan kosong truk logistik dan mengoptimalkan rute pengiriman multi-drop."
+      },
+      {
+        id: "retail-to-transport",
+        source: "retail",
+        target: "transport",
+        title: "Pengiriman Last-Mile Pembelian Online B2C",
+        sourceName: "1000saudara.com",
+        targetName: "Transport1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Pembelian bahan bangunan oleh end customer di 1000saudara.com memicu pesanan logistik instan roda 3/pickup di Transport1000s.",
+        impact: "Memberikan kenyamanan berbelanja online dengan pengiriman barang berat yang andal."
+      },
+      {
+        id: "transport-to-customer",
+        source: "transport",
+        target: "customer",
+        title: "Pengantaran Fisik Material ke Lokasi",
+        sourceName: "Transport1000s",
+        targetName: "End Customer",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Armada Transport1000s menyelesaikan pengantaran material semen/pasir/besi langsung ke lokasi alamat/proyek rumah pembeli.",
+        impact: "Menyediakan proses pelacakan peta pengantaran bahan bangunan secara real-time."
+      },
+      {
+        id: "retail-to-finance",
+        source: "retail",
+        target: "finance",
+        title: "Fasilitas Belanja Cicilan B2C Paylater",
+        sourceName: "1000saudara.com",
+        targetName: "Finance1000s",
+        color: "var(--color-purple)",
+        tagType: "Soon",
+        process: "Fasilitas pinjaman limit bayar nanti (BNPL) bagi pembeli material ritel di e-commerce 1000saudara.com.",
+        impact: "Membantu melonggarkan arus keuangan pemilik rumah untuk segera merenovasi hunian mereka."
+      },
+      {
+        id: "renov-to-finance",
+        source: "renov",
+        target: "finance",
+        title: "Pembiayaan Jasa Kontraktor & Upah Tukang",
+        sourceName: "Renov1000s",
+        targetName: "Finance1000s",
+        color: "var(--color-purple)",
+        tagType: "Soon",
+        process: "Fasilitas pembiayaan proyek konstruksi/renovasi untuk membayar biaya upah tukang harian & borongan di Renov1000s.",
+        impact: "Menjamin proyek renovasi tetap berjalan lancar tanpa terhenti karena masalah kesiapan dana upah."
+      },
+      {
+        id: "b2b-to-finance",
+        source: "b2b",
+        target: "finance",
+        title: "Kredit Plafon Tempo Grosir Toko (B2B BNPL)",
+        sourceName: "Mitra1000s (B2B)",
+        targetName: "Finance1000s",
+        color: "var(--color-purple)",
+        tagType: "Soon",
+        process: "Pemilik toko bangunan mengajukan tempo pembayaran belanja grosir di Mitra1000s dengan pengalihan tagihan ke Finance1000s.",
+        impact: "Meningkatkan kemampuan daya beli ruko untuk menyetok komoditas bernilai tinggi."
+      },
+      {
+        id: "pos-to-finance",
+        source: "pos",
+        target: "finance",
+        title: "Skoring Kredit Alternatif (POS Omzet)",
+        sourceName: "inTechgra (POS)",
+        targetName: "Finance1000s",
+        color: "var(--color-purple)",
+        tagType: "Soon",
+        process: "Omzet harian, performa keuangan, dan tren penjualan kasir POS inTechgra dianalisis untuk menentukan limit kredit toko.",
+        impact: "Membantu toko tradisional mendapatkan modal kerja tempo tanpa jaminan aset fisik tradisional."
+      },
+      {
+        id: "supplier-to-transport",
+        source: "supplier",
+        target: "transport",
+        title: "Sewa Transportasi Logistik Luar Ekosistem",
+        sourceName: "Supplier",
+        targetName: "Transport1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Pabrikan/Supplier menyewa armada logistik Transport1000s secara mandiri untuk mengirimkan pasokan barang ke pembeli di luar ekosistem MSS.",
+        impact: "Memperluas pemanfaatan aset logistik Transport1000s sebagai penyedia logistik pihak ketiga (3PL) eksternal."
+      },
+      {
+        id: "supplier-to-warehouse",
+        source: "supplier",
+        target: "warehouse",
+        title: "Sewa Gudang Mandiri (Supplier WaaS)",
+        sourceName: "Supplier",
+        targetName: "Warehouse1000s",
+        color: "var(--color-orange)",
+        tagType: "Soon",
+        process: "Supplier/Brandowner menyewa ruang penyimpanan di gudang modular regional Warehouse1000s secara mandiri untuk mendistribusikan barang tanpa harus berjualan di portal B2B Mitra1000s.",
+        impact: "Membuka peluang monetisasi pergudangan mandiri (Warehouse-as-a-Service) langsung untuk produsen utama."
+      }
+    ];
+
+    // Node Positions mapped on a 1000 x 600 viewBox layout grid
+    // Clean symmetric 9-node separated architecture
+    const nodePositions = {
+      customer: { x: 70, y: 220 },
+      supplier: { x: 930, y: 220 },
+      renov: { x: 240, y: 120 },
+      retail: { x: 240, y: 220 },
+      pos: { x: 500, y: 220 },
+      b2b: { x: 760, y: 220 },
+      transport: { x: 240, y: 480 },
+      warehouse: { x: 500, y: 480 },
+      finance: { x: 760, y: 480 }
+    };
+
+    const nodeTitles = {
+      customer: "End Customer",
+      supplier: "Supplier",
+      renov: "Renov1000s (Desain & Jasa)",
+      retail: "1000saudara.com (B2C E-Commerce)",
+      pos: "inTechgra (POS & Seller Center)",
+      b2b: "Mitra1000s (B2B Stock Procurement)",
+      transport: "Transport1000s (Logistik On-Demand)",
+      warehouse: "Warehouse1000s (Pergudangan WaaS)",
+      finance: "Finance1000s (Fintech Engine)"
+    };
+
+    // DOM Elements
+    const connectionsGroup = document.getElementById("connections-group");
+    const infoEmpty = document.getElementById("info-empty");
+    const infoActive = document.getElementById("info-active");
+    const flowCardsList = document.getElementById("flow-cards-list");
+    const infoTitle = document.getElementById("info-val-title");
+
+    const btnShowAll = document.getElementById("btn-show-all");
+    const btnReset = document.getElementById("btn-reset");
+
+    // Initialize Network Connections in SVG
+    function renderConnections() {
+      connectionsGroup.innerHTML = "";
+      integrations.forEach(flow => {
+        const p1 = nodePositions[flow.source];
+        const p2 = nodePositions[flow.target];
+        const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+
+        let d = "";
+
+        // Exact connector coordinates ending exactly at card boundary borders
+        if (flow.id === "customer-to-renov") {
+          d = "M 70 160 L 70 120 L 150 120";
+        } else if (flow.id === "customer-to-retail") {
+          d = "M 125 220 L 150 220";
+        } else if (flow.id === "renov-to-retail") {
+          d = "M 240 160 L 240 180";
+        } else if (flow.id === "retail-to-pos") {
+          d = "M 330 220 L 407.5 220";
+        } else if (flow.id === "supplier-to-b2b") {
+          d = "M 875 220 L 850 220";
+        } else if (flow.id === "pos-to-b2b") {
+          d = "M 592.5 220 L 670 220";
+        } else if (flow.id === "pos-to-transport") {
+          d = "M 440 260 L 440 380 L 240 380 L 240 440";
+        } else if (flow.id === "pos-to-warehouse") {
+          d = "M 500 260 L 500 440";
+        } else if (flow.id === "b2b-to-warehouse") {
+          d = "M 700 260 L 700 380 L 530 380 L 530 440";
+        } else if (flow.id === "b2b-to-transport") {
+          d = "M 700 260 L 700 400 L 300 400 L 300 440";
+        } else if (flow.id === "warehouse-to-transport") {
+          d = "M 407.5 480 L 330 480";
+        } else if (flow.id === "retail-to-transport") {
+          d = "M 180 260 L 180 440";
+        } else if (flow.id === "transport-to-customer") {
+          d = "M 150 480 L 70 480 L 70 280";
+        } else if (flow.id === "retail-to-finance") {
+          d = "M 300 260 L 300 360 L 730 360 L 730 440";
+        } else if (flow.id === "renov-to-finance") {
+          d = "M 330 120 L 870 120 L 870 460 L 850 460";
+        } else if (flow.id === "b2b-to-finance") {
+          d = "M 800 260 L 800 440";
+        } else if (flow.id === "pos-to-finance") {
+          d = "M 560 260 L 560 400 L 700 400 L 700 440";
+        } else if (flow.id === "supplier-to-transport") {
+          d = "M 930 280 L 930 560 L 200 560 L 200 520";
+        } else if (flow.id === "supplier-to-warehouse") {
+          d = "M 900 280 L 900 540 L 500 540 L 500 520";
+        } else {
+          d = `M ${p1.x} ${p1.y} L ${p2.x} ${p2.y}`;
+        }
+
+        path.setAttribute("d", d);
+        path.setAttribute("class", "connection-line");
+        path.setAttribute("id", `line-${flow.id}`);
+
+        connectionsGroup.appendChild(path);
+      });
+    }
+
+    let clickedNodeName = null;
+
+    // Highlight integration flows associated with a node
+    function highlightNodeIntegrations(nodeName) {
+      clickedNodeName = nodeName;
+
+      // Update Node active styling
+      document.querySelectorAll(".node").forEach(node => {
+        node.classList.remove("active");
+      });
+      const nodeEl = document.getElementById(`node-${nodeName}`);
+      if (nodeEl) nodeEl.classList.add("active");
+
+      // Reset connection lines
+      document.querySelectorAll(".connection-line").forEach(line => {
+        line.classList.remove("active");
+        line.style.stroke = "#CBD5E1";
+      });
+
+      // Filter related flows
+      const relatedFlows = integrations.filter(f => f.source === nodeName || f.target === nodeName);
+
+      // Sort related flows: incoming first ("diterima dari"), then outgoing ("mengalir ke")
+      relatedFlows.sort((a, b) => {
+        const aIncoming = a.target === nodeName;
+        const bIncoming = b.target === nodeName;
+        if (aIncoming && !bIncoming) return -1;
+        if (!aIncoming && bIncoming) return 1;
+        return 0;
+      });
+
+      relatedFlows.forEach(flow => {
+        const line = document.getElementById(`line-${flow.id}`);
+        if (line) {
+          line.classList.add("active");
+          line.style.stroke = flow.color;
+        }
+      });
+
+      // Render details card on the right
+      infoEmpty.style.display = "none";
+      infoActive.style.display = "flex";
+      infoTitle.innerText = nodeTitles[nodeName];
+
+      flowCardsList.innerHTML = "";
+
+      if (relatedFlows.length === 0) {
+        flowCardsList.innerHTML = `<div style="text-align: center; padding: 20px; color: var(--text-muted); font-size: 0.85rem;">Tidak ada alur integrasi data langsung.</div>`;
+        return;
+      }
+
+      relatedFlows.forEach(flow => {
+        const card = document.createElement("div");
+        card.className = "integration-card";
+
+        const isOutgoing = flow.source === nodeName;
+        const directionText = isOutgoing ? "KELUAR" : "MASUK";
+        const directionTagClass = isOutgoing ? "tag-outgoing" : "tag-incoming";
+        const arrowDirection = isOutgoing ? "fa-circle-arrow-right" : "fa-circle-arrow-left";
+        const tagDirClass = isOutgoing ? "tag-dir-out" : "tag-dir-in";
+        const tagDirText = isOutgoing ? "Mengalir ke" : "Diterima dari";
+        const partnerName = isOutgoing ? flow.targetName : flow.sourceName;
+        const tagClass = flow.tagType === "On-going" ? "tag-og" : "tag-soon";
+
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="card-title">${flow.title}</span>
+            <div style="display: flex; gap: 6px; align-items: center;">
+              <span class="tag ${directionTagClass}">${directionText}</span>
+              <span class="tag ${tagClass}">${flow.tagType}</span>
+            </div>
+          </div>
+          <div class="card-direction" style="display: flex; align-items: center; gap: 6px; flex-wrap: wrap;">
+            <i class="fa-solid ${arrowDirection}" style="color: ${flow.color}"></i>
+            <span class="tag ${tagDirClass}" style="text-transform: none; font-size: 0.65rem; padding: 2px 6px;">${tagDirText}</span>
+            <strong>${partnerName}</strong>
+          </div>
+          <div class="card-body">
+            ${flow.process}
+          </div>
+          <div class="card-impact">
+            <strong>Dampak Bisnis:</strong> ${flow.impact}
+          </div>
+        `;
+
+        // Hovering a card focuses its line
+        card.addEventListener("mouseenter", () => {
+          relatedFlows.forEach(rf => {
+            const lineEl = document.getElementById(`line-${rf.id}`);
+            if (lineEl) {
+              if (rf.id === flow.id) {
+                lineEl.style.strokeWidth = "5px";
+              } else {
+                lineEl.style.opacity = "0.15";
+              }
+            }
+          });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          relatedFlows.forEach(rf => {
+            const lineEl = document.getElementById(`line-${rf.id}`);
+            if (lineEl) {
+              lineEl.style.strokeWidth = "3.5px";
+              lineEl.style.opacity = "1";
+            }
+          });
+        });
+
+        flowCardsList.appendChild(card);
+      });
+    }
+
+    // Reset layout view to initial state
+    function resetView() {
+      clickedNodeName = null;
+      document.querySelectorAll(".connection-line").forEach(line => {
+        line.classList.remove("active");
+        line.style.stroke = "#CBD5E1";
+        line.style.strokeWidth = "2px";
+        line.style.opacity = "1";
+      });
+      document.querySelectorAll(".node").forEach(node => {
+        node.classList.remove("active");
+      });
+
+      infoEmpty.style.display = "flex";
+      infoActive.style.display = "none";
+    }
+
+    // Highlight all integration connections in the ecosystem
+    function showAll() {
+      clickedNodeName = null;
+      document.querySelectorAll(".connection-line").forEach(line => {
+        const id = line.id.replace("line-", "");
+        const flow = integrations.find(f => f.id === id);
+        line.classList.add("active");
+        line.style.stroke = flow.color;
+        line.style.strokeWidth = "3.5px";
+        line.style.opacity = "1";
+      });
+      document.querySelectorAll(".node").forEach(node => {
+        node.classList.add("active");
+      });
+
+      infoEmpty.style.display = "none";
+      infoActive.style.display = "flex";
+      infoTitle.innerText = "Seluruh Aliran Integrasi";
+
+      flowCardsList.innerHTML = "";
+
+      integrations.forEach(flow => {
+        const card = document.createElement("div");
+        card.className = "integration-card";
+        const tagClass = flow.tagType === "On-going" ? "tag-og" : "tag-soon";
+
+        card.innerHTML = `
+          <div class="card-header">
+            <span class="card-title">${flow.title}</span>
+            <span class="tag ${tagClass}">${flow.tagType}</span>
+          </div>
+          <div class="card-direction">
+            <strong>${flow.sourceName}</strong>
+            <i class="fa-solid fa-circle-arrow-right" style="color: ${flow.color}"></i>
+            <strong>${flow.targetName}</strong>
+          </div>
+          <div class="card-body">
+            ${flow.process}
+          </div>
+        `;
+
+        card.addEventListener("mouseenter", () => {
+          integrations.forEach(rf => {
+            const lineEl = document.getElementById(`line-${rf.id}`);
+            if (lineEl) {
+              if (rf.id === flow.id) {
+                lineEl.style.strokeWidth = "5px";
+              } else {
+                lineEl.style.opacity = "0.15";
+              }
+            }
+          });
+        });
+
+        card.addEventListener("mouseleave", () => {
+          integrations.forEach(rf => {
+            const lineEl = document.getElementById(`line-${rf.id}`);
+            if (lineEl) {
+              lineEl.style.strokeWidth = "3.5px";
+              lineEl.style.opacity = "1";
+            }
+          });
+        });
+
+        flowCardsList.appendChild(card);
+      });
+    }
+
+    // Add click listeners to nodes
+    document.querySelectorAll(".node").forEach(nodeEl => {
+      const nodeName = nodeEl.getAttribute("data-node");
+      nodeEl.addEventListener("click", () => {
+        highlightNodeIntegrations(nodeName);
+      });
+    });
+
+    btnReset.addEventListener("click", resetView);
+    btnShowAll.addEventListener("click", showAll);
+
+    // Initial setup
+    renderConnections();
+
+  </script>
+</body>
+
+</html>
