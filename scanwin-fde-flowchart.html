@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Flow - Registrasi PIN Baru (Mitra1000s)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .canvas-container {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            cursor: grab;
+            background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        .canvas-container:active {
+            cursor: grabbing;
+        }
+
+        #flow-area {
+            transform-origin: 0 0;
+            transition: transform 0.1s ease-out;
+            padding: 500px;
+            display: inline-block;
+            white-space: nowrap;
+            position: relative;
+            min-width: 4500px;
+            min-height: 2500px;
+        }
+
+        /* Figma-style sections */
+        .figma-section {
+            position: absolute;
+            border: 2px dashed #cbd5e1;
+            border-radius: 20px;
+            background: rgba(241, 245, 249, 0.4);
+            pointer-events: none;
+            z-index: 1;
+            transition: border-color 0.2s;
+        }
+
+        .figma-section:hover {
+            border-color: #94a3b8;
+        }
+
+        .section-label {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            color: white;
+            font-weight: 800;
+            font-size: 11px;
+            padding: 4px 12px;
+            border-radius: 8px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Node Styling */
+        .node {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 15px 20px;
+            width: 170px;
+            box-sizing: border-box;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+            font-size: 12px;
+            font-weight: 700;
+            color: #1e293b;
+            position: absolute;
+            z-index: 10;
+            cursor: move;
+            user-select: none;
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+
+        .node:hover {
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            transform: translateY(-2px);
+            z-index: 20;
+        }
+
+        .n-start {
+            width: 90px;
+            height: 90px;
+            min-width: 90px;
+            border-radius: 50%;
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #166534;
+        }
+
+        .n-end {
+            width: 140px;
+            height: 140px;
+            min-width: 140px;
+            border-radius: 50%;
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .n-purple {
+            background: #f3e8ff;
+            border-color: #d8b4fe;
+            color: #6b21a8;
+        }
+
+        .n-gray {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+            color: #334155;
+        }
+
+        .n-pink {
+            background: #fce7f3;
+            border-color: #f9a8d4;
+            color: #9d174d;
+            border-style: dashed;
+            font-size: 10px;
+            min-width: 120px;
+        }
+
+        .n-decision {
+            width: 110px;
+            height: 110px;
+            min-width: 110px;
+            transform: rotate(45deg);
+            background: #ffedd5;
+            border-color: #fdba74;
+            color: #9a3412;
+            padding: 0;
+            border-radius: 10px;
+        }
+
+        .n-decision:hover {
+            transform: rotate(45deg) scale(1.05);
+        }
+
+        .n-decision span {
+            transform: rotate(-45deg);
+            text-align: center;
+            display: block;
+            width: 100%;
+            font-size: 11px;
+        }
+
+        /* SVG Connections */
+        .svg-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 15;
+            /* Drawn on top of nodes so arrowheads are 100% visible */
+        }
+
+        .connection-path {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2.5;
+            /* Removed stroke-linecap: round to fix broken arrowhead look */
+        }
+
+        .connection-label {
+            position: absolute;
+            background: white;
+            padding: 3px 10px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 25;
+            border: 1px solid #e2e8f0;
+        }
+
+        .label-yes {
+            color: #059669;
+            border-color: #10b981;
+        }
+
+        .label-no {
+            color: #dc2626;
+            border-color: #ef4444;
+        }
+
+        /* UI Controls */
+        .controls {
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            display: flex;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .btn-ctrl {
+            width: 45px;
+            height: 45px;
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748b;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .btn-ctrl:hover {
+            background: #f8fafc;
+            color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .legend {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            background: white;
+            padding: 15px;
+            border-radius: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            z-index: 100;
+            font-size: 11px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="controls">
+        <button class="btn-ctrl" onclick="copyAsSVG()" title="Salin SVG untuk Figma (Paste langsung di Figma)"><i
+                class="fas fa-copy"></i></button>
+        <button class="btn-ctrl" onclick="zoomView(1.2)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
+        <button class="btn-ctrl" onclick="zoomView(0.8)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
+        <button class="btn-ctrl" onclick="resetZoom()" title="Reset View"><i class="fas fa-expand"></i></button>
+    </div>
+
+    <div class="legend space-y-2">
+        <p class="font-extrabold text-gray-800 mb-2 border-b pb-1">Keterangan Node</p>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-green-200 border border-green-500"></div> Titik Mulai
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded bg-purple-100 border border-purple-400"></div> Aksi User
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded bg-slate-100 border border-slate-400"></div> Proses Sistem
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rotate-45 bg-orange-100 border border-orange-400"></div> Keputusan
+        </div>
+        <div class="flex items-center gap-2">
+            <div class="w-3 h-3 rounded-full bg-red-200 border border-red-500"></div> Titik Akhir
+        </div>
+    </div>
+
+    <div class="canvas-container" id="canvas-container">
+        <div id="flow-area">
+            <!-- Figma-style sections wrapper inside canvas to scale together -->
+            <div id="sections-container">
+                <div class="figma-section" style="left: 450px; top: 250px; width: 2830px; height: 600px;">
+                    <span class="section-label" style="background:#8b5cf6;">Register PIN Mitra1000s</span>
+                </div>
+                <div class="figma-section" style="left: 450px; top: 950px; width: 2830px; height: 600px;">
+                    <span class="section-label" style="background:#0b57d0;">Ubah PIN Mitra1000s</span>
+                </div>
+            </div>
+
+            <svg class="svg-layer" id="svg-layer">
+                <defs>
+                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6"
+                        orient="auto">
+                        <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
+                    </marker>
+                </defs>
+            </svg>
+            <div id="nodes-container"></div>
+        </div>
+    </div>
+
+    <script>
+        const flowData = {
+            nodes: [
+                // SECTION 1: ENTRY POINT (Register PIN)
+                { id: 'n1-start', type: 'n-start', text: 'Start', x: 495, y: 430 },
+                { id: 'n1-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 450 },
+                { id: 'n1-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>Mitra1000s"', x: 860, y: 450 },
+
+                // SECTION 2: LANGKAH 1 (Register PIN)
+                { id: 'n1-form1', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 1', x: 1080, y: 450 },
+                { id: 'n1-input1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 1300, y: 450 },
+                { id: 'n1-valid-format', type: 'n-decision', text: '<span>Validasi<br>Format PIN?</span>', x: 1550, y: 420 },
+                { id: 'n1-error-format', type: 'n-gray', text: 'Tampilkan Error Format<br>& Reset Input', x: 1520, y: 620 },
+
+                // SECTION 3: LANGKAH 2 (Register PIN)
+                { id: 'n1-form2', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 2', x: 1780, y: 450 },
+                { id: 'n1-input2', type: 'n-purple', text: 'Masukkan PIN Konfirmasi<br>(Re-input)', x: 2000, y: 450 },
+                { id: 'n1-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2250, y: 420 },
+                { id: 'n1-error-match', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 2220, y: 620 },
+                { id: 'n1-clear-match', type: 'n-gray', text: 'Hapus Input & Reset<br>Temporer (1.5s)', x: 2000, y: 620 },
+
+                // SECTION 4: SUCCESS & SCANWIN (Register PIN)
+                { id: 'n1-save', type: 'n-gray', text: 'Hash PIN Baru &<br>Simpan ke DB', x: 2480, y: 450 },
+                { id: 'n1-success', type: 'n-gray', text: 'Tampilkan Layar<br>Registrasi Sukses', x: 2700, y: 450 },
+                { id: 'n1-scanwin', type: 'n-purple', text: 'Klik "Masuk<br>ke sCanWin"', x: 2920, y: 450 },
+                { id: 'n1-end', type: 'n-end', text: 'PIN Aktif &<br>Dashboard sCanWin', x: 3110, y: 405 },
+
+                // SECTION 5: ENTRY POINT (Ubah PIN)
+                { id: 'n2-start', type: 'n-start', text: 'Start', x: 495, y: 1080 },
+                { id: 'n2-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 1100 },
+                { id: 'n2-click', type: 'n-purple', text: 'Klik "Ubah PIN<br>Mitra1000s"', x: 860, y: 1100 },
+                { id: 'n2-old-pin', type: 'n-purple', text: 'Masukkan PIN Lama<br>(6-digit)', x: 1080, y: 1100 },
+                { id: 'n2-valid-old', type: 'n-decision', text: '<span>Validasi<br>PIN Lama?</span>', x: 1300, y: 1070 },
+                { id: 'n2-old-error', type: 'n-gray', text: 'Tampilkan Error &<br>Sisa Percobaan', x: 1080, y: 1300 },
+                { id: 'n2-old-block', type: 'n-gray', text: 'Blokir Status PIN<br>(Blocked)', x: 1300, y: 1300 },
+                { id: 'n2-otp-screen', type: 'n-gray', text: 'Auto-Redirect ke<br>Halaman OTP', x: 1520, y: 1300 },
+
+                // SECTION 6: LANGKAH 1 & 2 (Ubah PIN)
+                { id: 'n2-input1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 1550, y: 1100 },
+                { id: 'n2-valid-format', type: 'n-decision', text: '<span>Validasi<br>Format PIN?</span>', x: 1780, y: 1070 },
+                { id: 'n2-error-format', type: 'n-gray', text: 'Tampilkan Error Format<br>& Reset Input', x: 1780, y: 1300 },
+                { id: 'n2-input2', type: 'n-purple', text: 'Masukkan PIN Konfirmasi<br>(Re-input)', x: 2000, y: 1100 },
+                { id: 'n2-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2220, y: 1070 },
+                { id: 'n2-error-match', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 2220, y: 1300 },
+                { id: 'n2-clear-match', type: 'n-gray', text: 'Hapus Input & Reset<br>Temporer (1.5s)', x: 2000, y: 1300 },
+
+                // SECTION 7: SUCCESS (Ubah PIN)
+                { id: 'n2-save', type: 'n-gray', text: 'Hash PIN Baru &<br>Update ke DB', x: 2450, y: 1100 },
+                { id: 'n2-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Berhasil Diubah', x: 2670, y: 1100 },
+                { id: 'n2-end', type: 'n-end', text: 'PIN Baru Aktif &<br>Kembali ke Akun', x: 2890, y: 1055 }
+            ],
+            connections: [
+                // Happy Path Left-to-Right connections (Register PIN)
+                { from: 'n1-start', to: 'n1-akun', f: 'right', t: 'left' },
+                { from: 'n1-akun', to: 'n1-click', f: 'right', t: 'left' },
+                { from: 'n1-click', to: 'n1-form1', f: 'right', t: 'left' },
+
+                // Langkah 1 format check (Register PIN)
+                { from: 'n1-form1', to: 'n1-input1', f: 'right', t: 'left' },
+                { from: 'n1-input1', to: 'n1-valid-format', f: 'right', t: 'left' },
+                { from: 'n1-valid-format', to: 'n1-form2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'n1-valid-format', to: 'n1-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
+                { from: 'n1-error-format', to: 'n1-form1', f: 'bottom', t: 'bottom' },
+
+                // Langkah 2 confirmation check (Register PIN)
+                { from: 'n1-form2', to: 'n1-input2', f: 'right', t: 'left' },
+                { from: 'n1-input2', to: 'n1-match', f: 'right', t: 'left' },
+                { from: 'n1-match', to: 'n1-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
+                { from: 'n1-match', to: 'n1-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
+                { from: 'n1-error-match', to: 'n1-clear-match', f: 'left', t: 'right' },
+                { from: 'n1-clear-match', to: 'n1-form1', f: 'bottom', t: 'bottom' },
+
+                // Success transition (Register PIN)
+                { from: 'n1-save', to: 'n1-success', f: 'right', t: 'left' },
+                { from: 'n1-success', to: 'n1-scanwin', f: 'right', t: 'left' },
+                { from: 'n1-scanwin', to: 'n1-end', f: 'right', t: 'left' },
+
+                // Happy Path Ubah PIN
+                { from: 'n2-start', to: 'n2-akun', f: 'right', t: 'left' },
+                { from: 'n2-akun', to: 'n2-click', f: 'right', t: 'left' },
+                { from: 'n2-click', to: 'n2-old-pin', f: 'right', t: 'left' },
+                { from: 'n2-old-pin', to: 'n2-valid-old', f: 'right', t: 'left' },
+
+                // Validasi PIN Lama
+                { from: 'n2-valid-old', to: 'n2-input1', f: 'right', t: 'left', label: 'Benar (Ya)', lClass: 'label-yes' },
+                { from: 'n2-valid-old', to: 'n2-old-error', f: 'left', t: 'top', label: 'Salah (< 3x)', lClass: 'label-no' },
+                { from: 'n2-old-error', to: 'n2-old-pin', f: 'top', t: 'bottom' },
+                { from: 'n2-valid-old', to: 'n2-old-block', f: 'bottom', t: 'top', label: 'Salah (>= 3x)', lClass: 'label-no' },
+                { from: 'n2-old-block', to: 'n2-otp-screen', f: 'right', t: 'left' },
+
+                // Validasi Format PIN Baru
+                { from: 'n2-input1', to: 'n2-valid-format', f: 'right', t: 'left' },
+                { from: 'n2-valid-format', to: 'n2-input2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'n2-valid-format', to: 'n2-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
+                { from: 'n2-error-format', to: 'n2-input1', f: 'left', t: 'bottom' },
+
+                // Validasi Kecocokan PIN Baru
+                { from: 'n2-input2', to: 'n2-match', f: 'right', t: 'left' },
+                { from: 'n2-match', to: 'n2-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
+                { from: 'n2-match', to: 'n2-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
+                { from: 'n2-error-match', to: 'n2-clear-match', f: 'left', t: 'right' },
+                { from: 'n2-clear-match', to: 'n2-input1', f: 'bottom', t: 'bottom' },
+
+                // Sukses Ubah PIN
+                { from: 'n2-save', to: 'n2-success', f: 'right', t: 'left' },
+                { from: 'n2-success', to: 'n2-end', f: 'right', t: 'left' }
+            ]
+        };
+
+        let scale = 1;
+        const svgLayer = document.getElementById('svg-layer');
+        const nodesContainer = document.getElementById('nodes-container');
+        const area = document.getElementById('flow-area');
+        const container = document.getElementById('canvas-container');
+
+        window.onload = () => {
+            render();
+        };
+
+        function render() {
+            nodesContainer.innerHTML = '';
+            flowData.nodes.forEach(n => {
+                const div = document.createElement('div');
+                div.id = n.id;
+                div.className = `node ${n.type}`;
+                div.style.left = n.x + 'px';
+                div.style.top = n.y + 'px';
+                div.innerHTML = n.text;
+                nodesContainer.appendChild(div);
+            });
+            updateConnections();
+            initDraggable();
+        }
+
+        // Accurately calculates the point exactly on the visual border of normal nodes, circles, and 45deg diamonds.
+        function getEdgePoint(el, edge) {
+            const isDiamond = el.classList.contains('n-decision');
+            const isCircle = el.classList.contains('n-start') || el.classList.contains('n-end');
+
+            const x = el.offsetLeft;
+            const y = el.offsetTop;
+            const w = el.offsetWidth;
+            const h = el.offsetHeight;
+            const cx = x + w / 2;
+            const cy = y + h / 2;
+
+            if (isDiamond) {
+                const offset = (w / 2) * Math.SQRT2; // Accurate corner calculation
+                switch (edge) {
+                    case 'top': return { x: cx, y: cy - offset };
+                    case 'bottom': return { x: cx, y: cy + offset };
+                    case 'left': return { x: cx - offset, y: cy };
+                    case 'right': return { x: cx + offset, y: cy };
+                }
+            } else if (isCircle) {
+                const r = w / 2;
+                switch (edge) {
+                    case 'top': return { x: cx, y: cy - r };
+                    case 'bottom': return { x: cx, y: cy + r };
+                    case 'left': return { x: cx - r, y: cy };
+                    case 'right': return { x: cx + r, y: cy };
+                }
+            } else {
+                switch (edge) {
+                    case 'top': return { x: cx, y: y };
+                    case 'bottom': return { x: cx, y: y + h };
+                    case 'left': return { x: x, y: cy };
+                    case 'right': return { x: x + w, y: cy };
+                }
+            }
+            return { x: cx, y: cy };
+        }
+
+        function updateConnections() {
+            // Keep the arrowhead defs, remove all old paths and labels
+            while (svgLayer.firstChild) {
+                if (svgLayer.firstChild.tagName === 'defs') {
+                    if (svgLayer.children.length === 1) break;
+                    let defs = svgLayer.firstChild;
+                    svgLayer.innerHTML = '';
+                    svgLayer.appendChild(defs);
+                    break;
+                }
+                svgLayer.removeChild(svgLayer.firstChild);
+            }
+            document.querySelectorAll('.connection-label').forEach(l => l.remove());
+
+            flowData.connections.forEach(conn => {
+                const fromEl = document.getElementById(conn.from);
+                const toEl = document.getElementById(conn.to);
+                if (!fromEl || !toEl) return;
+
+                let start = getEdgePoint(fromEl, conn.f);
+                let end = getEdgePoint(toEl, conn.t);
+
+                // Force perfect collinearity for near-horizontal lines to prevent tiny zigzags
+                if (conn.f === 'right' && conn.t === 'left') {
+                    if (Math.abs(start.y - end.y) < 15) {
+                        end.y = start.y;
+                    }
+                }
+
+                // Force perfect vertical alignment for vertical lines to prevent tiny zigzags
+                if (conn.f === 'bottom' && conn.t === 'top') {
+                    if (Math.abs(start.x - end.x) < 20) {
+                        end.x = start.x;
+                    }
+                }
+
+                let d = "";
+                const points = [start];
+
+                // Custom loop paths
+                if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
+                    // Underneath return loop (goes down to bottom edge and routes left back to form1 bottom edge, left side)
+                    const bottomY = 790;
+                    const destX = 1080 + 40; // 40px from left corner of form1
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'n2-clear-match' && conn.to === 'n2-input1') {
+                    // Return loop for clear match in Ubah PIN (goes down to y=1450, routes left, up to bottom of input1)
+                    const bottomY = 1450;
+                    const destX = 1550 + 40;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
+                    // Return loop for format validation error (goes down, left, and straight up to bottom of form1)
+                    const bottomY = 720;
+                    const destX = 1080 + (fromEl.offsetWidth / 2); // Center of form1
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'n2-error-format' && conn.to === 'n2-input1') {
+                    // Return loop for format validation error in Ubah PIN (goes down, left, and up to bottom of input1)
+                    const bottomY = 1410;
+                    const destX = 1550 + (toEl.offsetWidth / 2);
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else {
+                    // Robust elbow routing logic from template
+                    const isVertical = (conn.f === 'bottom' && conn.t === 'top') || (conn.f === 'top' && conn.t === 'bottom');
+                    const isHorizontal = (conn.f === 'right' && conn.t === 'left') || (conn.f === 'left' && conn.t === 'right');
+
+                    if (isVertical && Math.abs(start.x - end.x) < 15) {
+                        const avgX = (start.x + end.x) / 2;
+                        points[0].x = avgX;
+                        points.push({ x: avgX, y: end.y });
+                    } else if (isHorizontal && Math.abs(start.y - end.y) < 15) {
+                        const avgY = (start.y + end.y) / 2;
+                        points[0].y = avgY;
+                        points.push({ x: end.x, y: avgY });
+                    } else {
+                        const offset = 25; // How far to push out before turning
+
+                        let p1 = { ...start };
+                        if (conn.f === 'top') p1.y -= offset;
+                        else if (conn.f === 'bottom') p1.y += offset;
+                        else if (conn.f === 'left') p1.x -= offset;
+                        else if (conn.f === 'right') p1.x += offset;
+                        points.push(p1);
+
+                        let p2 = { ...end };
+                        if (conn.t === 'top') p2.y -= offset;
+                        else if (conn.t === 'bottom') p2.y += offset;
+                        else if (conn.t === 'left') p2.x -= offset;
+                        else if (conn.t === 'right') p2.x += offset;
+
+                        // Create elbow points based on direction
+                        if (conn.f === 'left' || conn.f === 'right') {
+                            if (conn.t === 'top' || conn.t === 'bottom') {
+                                points.push({ x: p2.x, y: p1.y });
+                            } else {
+                                const midX = (p1.x + p2.x) / 2;
+                                points.push({ x: midX, y: p1.y });
+                                points.push({ x: midX, y: p2.y });
+                            }
+                        } else {
+                            if (conn.t === 'left' || conn.t === 'right') {
+                                points.push({ x: p1.x, y: p2.y });
+                            } else {
+                                const midY = (p1.y + p2.y) / 2;
+                                points.push({ x: p1.x, y: midY });
+                                points.push({ x: p2.x, y: midY });
+                            }
+                        }
+
+                        points.push(p2);
+                        points.push(end);
+                    }
+
+                    // Build SVG path
+                    d = `M ${points[0].x} ${points[0].y}`;
+                    for (let i = 1; i < points.length; i++) {
+                        d += ` L ${points[i].x} ${points[i].y}`;
+                    }
+                }
+
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("d", d);
+                path.setAttribute("class", "connection-path");
+                path.setAttribute("marker-end", "url(#arrow)");
+                svgLayer.appendChild(path);
+
+                // Add Label
+                if (conn.label) {
+                    const label = document.createElement('div');
+                    label.className = `connection-label ${conn.lClass || ''}`;
+                    label.innerText = conn.label;
+
+                    // Place label precisely at the center segment of the orthogonal path
+                    let labelX, labelY;
+                    if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
+                        labelX = start.x + (end.x - start.x) / 2;
+                        labelY = 790;
+                    } else if (conn.from === 'n2-clear-match' && conn.to === 'n2-input1') {
+                        labelX = start.x + (end.x - start.x) / 2;
+                        labelY = 1450;
+                    } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
+                        labelX = start.x - 60;
+                        labelY = start.y;
+                    } else if (conn.from === 'n2-error-format' && conn.to === 'n2-input1') {
+                        labelX = start.x - 60;
+                        labelY = start.y;
+                    } else if (points.length === 2) {
+                        labelX = (points[0].x + points[1].x) / 2;
+                        labelY = (points[0].y + points[1].y) / 2;
+                    } else if (points.length === 6) { // 3 segments (standard)
+                        labelX = (points[2].x + points[3].x) / 2;
+                        labelY = (points[2].y + points[3].y) / 2;
+                    } else { // 2 segments (corner) or fallback
+                        const midIndex = Math.floor(points.length / 2);
+                        labelX = points[midIndex].x;
+                        labelY = points[midIndex].y;
+                    }
+
+                    // Offset label to the right of vertical lines
+                    if (start.x === end.x && points.length <= 2) {
+                        labelX += 65;
+                    }
+
+                    label.style.left = `${labelX}px`;
+                    label.style.top = `${labelY}px`;
+                    area.appendChild(label);
+                }
+            });
+        }
+
+        // --- DRAG AND DROP ---
+        function initDraggable() {
+            const nodes = document.querySelectorAll('.node');
+            nodes.forEach(node => {
+                let p1 = 0, p2 = 0, p3 = 0, p4 = 0;
+                node.onmousedown = (e) => {
+                    if (e.button !== 0) return;
+                    e.preventDefault(); e.stopPropagation();
+                    p3 = e.clientX; p4 = e.clientY;
+                    document.onmouseup = () => { document.onmouseup = null; document.onmousemove = null; };
+                    document.onmousemove = (e) => {
+                        e.preventDefault();
+                        p1 = p3 - e.clientX; p2 = p4 - e.clientY;
+                        p3 = e.clientX; p4 = e.clientY;
+                        node.style.top = (node.offsetTop - p2) + "px";
+                        node.style.left = (node.offsetLeft - p1) + "px";
+                        updateConnections();
+                    };
+                };
+            });
+        }
+
+        // --- PAN & ZOOM CONTROLS ---
+        function zoomView(factor) {
+            scale *= factor;
+            scale = Math.min(Math.max(0.1, scale), 3);
+            area.style.transform = `scale(${scale})`;
+        }
+
+        function resetZoom() {
+            scale = 1;
+            area.style.transform = `scale(1)`;
+            container.scrollLeft = 0;
+            container.scrollTop = 0;
+        }
+
+        let isPanning = false;
+        let startX, startY, scrollLeft, scrollTop;
+
+        container.addEventListener('mousedown', (e) => {
+            if (e.target.closest('.node')) return; // Ignore drag over nodes
+            isPanning = true;
+            startX = e.pageX - container.offsetLeft;
+            startY = e.pageY - container.offsetTop;
+            scrollLeft = container.scrollLeft;
+            scrollTop = container.scrollTop;
+        });
+
+        container.addEventListener('mouseleave', () => isPanning = false);
+        container.addEventListener('mouseup', () => isPanning = false);
+        container.addEventListener('mousemove', (e) => {
+            if (!isPanning) return;
+            e.preventDefault();
+            const x = e.pageX - container.offsetLeft;
+            const y = e.pageY - container.offsetTop;
+            container.scrollLeft = scrollLeft - (x - startX) * 2;
+            container.scrollTop = scrollTop - (y - startY) * 2;
+        });
+
+        container.addEventListener('wheel', (e) => {
+            if (e.ctrlKey || e.metaKey) {
+                e.preventDefault();
+                if (e.deltaY > 0) zoomView(0.9);
+                else zoomView(1.1);
+            }
+        });
+
+        function escapeXml(str) {
+            if (!str) return '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
+
+        async function copyAsSVG() {
+            try {
+                // Find bounding box of all nodes and sections
+                const nodes = document.querySelectorAll('.node');
+                const elements = document.querySelectorAll('.node, .figma-section');
+                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+                elements.forEach(el => {
+                    const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x + w > maxX) maxX = x + w;
+                    if (y + h > maxY) maxY = y + h;
+                });
+
+                // Pad the boundary
+                minX = Math.max(0, minX - 100);
+                minY = Math.max(0, minY - 100);
+                maxX += 100;
+                maxY += 100;
+                const width = maxX - minX;
+                const height = maxY - minY;
+
+                let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
+
+                // Add Google Inter font styles and definitions
+                svg += `
+<defs>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap');
+        text {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            fill: #1e293b;
+        }
+        .sec-label-txt {
+            font-size: 11px;
+            font-weight: 800;
+            fill: #ffffff;
+        }
+        .conn-path {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2.5;
+        }
+        .conn-lbl-txt {
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .lbl-yes { fill: #059669; }
+        .lbl-no { fill: #dc2626; }
+    </style>
+    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
+    </marker>
+</defs>`;
+
+                // 1. Draw sections
+                document.querySelectorAll('.figma-section').forEach(sec => {
+                    const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
+                    const labelSpan = sec.querySelector('.section-label');
+                    const labelText = labelSpan ? escapeXml(labelSpan.innerText) : '';
+                    const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
+
+                    svg += `
+    <!-- Section -->
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="rgba(241, 245, 249, 0.4)" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
+    <rect x="${x + 20}" y="${y - 12}" width="${labelText.length * 7 + 24}" height="24" rx="8" fill="${labelBgColor}" />
+    <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="middle">${labelText}</text>`;
+                });
+
+                // 2. Draw connections and explicit arrowheads for Figma (united in a single path)
+                const paths = document.querySelectorAll('.connection-path');
+                flowData.connections.forEach((conn, idx) => {
+                    const pathEl = paths[idx];
+                    if (!pathEl) return;
+                    let d = pathEl.getAttribute('d');
+
+                    const dTokens = d.trim().split(/\s+/);
+                    if (dTokens.length >= 3) {
+                        const lastY = parseFloat(dTokens[dTokens.length - 1]);
+                        const lastX = parseFloat(dTokens[dTokens.length - 2]);
+
+                        // Append open chevron arrowhead directly to the line path d attribute
+                        if (conn.t === 'left') {
+                            d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
+                        } else if (conn.t === 'right') {
+                            d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
+                        } else if (conn.t === 'top') {
+                            d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY - 10}`;
+                        } else if (conn.t === 'bottom') {
+                            d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
+                        }
+                    }
+
+                    svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
+                    svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
+                    svg += `\n        <path d="${d}" class="conn-path" />`;
+
+                    // Draw connection label inside the group
+                    if (conn.label) {
+                        const points = [];
+                        for (let i = 0; i < dTokens.length; i++) {
+                            if (dTokens[i] === 'M' || dTokens[i] === 'L') {
+                                points.push({ x: parseFloat(dTokens[i + 1]), y: parseFloat(dTokens[i + 2]) });
+                            }
+                        }
+
+                        let labelX, labelY;
+                        if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
+                            labelX = 1550;
+                            labelY = 790;
+                        } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
+                            labelX = points[0].x - 60;
+                            labelY = points[0].y;
+                        } else if (points.length === 2) {
+                            labelX = (points[0].x + points[1].x) / 2;
+                            labelY = (points[0].y + points[1].y) / 2;
+                        } else if (points.length === 6) {
+                            labelX = (points[2].x + points[3].x) / 2;
+                            labelY = (points[2].y + points[3].y) / 2;
+                        } else {
+                            const midIndex = Math.floor(points.length / 2);
+                            labelX = points[midIndex].x;
+                            labelY = points[midIndex].y;
+                        }
+
+                        if (points[0] && points[points.length - 1] && points[0].x === points[points.length - 1].x && points.length <= 2) {
+                            labelX += 65;
+                        }
+
+                        const isYes = conn.lClass === 'label-yes';
+                        const strokeColor = isYes ? '#10b981' : '#ef4444';
+                        const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
+                        const rectW = conn.label.length * 6 + 18;
+                        const escapedConnLabel = escapeXml(conn.label);
+
+                        svg += `\n        <rect x="${labelX - rectW / 2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
+                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt ${textColorClass}">${escapedConnLabel}</text>`;
+                    }
+
+                    svg += `\n    </g>`;
+                });
+
+                // 3. Draw nodes grouped
+                nodes.forEach(el => {
+                    const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+                    const cx = x + w / 2, cy = y + h / 2;
+                    const textLines = el.innerHTML.replace(/<span>|<\/span>/g, '').split(/<br\s*\/?>/gi).map(t => escapeXml(t.trim()));
+
+                    svg += `\n    <!-- Node: ${el.id} -->`;
+                    svg += `\n    <g id="${el.id}-group">`;
+
+                    function getSVGText(color) {
+                        if (textLines.length === 1) {
+                            return `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${color}">${textLines[0]}</text>`;
+                        } else {
+                            let textContent = `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${color}">`;
+                            textLines.forEach((line, idx) => {
+                                const dy = idx === 0 ? -((textLines.length - 1) * 7) : 14;
+                                textContent += `\n            <tspan x="${cx}" dy="${dy}">${line}</tspan>`;
+                            });
+                            textContent += `\n        </text>`;
+                            return textContent;
+                        }
+                    }
+
+                    if (el.classList.contains('n-decision')) {
+                        const offset = (w / 2) * Math.SQRT2;
+                        svg += `\n        <polygon points="${cx},${cy - offset} ${cx + offset},${cy} ${cx},${cy + offset} ${cx - offset},${cy}" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />`;
+                        svg += getSVGText('#9a3412');
+                    } else if (el.classList.contains('n-start') || el.classList.contains('n-end')) {
+                        const r = w / 2;
+                        const fill = el.classList.contains('n-start') ? '#dcfce7' : '#fee2e2';
+                        const stroke = el.classList.contains('n-start') ? '#22c55e' : '#ef4444';
+                        const textColor = el.classList.contains('n-start') ? '#166534' : '#991b1b';
+                        svg += `\n        <circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
+                        svg += getSVGText(textColor);
+                    } else {
+                        const isPurple = el.classList.contains('n-purple');
+                        const fill = isPurple ? '#f3e8ff' : '#f1f5f9';
+                        const stroke = isPurple ? '#d8b4fe' : '#cbd5e1';
+                        const textColor = isPurple ? '#6b21a8' : '#334155';
+                        svg += `\n        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
+                        svg += getSVGText(textColor);
+                    }
+
+                    svg += `\n    </g>`;
+                });
+
+                svg += '\n</svg>';
+
+                let success = false;
+
+                // 1. Try document.execCommand('copy') via textarea (Works on local file:// URLs in all browsers!)
+                const ta = document.createElement('textarea');
+                ta.value = svg;
+                ta.style.position = 'fixed';
+                ta.style.left = '-9999px';
+                ta.style.top = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+
+                try {
+                    success = document.execCommand('copy');
+                } catch (e) {
+                    console.warn('execCommand copy failed:', e);
+                }
+                document.body.removeChild(ta);
+
+                // 2. Fallback to navigator.clipboard if execCommand didn't succeed
+                if (!success && navigator.clipboard) {
+                    try {
+                        await navigator.clipboard.writeText(svg);
+                        success = true;
+                    } catch (e) {
+                        console.warn('navigator.clipboard failed:', e);
+                    }
+                }
+
+                if (success) {
+                    // Show notification overlay
+                    const toast = document.createElement('div');
+                    toast.style.position = 'fixed';
+                    toast.style.bottom = '30px';
+                    toast.style.right = '30px';
+                    toast.style.background = '#10b981';
+                    toast.style.color = 'white';
+                    toast.style.padding = '12px 24px';
+                    toast.style.borderRadius = '12px';
+                    toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                    toast.style.fontWeight = 'bold';
+                    toast.style.zIndex = '1000';
+                    toast.style.fontSize = '13px';
+                    toast.innerText = 'SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.';
+                    document.body.appendChild(toast);
+
+                    setTimeout(() => toast.remove(), 3000);
+                } else {
+                    alert('Gagal meng-copy SVG ke clipboard.');
+                }
+            } catch (err) {
+                console.error('Gagal meng-copy SVG: ', err);
+                alert('Terjadi kesalahan saat memproses SVG: ' + err.message);
+            }
+        }
+    </script>
+</body>
+
+</html>
