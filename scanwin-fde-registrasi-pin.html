@@ -1,0 +1,1334 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrasi PIN Baru — Scanwin Fraud Detection Engine Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Design Tokens & Theme Variables */
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #1f1f1f;
+      --medium-gray: #5f6368;
+      --light-gray: #f1f3f4;
+      --border-gray: #dadce0;
+      --gold-gradient: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
+      --dark-card-bg: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+      --success-green: #0f9d58;
+      --error-red: #d93025;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ========== DASHBOARD PORTAL WRAPPER ========== */
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Master Sidebar */
+    .portal-sidebar {
+      width: 290px;
+      background: var(--portal-sidebar-bg);
+      border-right: 1px solid var(--portal-sidebar-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 20px;
+      color: #f8fafc;
+      flex-shrink: 0;
+    }
+
+    .portal-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .portal-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .portal-header .portal-badge {
+      display: inline-block;
+      background: rgba(59, 130, 246, 0.15);
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      color: #93c5fd;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    .portal-menu-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      padding-left: 8px;
+    }
+
+    .portal-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .portal-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .portal-menu-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #f1f5f9;
+    }
+
+    .portal-menu-item.active {
+      background: var(--primary-blue);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(11, 87, 208, 0.2);
+    }
+
+    .portal-menu-item.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+
+    .portal-menu-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* User Flow Button */
+    .user-flow-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(109, 40, 217, 0.3);
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .user-flow-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(109, 40, 217, 0.4);
+      color: #fff;
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* ========== PORTAL MAIN ========== */
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Split Dashboard Layout */
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-left-canvas {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      padding: 24px;
+      overflow: hidden;
+      border-right: 1px solid #cbd5e1;
+    }
+
+    .feature-right-sidebar {
+      width: 380px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.02);
+    }
+
+    /* ========== RIGHT SIDEBAR STYLES ========== */
+    .badge-blue {
+      display: inline-block;
+      background: rgba(11, 87, 208, 0.08);
+      color: var(--primary-blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(11, 87, 208, 0.2);
+    }
+
+    .sidebar-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-content p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .step-guide-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border-left: 4px solid var(--primary-blue);
+    }
+
+    .step-guide-card.success-state { border-left-color: var(--success-green); }
+    .step-guide-card.error-state { border-left-color: var(--error-red); }
+
+    .step-guide-card h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .step-guide-card p {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .step-guide-card strong { color: #b06000; }
+
+    .flow-steps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .flow-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: all 0.25s ease;
+      color: #64748b;
+    }
+
+    .flow-step-item.active {
+      background: rgba(11, 87, 208, 0.08);
+      border-color: rgba(11, 87, 208, 0.2);
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+
+    .flow-step-item.completed {
+      background: rgba(15, 157, 88, 0.04);
+      border-color: rgba(15, 157, 88, 0.15);
+      color: #475569;
+      opacity: 0.85;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #64748b;
+      transition: all 0.25s ease;
+    }
+
+    .flow-step-item.active .step-number { background: var(--primary-blue); color: #fff; }
+    .flow-step-item.completed .step-number { background: var(--success-green); color: #fff; }
+
+    .step-label { font-size: 12.5px; font-weight: 500; }
+
+    /* ========== APP CONTAINER ========== */
+    .app-container {
+      position: relative;
+      width: 390px;
+      height: 800px;
+      background: #f8fafc;
+      border-radius: 28px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      z-index: 90;
+      background: transparent;
+      padding-bottom: 6px;
+    }
+
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .bottom-margin-safe { height: 20px; background: #fff; z-index: 84; flex-shrink: 0; }
+
+    .app-screen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      padding-bottom: 20px;
+    }
+
+    .app-screen.active { opacity: 1; pointer-events: auto; z-index: 20; }
+
+    .slide-left-out { transform: translateX(-100%); opacity: 0; }
+    .slide-left-in { transform: translateX(100%); }
+    .slide-right-out { transform: translateX(100%); opacity: 0; }
+    .slide-right-in { transform: translateX(-100%); }
+
+    /* ========== SCREEN 1: ACCOUNT ========== */
+    .account-header-bg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 180px;
+      background: linear-gradient(180deg, #e8f2ff 0%, #f8fafc 100%);
+      z-index: 1;
+    }
+
+    .account-content {
+      position: relative; z-index: 2; flex: 1;
+      overflow-y: auto; padding: 44px 16px 80px 16px;
+      scrollbar-width: none;
+    }
+    .account-content::-webkit-scrollbar { display: none; }
+
+    .profile-section {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 15px; margin-bottom: 20px;
+    }
+
+    .profile-info { display: flex; align-items: center; gap: 12px; }
+
+    .profile-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #a8cdff; display: flex; align-items: center;
+      justify-content: center; color: #fff; font-weight: bold;
+      border: 2px solid #fff; box-shadow: 0 2px 8px rgba(11, 87, 208, 0.15);
+    }
+    .profile-avatar svg { width: 26px; height: 26px; fill: #fff; }
+
+    .profile-details h2 {
+      font-size: 18px; font-weight: 700; color: #1a1a1a;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .verified-badge svg { width: 16px; height: 16px; fill: #1a73e8; }
+    .profile-details p { font-size: 13px; color: var(--medium-gray); margin-top: 2px; }
+
+    .qr-button {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 20px;
+      font-size: 13px; font-weight: 600; color: var(--primary-blue);
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .qr-button svg { width: 16px; height: 16px; fill: var(--primary-blue); }
+
+    .balance-card {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); overflow: hidden;
+      margin-bottom: 16px; border: 1px solid #edf2f7;
+    }
+    .balance-main {
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 16px; position: relative;
+    }
+    .balance-main::after {
+      content: ''; position: absolute;
+      top: 20%; bottom: 20%; left: 50%;
+      width: 1px; background: #edf2f7;
+    }
+    .balance-item { display: flex; align-items: center; gap: 12px; }
+    .balance-icon-box {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .wallet-bg { background-color: #ffebee; }
+    .ticket-bg { background-color: #e8f0fe; }
+    .balance-icon-box svg { width: 22px; height: 22px; }
+    .balance-text label { display: block; font-size: 11px; color: var(--medium-gray); font-weight: 500; }
+    .balance-text span { font-size: 14px; font-weight: 700; color: #1a1a1a; display: block; margin-top: 2px; }
+
+    .invoice-card {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); padding: 16px;
+      margin-bottom: 16px; border: 1px solid #edf2f7;
+    }
+    .invoice-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 12px; cursor: pointer;
+    }
+    .invoice-header h3 { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+    .invoice-header svg { width: 16px; height: 16px; fill: var(--medium-gray); }
+    .promo-highlight {
+      background: #e8f0fe; color: var(--primary-blue);
+      padding: 8px 12px; border-radius: 10px;
+      font-size: 11px; font-weight: 600; margin-bottom: 14px; text-align: center;
+    }
+    .invoice-main { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .invoice-illu { width: 60px; height: 60px; position: relative; }
+    .invoice-illu svg { width: 100%; height: 100%; }
+    .invoice-total label { display: block; font-size: 11px; color: var(--medium-gray); font-weight: 500; }
+    .invoice-total span { font-size: 18px; font-weight: 800; color: #1a1a1a; display: block; margin-top: 2px; }
+    .invoice-summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; border-top: 1px solid #edf2f7; padding-top: 12px;
+    }
+    .summary-subcard {
+      background: #f8fafc; border-radius: 10px;
+      padding: 8px 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .summary-subcard svg { width: 18px; height: 18px; fill: var(--medium-gray); }
+    .summary-subcard-text label { display: block; font-size: 9px; color: var(--medium-gray); }
+    .summary-subcard-text span { font-size: 11px; font-weight: 700; color: #1a1a1a; }
+
+    .cashback-ribbon {
+      background: #0b57d0; color: #fff;
+      padding: 10px 16px; font-size: 11px; font-weight: 500;
+      line-height: 1.4; display: flex; align-items: center; gap: 8px;
+    }
+    .cashback-ribbon svg { width: 16px; height: 16px; flex-shrink: 0; fill: #fff; }
+
+    /* ========== LOYALTY CARD ========== */
+    .loyalty-card {
+      background: var(--dark-card-bg); border-radius: 20px;
+      color: #fff; margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      position: relative; overflow: hidden;
+    }
+    .loyalty-container { display: flex; gap: 14px; align-items: center; padding: 16px; }
+    .gold-card-visual {
+      width: 90px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+    }
+    .gold-card-visual .tier-title {
+      font-size: 16px; font-weight: 900;
+      color: #ffe082; letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .loyalty-info { flex: 1; }
+    .loyalty-info h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .loyalty-info p { font-size: 11px; color: #e2e8f0; line-height: 1.4; margin: 0; }
+    .loyalty-ribbon {
+      background: #ffa000; color: #fff;
+      padding: 10px 16px; font-size: 12px; font-weight: 600;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer;
+    }
+    .loyalty-ribbon svg { width: 16px; height: 16px; fill: #fff; }
+
+    .menu-group {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); margin-bottom: 16px;
+      overflow: hidden; border: 1px solid #edf2f7;
+    }
+    .menu-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-bottom: 1px solid #edf2f7;
+      cursor: pointer; transition: background 0.2s ease;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:active { background: #f8fafc; }
+    .menu-item-left { display: flex; align-items: center; gap: 12px; }
+    .menu-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; fill: var(--medium-gray); }
+    .menu-label { font-size: 13px; font-weight: 500; color: #2b303a; }
+    .menu-item.highlight-entry {
+      background: linear-gradient(90deg, #e8f0fe 0%, #fff 100%);
+      border-left: 4px solid var(--primary-blue);
+    }
+    .menu-item.highlight-entry .menu-label { font-weight: 700; color: var(--primary-blue); }
+    .menu-item.highlight-entry .menu-icon { fill: var(--primary-blue); }
+    .menu-badge {
+      background: var(--error-red); color: #fff;
+      font-size: 9px; font-weight: 700;
+      padding: 2px 6px; border-radius: 10px;
+      margin-left: 6px; display: inline-block;
+      vertical-align: middle; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+    .chevron-right { width: 16px; height: 16px; fill: #a0aec0; }
+
+    .logout-btn-box { margin: 10px 0 20px 0; display: flex; justify-content: center; }
+    .logout-btn {
+      display: flex; align-items: center; gap: 8px;
+      padding: 12px 24px; background: #fff;
+      border: 1px solid #fed7d7; border-radius: 12px;
+      color: var(--error-red); font-size: 13px; font-weight: 700;
+      cursor: pointer; width: 100%; justify-content: center;
+      box-shadow: var(--card-shadow); transition: background 0.2s ease;
+    }
+    .logout-btn:active { background: #fff5f5; }
+    .logout-btn svg { width: 16px; height: 16px; fill: var(--error-red); }
+
+    .bottom-nav {
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 64px; background: #fff;
+      border-top: 1px solid #edf2f7;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 6px 0 16px 0; z-index: 85;
+    }
+    .nav-tab {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: #a0aec0; cursor: pointer;
+      text-decoration: none; position: relative;
+    }
+    .nav-tab.active { color: var(--primary-blue); }
+    .nav-tab svg { width: 20px; height: 20px; fill: currentColor; }
+    .nav-tab span { font-size: 9px; font-weight: 500; margin-top: 4px; }
+    .nav-badge {
+      position: absolute; top: 0px; right: 18px;
+      background: var(--error-red); color: #fff;
+      font-size: 8px; font-weight: 700;
+      width: 14px; height: 14px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    /* ========== PIN SCREENS ========== */
+    .pin-screen-bg { background: #ffffff; height: 100%; display: flex; flex-direction: column; }
+
+    .pin-header {
+      height: 56px; padding: 0 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #f1f3f4; margin-top: 44px;
+    }
+    .back-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none; background: transparent;
+      transition: background 0.2s ease;
+    }
+    .back-btn:active { background: #f1f3f4; }
+    .back-btn svg { width: 20px; height: 20px; fill: #1f1f1f; }
+    .pin-header h3 {
+      font-size: 16px; font-weight: 700; color: #1f1f1f;
+      text-align: center; flex: 1; margin-right: 36px;
+    }
+
+    .pin-body-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 24px; }
+
+    .pin-title-block { text-align: center; margin-top: 10px; margin-bottom: 30px; }
+    .pin-title-block h2 { font-size: 20px; font-weight: 800; color: #1f1f1f; }
+    .pin-title-block p {
+      font-size: 13px; color: var(--medium-gray); margin-top: 8px;
+      line-height: 1.4; max-width: 260px; margin-left: auto; margin-right: auto;
+    }
+
+    .step-indicator { display: flex; gap: 6px; margin-bottom: 24px; }
+    .step-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--light-gray); transition: background 0.3s ease;
+    }
+    .step-dot.active { background: var(--primary-blue); width: 20px; border-radius: 4px; }
+
+    .pin-dots-container {
+      display: flex; gap: 14px; justify-content: center;
+      margin-bottom: 20px; height: 48px; align-items: center;
+    }
+    .pin-dot-input {
+      width: 20px; height: 20px; border-radius: 50%;
+      border: 3px solid var(--border-gray); background: transparent;
+      transition: all 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .pin-dot-input.filled { border-color: var(--primary-blue); background: var(--primary-blue); transform: scale(1.1); }
+    .pin-dot-input.error { border-color: var(--error-red); background: var(--error-red); }
+
+    .shake-animation { animation: shake 0.4s ease-in-out; }
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      15%, 45%, 75% { transform: translateX(-8px); }
+      30%, 60%, 90% { transform: translateX(8px); }
+    }
+
+    .toast-container {
+      height: 36px; margin-bottom: auto;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .error-toast {
+      background: #fde8e8; border: 1px solid #f8b4b4;
+      color: var(--error-red); padding: 6px 14px; border-radius: 20px;
+      font-size: 11px; font-weight: 600;
+      display: flex; align-items: center; gap: 6px;
+      opacity: 0; transform: translateY(10px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .error-toast.visible { opacity: 1; transform: translateY(0); }
+    .error-toast svg { width: 14px; height: 14px; fill: var(--error-red); }
+
+    .keypad-container {
+      width: 100%; display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px; margin-bottom: 12px; padding: 0 12px;
+    }
+    .keypad-btn {
+      height: 52px; background: #f8fafc;
+      border: 1px solid #e2e8f0; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; font-weight: 700; color: #1f1f1f;
+      cursor: pointer; transition: all 0.1s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.02);
+    }
+    .keypad-btn:active { background: #e2e8f0; transform: scale(0.95); }
+    .keypad-btn.action-btn { background: transparent; border-color: transparent; box-shadow: none; }
+    .keypad-btn.action-btn:active { background: #f1f3f4; }
+    .keypad-btn svg { width: 20px; height: 20px; fill: #1f1f1f; }
+
+    /* ========== SUCCESS SCREEN ========== */
+    .success-screen-bg {
+      background: #fff; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; padding: 24px;
+    }
+    .success-animation-box { width: 100px; height: 100px; margin-bottom: 24px; }
+    .success-animation-box svg { width: 100%; height: 100%; }
+    .checkmark-circle {
+      stroke-dasharray: 166; stroke-dashoffset: 166;
+      stroke-width: 4; stroke-miterlimit: 10;
+      stroke: var(--success-green); fill: none;
+      animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
+    }
+    .checkmark {
+      width: 100px; height: 100px; border-radius: 50%; display: block;
+      stroke-width: 4; stroke: #fff; stroke-miterlimit: 10;
+      box-shadow: inset 0px 0px 0px var(--success-green);
+      animation: fill .4s ease-in-out .4s forwards, scale .3s ease-in-out .9s forwards;
+    }
+    .checkmark-check {
+      transform-origin: 50% 50%;
+      stroke-dasharray: 48; stroke-dashoffset: 48;
+      animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
+    }
+    @keyframes stroke { 100% { stroke-dashoffset: 0; } }
+    @keyframes fill { 100% { box-shadow: inset 0px 0px 0px 50px var(--success-green); } }
+    @keyframes scale {
+      0%, 100% { transform: none; }
+      50% { transform: scale3d(1.1, 1.1, 1); }
+    }
+    .success-text-block { text-align: center; margin-bottom: 40px; }
+    .success-text-block h2 { font-size: 22px; font-weight: 800; color: #1f1f1f; margin-bottom: 12px; }
+    .success-text-block p { font-size: 13px; color: var(--medium-gray); line-height: 1.5; max-width: 280px; }
+
+    .btn-primary {
+      background: var(--primary-blue); color: #fff;
+      border: none; border-radius: 14px; padding: 14px 28px;
+      font-size: 14px; font-weight: 700; cursor: pointer;
+      width: 100%; box-shadow: 0 4px 12px rgba(11, 87, 208, 0.25);
+      transition: all 0.2s ease; margin-bottom: 12px; text-align: center;
+    }
+    .btn-primary:active { transform: scale(0.98); background: var(--secondary-blue); }
+    .btn-secondary {
+      background: transparent; color: var(--medium-gray); border: none;
+      padding: 10px 20px; font-size: 13px; font-weight: 600;
+      cursor: pointer; transition: color 0.2s ease;
+    }
+    .btn-secondary:active { color: #1f1f1f; }
+
+    /* ========== SCANWIN SCREEN ========== */
+    .scanwin-header {
+      background: var(--primary-blue); color: #fff;
+      height: 80px; padding: 44px 16px 10px 16px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .scanwin-header h3 { font-size: 16px; font-weight: 700; }
+    .scanwin-header svg { width: 20px; height: 20px; fill: #fff; }
+    .scanwin-body {
+      flex: 1; padding: 16px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 16px;
+    }
+    .scanwin-intro-card {
+      background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%);
+      border-radius: 16px; padding: 16px; border: 1px solid #adc1e6;
+    }
+    .scanwin-intro-card h4 { font-size: 14px; font-weight: 700; color: var(--primary-blue); margin-bottom: 6px; }
+    .scanwin-intro-card p { font-size: 11px; color: #3c4043; line-height: 1.4; }
+    .voucher-item-card {
+      background: #fff; border-radius: 16px;
+      border: 1px dashed var(--border-gray); padding: 14px;
+      display: flex; align-items: center; gap: 12px; position: relative;
+    }
+    .voucher-item-card::before, .voucher-item-card::after {
+      content: ''; position: absolute; width: 14px; height: 14px;
+      background: #f8fafc; border-radius: 50%;
+      left: -7px; top: calc(50% - 7px); border: 1px solid var(--border-gray);
+    }
+    .voucher-item-card::after { left: auto; right: -7px; }
+    .voucher-avatar {
+      width: 44px; height: 44px; border-radius: 8px;
+      background: #feefc3; display: flex; align-items: center;
+      justify-content: center; color: #b06000; font-weight: bold; font-size: 14px;
+    }
+    .voucher-details { flex: 1; }
+    .voucher-details h5 { font-size: 12px; font-weight: 700; color: #1f1f1f; }
+    .voucher-details p { font-size: 10px; color: var(--medium-gray); margin-top: 3px; }
+    .claim-badge {
+      background: var(--primary-blue-light); color: var(--primary-blue);
+      font-size: 10px; font-weight: 700; padding: 6px 12px; border-radius: 20px;
+    }
+    .demo-reset-box { margin-top: auto; padding: 10px; text-align: center; }
+    .btn-reset-demo {
+      background: #ffebee; color: var(--error-red);
+      border: 1px solid #ffcdd2; border-radius: 10px;
+      padding: 10px 16px; font-size: 12.5px; font-weight: 700;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
+    }
+    .btn-reset-demo:active { background: #ffcdd2; }
+  </style>
+</head>
+<body>
+
+  <div class="portal-container">
+
+    <!-- MASTER SIDEBAR (FAR LEFT) -->
+    <div class="portal-sidebar">
+      <div class="portal-header">
+        <h2>Scanwin Fraud Detection Engine</h2>
+        <span class="portal-badge">Prototype Hub</span>
+      </div>      <!-- User Flow Button — always visible -->
+      <a href="scanwin-fde-flowchart.html" target="_blank" class="user-flow-btn">
+        <svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+        <span>Lihat User Flow</span>
+      </a>
+
+      <div class="portal-menu-title">Alur PRD</div>
+      <div class="portal-menu-list">
+        <!-- 1. Registrasi PIN — ACTIVE -->
+        <a class="portal-menu-item active" href="scanwin-fde-registrasi-pin.html">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          <span>1. Registrasi PIN</span>
+        </a>
+        <!-- 2. Ubah PIN -->
+        <a class="portal-menu-item" href="scanwin-fde-ubah-pin.html">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6-3.6z"/></svg>
+          <span>2. Ubah PIN Aktif</span>
+        </a>
+        <!-- 3. Reset PIN — disabled -->
+        <div class="portal-menu-item disabled" title="Modul Belum Aktif">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+          <span>3. Reset PIN Terblokir</span>
+        </div>
+        <!-- Back to Hub -->
+        <a class="portal-menu-item" href="scanwin-fde.html" style="margin-top:12px; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 20px;">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+          <span>Kembali ke Hub</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="portal-main">
+      <div class="feature-container">
+
+        <!-- LEFT COLUMN: APP INTERACTIVE PREVIEW -->
+        <div class="feature-left-canvas">
+          <div class="app-container">
+            <!-- Phone Status Bar -->
+            <div id="phone-status-bar" class="status-bar">
+              <span id="phone-time">09:41</span>
+              <div class="status-icons">
+                <svg viewBox="0 0 24 24"><path d="M12 21l-12-12c5-5 14-5 19 0l-7 12zm0-18c-3.3 0-6.2 1.4-8.2 3.6l8.2 8.2 8.2-8.2c-2-2.2-4.9-3.6-8.2-3.6z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M2 22h20v-20h-20v20zm2-2v-14l14 14h-14z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M17 5h-3v-1h-4v1h-3c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-12c0-1.1-.9-2-2-2zm-10 14v-11h8v11h-8z"/></svg>
+              </div>
+            </div>
+
+            <!-- SCREEN 1: MERCHANT ACCOUNT PAGE -->
+            <div id="screen-account" class="app-screen active">
+              <div class="account-header-bg"></div>
+              <div class="account-content">
+                <div class="profile-section">
+                  <div class="profile-info">
+                    <div class="profile-avatar">
+                      <svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm0 3c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 13c2.7 0 5.08-1.37 6.46-3.46-1.92-1.54-4.32-2.54-6.46-2.54s-4.54 1-6.46 2.54c1.38 2.09 3.76 3.46 6.46 3.46z"/></svg>
+                    </div>
+                    <div class="profile-details">
+                      <h2>Toko Berkat Jaya <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48 10-10-4.48-10-10-10zm-2 15l-5-5 1.41-1.41 3.59 3.59 7.59-7.59 1.42 1.42-9 9z"/></svg></span></h2>
+                      <p>+6282319191</p>
+                    </div>
+                  </div>
+                  <button class="qr-button"><svg viewBox="0 0 24 24"><path d="M4 4h6v6h-6zm2 2v2h2v-2zm-2 8h6v6h-6zm2 2v2h2v-2zm10 -12h6v6h-6zm2 2v2h2v-2zm-2 10h2v-2h-2zm2 2h2v-2h-2zm-2 -2h2v-2h-2zm2 -2h2v-2h-2zm2 4h2v-4h-4zm-4 4h4v-2h-4zm2 -10h2v-2h-2zm-2 4h2v-2h-2z"/></svg>QR Ku</button>
+                </div>
+
+                <!-- BALANCE CARD: Saldo + Voucher -->
+                <div class="balance-card">
+                  <div class="balance-main">
+                    <div class="balance-item">
+                      <div class="balance-icon-box wallet-bg"><svg viewBox="0 0 24 24" fill="#d93025"><path d="M21 18v1c0 1.1-.9 2-2 2h-15c-1.11 0-2-.9-2-2v-14c0-1.1.89-2 2-2h15c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10v-6h-10v6zm3-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg></div>
+                      <div class="balance-text"><label>Saldo</label><span>Rp 12,000,000</span></div>
+                    </div>
+                    <div class="balance-item">
+                      <div class="balance-icon-box ticket-bg"><svg viewBox="0 0 24 24" fill="#1a73e8"><path d="M20 12c0-1.1.9-2 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2zm-5 5.5h-6v-3h6v3zm0-6h-6v-3h6v3zm0-6h-6v-3h6v3z"/></svg></div>
+                      <div class="balance-text"><label>Voucher</label><span>1</span></div>
+                    </div>
+                  </div>
+                  <!-- Cashback info ribbon biru -->
+                  <div style="background:#1a73e8; color:#fff; padding: 10px 14px; display:flex; align-items:flex-start; gap:10px;">
+                    <div style="font-size:20px; flex-shrink:0;">👍</div>
+                    <div style="font-size: 11px; line-height:1.45;">
+                      Anda sudah dapat <strong>Rp 12,000,000</strong> total saldo cashback selama belanja di Mitra 1000s!
+                      <span style="margin-left:4px; font-size:13px;">✦ ✦</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LOYALTY CARD: Gold Grade -->
+                <div class="loyalty-card">
+                  <div class="loyalty-container">
+                    <!-- Gold card visual -->
+                    <div class="gold-card-visual">
+                      <span class="tier-title">GOLD</span>
+                      <div style="background: linear-gradient(135deg,#ffe082,#ffb300); border-radius:6px; padding:6px 8px; margin-top:6px;">
+                        <div style="font-size:6px; font-weight:800; color:#5d4037; letter-spacing:0.5px;">MERCHANT 1000S</div>
+                        <div style="font-size:5px; color:#8d6e63; margin-top:2px;">LOYALTY PROGRAM</div>
+                        <div style="font-size:10px; font-weight:900; color:#5d4037; margin-top:4px;">M∎</div>
+                      </div>
+                    </div>
+                    <!-- Loyalty info -->
+                    <div class="loyalty-info">
+                      <h4 style="font-size:13px; font-weight:800; color:#ffe082; margin-bottom:4px;">Periode 1 <span style="font-weight:400; color:#ccc;">(April - Desember)</span></h4>
+                      <div style="background:rgba(255,255,255,0.15); height:5px; border-radius:3px; overflow:hidden; margin-bottom:8px;">
+                        <div style="background: linear-gradient(90deg,#ffe082,#ffb300); width:60%; height:100%; border-radius:3px;"></div>
+                      </div>
+                      <p style="font-size:11px; color:#e2e8f0; line-height:1.4; margin:0;">Belanja <strong style="color:#ffe082;">Rp 2,000,000</strong> lagi untuk naik ke Grade Platinum</p>
+                    </div>
+                  </div>
+                  <!-- Bottom CTA ribbon -->
+                  <div class="loyalty-ribbon">
+                    <span>Baca syarat &amp; ketentuan</span>
+                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <div class="invoice-card">
+                  <div class="invoice-header"><h3>Bayar Tagihan</h3><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+                  <!-- Cashback banner biru muda -->
+                  <div style="background:#e8f4ff; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; text-align: center; font-size: 12px; font-weight: 600; color: #0b57d0;">Cashback Rp 20,000 jika lunasi hari ini!</div>
+                  <div class="invoice-main">
+                    <!-- Invoice illustration dengan bintang -->
+                    <div class="invoice-illu" style="width:70px; height:70px; position:relative; flex-shrink:0;">
+                      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+                        <!-- Paper background -->
+                        <rect x="8" y="6" width="44" height="56" rx="5" fill="#f0f4ff" stroke="#c7d7fd" stroke-width="1"/>
+                        <!-- Lines on invoice -->
+                        <rect x="14" y="18" width="28" height="3" rx="1.5" fill="#c7d7fd"/>
+                        <rect x="14" y="26" width="20" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <rect x="14" y="32" width="24" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <rect x="14" y="38" width="18" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <!-- Blue text label -->
+                        <text x="15" y="14" font-size="7" font-weight="700" fill="#0b57d0" font-family="Inter,sans-serif">Invoice</text>
+                        <!-- Big gold star -->
+                        <text x="44" y="14" font-size="16" fill="#FFD600" font-family="sans-serif">★</text>
+                        <!-- Small gold star -->
+                        <text x="8" y="32" font-size="10" fill="#FFD600" font-family="sans-serif">✦</text>
+                      </svg>
+                    </div>
+                    <div class="invoice-total"><label>Total tagihan</label><span>Rp 4,900,000</span></div>
+                  </div>
+                  <div class="invoice-summary-grid">
+                    <div class="summary-subcard"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18c-.41-1.16-1.51-2-2.82-2s-2.41.84-2.82 2h-4.18c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-14c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14h-4v-2h4v2zm3-4h-7v-2h7v2zm0-4h-7v-2h7v2z"/></svg><div class="summary-subcard-text"><label>Belum lunas</label><span>3 Invoice</span></div></div>
+                    <div class="summary-subcard"><svg viewBox="0 0 24 24"><path d="M19 4h-1v-1c0-.55-.45-1-1-1s-1 .45-1 1v1h-8v-1c0-.55-.45-1-1-1s-1 .45-1 1v1h-1c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-14c0-1.1-.9-2-2-2zm0 16h-14v-11h14v11zm-5-9h4v4h-4v-4z"/></svg><div class="summary-subcard-text"><label>Jatuh tempo terdekat</label><span>2 Januari 2024</span></div></div>
+                  </div>
+                </div>
+
+                <!-- KELOLA PIN - standalone highlight -->
+                <div class="menu-group">
+                  <div class="menu-item highlight-entry" onclick="navigateTo('screen-pin1')">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+                      <div class="menu-label">Kelola PIN Mitra1000s <span class="menu-badge">Set PIN Baru</span></div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- MENU GROUP 1: ScanWin, Profil, Alamat -->
+                <div class="menu-group">
+                  <div class="menu-item" onclick="accessScanwinFeatureDirectly()">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h16v6z"/></svg></div>
+                      <div class="menu-label">ScanWin1000s</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                      <div class="menu-label">Pengaturan profil</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                      <div class="menu-label">Alamat saya</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- MENU GROUP 2: Pusat Bantuan -->
+                <div class="menu-group">
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg></div>
+                      <div class="menu-label">Pusat Bantuan</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <div class="logout-btn-box"><button class="logout-btn" onclick="alert('Log Out Clicked')"><svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>Log Out</button></div>
+              </div>
+
+              <div class="bottom-nav">
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Beranda</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>Promo</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg><span>Katalog</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span>Notifikasi</span><div class="nav-badge">3</div></div>
+                <div class="nav-tab active"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Akun</span></div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: REGISTRASI PIN - STEP 1 -->
+            <div id="screen-pin1" class="app-screen pin-screen-bg">
+              <div class="pin-header">
+                <button class="back-btn" onclick="navigateTo('screen-account', 'right')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+                <h3>Registrasi PIN</h3>
+              </div>
+              <div class="pin-body-content">
+                <div class="pin-title-block"><h2>Buat PIN Baru</h2><p>Pilih 6 digit angka sebagai PIN keamanan transaksi Anda di Mitra1000s.</p></div>
+                <div class="step-indicator"><div class="step-dot active"></div><div class="step-dot"></div></div>
+                <div id="pin1-dots" class="pin-dots-container">
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                </div>
+                <div class="toast-container"></div>
+                <div class="keypad-container">
+                  <div class="keypad-btn" onclick="pressKey(1)">1</div><div class="keypad-btn" onclick="pressKey(2)">2</div><div class="keypad-btn" onclick="pressKey(3)">3</div>
+                  <div class="keypad-btn" onclick="pressKey(4)">4</div><div class="keypad-btn" onclick="pressKey(5)">5</div><div class="keypad-btn" onclick="pressKey(6)">6</div>
+                  <div class="keypad-btn" onclick="pressKey(7)">7</div><div class="keypad-btn" onclick="pressKey(8)">8</div><div class="keypad-btn" onclick="pressKey(9)">9</div>
+                  <div class="keypad-btn action-btn"></div><div class="keypad-btn" onclick="pressKey(0)">0</div>
+                  <div class="keypad-btn action-btn" onclick="pressDelete()"><svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: REGISTRASI PIN - STEP 2 -->
+            <div id="screen-pin2" class="app-screen pin-screen-bg">
+              <div class="pin-header">
+                <button class="back-btn" onclick="navigateTo('screen-pin1', 'right')"><svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+                <h3>Registrasi PIN</h3>
+              </div>
+              <div class="pin-body-content">
+                <div class="pin-title-block"><h2>Konfirmasi PIN</h2><p>Masukkan kembali 6 digit PIN yang baru saja Anda buat untuk memastikan kesesuaian.</p></div>
+                <div class="step-indicator"><div class="step-dot"></div><div class="step-dot active"></div></div>
+                <div id="pin2-dots" class="pin-dots-container">
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                  <div class="pin-dot-input"></div><div class="pin-dot-input"></div>
+                </div>
+                <div class="toast-container">
+                  <div id="error-toast" class="error-toast">
+                    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                    <span>PIN tidak cocok. Silakan coba lagi.</span>
+                  </div>
+                </div>
+                <div class="keypad-container">
+                  <div class="keypad-btn" onclick="pressKey(1)">1</div><div class="keypad-btn" onclick="pressKey(2)">2</div><div class="keypad-btn" onclick="pressKey(3)">3</div>
+                  <div class="keypad-btn" onclick="pressKey(4)">4</div><div class="keypad-btn" onclick="pressKey(5)">5</div><div class="keypad-btn" onclick="pressKey(6)">6</div>
+                  <div class="keypad-btn" onclick="pressKey(7)">7</div><div class="keypad-btn" onclick="pressKey(8)">8</div><div class="keypad-btn" onclick="pressKey(9)">9</div>
+                  <div class="keypad-btn action-btn"></div><div class="keypad-btn" onclick="pressKey(0)">0</div>
+                  <div class="keypad-btn action-btn" onclick="pressDelete()"><svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 4: SUCCESS SCREEN -->
+            <div id="screen-success" class="app-screen success-screen-bg">
+              <div class="success-animation-box">
+                <svg class="checkmark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 52">
+                  <circle class="checkmark-circle" cx="26" cy="26" r="25" fill="none"/>
+                  <path class="checkmark-check" fill="none" d="M14.1 27.2l7.1 7.2 16.7-16.8"/>
+                </svg>
+              </div>
+              <div class="success-text-block">
+                <h2>Registrasi PIN Sukses</h2>
+                <p>PIN transaksi Anda telah aktif. Sekarang Anda dapat mengakses menu finansial sCanWin dengan aman.</p>
+              </div>
+              <button class="btn-primary" onclick="navigateTo('screen-scanwin')">Masuk ke sCanWin</button>
+              <button class="btn-secondary" onclick="navigateTo('screen-account')">Kembali ke Akun</button>
+            </div>
+
+            <!-- SCREEN 5: SCANWIN FEATURE PAGE -->
+            <div id="screen-scanwin" class="app-screen pin-screen-bg">
+              <div class="scanwin-header">
+                <h3>sCanWin1000s</h3>
+                <svg viewBox="0 0 24 24" onclick="navigateTo('screen-account', 'right')" style="cursor:pointer;"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+              </div>
+              <div class="scanwin-body">
+                <div class="scanwin-intro-card"><h4>Selamat Datang di sCanWin!</h4><p>Transaksi Anda sekarang dilindungi oleh PIN Keamanan 6-digit. Silakan pilih voucher untuk melakukan redeem atau scan QR belanja.</p></div>
+                <h4 style="font-size: 13px; font-weight: 700; color: #1a1a1a; margin-top: 10px;">Voucher Tersedia</h4>
+                <div class="voucher-item-card"><div class="voucher-avatar">C10</div><div class="voucher-details"><h5>Cashback Rp 10.000</h5><p>Berlaku hingga 31 Des 2026</p></div><div class="claim-badge">Tukarkan</div></div>
+                <div class="voucher-item-card" style="opacity: 0.8;"><div class="voucher-avatar" style="background:#e8f0fe; color:#1a73e8;">S20</div><div class="voucher-details"><h5>Diskon Belanja Sembako</h5><p>Berlaku hingga 25 Des 2026</p></div><div class="claim-badge" style="background:#e8f0fe; color:#1a73e8;">Lihat</div></div>
+                <div class="demo-reset-box">
+                  <button class="btn-reset-demo" onclick="resetPrototype()"><svg viewBox="0 0 24 24" style="width:14px; height:14px; fill:currentColor;"><path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>Reset PIN & Ulangi Demo</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="bottom-margin-safe"></div>
+          </div>
+        </div>
+
+        <!-- RIGHT COLUMN: GUIDE PANEL -->
+        <div class="feature-right-sidebar">
+          <div class="sidebar-header" style="margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 16px;">
+            <h2 style="font-size: 11px; text-transform: uppercase; color: #64748b; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 6px;">Dokumen PRD</h2>
+            <h3 style="font-size: 14.5px; font-weight: 800; color: #1e293b; line-height: 1.35; margin-bottom: 8px;">1_Scanwin_Mitra1000s_Registrasi_PIN_Baru.md</h3>
+            <span class="badge-blue">Story 1 — Pendaftaran PIN Baru (Two-Step Verification)</span>
+          </div>
+
+          <div class="sidebar-content">
+            <h3>Alur Registrasi PIN Baru</h3>
+            <p>Prototipe interaktif ini mensimulasikan alur registrasi PIN transaksi 6-digit sesuai spesifikasi dokumen PRD.</p>
+
+            <div id="step-card" class="step-guide-card">
+              <h4 id="guide-step-title">Langkah 1: Halaman Akun</h4>
+              <p id="guide-step-desc">Merchant belum memiliki PIN transaksi. Klik menu <strong>"Kelola PIN Mitra1000s"</strong> (berbadge merah) di layar HP untuk memulai.</p>
+            </div>
+
+            <div class="flow-steps-title">Urutan Proses Flow</div>
+            <div class="flow-steps-list">
+              <div class="flow-step-item active" id="flow-step-1"><div class="step-number">1</div><div class="step-label">Buka Navigasi Kelola PIN</div></div>
+              <div class="flow-step-item" id="flow-step-2"><div class="step-number">2</div><div class="step-label">Masukkan PIN Baru (6 Digit)</div></div>
+              <div class="flow-step-item" id="flow-step-3"><div class="step-number">3</div><div class="step-label">Konfirmasi PIN Baru (Re-input)</div></div>
+              <div class="flow-step-item" id="flow-step-4"><div class="step-number">4</div><div class="step-label">Registrasi PIN Sukses</div></div>
+              <div class="flow-step-item" id="flow-step-5"><div class="step-number">5</div><div class="step-label">Akses Aman Menu sCanWin</div></div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    function updateTime() {
+      const now = new Date();
+      let h = now.getHours().toString().padStart(2, '0');
+      let m = now.getMinutes().toString().padStart(2, '0');
+      document.getElementById('phone-time').innerText = h + ':' + m;
+    }
+    setInterval(updateTime, 1000);
+    updateTime();
+
+    let pin1 = [], pin2 = [];
+    let isPinRegistered = false;
+    let currentActiveScreen = 'screen-account';
+
+    function navigateTo(targetScreenId, direction = 'left') {
+      const currentScreen = document.getElementById(currentActiveScreen);
+      const targetScreen = document.getElementById(targetScreenId);
+      const statusBar = document.getElementById('phone-status-bar');
+
+      if (!currentScreen || !targetScreen) return;
+      if (currentActiveScreen === targetScreenId) {
+        targetScreen.className = 'app-screen active';
+        updateHelperGuide(targetScreenId);
+        return;
+      }
+
+      if (targetScreenId === 'screen-scanwin') {
+        statusBar.classList.add('white-text');
+      } else {
+        statusBar.classList.remove('white-text');
+      }
+
+      currentScreen.className = 'app-screen';
+      targetScreen.className = 'app-screen';
+
+      if (direction === 'left') {
+        targetScreen.classList.add('slide-left-in');
+        currentScreen.classList.add('active');
+        targetScreen.classList.add('active');
+        void targetScreen.offsetWidth;
+        currentScreen.classList.add('slide-left-out');
+        targetScreen.classList.remove('slide-left-in');
+      } else {
+        targetScreen.classList.add('slide-right-in');
+        currentScreen.classList.add('active');
+        targetScreen.classList.add('active');
+        void targetScreen.offsetWidth;
+        currentScreen.classList.add('slide-right-out');
+        targetScreen.classList.remove('slide-right-in');
+      }
+
+      currentActiveScreen = targetScreenId;
+      updateHelperGuide(targetScreenId);
+    }
+
+    function updateHelperGuide(screenId) {
+      const guideTitle = document.getElementById('guide-step-title');
+      const guideDesc = document.getElementById('guide-step-desc');
+      const stepCard = document.getElementById('step-card');
+      if (!guideTitle || !guideDesc || !stepCard) return;
+      stepCard.className = 'step-guide-card';
+      document.querySelectorAll('.flow-step-item').forEach(item => {
+        item.classList.remove('active', 'completed');
+      });
+
+      if (screenId === 'screen-account') {
+        document.getElementById('flow-step-1').classList.add('active');
+        if (isPinRegistered) {
+          guideTitle.innerText = "Langkah 5: PIN Aktif & Aman";
+          guideDesc.innerHTML = `PIN Anda telah aktif! Klik menu <strong>"ScanWin1000s"</strong> untuk masuk ke menu sCanWin tanpa hambatan.`;
+          document.getElementById('flow-step-1').classList.replace('active', 'completed');
+          document.getElementById('flow-step-2').classList.add('completed');
+          document.getElementById('flow-step-3').classList.add('completed');
+          document.getElementById('flow-step-4').classList.add('completed');
+          document.getElementById('flow-step-5').classList.add('active');
+        } else {
+          guideTitle.innerText = "Langkah 1: Halaman Akun";
+          guideDesc.innerHTML = `Merchant belum memiliki PIN transaksi. Klik menu <strong>"Kelola PIN Mitra1000s"</strong> (berbadge merah) di layar HP untuk memulai.`;
+        }
+      } else if (screenId === 'screen-pin1') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('active');
+        guideTitle.innerText = "Langkah 2: Masukkan PIN Baru";
+        guideDesc.innerHTML = `Ketik 6 digit angka PIN pilihan Anda di keypad visual layar.<br><br>Setelah 6 digit dimasukkan, sistem akan otomatis ke Langkah Konfirmasi.`;
+      } else if (screenId === 'screen-pin2') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('active');
+        guideTitle.innerText = "Langkah 3: Konfirmasi PIN Baru";
+        guideDesc.innerHTML = `Masukkan kembali 6 digit PIN yang sama untuk konfirmasi.<br><br>💡 <strong>Uji Edge Case:</strong> Coba masukkan angka asal (salah). Sistem akan menampilkan error merah, mengguncang input, lalu reset ke Langkah 1.`;
+      } else if (screenId === 'screen-success') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('completed');
+        document.getElementById('flow-step-4').classList.add('active');
+        stepCard.classList.add('success-state');
+        guideTitle.innerText = "Langkah 4: Registrasi Sukses";
+        guideDesc.innerHTML = `PIN berhasil divalidasi dan disimpan. Klik tombol biru <strong>"Masuk ke sCanWin"</strong> untuk mengakses menu finansial sCanWin.`;
+      } else if (screenId === 'screen-scanwin') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('completed');
+        document.getElementById('flow-step-4').classList.add('completed');
+        document.getElementById('flow-step-5').classList.add('active');
+        guideTitle.innerText = "Langkah 5: Fitur sCanWin Terbuka";
+        guideDesc.innerHTML = `Anda berada di dashboard sCanWin. Fitur finansial ini sekarang aman digunakan.<br><br>Gunakan tombol merah <strong>"Reset PIN & Ulangi Demo"</strong> jika ingin mengulang dari awal.`;
+      }
+    }
+
+    function accessScanwinFeatureDirectly() {
+      if (isPinRegistered) {
+        navigateTo('screen-scanwin');
+      } else {
+        alert('Status PIN Anda terdeteksi: Belum Terdaftar. Anda akan diarahkan paksa ke menu Kelola PIN terlebih dahulu.');
+        navigateTo('screen-pin1');
+      }
+    }
+
+    function pressKey(num) {
+      if (currentActiveScreen === 'screen-pin1') {
+        if (pin1.length < 6) {
+          pin1.push(num);
+          renderDots('pin1-dots', pin1.length);
+          if (pin1.length === 6) {
+            setTimeout(() => { navigateTo('screen-pin2'); renderDots('pin2-dots', 0); }, 250);
+          }
+        }
+      } else if (currentActiveScreen === 'screen-pin2') {
+        if (pin2.length < 6) {
+          pin2.push(num);
+          renderDots('pin2-dots', pin2.length);
+          if (pin2.length === 6) { setTimeout(verifyPins, 250); }
+        }
+      }
+    }
+
+    function pressDelete() {
+      if (currentActiveScreen === 'screen-pin1' && pin1.length > 0) { pin1.pop(); renderDots('pin1-dots', pin1.length); }
+      else if (currentActiveScreen === 'screen-pin2' && pin2.length > 0) { pin2.pop(); renderDots('pin2-dots', pin2.length); }
+    }
+
+    function renderDots(containerId, activeCount) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      const dots = container.getElementsByClassName('pin-dot-input');
+      for (let i = 0; i < dots.length; i++) {
+        if (i < activeCount) dots[i].classList.add('filled');
+        else dots[i].classList.remove('filled');
+        dots[i].classList.remove('error');
+      }
+    }
+
+    function verifyPins() {
+      const p1 = pin1.join(''), p2 = pin2.join('');
+      const pin2DotsContainer = document.getElementById('pin2-dots');
+      if (!pin2DotsContainer) return;
+      const dots = pin2DotsContainer.getElementsByClassName('pin-dot-input');
+      const toast = document.getElementById('error-toast');
+      const stepCard = document.getElementById('step-card');
+
+      if (p1 === p2) {
+        isPinRegistered = true;
+        const badge = document.querySelector('.menu-item.highlight-entry .menu-badge');
+        if (badge) badge.style.display = 'none';
+        const label = document.querySelector('.menu-item.highlight-entry .menu-label');
+        if (label) label.innerHTML = 'Kelola PIN Mitra1000s <span style="font-size:10px; color:var(--success-green); font-weight:normal; margin-left:6px;">✓ Aktif</span>';
+        navigateTo('screen-success');
+      } else {
+        for (let i = 0; i < dots.length; i++) dots[i].classList.add('error');
+        pin2DotsContainer.classList.add('shake-animation');
+        toast.classList.add('visible');
+        if (stepCard) {
+          stepCard.classList.add('error-state');
+          document.getElementById('guide-step-title').innerText = "Konfirmasi PIN Gagal!";
+          document.getElementById('guide-step-desc').innerHTML = `<span style="color:var(--error-red); font-weight:600;">PIN yang dimasukkan tidak cocok!</span> Sistem akan menghapus input dan mengembalikan Anda ke Langkah 1.`;
+        }
+        setTimeout(() => {
+          pin1 = []; pin2 = [];
+          renderDots('pin1-dots', 0); renderDots('pin2-dots', 0);
+          pin2DotsContainer.classList.remove('shake-animation');
+          toast.classList.remove('visible');
+          if (stepCard) stepCard.classList.remove('error-state');
+          navigateTo('screen-pin1', 'right');
+        }, 1500);
+      }
+    }
+
+    function resetPrototype() {
+      pin1 = []; pin2 = [];
+      isPinRegistered = false;
+      const badge = document.querySelector('.menu-item.highlight-entry .menu-badge');
+      if (badge) { badge.style.display = 'inline-block'; badge.innerText = 'Set PIN Baru'; }
+      const label = document.querySelector('.menu-item.highlight-entry .menu-label');
+      if (label) label.innerHTML = 'Kelola PIN Mitra1000s <span class="menu-badge">Set PIN Baru</span>';
+      renderDots('pin1-dots', 0); renderDots('pin2-dots', 0);
+      navigateTo('screen-account', 'right');
+      alert('Prototype telah berhasil di-reset. Anda dapat mengulangi pengetesan PIN dari awal!');
+    }
+  </script>
+</body>
+</html>
