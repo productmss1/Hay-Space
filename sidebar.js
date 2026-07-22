@@ -1,6 +1,5 @@
 // sidebar.js — Centralized Master Sidebar for Scanwin FDE Prototype Portal
 (function() {
-  // Inject default Sidebar CSS if not present on page
   function injectStyles() {
     if (document.getElementById('portal-sidebar-styles')) return;
     const style = document.createElement('style');
@@ -13,15 +12,16 @@
       }
       .portal-sidebar {
         width: 290px;
-        background: var(--portal-sidebar-bg, #0f172a);
-        border-right: 1px solid var(--portal-sidebar-border, #1e293b);
-        display: flex;
-        flex-direction: column;
-        padding: 28px 20px;
-        color: #f8fafc;
-        flex-shrink: 0;
+        background: var(--portal-sidebar-bg, #0f172a) !important;
+        border-right: 1px solid var(--portal-sidebar-border, #1e293b) !important;
+        display: flex !important;
+        flex-direction: column !important;
+        padding: 28px 20px !important;
+        color: #f8fafc !important;
+        flex-shrink: 0 !important;
         min-height: 100vh;
-        box-sizing: border-box;
+        box-sizing: border-box !important;
+        z-index: 100;
       }
       .portal-header {
         margin-bottom: 24px;
@@ -125,11 +125,12 @@
   }
 
   function renderSidebar() {
-    injectStyles();
     const container = document.getElementById('portal-sidebar-container') || document.querySelector('.portal-sidebar');
-    if (!container) return;
+    if (!container) return false;
 
-    // Detect active page from filename or path (handles GitHub Pages subpaths & index.html fallback)
+    injectStyles();
+
+    // Detect active page from filename or path (handles GitHub Pages subpaths & case variations)
     const path = (window.location.pathname || '').toLowerCase();
     let activeKey = 'hub';
     if (path.includes('registrasi-pin')) activeKey = 'registrasi';
@@ -185,12 +186,26 @@
         </div>
       ` : ''}
     `;
+    return true;
+  }
+
+  // Polling fallback to guarantee rendering even if DOM parsing takes longer on large files
+  function init() {
+    if (renderSidebar()) return;
+
+    let attempts = 0;
+    const interval = setInterval(function() {
+      attempts++;
+      if (renderSidebar() || attempts > 60) {
+        clearInterval(interval);
+      }
+    }, 50);
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', renderSidebar);
+    document.addEventListener('DOMContentLoaded', init);
   } else {
-    renderSidebar();
+    init();
   }
-  window.addEventListener('load', renderSidebar);
+  window.addEventListener('load', init);
 })();
