@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pencegahan Akses Menu (Redirection Barrier) — sCanWin FDE Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #1f1f1f;
+      --medium-gray: #5f6368;
+      --light-gray: #f1f3f4;
+      --border-gray: #dadce0;
+      --gold-gradient: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
+      --dark-card-bg: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+      --success-green: #0f9d58;
+      --error-red: #d93025;
+      --warning-amber: #f59e0b;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-left-canvas {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      padding: 24px;
+      overflow: hidden;
+      border-right: 1px solid #cbd5e1;
+    }
+
+    .feature-right-sidebar {
+      width: 380px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0,0,0,0.02);
+    }
+
+    .badge-blue {
+      display: inline-block;
+      background: rgba(11,87,208,0.08);
+      color: var(--primary-blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(11,87,208,0.2);
+    }
+
+    .sidebar-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-content p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Scenario Box in Sidebar */
+    .scenario-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+    }
+
+    .scenario-box h4 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .scenario-btn {
+      width: 100%;
+      text-align: left;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid #e2e8f0;
+      background: #fff;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: #334155;
+      cursor: pointer;
+      margin-bottom: 8px;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scenario-btn:last-child {
+      margin-bottom: 0;
+    }
+
+    .scenario-btn:hover {
+      border-color: #cbd5e1;
+      background: #f1f5f9;
+    }
+
+    .scenario-btn.active {
+      border-color: var(--primary-blue);
+      background: rgba(11,87,208,0.06);
+      color: var(--primary-blue);
+    }
+
+    .scenario-badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    .badge-success { background: #dcfce7; color: #15803d; }
+    .badge-new { background: #dbeafe; color: #1d4ed8; }
+    .badge-danger { background: #fee2e2; color: #b91c1c; }
+    .badge-offline { background: #feefc3; color: #b45309; }
+
+    /* Step guide card */
+    .step-guide-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border-left: 4px solid var(--primary-blue);
+    }
+
+    .step-guide-card h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .step-guide-card p {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      margin: 0;
+    }
+
+    /* APP CONTAINER (MOBILE PHONE MOCKUP) */
+    .app-container {
+      position: relative;
+      width: 390px;
+      height: 800px;
+      background: #f8fafc;
+      border-radius: 28px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 20px 40px -15px rgba(0,0,0,0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      z-index: 90;
+      background: transparent;
+      padding-bottom: 6px;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .status-icons svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .app-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.16,1,0.3,1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: #f8fafc;
+    }
+
+    .app-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 20;
+    }
+
+    /* SCREEN 1: ACCOUNT */
+    .account-header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(180deg, #e8f2ff 0%, #f8fafc 100%);
+      z-index: 1;
+    }
+
+    .account-content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      overflow-y: auto;
+      padding: 44px 16px 80px 16px;
+      scrollbar-width: none;
+    }
+
+    .profile-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #a8cdff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(11,87,208,0.15);
+    }
+
+    .profile-avatar svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .profile-details h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .profile-details p {
+      font-size: 13px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    .qr-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-blue);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+
+    .qr-button svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--primary-blue);
+    }
+
+    .balance-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid #edf2f7;
+    }
+
+    .balance-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 16px;
+      position: relative;
+    }
+
+    .balance-main::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      bottom: 20%;
+      left: 50%;
+      width: 1px;
+      background: #edf2f7;
+    }
+
+    .balance-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .balance-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wallet-bg { background-color: #ffebee; }
+    .ticket-bg { background-color: #e8f0fe; }
+
+    .balance-text label {
+      display: block;
+      font-size: 11px;
+      color: var(--medium-gray);
+      font-weight: 500;
+    }
+
+    .balance-text span {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .loyalty-card {
+      background: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+      border-radius: 20px;
+      padding: 16px;
+      color: #fff;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+    }
+
+    .loyalty-container {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .gold-card-visual {
+      width: 85px;
+      height: 55px;
+      background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-shrink: 0;
+    }
+
+    .tier-title {
+      font-size: 11px;
+      font-weight: 800;
+      color: #5d4037;
+    }
+
+    .loyalty-info {
+      flex: 1;
+    }
+
+    .loyalty-ribbon {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
+      color: #ffe082;
+    }
+
+    .loyalty-ribbon svg {
+      width: 14px;
+      height: 14px;
+      fill: currentColor;
+    }
+
+    .invoice-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      padding: 16px;
+      margin-bottom: 16px;
+      border: 1px solid #edf2f7;
+    }
+
+    .invoice-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .invoice-header h3 {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+    }
+
+    .invoice-header svg {
+      width: 18px;
+      height: 18px;
+      fill: #a0aec0;
+    }
+
+    .invoice-main {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .invoice-total label {
+      font-size: 11px;
+      color: var(--medium-gray);
+    }
+
+    .invoice-total span {
+      display: block;
+      font-size: 16px;
+      font-weight: 800;
+      color: #1a1a1a;
+      margin-top: 2px;
+    }
+
+    .invoice-summary-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .summary-subcard {
+      background: #f8fafc;
+      border-radius: 12px;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .summary-subcard svg {
+      width: 18px;
+      height: 18px;
+      fill: var(--primary-blue);
+      flex-shrink: 0;
+    }
+
+    .summary-subcard-text label {
+      display: block;
+      font-size: 9px;
+      color: var(--medium-gray);
+    }
+
+    .summary-subcard-text span {
+      display: block;
+      font-size: 11px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin-top: 1px;
+    }
+
+    .menu-group {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1px solid #edf2f7;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid #edf2f7;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:active {
+      background: #f8fafc;
+    }
+
+    .menu-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    .menu-label {
+      font-size: 13px;
+      font-weight: 500;
+      color: #2b303a;
+    }
+
+    .menu-item.highlight-entry {
+      background: linear-gradient(90deg, #e8f0fe 0%, #fff 100%);
+      border-left: 4px solid var(--primary-blue);
+    }
+
+    .menu-item.highlight-scanwin {
+      background: linear-gradient(90deg, #f0fdf4 0%, #fff 100%);
+      border-left: 4px solid var(--success-green);
+    }
+
+    .chevron-right {
+      width: 16px;
+      height: 16px;
+      fill: #a0aec0;
+      flex-shrink: 0;
+    }
+
+    .logout-btn-box {
+      margin: 16px 0 24px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 50px;
+      background: #fff;
+      border: 1px solid #edf2f7;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--error-red);
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: var(--card-shadow);
+    }
+
+    .logout-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--error-red);
+      flex-shrink: 0;
+    }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: #fff;
+      border-top: 1px solid #edf2f7;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 0 16px 0;
+      z-index: 85;
+    }
+
+    .nav-tab {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #a0aec0;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-tab.active {
+      color: var(--primary-blue);
+    }
+
+    .nav-tab svg {
+      width: 20px;
+      height: 20px;
+      fill: currentColor;
+    }
+
+    .nav-tab span {
+      font-size: 9px;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* SILENT CHECK LOADING OVERLAY */
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .loading-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .spinner {
+      width: 44px;
+      height: 44px;
+      border: 4px solid rgba(255,255,255,0.2);
+      border-top-color: #3b82f6;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 16px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* REDIRECTION INTERCEPTED SCREENS */
+    .redirect-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 24px;
+      margin: 20px 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+
+    .redirect-icon {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 16px auto;
+    }
+
+    .redirect-icon.blue { background: #e8f0fe; color: var(--primary-blue); }
+    .redirect-icon.red { background: #fee2e2; color: var(--error-red); }
+    .redirect-icon.green { background: #dcfce7; color: var(--success-green); }
+
+    .redirect-icon svg {
+      width: 32px;
+      height: 32px;
+      fill: currentColor;
+    }
+
+    .btn-action-primary {
+      width: 100%;
+      padding: 14px;
+      border-radius: 14px;
+      background: var(--primary-blue);
+      color: #fff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(11,87,208,0.25);
+      transition: transform 0.15s ease;
+      margin-top: 16px;
+    }
+
+    .btn-action-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* NETWORK FAIL-SECURE MODAL */
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 120;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-backdrop.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-dialog {
+      background: #fff;
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 20px 30px rgba(0,0,0,0.2);
+    }
+  </style>
+
+  <script src="sidebar.js"></script>
+</head>
+
+<body>
+  <div class="portal-container">
+
+    <!-- MASTER SIDEBAR (Rendered via sidebar.js) -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- MAIN PORTAL CONTAINER -->
+    <div class="portal-main">
+      <div class="feature-container">
+
+        <!-- LEFT: APP SIMULATOR CANVAS -->
+        <div class="feature-left-canvas">
+          <div class="app-container">
+
+            <!-- Mobile Status Bar -->
+            <div class="status-bar">
+              <span>09:41</span>
+              <div class="status-icons">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.2 19.54 10.55 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+              </div>
+            </div>
+
+            <!-- SILENT CHECK LOADING OVERLAY -->
+            <div id="loading-overlay" class="loading-overlay">
+              <div class="spinner"></div>
+              <div style="font-size:13px; font-weight:700; letter-spacing:0.3px;">Memverifikasi Keamanan PIN...</div>
+              <div style="font-size:11px; opacity:0.8; margin-top:4px;">Pencegahan Akses Latar Belakang</div>
+            </div>
+
+            <!-- NETWORK ERROR FAIL-SECURE MODAL -->
+            <div id="modal-network-error" class="modal-backdrop">
+              <div class="modal-dialog">
+                <div style="font-size:36px; margin-bottom:10px;">📡</div>
+                <h3 style="font-size:15px; font-weight:800; color:#1e293b; margin-bottom:6px;">Koneksi Terputus</h3>
+                <p style="font-size:12px; color:#64748b; line-height:1.5; margin-bottom:16px;">Gagal memverifikasi keamanan PIN karena kendala jaringan. Pastikan koneksi internet Anda stabil dan coba lagi.</p>
+                <button class="btn-action-primary" onclick="closeNetworkModal()">Coba Lagi</button>
+              </div>
+            </div>
+
+            <!-- SCREEN 1: ACCOUNT ENTRY POINT -->
+            <div id="screen-account" class="app-screen active">
+              <div class="account-header-bg"></div>
+              <div class="account-content">
+                <div class="profile-section">
+                  <div class="profile-info">
+                    <div class="profile-avatar"><svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm0 3c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 13c2.7 0 5.08-1.37 6.46-3.46-1.92-1.54-4.32-2.54-6.46-2.54s-4.54 1-6.46 2.54c1.38 2.09 3.76 3.46 6.46 3.46z"/></svg></div>
+                    <div class="profile-details">
+                      <h2>Toko Berkat Jaya <span class="verified-badge"><svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#1a73e8;"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48-10-10-4.48-10-10-10zm-2 15l-5-5 1.41-1.41 3.59 3.59 7.59-7.59 1.42 1.42-9 9z"/></svg></span></h2>
+                      <p>+6282319191</p>
+                    </div>
+                  </div>
+                  <button class="qr-button"><svg viewBox="0 0 24 24"><path d="M4 4h6v6h-6zm2 2v2h2v-2zm-2 8h6v6h-6zm2 2v2h2v-2zm10 -12h6v6h-6zm2 2v2h2v-2zm-2 10h2v-2h-2zm2 2h2v-2h-2zm-2 -2h2v-2h-2zm2 -2h2v-2h-2zm2 4h2v-4h-4zm-4 4h4v-2h-4zm2 -10h2v-2h-2zm-2 4h2v-2h-2z"/></svg>QR Ku</button>
+                </div>
+
+                <!-- BALANCE CARD -->
+                <div class="balance-card">
+                  <div class="balance-main">
+                    <div class="balance-item">
+                      <div class="balance-icon-box wallet-bg"><svg viewBox="0 0 24 24" fill="#d93025"><path d="M21 18v1c0 1.1-.9 2-2 2h-15c-1.11 0-2-.9-2-2v-14c0-1.1.89-2 2-2h15c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10v-6h-10v6zm3-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg></div>
+                      <div class="balance-text"><label>Saldo</label><span>Rp 12,000,000</span></div>
+                    </div>
+                    <div class="balance-item">
+                      <div class="balance-icon-box ticket-bg"><svg viewBox="0 0 24 24" fill="#1a73e8"><path d="M20 12c0-1.1.9-2 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2zm-5 5.5h-6v-3h6v3zm0-6h-6v-3h6v3zm0-6h-6v-3h6v3z"/></svg></div>
+                      <div class="balance-text"><label>Voucher</label><span>1</span></div>
+                    </div>
+                  </div>
+                  <div style="background:#1a73e8; color:#fff; padding: 10px 14px; display:flex; align-items:flex-start; gap:10px;">
+                    <div style="font-size:20px; flex-shrink:0;">👍</div>
+                    <div style="font-size: 11px; line-height:1.45;">Anda sudah dapat <strong>Rp 12,000,000</strong> total saldo cashback selama belanja di Mitra 1000s! <span style="margin-left:4px; font-size:13px;">✦ ✦</span></div>
+                  </div>
+                </div>
+
+                <!-- LOYALTY CARD -->
+                <div class="loyalty-card">
+                  <div class="loyalty-container">
+                    <div class="gold-card-visual">
+                      <span class="tier-title">GOLD</span>
+                      <div style="background: linear-gradient(135deg,#ffe082,#ffb300); border-radius:6px; padding:6px 8px; margin-top:6px;">
+                        <div style="font-size:6px; font-weight:800; color:#5d4037; letter-spacing:0.5px;">MERCHANT 1000S</div>
+                        <div style="font-size:5px; color:#8d6e63; margin-top:2px;">LOYALTY PROGRAM</div>
+                        <div style="font-size:10px; font-weight:900; color:#5d4037; margin-top:4px;">M∎</div>
+                      </div>
+                    </div>
+                    <div class="loyalty-info">
+                      <h4 style="font-size:13px; font-weight:800; color:#ffe082; margin-bottom:4px;">Periode 1 <span style="font-weight:400; color:#ccc;">(April - Desember)</span></h4>
+                      <div style="background:rgba(255,255,255,0.15); height:5px; border-radius:3px; overflow:hidden; margin-bottom:8px;">
+                        <div style="background: linear-gradient(90deg,#ffe082,#ffb300); width:60%; height:100%; border-radius:3px;"></div>
+                      </div>
+                      <p style="font-size:11px; color:#e2e8f0; line-height:1.4; margin:0;">Belanja <strong style="color:#ffe082;">Rp 2,000,000</strong> lagi untuk naik ke Grade Platinum</p>
+                    </div>
+                  </div>
+                  <div class="loyalty-ribbon">
+                    <span>Baca syarat &amp; ketentuan</span>
+                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- KELOLA PIN HIGHLIGHT ENTRY CARD -->
+                <div class="menu-group">
+                  <div id="kelola-pin-menu" class="menu-item highlight-entry">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+                      <div id="kelola-pin-label" class="menu-label">
+                        Kelola PIN Mitra1000s <span style="font-size:10px; color:var(--success-green); font-weight:normal; margin-left:6px;">✓ Aktif</span>
+                      </div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- MENU SCANWIN1000S (INTERCEPTED NAVIGATION TARGET) -->
+                <div class="menu-group">
+                  <div id="scanwin-menu-item" class="menu-item highlight-scanwin" onclick="handleScanwinMenuClick()">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24" fill="#0f9d58"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z"/></svg></div>
+                      <div class="menu-label" style="font-weight:700; color:#0f9d58;">sCanWin1000s</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                      <div class="menu-label">Pengaturan profil</div>
+                    </div><svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <div class="logout-btn-box">
+                  <button class="logout-btn"><svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>Log Out</button>
+                </div>
+              </div>
+
+              <!-- BOTTOM NAV -->
+              <div class="bottom-nav">
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Beranda</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>Brand</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg><span>Keranjang</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v3h10V5h2v14z"/></svg><span>Transaksi</span></div>
+                <div class="nav-tab active"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Akun</span></div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: INTERCEPTED REDIRECT -> REGISTRASI PIN BARU -->
+            <div id="screen-redirect-registrasi" class="app-screen">
+              <div style="padding: 44px 16px 16px 16px; background:#fff; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between;">
+                <button onclick="goToScreen('screen-account')" style="border:none; background:none; cursor:pointer;"><svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:#1e293b;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+                <h3 style="font-size:15px; font-weight:800; color:#1e293b;">Keamanan PIN</h3>
+                <div style="width:22px;"></div>
+              </div>
+              <div class="redirect-card">
+                <div class="redirect-icon blue">
+                  <svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+                </div>
+                <span class="badge-new" style="padding:4px 10px;">⚠️ PIN Belum Set</span>
+                <h3 style="font-size:16px; font-weight:800; color:#1e293b; margin-top:12px; margin-bottom:6px;">Buat PIN Transaksi Terlebih Dahulu</h3>
+                <p style="font-size:12px; color:#64748b; line-height:1.5;">Untuk menjaga keamanan transaksi voucher toko Anda, silakan buat 6-digit PIN Keamanan sebelum mengakses menu sCanWin.</p>
+                <a href="scanwin-fde-registrasi-pin.html" style="text-decoration:none;"><button class="btn-action-primary">Buat PIN Sekarang ➔</button></a>
+                <button onclick="goToScreen('screen-account')" style="width:100%; margin-top:10px; background:none; border:none; color:#64748b; font-size:12px; font-weight:600; cursor:pointer;">Batal &amp; Kembali</button>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: INTERCEPTED REDIRECT -> RESET PIN TERBLOKIR -->
+            <div id="screen-redirect-reset" class="app-screen">
+              <div style="padding: 44px 16px 16px 16px; background:#fff; border-bottom:1px solid #e2e8f0; display:flex; align-items:center; justify-content:space-between;">
+                <button onclick="goToScreen('screen-account')" style="border:none; background:none; cursor:pointer;"><svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:#1e293b;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg></button>
+                <h3 style="font-size:15px; font-weight:800; color:#1e293b;">Akses PIN Terblokir</h3>
+                <div style="width:22px;"></div>
+              </div>
+              <div class="redirect-card">
+                <div class="redirect-icon red">
+                  <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                </div>
+                <span class="badge-danger" style="padding:4px 10px;">🚫 PIN Terblokir</span>
+                <h3 style="font-size:16px; font-weight:800; color:#1e293b; margin-top:12px; margin-bottom:6px;">PIN Anda Sementara Terblokir</h3>
+                <p style="font-size:12px; color:#64748b; line-height:1.5;">Anda telah 3 kali salah memasukkan PIN. Untuk keamanan toko Anda, pulihkan PIN dengan verifikasi kode OTP via WhatsApp.</p>
+                <a href="scanwin-fde-reset-pin.html" style="text-decoration:none;"><button class="btn-action-primary" style="background:#d93025;">Reset PIN via WhatsApp ➔</button></a>
+                <button onclick="goToScreen('screen-account')" style="width:100%; margin-top:10px; background:none; border:none; color:#64748b; font-size:12px; font-weight:600; cursor:pointer;">Kembali ke Halaman Akun</button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: PRD DOCUMENTATION & SCENARIO CONTROLS -->
+        <div class="feature-right-sidebar">
+          <div class="sidebar-content">
+            <span class="badge-blue">PRD STORY 4</span>
+            <h3 style="margin-top:8px;">Pencegahan Akses Menu (Redirection Barrier)</h3>
+            <p>Fitur intersepsi keamanan latar belakang. Sistem melakukan silent check status PIN saat merchant mengetuk menu "sCanWin1000s".</p>
+
+            <div class="scenario-box">
+              <h4>PILIH SKENARIO PENCEGAHAN (BACKEND SIMULATOR)</h4>
+
+              <button class="scenario-btn active" id="btn-scen-belum" onclick="setScenario('belum_terdaftar')">
+                <span>1. PIN Status: <strong>Belum Set</strong></span>
+                <span class="scenario-badge badge-new">Set PIN Baru</span>
+              </button>
+
+              <button class="scenario-btn" id="btn-scen-terblokir" onclick="setScenario('terblokir')">
+                <span>2. PIN Status: <strong>Terblokir</strong></span>
+                <span class="scenario-badge badge-danger">🚫 Redirection Reset</span>
+              </button>
+
+              <button class="scenario-btn" id="btn-scen-offline" onclick="setScenario('offline')">
+                <span>3. Koneksi: <strong>Offline / Error</strong></span>
+                <span class="scenario-badge badge-offline">⚠️ Fail-Secure</span>
+              </button>
+            </div>
+
+            <div class="step-guide-card" id="guide-card">
+              <h4 id="guide-title">Skenario 1: PIN Belum Set</h4>
+              <p id="guide-desc">Flag menu menunjukkan <strong>+ Set PIN Baru</strong>. Mengetuk <strong>sCanWin1000s</strong> dicegat oleh backend dan di-redirection paksa ke halaman <strong>Registrasi PIN Baru</strong>.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let currentScenario = 'belum_terdaftar';
+
+    function setScenario(scen) {
+      currentScenario = scen;
+
+      // Update active button state
+      document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+      if (scen === 'belum_terdaftar') document.getElementById('btn-scen-belum').classList.add('active');
+      else if (scen === 'terblokir') document.getElementById('btn-scen-terblokir').classList.add('active');
+      else if (scen === 'offline') document.getElementById('btn-scen-offline').classList.add('active');
+
+      // Update flag in Kelola PIN Menu Item on Account screen
+      const kelolaPinLabel = document.getElementById('kelola-pin-label');
+      const guideTitle = document.getElementById('guide-title');
+      const guideDesc = document.getElementById('guide-desc');
+
+      if (scen === 'belum_terdaftar') {
+        kelolaPinLabel.innerHTML = 'Set PIN Baru Mitra1000s <span style="font-size:10px; color:#1a73e8; font-weight:bold; margin-left:6px;">+ Set PIN Baru</span>';
+        guideTitle.innerText = 'Skenario 1: PIN Belum Set';
+        guideDesc.innerHTML = 'Flag menu menunjukkan <strong>+ Set PIN Baru</strong>. Mengetuk <strong>sCanWin1000s</strong> dicegat oleh backend dan di-redirection paksa ke halaman <strong>Registrasi PIN Baru</strong>.';
+      } else if (scen === 'terblokir') {
+        kelolaPinLabel.innerHTML = 'Kelola PIN Mitra1000s <span style="font-size:10px; color:#d93025; font-weight:bold; margin-left:6px;">🚫 Terblokir</span>';
+        guideTitle.innerText = 'Skenario 2: PIN Terblokir';
+        guideDesc.innerHTML = 'Flag menu menunjukkan <strong>🚫 Terblokir</strong>. Mengetuk <strong>sCanWin1000s</strong> dicegat oleh backend dan di-redirection paksa ke halaman <strong>Reset PIN Terblokir</strong>.';
+      } else if (scen === 'offline') {
+        kelolaPinLabel.innerHTML = 'Kelola PIN Mitra1000s <span style="font-size:10px; color:#d93025; font-weight:bold; margin-left:6px;">🚫 Terblokir</span>';
+        guideTitle.innerText = 'Skenario 3: Offline / Fail-Secure';
+        guideDesc.innerHTML = 'Mengetuk <strong>sCanWin1000s</strong> saat koneksi terputus akan memicu modal error <strong>Fail-Secure</strong> (akses ditolak secara otomatis demi keamanan).';
+      }
+
+      // Return to account screen
+      goToScreen('screen-account');
+    }
+
+    function handleScanwinMenuClick() {
+      const overlay = document.getElementById('loading-overlay');
+      overlay.classList.add('show');
+
+      // Simulate silent background backend check (350ms loading)
+      setTimeout(() => {
+        overlay.classList.remove('show');
+
+        if (currentScenario === 'belum_terdaftar') {
+          goToScreen('screen-redirect-registrasi');
+        } else if (currentScenario === 'terblokir') {
+          goToScreen('screen-redirect-reset');
+        } else if (currentScenario === 'offline') {
+          document.getElementById('modal-network-error').classList.add('show');
+        }
+      }, 350);
+    }
+
+    function closeNetworkModal() {
+      document.getElementById('modal-network-error').classList.remove('show');
+    }
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+    }
+
+    // Set initial default scenario state on load
+    window.addEventListener('DOMContentLoaded', () => {
+      setScenario('belum_terdaftar');
+    });
+  </script>
+</body>
+
+</html>
