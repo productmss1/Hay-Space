@@ -1,0 +1,1488 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset PIN Terblokir (OTP WA) — sCanWin Fraud Detection Engine Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Design Tokens & Theme Variables */
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #1f1f1f;
+      --medium-gray: #5f6368;
+      --light-gray: #f1f3f4;
+      --border-gray: #dadce0;
+      --gold-gradient: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
+      --dark-card-bg: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+      --success-green: #0f9d58;
+      --error-red: #d93025;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+      --wa-green: #25d366;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ========== DASHBOARD PORTAL WRAPPER ========== */
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    /* Left Master Sidebar */
+    .portal-sidebar {
+      width: 290px;
+      background: var(--portal-sidebar-bg);
+      border-right: 1px solid var(--portal-sidebar-border);
+      display: flex;
+      flex-direction: column;
+      padding: 28px 20px;
+      color: #f8fafc;
+      flex-shrink: 0;
+    }
+
+    .portal-header {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .portal-header h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .portal-header .portal-badge {
+      display: inline-block;
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.3);
+      color: #fca5a5;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 20px;
+      margin-top: 6px;
+    }
+
+    .portal-menu-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      padding-left: 8px;
+    }
+
+    .portal-menu-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .portal-menu-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #94a3b8;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-decoration: none;
+    }
+
+    .portal-menu-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      color: #f1f5f9;
+    }
+
+    .portal-menu-item.active {
+      background: var(--primary-blue);
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(11, 87, 208, 0.2);
+    }
+
+    .portal-menu-icon {
+      width: 18px;
+      height: 18px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* User Flow Button */
+    .user-flow-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      color: #fff;
+      border: none;
+      border-radius: 12px;
+      padding: 14px 18px;
+      font-size: 13.5px;
+      font-weight: 700;
+      text-decoration: none;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
+      transition: all 0.2s ease;
+      margin-bottom: 20px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .user-flow-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 16px rgba(239, 68, 68, 0.4);
+      color: #fff;
+    }
+
+    .btn-icon {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      flex-shrink: 0;
+    }
+
+    /* ========== PORTAL MAIN ========== */
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Split Dashboard Layout */
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .feature-left-canvas {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      padding: 24px;
+      overflow: hidden;
+      border-right: 1px solid #cbd5e1;
+    }
+
+    .feature-right-sidebar {
+      width: 380px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 32px 24px;
+      overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.02);
+    }
+
+    /* ========== RIGHT SIDEBAR STYLES ========== */
+    .badge-blue {
+      display: inline-block;
+      background: rgba(239, 68, 68, 0.08);
+      color: var(--error-red);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(239, 68, 68, 0.2);
+    }
+
+    .sidebar-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 8px;
+    }
+
+    .sidebar-content p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 24px;
+    }
+
+    .step-guide-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 24px;
+      border-left: 4px solid var(--error-red);
+    }
+
+    .step-guide-card.success-state { border-left-color: var(--success-green); }
+    .step-guide-card.error-state { border-left-color: var(--error-red); }
+
+    .step-guide-card h4 {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .step-guide-card p {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 0;
+    }
+
+    .flow-steps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+    }
+
+    .flow-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: all 0.25s ease;
+      color: #64748b;
+    }
+
+    .flow-step-item.active {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.2);
+      color: var(--error-red);
+      font-weight: 600;
+    }
+
+    .flow-step-item.completed {
+      background: rgba(15, 157, 88, 0.04);
+      border-color: rgba(15, 157, 88, 0.15);
+      color: #475569;
+      opacity: 0.85;
+    }
+
+    .step-number {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #64748b;
+      transition: all 0.25s ease;
+    }
+
+    .flow-step-item.active .step-number { background: var(--error-red); color: #fff; }
+    .flow-step-item.completed .step-number { background: var(--success-green); color: #fff; }
+
+    .step-label { font-size: 12.5px; font-weight: 500; }
+
+    /* Scenario Simulation Buttons */
+    .scenario-box-sidebar {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: auto;
+    }
+
+    .scenario-box-sidebar h4 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .scenario-btn-item {
+      width: 100%;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #334155;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scenario-btn-item:last-child { margin-bottom: 0; }
+    .scenario-btn-item:hover { background: #f1f5f9; border-color: #94a3b8; }
+    .scenario-btn-item.active { background: var(--primary-blue); color: #fff; border-color: var(--primary-blue); }
+
+    /* ========== APP CONTAINER ========== */
+    .app-container {
+      position: relative;
+      width: 390px;
+      height: 800px;
+      background: #f8fafc;
+      border-radius: 28px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      z-index: 90;
+      background: transparent;
+      padding-bottom: 6px;
+    }
+
+    .status-icons { display: flex; gap: 6px; align-items: center; }
+    .status-icons svg { width: 16px; height: 16px; fill: currentColor; }
+
+    .bottom-margin-safe { height: 20px; background: #fff; z-index: 84; flex-shrink: 0; }
+
+    .app-screen {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      padding-bottom: 20px;
+    }
+
+    .app-screen.active { opacity: 1; pointer-events: auto; z-index: 20; }
+
+    /* ========== SCREEN 1: ACCOUNT (BLOCKED PIN BADGE) ========== */
+    .account-header-bg {
+      position: absolute; top: 0; left: 0;
+      width: 100%; height: 180px;
+      background: linear-gradient(180deg, #fee2e2 0%, #f8fafc 100%);
+      z-index: 1;
+    }
+
+    .account-content {
+      position: relative; z-index: 2; flex: 1;
+      overflow-y: auto; padding: 44px 16px 80px 16px;
+      scrollbar-width: none;
+    }
+    .account-content::-webkit-scrollbar { display: none; }
+
+    .profile-section {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-top: 15px; margin-bottom: 20px;
+    }
+
+    .profile-info { display: flex; align-items: center; gap: 12px; }
+
+    .profile-avatar {
+      width: 48px; height: 48px; border-radius: 50%;
+      background: #fca5a5; display: flex; align-items: center;
+      justify-content: center; color: #fff; font-weight: bold;
+      border: 2px solid #fff; box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
+    }
+    .profile-avatar svg { width: 26px; height: 26px; fill: #fff; }
+
+    .profile-details h2 {
+      font-size: 18px; font-weight: 700; color: #1a1a1a;
+      display: flex; align-items: center; gap: 4px;
+    }
+    .verified-badge svg { width: 16px; height: 16px; fill: #1a73e8; }
+    .profile-details p { font-size: 13px; color: var(--medium-gray); margin-top: 2px; }
+
+    .qr-button {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; background: #fff;
+      border: 1px solid #e2e8f0; border-radius: 20px;
+      font-size: 13px; font-weight: 600; color: var(--primary-blue);
+      cursor: pointer; box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+    }
+    .qr-button svg { width: 16px; height: 16px; fill: var(--primary-blue); }
+
+    .balance-card {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); overflow: hidden;
+      margin-bottom: 16px; border: 1px solid #edf2f7;
+    }
+    .balance-main {
+      display: grid; grid-template-columns: 1fr 1fr;
+      padding: 16px; position: relative;
+    }
+    .balance-main::after {
+      content: ''; position: absolute;
+      top: 20%; bottom: 20%; left: 50%;
+      width: 1px; background: #edf2f7;
+    }
+    .balance-item { display: flex; align-items: center; gap: 12px; }
+    .balance-icon-box {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .wallet-bg { background-color: #ffebee; }
+    .ticket-bg { background-color: #e8f0fe; }
+    .balance-icon-box svg { width: 22px; height: 22px; }
+    .balance-text label { display: block; font-size: 11px; color: var(--medium-gray); font-weight: 500; }
+    .balance-text span { font-size: 14px; font-weight: 700; color: #1a1a1a; display: block; margin-top: 2px; }
+
+    .invoice-card {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); padding: 16px;
+      margin-bottom: 16px; border: 1px solid #edf2f7;
+    }
+    .invoice-header {
+      display: flex; justify-content: space-between;
+      align-items: center; margin-bottom: 12px; cursor: pointer;
+    }
+    .invoice-header h3 { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+    .invoice-header svg { width: 16px; height: 16px; fill: var(--medium-gray); }
+    .invoice-main { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+    .invoice-illu { width: 60px; height: 60px; position: relative; }
+    .invoice-illu svg { width: 100%; height: 100%; }
+    .invoice-total label { display: block; font-size: 11px; color: var(--medium-gray); font-weight: 500; }
+    .invoice-total span { font-size: 18px; font-weight: 800; color: #1a1a1a; display: block; margin-top: 2px; }
+    .invoice-summary-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 10px; border-top: 1px solid #edf2f7; padding-top: 12px;
+    }
+    .summary-subcard {
+      background: #f8fafc; border-radius: 10px;
+      padding: 8px 12px; display: flex; align-items: center; gap: 8px;
+    }
+    .summary-subcard svg { width: 18px; height: 18px; fill: var(--medium-gray); }
+    .summary-subcard-text label { display: block; font-size: 9px; color: var(--medium-gray); }
+    .summary-subcard-text span { font-size: 11px; font-weight: 700; color: #1a1a1a; }
+
+    .loyalty-card {
+      background: var(--dark-card-bg); border-radius: 20px;
+      color: #fff; margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+      position: relative; overflow: hidden;
+    }
+    .loyalty-container { display: flex; gap: 14px; align-items: center; padding: 16px; }
+    .gold-card-visual {
+      width: 90px; flex-shrink: 0;
+      display: flex; flex-direction: column;
+    }
+    .gold-card-visual .tier-title {
+      font-size: 16px; font-weight: 900;
+      color: #ffe082; letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    .loyalty-info { flex: 1; }
+    .loyalty-info h4 { font-size: 13px; font-weight: 700; margin-bottom: 6px; }
+    .loyalty-info p { font-size: 11px; color: #e2e8f0; line-height: 1.4; margin: 0; }
+    .loyalty-ribbon {
+      background: #ffa000; color: #fff;
+      padding: 10px 16px; font-size: 12px; font-weight: 600;
+      display: flex; justify-content: space-between; align-items: center;
+      cursor: pointer;
+    }
+    .loyalty-ribbon svg { width: 16px; height: 16px; fill: #fff; }
+
+    .menu-group {
+      background: #fff; border-radius: 20px;
+      box-shadow: var(--card-shadow); margin-bottom: 16px;
+      overflow: hidden; border: 1px solid #edf2f7;
+    }
+    .menu-item {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 16px; border-bottom: 1px solid #edf2f7;
+      cursor: pointer; transition: background 0.2s ease;
+    }
+    .menu-item:last-child { border-bottom: none; }
+    .menu-item:active { background: #f8fafc; }
+    .menu-item-left { display: flex; align-items: center; gap: 12px; }
+    .menu-icon { width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; fill: var(--medium-gray); }
+    .menu-label { font-size: 13px; font-weight: 500; color: #2b303a; }
+    .menu-item.highlight-entry {
+      background: linear-gradient(90deg, #fee2e2 0%, #fff 100%);
+      border-left: 4px solid var(--error-red);
+    }
+    .menu-item.highlight-entry .menu-label { font-weight: 700; color: var(--error-red); }
+    .menu-item.highlight-entry .menu-icon { fill: var(--error-red); }
+    .menu-badge-blocked {
+      background: var(--error-red); color: #fff;
+      font-size: 9px; font-weight: 800;
+      padding: 3px 8px; border-radius: 10px;
+      margin-left: 6px; display: inline-block;
+      vertical-align: middle; animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 0.9; }
+      50% { transform: scale(1.06); opacity: 1; }
+      100% { transform: scale(1); opacity: 0.9; }
+    }
+    .chevron-right { width: 16px; height: 16px; fill: #a0aec0; }
+
+    .logout-btn-box { margin: 10px 0 20px 0; display: flex; justify-content: center; }
+    .logout-btn {
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      width: 100%; height: 46px; background: #fff; border: 1px solid #e2e8f0;
+      border-radius: 12px; font-size: 13px; font-weight: 600; color: var(--error-red);
+      cursor: pointer; transition: background 0.2s ease;
+    }
+    .logout-btn svg { width: 18px; height: 18px; fill: var(--error-red); }
+
+    .bottom-nav {
+      position: absolute; bottom: 0; left: 0;
+      width: 100%; height: 64px; background: #fff;
+      border-top: 1px solid #edf2f7;
+      display: grid; grid-template-columns: repeat(5, 1fr);
+      padding: 6px 0 16px 0; z-index: 85;
+    }
+    .nav-tab {
+      display: flex; flex-direction: column; align-items: center;
+      justify-content: center; color: #a0aec0; cursor: pointer;
+      text-decoration: none; position: relative;
+    }
+    .nav-tab.active { color: var(--primary-blue); }
+    .nav-tab svg { width: 20px; height: 20px; fill: currentColor; }
+    .nav-tab span { font-size: 9px; font-weight: 500; margin-top: 4px; }
+
+    /* ========== MODAL & BOTTOM SHEET ========== */
+    .pin-screen-bg { background: #ffffff; height: 100%; display: flex; flex-direction: column; }
+
+    .pin-header {
+      height: 56px; padding: 0 16px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid #f1f3f4; margin-top: 44px;
+    }
+    .back-btn {
+      width: 36px; height: 36px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; border: none; background: transparent;
+      transition: background 0.2s ease;
+    }
+    .back-btn:active { background: #f1f3f4; }
+    .back-btn svg { width: 20px; height: 20px; fill: #1f1f1f; }
+    .pin-header h3 {
+      font-size: 16px; font-weight: 700; color: #1f1f1f;
+      text-align: center; flex: 1; margin-right: 36px;
+    }
+
+    .pin-body-content { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 24px; }
+
+    .pin-title-block { text-align: center; margin-top: 10px; margin-bottom: 24px; }
+    .pin-title-block h2 { font-size: 20px; font-weight: 800; color: #1f1f1f; }
+    .pin-title-block p {
+      font-size: 13px; color: var(--medium-gray); margin-top: 6px;
+      line-height: 1.4; max-width: 280px; margin-left: auto; margin-right: auto;
+    }
+
+    /* WhatsApp Request OTP Banner */
+    .otp-request-card {
+      width: 100%; background: #f8fafc; border: 1px solid #e2e8f0;
+      border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px;
+    }
+    .wa-icon-large {
+      width: 52px; height: 52px; background: var(--wa-green); color: #fff;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      font-size: 26px; margin: 0 auto 12px auto; box-shadow: 0 6px 16px rgba(37, 211, 102, 0.25);
+    }
+
+    .btn-wa-action {
+      width: 100%; height: 48px; background: var(--wa-green); color: #fff;
+      border: none; border-radius: 12px; font-size: 14px; font-weight: 700;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+      cursor: pointer; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 211, 102, 0.25);
+    }
+    .btn-wa-action:active { transform: scale(0.98); }
+
+    /* OTP Inputs */
+    .otp-box-group { display: flex; gap: 8px; justify-content: center; margin-bottom: 20px; }
+    .otp-box-input {
+      width: 44px; height: 52px; border: 2px solid #cbd5e1; border-radius: 10px;
+      text-align: center; font-size: 22px; font-weight: 800; color: #0f172a; outline: none;
+    }
+    .otp-box-input:focus { border-color: var(--primary-blue); }
+    .otp-box-input.error { border-color: var(--error-red); background: #fff5f5; }
+
+    /* Keypad Grid */
+    .numpad-container {
+      width: 100%; margin-top: auto; padding-bottom: 10px;
+    }
+    .numpad-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;
+    }
+    .num-btn {
+      height: 54px; border-radius: 28px; background: #fff; border: 1px solid #edf2f7;
+      display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700;
+      color: #1f1f1f; cursor: pointer; user-select: none; transition: background 0.1s ease;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+    }
+    .num-btn:active { background: #f1f3f4; transform: scale(0.96); }
+    .num-btn.empty { background: transparent; border: none; box-shadow: none; }
+    .num-btn svg { width: 22px; height: 22px; fill: #5f6368; }
+
+    /* Toast Notification inside App */
+    .toast-overlay {
+      position: absolute; top: 60px; left: 16px; right: 16px;
+      background: #1e293b; color: #fff; padding: 12px 16px; border-radius: 12px;
+      font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 10px;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); z-index: 200;
+      transform: translateY(-120%); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .toast-overlay.show { transform: translateY(0); }
+    .toast-overlay.error { background: #dc2626; }
+    .toast-overlay.success { background: #10b981; }
+
+    /* WhatsApp Mock Popup Notification */
+    .wa-mock-popup {
+      position: absolute; top: 12px; left: 12px; right: 12px;
+      background: #ffffff; border-radius: 16px; padding: 12px 16px;
+      box-shadow: 0 12px 24px -6px rgba(0, 0, 0, 0.2);
+      display: flex; align-items: flex-start; gap: 12px; z-index: 300;
+      transform: translateY(-150%); transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+      border-left: 4px solid var(--wa-green);
+    }
+    .wa-mock-popup.show { transform: translateY(0); }
+
+    .shake-target { animation: shake 0.4s cubic-bezier(.36,.07,.19,.97) both; }
+    @keyframes shake {
+      10%, 90% { transform: translate3d(-2px, 0, 0); }
+      20%, 80% { transform: translate3d(4px, 0, 0); }
+      30%, 50%, 70% { transform: translate3d(-6px, 0, 0); }
+      40%, 60% { transform: translate3d(6px, 0, 0); }
+    }
+  </style>
+  <script src="sidebar.js"></script>
+</head>
+<body>
+
+  <div class="portal-container">
+    
+    <!-- MASTER SIDEBAR (Rendered via sidebar.js) -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- MAIN DASHBOARD SPLIT AREA -->
+    <div class="portal-main">
+      <div class="feature-container">
+        
+        <!-- LEFT CANVAS: MOBILE PREVIEW -->
+        <div class="feature-left-canvas">
+          <div class="app-container">
+            
+            <!-- STATUS BAR -->
+            <div class="status-bar">
+              <span>09:41</span>
+              <div class="status-icons">
+                <svg viewBox="0 0 24 24"><path d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 20.3c-.16.48.29.93.77.77l2.69-.62C9.36 21.46 10.63 21.75 12 21.75c4.97 0 9-4.03 9-9s-4.03-9-9-9z"/></svg>
+                <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+              </div>
+            </div>
+
+            <!-- MOCK WHATSAPP POPUP -->
+            <div class="wa-mock-popup" id="waMockPopup">
+              <div style="width:34px; height:34px; background:var(--wa-green); border-radius:50%; color:#fff; display:flex; align-items:center; justify-content:center; font-size:16px; font-weight:bold; flex-shrink:0;">💬</div>
+              <div>
+                <h4 style="font-size:12px; font-weight:800; color:#0f172a;">WhatsApp • sCanWin Gateway</h4>
+                <p style="font-size:11px; color:#334155; margin-top:2px;">Kode OTP Reset PIN Anda: <strong id="otpDisplayVal" style="color:var(--primary-blue);">849201</strong> (Berlaku 5m).</p>
+              </div>
+            </div>
+
+            <!-- TOAST OVERLAY -->
+            <div class="toast-overlay" id="appToastOverlay">
+              <span id="toastText">Notifikasi</span>
+            </div>
+
+            <!-- SCREEN 1: KELOLA PIN (STATUS TERBLOKIR) -->
+            <div class="app-screen active" id="screenAccount">
+              <div class="account-header-bg"></div>
+              <div class="account-content">
+                <div class="profile-section">
+                  <div class="profile-info">
+                    <div class="profile-avatar">
+                      <svg viewBox="0 0 24 24"><path d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm0 3c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 13c2.7 0 5.08-1.37 6.46-3.46-1.92-1.54-4.32-2.54-6.46-2.54s-4.54 1-6.46 2.54c1.38 2.09 3.76 3.46 6.46 3.46z"/></svg>
+                    </div>
+                    <div class="profile-details">
+                      <h2>Toko Berkat Jaya <span class="verified-badge"><svg viewBox="0 0 24 24"><path d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48-10-10-4.48-10-10-10zm-2 15l-5-5 1.41-1.41 3.59 3.59 7.59-7.59 1.42 1.42-9 9z"/></svg></span></h2>
+                      <p>+6282319191</p>
+                    </div>
+                  </div>
+                  <button class="qr-button"><svg viewBox="0 0 24 24"><path d="M4 4h6v6h-6zm2 2v2h2v-2zm-2 8h6v6h-6zm2 2v2h2v-2zm10 -12h6v6h-6zm2 2v2h2v-2zm-2 10h2v-2h-2zm2 2h2v-2h-2zm-2 -2h2v-2h-2zm2 -2h2v-2h-2zm2 4h2v-4h-4zm-4 4h4v-2h-4zm2 -10h2v-2h-2zm-2 4h2v-2h-2z"/></svg>QR Ku</button>
+                </div>
+
+                <!-- BALANCE CARD: Saldo + Voucher -->
+                <div class="balance-card">
+                  <div class="balance-main">
+                    <div class="balance-item">
+                      <div class="balance-icon-box wallet-bg"><svg viewBox="0 0 24 24" fill="#d93025"><path d="M21 18v1c0 1.1-.9 2-2 2h-15c-1.11 0-2-.9-2-2v-14c0-1.1.89-2 2-2h15c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10v-6h-10v6zm3-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z"/></svg></div>
+                      <div class="balance-text"><label>Saldo</label><span>Rp 12,000,000</span></div>
+                    </div>
+                    <div class="balance-item">
+                      <div class="balance-icon-box ticket-bg"><svg viewBox="0 0 24 24" fill="#1a73e8"><path d="M20 12c0-1.1.9-2 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2zm-5 5.5h-6v-3h6v3zm0-6h-6v-3h6v3zm0-6h-6v-3h6v3z"/></svg></div>
+                      <div class="balance-text"><label>Voucher</label><span>1</span></div>
+                    </div>
+                  </div>
+                  <!-- Cashback info ribbon biru -->
+                  <div style="background:#1a73e8; color:#fff; padding: 10px 14px; display:flex; align-items:flex-start; gap:10px;">
+                    <div style="font-size:20px; flex-shrink:0;">👍</div>
+                    <div style="font-size: 11px; line-height:1.45;">
+                      Anda sudah dapat <strong>Rp 12,000,000</strong> total saldo cashback selama belanja di Mitra 1000s!
+                      <span style="margin-left:4px; font-size:13px;">✦ ✦</span>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LOYALTY CARD: Gold Grade -->
+                <div class="loyalty-card">
+                  <div class="loyalty-container">
+                    <!-- Gold card visual -->
+                    <div class="gold-card-visual">
+                      <span class="tier-title">GOLD</span>
+                      <div style="background: linear-gradient(135deg,#ffe082,#ffb300); border-radius:6px; padding:6px 8px; margin-top:6px;">
+                        <div style="font-size:6px; font-weight:800; color:#5d4037; letter-spacing:0.5px;">MERCHANT 1000S</div>
+                        <div style="font-size:5px; color:#8d6e63; margin-top:2px;">LOYALTY PROGRAM</div>
+                        <div style="font-size:10px; font-weight:900; color:#5d4037; margin-top:4px;">M∎</div>
+                      </div>
+                    </div>
+                    <!-- Loyalty info -->
+                    <div class="loyalty-info">
+                      <h4 style="font-size:13px; font-weight:800; color:#ffe082; margin-bottom:4px;">Periode 1 <span style="font-weight:400; color:#ccc;">(April - Desember)</span></h4>
+                      <div style="background:rgba(255,255,255,0.15); height:5px; border-radius:3px; overflow:hidden; margin-bottom:8px;">
+                        <div style="background: linear-gradient(90deg,#ffe082,#ffb300); width:60%; height:100%; border-radius:3px;"></div>
+                      </div>
+                      <p style="font-size:11px; color:#e2e8f0; line-height:1.4; margin:0;">Belanja <strong style="color:#ffe082;">Rp 2,000,000</strong> lagi untuk naik ke Grade Platinum</p>
+                    </div>
+                  </div>
+                  <!-- Bottom CTA ribbon -->
+                  <div class="loyalty-ribbon">
+                    <span>Baca syarat &amp; ketentuan</span>
+                    <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <div class="invoice-card">
+                  <div class="invoice-header"><h3>Bayar Tagihan</h3><svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg></div>
+                  <!-- Cashback banner biru muda -->
+                  <div style="background:#e8f4ff; border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; text-align: center; font-size: 12px; font-weight: 600; color: #0b57d0;">Cashback Rp 20,000 jika lunasi hari ini!</div>
+                  <div class="invoice-main">
+                    <!-- Invoice illustration dengan bintang -->
+                    <div class="invoice-illu" style="width:70px; height:70px; position:relative; flex-shrink:0;">
+                      <svg viewBox="0 0 70 70" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+                        <!-- Paper background -->
+                        <rect x="8" y="6" width="44" height="56" rx="5" fill="#f0f4ff" stroke="#c7d7fd" stroke-width="1"/>
+                        <!-- Lines on invoice -->
+                        <rect x="14" y="18" width="28" height="3" rx="1.5" fill="#c7d7fd"/>
+                        <rect x="14" y="26" width="20" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <rect x="14" y="32" width="24" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <rect x="14" y="38" width="18" height="2.5" rx="1.25" fill="#dde8ff"/>
+                        <!-- Blue text label -->
+                        <text x="15" y="14" font-size="7" font-weight="700" fill="#0b57d0" font-family="Inter,sans-serif">Invoice</text>
+                        <!-- Big gold star -->
+                        <text x="44" y="14" font-size="16" fill="#FFD600" font-family="sans-serif">★</text>
+                        <!-- Small gold star -->
+                        <text x="8" y="32" font-size="10" fill="#FFD600" font-family="sans-serif">✦</text>
+                      </svg>
+                    </div>
+                    <div class="invoice-total"><label>Total tagihan</label><span>Rp 4,900,000</span></div>
+                  </div>
+                  <div class="invoice-summary-grid">
+                    <div class="summary-subcard"><svg viewBox="0 0 24 24"><path d="M19 3h-4.18c-.41-1.16-1.51-2-2.82-2s-2.41.84-2.82 2h-4.18c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-14c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14h-4v-2h4v2zm3-4h-7v-2h7v2zm0-4h-7v-2h7v2z"/></svg><div class="summary-subcard-text"><label>Belum lunas</label><span>3 Invoice</span></div></div>
+                    <div class="summary-subcard"><svg viewBox="0 0 24 24"><path d="M19 4h-1v-1c0-.55-.45-1-1-1s-1 .45-1 1v1h-8v-1c0-.55-.45-1-1-1s-1 .45-1 1v1h-1c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2v-14c0-1.1-.9-2-2-2zm0 16h-14v-11h14v11zm-5-9h4v4h-4v-4z"/></svg><div class="summary-subcard-text"><label>Jatuh tempo terdekat</label><span>2 Januari 2024</span></div></div>
+                  </div>
+                </div>
+
+                <!-- KELOLA PIN - TERBLOKIR -->
+                <div class="menu-group">
+                  <div class="menu-item highlight-entry" onclick="openResetFlow()">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+                      <div class="menu-label">Kelola PIN Mitra1000s <span class="menu-badge-blocked">🔒 TERBLOKIR</span></div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- MENU GROUP 1: ScanWin (Standard label, Blocked click popup), Profil, Alamat -->
+                <div class="menu-group">
+                  <div class="menu-item" onclick="handleScanwinBlockedClick()">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h16v6z"/></svg></div>
+                      <div class="menu-label">ScanWin1000s</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg></div>
+                      <div class="menu-label">Pengaturan profil</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg></div>
+                      <div class="menu-label">Alamat saya</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <!-- MENU GROUP 2: Pusat Bantuan -->
+                <div class="menu-group">
+                  <div class="menu-item">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg></div>
+                      <div class="menu-label">Pusat Bantuan</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+                  </div>
+                </div>
+
+                <div class="logout-btn-box"><button class="logout-btn" onclick="alert('Log Out Clicked')"><svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>Log Out</button></div>
+              </div>
+
+              <div class="bottom-nav">
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg><span>Beranda</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>Promo</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg><span>Katalog</span></div>
+                <div class="nav-tab"><svg viewBox="0 0 24 24"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg><span>Notifikasi</span><div class="nav-badge">3</div></div>
+                <div class="nav-tab active"><svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg><span>Akun</span></div>
+              </div>
+            </div>
+
+            <!-- SCREEN 2: REQUEST OTP BANNER -->
+            <div class="app-screen" id="screenReqOtp">
+              <div class="pin-screen-bg">
+                <div class="pin-header">
+                  <button class="back-btn" onclick="showAppScreen('screenAccount')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                  </button>
+                  <h3>Minta Kode OTP</h3>
+                </div>
+
+                <div class="pin-body-content">
+                  <!-- NORMAL OTP REQUEST CARD -->
+                  <div class="otp-request-card" id="normalOtpCard">
+                    <div class="wa-icon-large">💬</div>
+                    <h3 style="font-size:16px; font-weight:800; color:#0f172a; margin-bottom:6px;">Verifikasi WhatsApp</h3>
+                    <p style="font-size:12px; color:#64748b; line-height:1.5; margin-bottom:16px;">Kami akan mengirimkan 6-digit kode OTP ke nomor WhatsApp terdaftar <strong style="color:#0f172a;">0812-****-8890</strong>.</p>
+                    
+                    <button class="btn-wa-action" id="btnTriggerOtp" onclick="triggerOtpRequest()">
+                      <span>Minta Kode OTP via WhatsApp</span>
+                    </button>
+                  </div>
+
+                  <!-- BLOCKED CS CARD (Triggered when 3x OTP requests used up) -->
+                  <div class="otp-request-card" id="csBlockedCard" style="display:none; text-align:center; background:#fff5f5; border:1px solid #fecaca;">
+                    <div style="font-size:36px; margin-bottom:8px;">🔒</div>
+                    <h3 style="font-size:15px; font-weight:800; color:#991b1b; margin-bottom:6px;">Akses Terblokir</h3>
+                    <p style="font-size:12px; color:#7f1d1d; line-height:1.5; margin-bottom:16px;">
+                      Anda telah melebihi batas maksimal pengiriman OTP. Silakan hubungi <strong>Customer Support Mitra1000s</strong> untuk pemulihan akun.
+                    </p>
+                    <button class="btn-wa-action" style="background:#dc2626;" onclick="alert('Menghubungi Customer Support Mitra1000s (0800-1000-888)')">
+                      <span>📞 Hubungi Customer Support Mitra1000s</span>
+                    </button>
+                  </div>
+
+                  <div style="font-size:11.5px; color:#64748b; text-align:center; line-height:1.5;">
+                    ⏱️ Request OTP dibatasi dengan jeda waktu 1 menit per pengiriman.
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 3: VERIFIKASI OTP -->
+            <div class="app-screen" id="screenVerifyOtp">
+              <div class="pin-screen-bg">
+                <div class="pin-header">
+                  <button class="back-btn" onclick="showAppScreen('screenReqOtp')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                  </button>
+                  <h3>Verifikasi OTP</h3>
+                </div>
+
+                <div class="pin-body-content">
+                  <div class="pin-title-block">
+                    <h2>Masukkan Kode OTP</h2>
+                    <p>Kode telah dikirimkan via WA ke nomor <strong style="color:#0f172a;">0812-****-8890</strong></p>
+                  </div>
+
+                  <div class="otp-box-group" id="otpBoxGroup">
+                    <input type="text" maxlength="1" class="otp-box-input" id="o0" readonly>
+                    <input type="text" maxlength="1" class="otp-box-input" id="o1" readonly>
+                    <input type="text" maxlength="1" class="otp-box-input" id="o2" readonly>
+                    <input type="text" maxlength="1" class="otp-box-input" id="o3" readonly>
+                    <input type="text" maxlength="1" class="otp-box-input" id="o4" readonly>
+                    <input type="text" maxlength="1" class="otp-box-input" id="o5" readonly>
+                  </div>
+
+                  <div style="font-size:12px; color:#64748b; margin-bottom:20px; text-align:center;">
+                    Masa berlaku OTP: <span style="color:var(--primary-blue); font-weight:700;" id="otpExpTimer">04:59</span>
+                  </div>
+
+                  <div class="numpad-container">
+                    <div class="numpad-grid">
+                      <div class="num-btn" onclick="pressOtpNum(1)">1</div>
+                      <div class="num-btn" onclick="pressOtpNum(2)">2</div>
+                      <div class="num-btn" onclick="pressOtpNum(3)">3</div>
+                      <div class="num-btn" onclick="pressOtpNum(4)">4</div>
+                      <div class="num-btn" onclick="pressOtpNum(5)">5</div>
+                      <div class="num-btn" onclick="pressOtpNum(6)">6</div>
+                      <div class="num-btn" onclick="pressOtpNum(7)">7</div>
+                      <div class="num-btn" onclick="pressOtpNum(8)">8</div>
+                      <div class="num-btn" onclick="pressOtpNum(9)">9</div>
+                      <div class="num-btn empty"></div>
+                      <div class="num-btn" onclick="pressOtpNum(0)">0</div>
+                      <div class="num-btn" onclick="pressOtpDel()"><svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 4: LANGKAH 1 PIN BARU -->
+            <div class="app-screen" id="screenPinStep1">
+              <div class="pin-screen-bg">
+                <div class="pin-header">
+                  <button class="back-btn" onclick="showAppScreen('screenVerifyOtp')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                  </button>
+                  <h3>Langkah 1 dari 2</h3>
+                </div>
+
+                <div class="pin-body-content">
+                  <div class="pin-title-block">
+                    <h2>Buat PIN Baru</h2>
+                    <p>Masukkan 6 digit angka rahasia untuk PIN transaksi baru Anda</p>
+                  </div>
+
+                  <div style="display:flex; gap:12px; justify-content:center; margin-bottom:30px;" id="pinDotsStep1">
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                  </div>
+
+                  <div class="numpad-container">
+                    <div class="numpad-grid">
+                      <div class="num-btn" onclick="pressPin1(1)">1</div>
+                      <div class="num-btn" onclick="pressPin1(2)">2</div>
+                      <div class="num-btn" onclick="pressPin1(3)">3</div>
+                      <div class="num-btn" onclick="pressPin1(4)">4</div>
+                      <div class="num-btn" onclick="pressPin1(5)">5</div>
+                      <div class="num-btn" onclick="pressPin1(6)">6</div>
+                      <div class="num-btn" onclick="pressPin1(7)">7</div>
+                      <div class="num-btn" onclick="pressPin1(8)">8</div>
+                      <div class="num-btn" onclick="pressPin1(9)">9</div>
+                      <div class="num-btn empty"></div>
+                      <div class="num-btn" onclick="pressPin1(0)">0</div>
+                      <div class="num-btn" onclick="pressPin1Del()"><svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 5: LANGKAH 2 KONFIRMASI PIN -->
+            <div class="app-screen" id="screenPinStep2">
+              <div class="pin-screen-bg">
+                <div class="pin-header">
+                  <button class="back-btn" onclick="showAppScreen('screenPinStep1')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>
+                  </button>
+                  <h3>Langkah 2 dari 2</h3>
+                </div>
+
+                <div class="pin-body-content">
+                  <div class="pin-title-block">
+                    <h2>Konfirmasi PIN Baru</h2>
+                    <p>Masukkan ulang 6 digit PIN baru yang Anda buat</p>
+                  </div>
+
+                  <div style="display:flex; gap:12px; justify-content:center; margin-bottom:30px;" id="pinDotsStep2">
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                    <div style="width:16px; height:16px; border-radius:50%; border:2px solid #cbd5e1;"></div>
+                  </div>
+
+                  <div class="numpad-container">
+                    <div class="numpad-grid">
+                      <div class="num-btn" onclick="pressPin2(1)">1</div>
+                      <div class="num-btn" onclick="pressPin2(2)">2</div>
+                      <div class="num-btn" onclick="pressPin2(3)">3</div>
+                      <div class="num-btn" onclick="pressPin2(4)">4</div>
+                      <div class="num-btn" onclick="pressPin2(5)">5</div>
+                      <div class="num-btn" onclick="pressPin2(6)">6</div>
+                      <div class="num-btn" onclick="pressPin2(7)">7</div>
+                      <div class="num-btn" onclick="pressPin2(8)">8</div>
+                      <div class="num-btn" onclick="pressPin2(9)">9</div>
+                      <div class="num-btn empty"></div>
+                      <div class="num-btn" onclick="pressPin2(0)">0</div>
+                      <div class="num-btn" onclick="pressPin2Del()"><svg viewBox="0 0 24 24"><path d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z"/></svg></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SCREEN 6: SUKSES -->
+            <div class="app-screen" id="screenSuccess">
+              <div class="pin-screen-bg" style="justify-content:center; align-items:center; text-align:center; padding:32px;">
+                <div style="width:80px; height:80px; background:#dcfce7; border:3px solid #22c55e; color:#166534; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:38px; margin-bottom:20px; box-shadow:0 12px 24px rgba(34,197,94,0.2);">✓</div>
+                <h2 style="font-size:20px; font-weight:800; color:#0f172a; margin-bottom:8px;">PIN Berhasil Dipulihkan!</h2>
+                <p style="font-size:13px; color:#64748b; line-height:1.5; margin-bottom:32px;">PIN baru Anda sudah aktif. Pemblokiran akun telah dibuka dan Anda bisa kembali melakukan transaksi.</p>
+                
+                <button onclick="finishResetFlow()" style="width:100%; height:50px; background:var(--primary-blue); color:#fff; border:none; border-radius:14px; font-size:14px; font-weight:700; cursor:pointer;">
+                  Kembali ke Akun
+                </button>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT SIDEBAR: GUIDE & SCENARIO TESTING -->
+        <div class="feature-right-sidebar">
+          <div class="sidebar-content">
+            <span class="badge-blue">DOKUMEN BRD STORY 1, 2, 3</span>
+            <h3 style="margin-top:8px;">Reset PIN Terblokir (OTP WA)</h3>
+            <p>Fitur pemulihan PIN transaksi terblokir akibat 3x salah memasukkan PIN, menggunakan pengamanan OTP WhatsApp berlapis.</p>
+
+            <div class="step-guide-card" id="stepGuideBox">
+              <h4 id="guideTitle">Langkah 1: Halaman Akun Mitra1000s</h4>
+              <p id="guideText">Status PIN merchant terdeteksi <strong>Blocked</strong> di database. Menu Reset PIN menampilkan badge status terblokir.</p>
+            </div>
+
+            <div class="flow-steps-title">ALUR PROCESS FLOWCHART</div>
+            <div class="flow-steps-list">
+              <div class="flow-step-item active" id="st1">
+                <div class="step-number">1</div>
+                <div class="step-label">Deteksi Status PIN Terblokir</div>
+              </div>
+              <div class="flow-step-item" id="st2">
+                <div class="step-number">2</div>
+                <div class="step-label">Request OTP WhatsApp & Rate Limit</div>
+              </div>
+              <div class="flow-step-item" id="st3">
+                <div class="step-number">3</div>
+                <div class="step-label">Verifikasi Kode OTP (Maks 3x Error)</div>
+              </div>
+              <div class="flow-step-item" id="st4">
+                <div class="step-number">4</div>
+                <div class="step-label">Langkah 1: Input PIN Baru (6-digit)</div>
+              </div>
+              <div class="flow-step-item" id="st5">
+                <div class="step-number">5</div>
+                <div class="step-label">Langkah 2: Konfirmasi PIN Baru</div>
+              </div>
+            </div>
+
+            <!-- SCENARIO CONTROLS -->
+            <div class="scenario-box-sidebar">
+              <h4>⚡ SIMULATOR SKENARIO TESTING</h4>
+              
+              <button class="scenario-btn-item active" onclick="switchScenario('normal')">
+                <span>1. Happy Path (Normal)</span>
+                <span style="font-size:9px; font-weight:700; color:#10b981;">OK</span>
+              </button>
+
+              <button class="scenario-btn-item" onclick="switchScenario('limit')">
+                <span>2. Limit OTP Harian (3x/hari)</span>
+                <span style="font-size:9px; font-weight:700; color:#ef4444;">BLOCK</span>
+              </button>
+
+              <button class="scenario-btn-item" onclick="switchScenario('wrong_otp_3x')">
+                <span>3. Salah OTP 3x (Expired)</span>
+                <span style="font-size:9px; font-weight:700; color:#f59e0b;">EXPIRED</span>
+              </button>
+
+              <button class="scenario-btn-item" onclick="switchScenario('mismatch_pin')">
+                <span>4. Mismatch Konfirmasi PIN</span>
+                <span style="font-size:9px; font-weight:700; color:#ef4444;">RETRY</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // State variables
+    let activeScenario = 'normal';
+    let otpVal = '';
+    let generatedOtpCode = '849201';
+    let otpErrorCount = 0;
+    let dailyLimitCount = 0;
+    let pin1Val = '';
+    let pin2Val = '';
+
+    function showAppScreen(screenId) {
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(screenId).classList.add('active');
+      updateSidebarGuide(screenId);
+    }
+
+    function showAppToast(msg, type = 'error') {
+      const toast = document.getElementById('appToastOverlay');
+      document.getElementById('toastText').innerText = msg;
+      toast.className = 'toast-overlay show ' + type;
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    function handleScanwinBlockedClick() {
+      showAppToast('🚫 Akses Ditolak: Fitur ScanWin tidak dapat diakses karena PIN transaksi Anda sedang terblokir.', 'error');
+    }
+
+    function openResetFlow() {
+      if (dailyLimitCount >= 3) {
+        showCsBlockedUI();
+      } else {
+        showNormalOtpUI();
+      }
+      showAppScreen('screenReqOtp');
+    }
+
+    function showCsBlockedUI() {
+      document.getElementById('normalOtpCard').style.display = 'none';
+      document.getElementById('csBlockedCard').style.display = 'block';
+    }
+
+    function showNormalOtpUI() {
+      document.getElementById('normalOtpCard').style.display = 'block';
+      document.getElementById('csBlockedCard').style.display = 'none';
+    }
+
+    function triggerOtpRequest() {
+      if (activeScenario === 'limit' || dailyLimitCount >= 3) {
+        showCsBlockedUI();
+        showAppToast('Anda telah melebihi batas pengiriman OTP. Silakan hubungi Customer Support.', 'error');
+        return;
+      }
+
+      dailyLimitCount++;
+
+      generatedOtpCode = Math.floor(100000 + Math.random() * 900000).toString();
+      document.getElementById('otpDisplayVal').innerText = generatedOtpCode;
+
+      // Show mock WA popup
+      const waPopup = document.getElementById('waMockPopup');
+      waPopup.classList.add('show');
+      setTimeout(() => waPopup.classList.remove('show'), 5000);
+
+      showAppScreen('screenVerifyOtp');
+      showAppToast('Kode OTP terkirim via WhatsApp!', 'success');
+    }
+
+    function pressOtpNum(num) {
+      if (otpVal.length < 6) {
+        otpVal += num;
+        updateOtpBoxUI();
+        if (otpVal.length === 6) {
+          setTimeout(verifyOtpEntered, 300);
+        }
+      }
+    }
+
+    function pressOtpDel() {
+      if (otpVal.length > 0) {
+        otpVal = otpVal.slice(0, -1);
+        updateOtpBoxUI();
+      }
+    }
+
+    function updateOtpBoxUI() {
+      for (let i = 0; i < 6; i++) {
+        const input = document.getElementById('o' + i);
+        if (i < otpVal.length) {
+          input.value = otpVal[i];
+          input.classList.remove('error');
+        } else {
+          input.value = '';
+          input.classList.remove('error');
+        }
+      }
+    }
+
+    function verifyOtpEntered() {
+      if (activeScenario === 'wrong_otp_3x') {
+        otpErrorCount++;
+        showAppToast('Kode OTP tidak valid.', 'error');
+        shakeOtpBoxes();
+        
+        if (otpErrorCount < 3) {
+          setTimeout(() => {
+            otpVal = '';
+            updateOtpBoxUI();
+          }, 600);
+        } else {
+          setTimeout(() => {
+            otpVal = '';
+            otpErrorCount = 0;
+            updateOtpBoxUI();
+            if (dailyLimitCount >= 3) {
+              showCsBlockedUI();
+              showAppToast('Batas pengiriman OTP telah terpenuhi. Silakan hubungi Customer Support.', 'error');
+            } else {
+              showAppToast('Kode OTP telah kedaluwarsa. Silakan minta kode OTP baru.', 'error');
+            }
+            showAppScreen('screenReqOtp');
+          }, 1500);
+        }
+        return;
+      }
+
+      if (otpVal === generatedOtpCode || otpVal === '849201') {
+        showAppToast('OTP Valid! Silakan buat PIN baru.', 'success');
+        otpVal = '';
+        otpErrorCount = 0;
+        updateOtpBoxUI();
+        showAppScreen('screenPinStep1');
+      } else {
+        otpErrorCount++;
+        showAppToast('Kode OTP tidak valid.', 'error');
+        shakeOtpBoxes();
+        
+        if (otpErrorCount < 3) {
+          setTimeout(() => {
+            otpVal = '';
+            updateOtpBoxUI();
+          }, 600);
+        } else {
+          setTimeout(() => {
+            otpVal = '';
+            otpErrorCount = 0;
+            updateOtpBoxUI();
+            if (dailyLimitCount >= 3) {
+              showCsBlockedUI();
+              showAppToast('Batas pengiriman OTP telah terpenuhi. Silakan hubungi Customer Support.', 'error');
+            } else {
+              showAppToast('Kode OTP telah kedaluwarsa. Silakan minta kode OTP baru.', 'error');
+            }
+            showAppScreen('screenReqOtp');
+          }, 1500);
+        }
+      }
+    }
+
+    function shakeOtpBoxes() {
+      const grp = document.getElementById('otpBoxGroup');
+      grp.classList.add('shake-target');
+      for (let i = 0; i < 6; i++) document.getElementById('o' + i).classList.add('error');
+      setTimeout(() => grp.classList.remove('shake-target'), 500);
+    }
+
+    function pressPin1(num) {
+      if (pin1Val.length < 6) {
+        pin1Val += num;
+        updatePinDotsUI(1, pin1Val.length);
+        if (pin1Val.length === 6) {
+          setTimeout(() => showAppScreen('screenPinStep2'), 300);
+        }
+      }
+    }
+
+    function pressPin1Del() {
+      if (pin1Val.length > 0) {
+        pin1Val = pin1Val.slice(0, -1);
+        updatePinDotsUI(1, pin1Val.length);
+      }
+    }
+
+    function pressPin2(num) {
+      if (pin2Val.length < 6) {
+        pin2Val += num;
+        updatePinDotsUI(2, pin2Val.length);
+        if (pin2Val.length === 6) {
+          setTimeout(checkPinMatch, 300);
+        }
+      }
+    }
+
+    function pressPin2Del() {
+      if (pin2Val.length > 0) {
+        pin2Val = pin2Val.slice(0, -1);
+        updatePinDotsUI(2, pin2Val.length);
+      }
+    }
+
+    function updatePinDotsUI(step, count) {
+      const container = document.getElementById('pinDotsStep' + step);
+      const dots = container.children;
+      for (let i = 0; i < 6; i++) {
+        if (i < count) {
+          dots[i].style.background = 'var(--primary-blue)';
+          dots[i].style.borderColor = 'var(--primary-blue)';
+        } else {
+          dots[i].style.background = 'transparent';
+          dots[i].style.borderColor = '#cbd5e1';
+        }
+      }
+    }
+
+    function checkPinMatch() {
+      if (activeScenario === 'mismatch_pin' || pin1Val !== pin2Val) {
+        showAppToast('Konfirmasi PIN tidak cocok! Ulangi dari Langkah 1.', 'error');
+        const dots = document.getElementById('pinDotsStep2');
+        dots.classList.add('shake-target');
+        setTimeout(() => {
+          dots.classList.remove('shake-target');
+          pin1Val = '';
+          pin2Val = '';
+          updatePinDotsUI(1, 0);
+          updatePinDotsUI(2, 0);
+          showAppScreen('screenPinStep1');
+        }, 800);
+        return;
+      }
+
+      showAppToast('PIN Berhasil Diperbarui!', 'success');
+      showAppScreen('screenSuccess');
+    }
+
+    function finishResetFlow() {
+      pin1Val = '';
+      pin2Val = '';
+      otpVal = '';
+      updatePinDotsUI(1, 0);
+      updatePinDotsUI(2, 0);
+      updateOtpBoxUI();
+      showAppScreen('screenAccount');
+    }
+
+    function updateSidebarGuide(screenId) {
+      const box = document.getElementById('stepGuideBox');
+      const title = document.getElementById('guideTitle');
+      const text = document.getElementById('guideText');
+
+      document.querySelectorAll('.flow-step-item').forEach(i => i.classList.remove('active', 'completed'));
+
+      if (screenId === 'screenAccount') {
+        title.innerText = 'Langkah 1: Status PIN Terblokir';
+        text.innerHTML = 'Status PIN terdeteksi <strong>Blocked</strong> di database akibat 3x kesalahan input PIN. Menu Reset PIN menampilkan badge TERBLOKIR.';
+        document.getElementById('st1').classList.add('active');
+      } else if (screenId === 'screenReqOtp') {
+        title.innerText = 'Langkah 2: Request Kode OTP via WhatsApp';
+        text.innerHTML = 'Merchant menekan tombol request OTP. Backend melakukan evaluasi <strong>Rate Limit (3x/hari)</strong> dan <strong>Cooldown (1m)</strong>.';
+        document.getElementById('st1').classList.add('completed');
+        document.getElementById('st2').classList.add('active');
+      } else if (screenId === 'screenVerifyOtp') {
+        title.innerText = 'Langkah 3: Verifikasi OTP (Max 3x Error)';
+        text.innerHTML = 'Merchant menginputkan 6-digit OTP. Jika salah 3x, backend mengubah status OTP menjadi <strong>Expired</strong>.';
+        document.getElementById('st1').classList.add('completed');
+        document.getElementById('st2').classList.add('completed');
+        document.getElementById('st3').classList.add('active');
+      } else if (screenId === 'screenPinStep1') {
+        title.innerText = 'Langkah 4: Input PIN Baru (6-digit)';
+        text.innerHTML = 'Setelah OTP valid, merchant menginputkan 6 digit angka untuk PIN transaksi baru.';
+        document.getElementById('st1').classList.add('completed');
+        document.getElementById('st2').classList.add('completed');
+        document.getElementById('st3').classList.add('completed');
+        document.getElementById('st4').classList.add('active');
+      } else if (screenId === 'screenPinStep2') {
+        title.innerText = 'Langkah 5: Konfirmasi PIN Baru';
+        text.innerHTML = 'Merchant memasukkan ulang PIN baru. Sistem memvalidasi kecocokan PIN dengan langkah 1.';
+        document.getElementById('st1').classList.add('completed');
+        document.getElementById('st2').classList.add('completed');
+        document.getElementById('st3').classList.add('completed');
+        document.getElementById('st4').classList.add('completed');
+        document.getElementById('st5').classList.add('active');
+      } else if (screenId === 'screenSuccess') {
+        title.innerText = 'Pemulihan PIN Berhasil!';
+        text.innerHTML = 'Hash PIN baru disimpan di DB, status PIN kembali <strong>Aktif</strong>, dan counter kesalahan di-reset ke 0.';
+        document.getElementById('st1').classList.add('completed');
+        document.getElementById('st2').classList.add('completed');
+        document.getElementById('st3').classList.add('completed');
+        document.getElementById('st4').classList.add('completed');
+        document.getElementById('st5').classList.add('completed');
+      }
+    }
+
+    function switchScenario(sc) {
+      activeScenario = sc;
+      document.querySelectorAll('.scenario-btn-item').forEach(b => b.classList.remove('active'));
+      event.currentTarget.classList.add('active');
+
+      otpErrorCount = 0;
+      if (sc === 'limit') {
+        dailyLimitCount = 3;
+        showCsBlockedUI();
+      } else {
+        dailyLimitCount = 0;
+        showNormalOtpUI();
+      }
+
+      showAppScreen('screenAccount');
+      showAppToast('Skenario diaktifkan: ' + sc, 'info');
+    }
+  </script>
+</body>
+</html>
