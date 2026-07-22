@@ -1,0 +1,3201 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alur Shareable QR &amp; FDE (Flow 2) — sCanWin Fraud Detection Engine Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <style>
+    /* Design Tokens & Theme Variables */
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #1f1f1f;
+      --medium-gray: #5f6368;
+      --light-gray: #f1f3f4;
+      --border-gray: #dadce0;
+      --gold-gradient: linear-gradient(135deg, #ffe082 0%, #ffb300 100%);
+      --dark-card-bg: linear-gradient(135deg, #2b2b2b 0%, #111111 100%);
+      --success-green: #0f9d58;
+      --warning-amber: #d97706;
+      --warning-bg: #fffbe6;
+      --error-red: #d93025;
+      --card-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* PORTAL CONTAINER & SIDEBAR */
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .feature-left-canvas {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #e2e8f0;
+      padding: 24px;
+      overflow: hidden;
+      border-right: 1px solid #cbd5e1;
+    }
+
+    .feature-right-sidebar {
+      width: 400px;
+      background: #fff;
+      display: flex;
+      flex-direction: column;
+      padding: 28px 20px;
+      overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.02);
+    }
+
+    /* RIGHT SIDEBAR STYLES */
+    .badge-blue {
+      display: inline-block;
+      background: rgba(11, 87, 208, 0.08);
+      color: var(--primary-blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(11, 87, 208, 0.2);
+    }
+
+    .sidebar-content h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-content p {
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .step-guide-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      border-left: 4px solid var(--primary-blue);
+      transition: all 0.25s ease;
+    }
+
+    .step-guide-card.success-state {
+      border-left-color: var(--success-green);
+      background: #f0fdf4;
+    }
+
+    .step-guide-card.pending-state {
+      border-left-color: var(--warning-amber);
+      background: #fffbeb;
+    }
+
+    .step-guide-card.error-state {
+      border-left-color: var(--error-red);
+      background: #fef2f2;
+    }
+
+    .step-guide-card h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #1e293b;
+      margin-bottom: 4px;
+    }
+
+    .step-guide-card p {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.45;
+      margin-bottom: 0;
+    }
+
+    .flow-steps-title {
+      font-size: 11px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .flow-steps-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      transition: all 0.25s ease;
+      color: #64748b;
+      cursor: pointer;
+    }
+
+    .flow-step-item.active {
+      background: rgba(11, 87, 208, 0.08);
+      border-color: rgba(11, 87, 208, 0.3);
+      color: var(--primary-blue);
+      font-weight: 600;
+    }
+
+    .flow-step-item.completed {
+      background: rgba(15, 157, 88, 0.04);
+      border-color: rgba(15, 157, 88, 0.15);
+      color: #475569;
+    }
+
+    .step-number {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      flex-shrink: 0;
+      color: #64748b;
+    }
+
+    .flow-step-item.active .step-number {
+      background: var(--primary-blue);
+      color: #fff;
+    }
+
+    .flow-step-item.completed .step-number {
+      background: var(--success-green);
+      color: #fff;
+    }
+
+    .step-label {
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    /* Scenario Simulation Controls */
+    .scenario-box-sidebar {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+    }
+
+    .scenario-box-sidebar h4 {
+      font-size: 11px;
+      font-weight: 800;
+      color: #475569;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 10px;
+    }
+
+    .scenario-btn-item {
+      width: 100%;
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid #cbd5e1;
+      background: #fff;
+      color: #334155;
+      font-size: 11.5px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .scenario-btn-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .scenario-btn-item:hover {
+      background: #f1f5f9;
+      border-color: #94a3b8;
+    }
+
+    .scenario-btn-item.active {
+      background: var(--primary-blue);
+      color: #fff;
+      border-color: var(--primary-blue);
+    }
+
+    /* FDE Inspector Box */
+    .fde-inspector-box {
+      background: #0f172a;
+      border: 1px solid #1e293b;
+      border-radius: 12px;
+      padding: 12px;
+      color: #94a3b8;
+      font-family: monospace;
+      font-size: 10.5px;
+      line-height: 1.5;
+    }
+
+    .fde-inspector-box h5 {
+      color: #38bdf8;
+      font-size: 11px;
+      font-family: 'Inter', sans-serif;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .fde-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px;
+    }
+
+    .fde-row strong {
+      color: #f1f5f9;
+    }
+
+    .fde-status-pass {
+      color: #4ade80;
+      font-weight: bold;
+    }
+
+    .fde-status-fail {
+      color: #f87171;
+      font-weight: bold;
+    }
+
+    /* ========== APP CANVAS CONTAINER ========== */
+    .app-container {
+      position: relative;
+      width: 390px;
+      height: 800px;
+      background: #f8fafc;
+      border-radius: 28px;
+      border: 1px solid #cbd5e1;
+      box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.15);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .status-bar {
+      height: 44px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-size: 13px;
+      font-weight: 600;
+      color: #333;
+      z-index: 90;
+      background: transparent;
+      padding-bottom: 6px;
+    }
+
+    .status-bar.dark-mode {
+      color: #fff;
+    }
+
+    .status-icons {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .status-icons svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    /* APP SCREENS & TRANSITIONS */
+    .app-screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      opacity: 0;
+      pointer-events: none;
+      z-index: 10;
+      background: #f8fafc;
+    }
+
+    .app-screen.active {
+      opacity: 1;
+      pointer-events: auto;
+      z-index: 20;
+    }
+
+    /* =========================================================
+       SCREEN 1: ACCOUNT PAGE
+       ========================================================= */
+    .account-header-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 180px;
+      background: linear-gradient(180deg, #e8f2ff 0%, #f8fafc 100%);
+      z-index: 1;
+    }
+
+    .account-content {
+      position: relative;
+      z-index: 2;
+      flex: 1;
+      overflow-y: auto;
+      padding: 44px 16px 80px 16px;
+      scrollbar-width: none;
+    }
+
+    .profile-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 15px;
+      margin-bottom: 20px;
+    }
+
+    .profile-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .profile-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #a8cdff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-weight: bold;
+      border: 2px solid #fff;
+      box-shadow: 0 2px 8px rgba(11, 87, 208, 0.15);
+    }
+
+    .profile-avatar svg {
+      width: 26px;
+      height: 26px;
+      fill: #fff;
+    }
+
+    .profile-details h2 {
+      font-size: 18px;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .profile-details p {
+      font-size: 13px;
+      color: var(--medium-gray);
+      margin-top: 2px;
+    }
+
+    .qr-button {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--primary-blue);
+      cursor: pointer;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .qr-button svg {
+      width: 16px;
+      height: 16px;
+      fill: var(--primary-blue);
+    }
+
+    .balance-card {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      overflow: hidden;
+      margin-bottom: 16px;
+      border: 1px solid #edf2f7;
+    }
+
+    .balance-main {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 16px;
+      position: relative;
+    }
+
+    .balance-main::after {
+      content: '';
+      position: absolute;
+      top: 20%;
+      bottom: 20%;
+      left: 50%;
+      width: 1px;
+      background: #edf2f7;
+    }
+
+    .balance-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .balance-icon-box {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .wallet-bg {
+      background-color: #ffebee;
+    }
+
+    .ticket-bg {
+      background-color: #e8f0fe;
+    }
+
+    .balance-icon-box svg {
+      width: 22px;
+      height: 22px;
+    }
+
+    .balance-text label {
+      display: block;
+      font-size: 11px;
+      color: var(--medium-gray);
+      font-weight: 500;
+    }
+
+    .balance-text span {
+      font-size: 14px;
+      font-weight: 700;
+      color: #1a1a1a;
+      display: block;
+      margin-top: 2px;
+    }
+
+    .loyalty-card {
+      background: var(--dark-card-bg);
+      border-radius: 20px;
+      color: #fff;
+      margin-bottom: 16px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loyalty-container {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .gold-card-visual {
+      width: 90px;
+      flex-shrink: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .gold-card-visual .tier-title {
+      font-size: 16px;
+      font-weight: 900;
+      color: #ffe082;
+      letter-spacing: 1px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .loyalty-info {
+      flex: 1;
+    }
+
+    .loyalty-info h4 {
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .loyalty-info p {
+      font-size: 11px;
+      color: #cbd5e1;
+      line-height: 1.4;
+      margin: 0;
+    }
+
+    .menu-group {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: var(--card-shadow);
+      margin-bottom: 16px;
+      overflow: hidden;
+      border: 1px solid #edf2f7;
+    }
+
+    .menu-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      border-bottom: 1px solid #edf2f7;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .menu-item:last-child {
+      border-bottom: none;
+    }
+
+    .menu-item:hover {
+      background: #f8fafc;
+    }
+
+    .menu-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .menu-icon {
+      width: 22px;
+      height: 22px;
+      fill: var(--medium-gray);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-label {
+      font-size: 13.5px;
+      font-weight: 600;
+      color: #2b303a;
+    }
+
+    .menu-item.highlight-entry {
+      background: linear-gradient(90deg, #e8f0fe 0%, #fff 100%);
+      border-left: 4px solid var(--primary-blue);
+    }
+
+    .menu-item.highlight-entry .menu-label {
+      font-weight: 700;
+      color: var(--primary-blue);
+    }
+
+    .menu-item.highlight-entry .menu-icon {
+      fill: var(--primary-blue);
+    }
+
+    .chevron-right {
+      width: 16px;
+      height: 16px;
+      fill: #a0aec0;
+    }
+
+    .logout-btn-box {
+      margin: 16px 0 24px 0;
+      display: flex;
+      justify-content: center;
+    }
+
+    .logout-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      height: 50px;
+      background: #fff;
+      border: 1px solid #edf2f7;
+      border-radius: 20px;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--error-red);
+      cursor: pointer;
+      transition: background 0.2s ease;
+      box-shadow: var(--card-shadow);
+    }
+
+    .logout-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: var(--error-red);
+    }
+
+    .bottom-nav {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 64px;
+      background: #fff;
+      border-top: 1px solid #edf2f7;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      padding: 6px 0 16px 0;
+      z-index: 85;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      color: #94a3b8;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+    }
+
+    .nav-item.active {
+      color: var(--primary-blue);
+      font-weight: 700;
+    }
+
+    .nav-item svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
+
+    /* =========================================================
+       SCREEN 2: SCANWIN VOUCHER LIST SCREEN
+       ========================================================= */
+    .scanwin-header {
+      background: #fff;
+      padding: 50px 16px 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .scanwin-top-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .scanwin-top-bar h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .scanwin-top-bar h2 svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--primary-blue);
+    }
+
+    .scanner-back-btn {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .scanner-back-btn svg {
+      width: 20px;
+      height: 20px;
+      fill: #1e293b;
+    }
+
+    .search-input-box {
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      color: #64748b;
+      border: 1px solid #e2e8f0;
+    }
+
+    .search-input-box input {
+      border: none;
+      background: transparent;
+      outline: none;
+      width: 100%;
+      font-size: 13px;
+    }
+
+    .scanwin-tabs-bar {
+      display: flex;
+      gap: 20px;
+      border-bottom: 2px solid #e2e8f0;
+      margin-top: 4px;
+      padding-bottom: 2px;
+    }
+
+    .scanwin-tab-item {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #64748b;
+      padding-bottom: 8px;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .scanwin-tab-item.active {
+      color: #1e293b;
+    }
+
+    .scanwin-tab-item.active::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: #1e293b;
+      border-radius: 2px;
+    }
+
+    .sub-instruction-bar {
+      background: #f8fafc;
+      padding: 10px 16px;
+      font-size: 12px;
+      color: #64748b;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .voucher-list-scroll {
+      flex: 1;
+      padding: 14px 16px 90px 16px;
+      overflow-y: auto;
+    }
+
+    .voucher-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1.5px solid #e2e8f0;
+      padding: 16px;
+      margin-bottom: 14px;
+      transition: all 0.25s ease;
+      position: relative;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+    }
+
+    .voucher-card.selected {
+      border-color: var(--primary-blue);
+      box-shadow: 0 4px 14px rgba(11, 87, 208, 0.12);
+    }
+
+    .btn-select-voucher {
+      padding: 7px 18px;
+      border-radius: 20px;
+      background: var(--primary-blue);
+      color: #fff;
+      border: none;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .stepper-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #f1f5f9;
+      border-radius: 12px;
+      padding: 4px 10px;
+      border: 1px solid #cbd5e1;
+    }
+
+    .stepper-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 6px;
+      background: #fff;
+      border: 1px solid #cbd5e1;
+      font-weight: bold;
+      color: #1e293b;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .stepper-count {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1e293b;
+      min-width: 14px;
+      text-align: center;
+    }
+
+    .sticky-bottom-action {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      padding: 14px 16px 24px 16px;
+      border-top: 1px solid #e2e8f0;
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.05);
+      z-index: 50;
+      display: none;
+    }
+
+    .sticky-bottom-action.active {
+      display: block;
+    }
+
+    .btn-action-primary {
+      width: 100%;
+      height: 50px;
+      background: var(--primary-blue);
+      color: #fff;
+      border: none;
+      border-radius: 16px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      box-shadow: 0 4px 12px rgba(11, 87, 208, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-action-primary:active {
+      transform: scale(0.98);
+    }
+
+    /* =========================================================
+       SCREEN 3: CAMERA SCANNER SCREEN
+       ========================================================= */
+    .scan-view-screen {
+      background: #0f172a;
+      color: #fff;
+    }
+
+    .scan-header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 44px 16px 14px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 40;
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.8) 0%, transparent 100%);
+    }
+
+    .floating-voucher-pill {
+      position: absolute;
+      top: 90px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 40;
+      backdrop-filter: blur(8px);
+    }
+
+    .scan-camera-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .phone-scan-frame {
+      width: 240px;
+      height: 240px;
+      border: 2px dashed rgba(255, 255, 255, 0.5);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .scan-bottom-sheet {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 16px 20px 32px 20px;
+      color: #1e293b;
+      z-index: 45;
+    }
+
+    .sheet-drag-handle {
+      width: 36px;
+      height: 4px;
+      background: #cbd5e1;
+      border-radius: 2px;
+      margin: 0 auto 16px auto;
+    }
+
+    .scan-sheet-card {
+      background: #f8fafc;
+      border: 1.5px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      margin-bottom: 16px;
+      transition: all 0.2s;
+    }
+
+    .scan-sheet-card:hover {
+      border-color: var(--primary-blue);
+      background: rgba(11, 87, 208, 0.04);
+    }
+
+    .scan-sheet-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .selected-v-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: #f8fafc;
+      border-radius: 12px;
+      margin-bottom: 8px;
+      border: 1px solid #e2e8f0;
+    }
+
+    .selected-v-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .selected-v-text {
+      font-size: 11.5px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.3;
+    }
+
+    /* SCREEN 4: OVERLAY PIN INPUT SHEET */
+    .pin-overlay-screen {
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      justify-content: flex-end;
+    }
+
+    .pin-bottom-sheet {
+      background: #fff;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 24px 20px 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .pin-header-text h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e293b;
+      text-align: center;
+      margin-bottom: 4px;
+    }
+
+    .pin-header-text p {
+      font-size: 12px;
+      color: #64748b;
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.4;
+    }
+
+    .pin-dots-container {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .pin-dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      background: transparent;
+      transition: all 0.2s ease;
+    }
+
+    .pin-dot.filled {
+      background: var(--primary-blue);
+      border-color: var(--primary-blue);
+      transform: scale(1.15);
+    }
+
+    .pin-dot.error {
+      background: var(--error-red);
+      border-color: var(--error-red);
+    }
+
+    .pin-error-msg {
+      font-size: 11.5px;
+      color: var(--error-red);
+      font-weight: 600;
+      min-height: 18px;
+      margin-bottom: 14px;
+      text-align: center;
+    }
+
+    .keypad-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      width: 100%;
+      max-width: 290px;
+    }
+
+    .keypad-btn {
+      height: 52px;
+      border-radius: 50%;
+      border: 1px solid #e2e8f0;
+      background: #f8fafc;
+      font-size: 20px;
+      font-weight: 700;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .keypad-btn:active {
+      background: #e2e8f0;
+    }
+
+    .keypad-btn.action-btn {
+      font-size: 13px;
+      font-weight: 600;
+      color: #64748b;
+      background: transparent;
+      border: none;
+    }
+
+    /* PIN BLOCKED SCREEN (EXACT MATCHING USER REFERENCE IMAGE) */
+    .blocked-screen {
+      background: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 32px 24px;
+      text-align: center;
+      height: 100%;
+      box-sizing: border-box;
+      position: relative;
+    }
+
+    .blocked-icon-box {
+      width: 96px;
+      height: 96px;
+      border-radius: 50%;
+      background: #ffebee;
+      color: #e53935;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 24px;
+    }
+
+    .blocked-icon-box svg {
+      width: 44px;
+      height: 44px;
+      fill: #e53935;
+    }
+
+    .blocked-screen h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #1e293b;
+      margin: 0 0 10px 0;
+      letter-spacing: -0.2px;
+    }
+
+    .blocked-screen p {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.55;
+      margin: 0 0 32px 0;
+      max-width: 300px;
+      font-weight: 500;
+    }
+
+    .btn-blocked-primary {
+      width: 100%;
+      max-width: 320px;
+      height: 48px;
+      background: #0b57d0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      text-decoration: none;
+      border: none;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 6px rgba(11, 87, 208, 0.25);
+      transition: background 0.2s;
+    }
+
+    .btn-blocked-primary:hover {
+      background: #0842a0;
+    }
+
+    .btn-blocked-secondary {
+      background: transparent;
+      border: none;
+      color: #475569;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      padding: 8px 16px;
+      transition: color 0.2s;
+    }
+
+    .btn-blocked-secondary:hover {
+      color: #1e293b;
+    }
+
+    /* HISTORY SCREEN STYLING (MATCHING DIRECT-SCAN.HTML) */
+    .history-screen {
+      background: #f8fafc;
+    }
+
+    .history-header-box {
+      background: #fff;
+      padding: 50px 16px 12px 16px;
+      border-bottom: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .history-top-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .history-top-bar h2 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #1e293b;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .history-top-bar h2 svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--primary-blue);
+    }
+
+    .history-list-scroll {
+      flex: 1;
+      padding: 14px 16px 90px 16px;
+      overflow-y: auto;
+    }
+
+    .history-v-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 14px;
+      margin-bottom: 12px;
+      position: relative;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .history-v-card:hover {
+      border-color: #cbd5e1;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    }
+
+    .jackpot-ribbon-tag {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: #fbbf24;
+      color: #78350f;
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 10px;
+      border-top-left-radius: 15px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .history-v-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 6px;
+    }
+
+    .history-cust-meta {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 500;
+    }
+
+    .history-v-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1e293b;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .history-metrics-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding: 10px 0;
+      border-top: 1px dashed #e2e8f0;
+      margin-bottom: 10px;
+    }
+
+    .hm-col label {
+      font-size: 10.5px;
+      color: #94a3b8;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    .hm-col strong {
+      font-size: 13px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .hm-col strong.highlight-red {
+      color: var(--error-red);
+    }
+
+    .status-pill-banner {
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      line-height: 1.45;
+    }
+
+    .status-pill-banner.jackpot {
+      background: #fff7ed;
+      color: #d97706;
+      border: 1px solid #ffedd5;
+    }
+
+    .status-pill-banner.saldo {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1px solid #dbeafe;
+    }
+
+    .status-pill-banner.pending {
+      background: #fffbeb;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .status-pill-banner.dibatalkan {
+      background: #fef2f2;
+      color: #b91c1c;
+      border: 1px solid #fecaca;
+    }
+
+    .status-pill-banner.info {
+      background: #f1f5f9;
+      color: #475569;
+      border: 1px solid #e2e8f0;
+    }
+
+    .h-badge {
+      font-size: 10px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .h-badge.pending {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+
+    .h-badge.selesai {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .h-badge.dibatalkan {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    /* UNREDEEMED BANNER & BOTTOMSHEET STYLING (MATCHING USER ATTACHMENTS 1 & 2) */
+    .unredeemed-banner-card {
+      background: #fffbe6;
+      border: 1px solid #ffe58f;
+      border-radius: 14px;
+      padding: 11px 14px;
+      margin: 12px 16px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      transition: all 0.2s ease;
+    }
+
+    .unredeemed-banner-card:hover {
+      background: #fff1b8;
+      transform: translateY(-1px);
+    }
+
+    .unredeemed-banner-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .unredeemed-icon-circle {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #fa8c16;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 800;
+      flex-shrink: 0;
+    }
+
+    .unredeemed-banner-title {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    /* UNREDEEMED BOTTOMSHEET MODAL */
+    .modal-backdrop {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.5);
+      z-index: 100;
+      display: none;
+      align-items: flex-end;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-backdrop.active {
+      display: flex;
+    }
+
+    .unredeemed-bottomsheet {
+      width: 100%;
+      max-height: 85%;
+      background: #f8fafc;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      animation: slideUp 0.25s ease-out;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.2);
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .bottomsheet-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .bottomsheet-title-box h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #1e293b;
+      margin-bottom: 2px;
+    }
+
+    .bottomsheet-title-box p {
+      font-size: 11.5px;
+      color: #64748b;
+    }
+
+    .btn-close-modal {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #64748b;
+      transition: background 0.15s;
+    }
+
+    .btn-close-modal:hover {
+      background: #e2e8f0;
+    }
+
+    .unredeemed-list-scroll {
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 20px;
+    }
+
+    .unredeemed-group-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+    }
+
+    .unredeemed-group-card.clickable {
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .unredeemed-group-card.clickable:hover {
+      border-color: #a8cdff;
+      box-shadow: 0 4px 14px rgba(11, 87, 208, 0.1);
+      transform: translateY(-2px);
+    }
+
+    .unredeemed-group-header {
+      margin-bottom: 10px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .unredeemed-group-time {
+      font-size: 12px;
+      font-weight: 800;
+      color: #1e293b;
+    }
+
+    .unredeemed-group-expired {
+      font-size: 11px;
+      color: #64748b;
+      margin-top: 1px;
+    }
+
+    .unredeemed-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid #f8fafc;
+    }
+
+    .unredeemed-item-row:last-child {
+      border-bottom: none;
+    }
+
+    .unredeemed-item-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .unredeemed-item-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #1e293b;
+      line-height: 1.35;
+    }
+
+    .unredeemed-qty-badge {
+      font-size: 12px;
+      font-weight: 800;
+      color: #475569;
+      background: #f1f5f9;
+      padding: 2px 8px;
+      border-radius: 6px;
+    }
+
+    .badge-status-unredeemed {
+      font-size: 9.5px;
+      font-weight: 800;
+      padding: 3px 8px;
+      border-radius: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+
+    .badge-status-unredeemed.belum_redeem {
+      background: #e6f4ea;
+      color: #137333;
+      border: 1px solid #ceead6;
+    }
+
+    .badge-status-unredeemed.pending {
+      background: #fef3c7;
+      color: #b45309;
+      border: 1px solid #fde68a;
+    }
+  </style>
+
+  <script src="sidebar.js"></script>
+</head>
+
+<body>
+  <div class="portal-container">
+
+    <!-- MASTER SIDEBAR (Rendered via sidebar.js) -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- MAIN PORTAL CONTAINER -->
+    <div class="portal-main">
+      <div class="feature-container">
+
+        <!-- LEFT: APP SIMULATOR CANVAS -->
+        <div class="feature-left-canvas">
+          <div class="app-container">
+
+            <!-- Mobile Status Bar -->
+            <div class="status-bar" id="status-bar">
+              <span>9:41</span>
+              <div class="status-icons">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 3c-4.97 0-9 4.03-9 9 0 2.12.74 4.07 1.97 5.61L4.35 19.4c-.39.39-.39 1.02 0 1.41.39.39 1.02.39 1.41 0l1.9-1.9C9.2 19.54 10.55 20 12 20c4.97 0 9-4.03 9-9s-4.03-9-9-9z" />
+                </svg>
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+                </svg>
+              </div>
+            </div>
+
+            <!-- =========================================================
+                 SCREEN 1: ACCOUNT ENTRY POINT
+                 ========================================================= -->
+            <div id="screen-account" class="app-screen active">
+              <div class="account-header-bg"></div>
+              <div class="account-content">
+                <div class="profile-section">
+                  <div class="profile-info">
+                    <div class="profile-avatar"><svg viewBox="0 0 24 24">
+                        <path
+                          d="M12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10-10-4.48-10-10 4.48-10 10-10zm0 3c-1.93 0-3.5 1.57-3.5 3.5s1.57 3.5 3.5 3.5 3.5-1.57 3.5-3.5-1.57-3.5-3.5-3.5zm0 13c2.7 0 5.08-1.37 6.46-3.46-1.92-1.54-4.32-2.54-6.46-2.54s-4.54 1-6.46 2.54c1.38 2.09 3.76 3.46 6.46 3.46z" />
+                      </svg></div>
+                    <div class="profile-details">
+                      <h2>Toko Berkat Jaya <span class="verified-badge"><svg viewBox="0 0 24 24"
+                            style="width:16px;height:16px;fill:#1a73e8;">
+                            <path
+                              d="M12 2c-5.52 0-10 4.48-10 10s4.48 10 10 10 10-4.48-10-10-4.48-10-10-10zm-2 15l-5-5 1.41-1.41 3.59 3.59 7.59-7.59 1.42 1.42-9 9z" />
+                          </svg></span></h2>
+                      <p>+6282319191</p>
+                    </div>
+                  </div>
+                  <button class="qr-button"><svg viewBox="0 0 24 24">
+                      <path
+                        d="M4 4h6v6h-6zm2 2v2h2v-2zm-2 8h6v6h-6zm2 2v2h2v-2zm10 -12h6v6h-6zm2 2v2h2v-2zm-2 10h2v-2h-2zm2 2h2v-2h-2zm-2 -2h2v-2h-2zm2 -2h2v-2h-2zm2 4h2v-4h-4zm-4 4h4v-2h-4zm2 -10h2v-2h-2zm-2 4h2v-2h-2z" />
+                    </svg>QR Ku</button>
+                </div>
+
+                <!-- BALANCE CARD -->
+                <div class="balance-card">
+                  <div class="balance-main">
+                    <div class="balance-item">
+                      <div class="balance-icon-box wallet-bg"><svg viewBox="0 0 24 24" fill="#d93025">
+                          <path
+                            d="M21 18v1c0 1.1-.9 2-2 2h-15c-1.11 0-2-.9-2-2v-14c0-1.1.89-2 2-2h15c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10v-6h-10v6zm3-4c-.55 0-1 .45-1 1s.45 1 1 1 1-.45 1-1-.45-1-1-1z" />
+                        </svg></div>
+                      <div class="balance-text"><label>Saldo</label><span id="account-saldo-val">Rp 12,000,000</span>
+                      </div>
+                    </div>
+                    <div class="balance-item">
+                      <div class="balance-icon-box ticket-bg"><svg viewBox="0 0 24 24" fill="#1a73e8">
+                          <path
+                            d="M20 12c0-1.1.9-2 2-2V6c0-1.1-.9-2-2-2H4c-1.1 0-2 .9-2 2v4c1.1 0 2 .9 2 2s-.9 2-2 2v4c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2v-4c-1.1 0-2-.9-2-2zm-5 5.5h-6v-3h6v3zm0-6h-6v-3h6v3zm0-6h-6v-3h6v3z" />
+                        </svg></div>
+                      <div class="balance-text"><label>Voucher</label><span>1</span></div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- LOYALTY CARD -->
+                <div class="loyalty-card">
+                  <div class="loyalty-container">
+                    <div class="gold-card-visual">
+                      <span class="tier-title">GOLD</span>
+                      <div
+                        style="background: linear-gradient(135deg,#ffe082,#ffb300); border-radius:6px; padding:6px 8px; margin-top:6px;">
+                        <div style="font-size:6px; font-weight:800; color:#5d4037; letter-spacing:0.5px;">MERCHANT 1000S
+                        </div>
+                        <div style="font-size:5px; color:#8d6e63; margin-top:2px;">LOYALTY PROGRAM</div>
+                        <div style="font-size:10px; font-weight:900; color:#5d4037; margin-top:4px;">M∎</div>
+                      </div>
+                    </div>
+                    <div class="loyalty-info">
+                      <h4 style="font-size:13px; font-weight:800; color:#ffe082; margin-bottom:4px;">Periode 1 <span
+                          style="font-weight:400; color:#ccc;">(April - Desember)</span></h4>
+                      <p style="font-size:11px; color:#e2e8f0; line-height:1.4; margin:0;">Belanja <strong
+                          style="color:#ffe082;">Rp 2,000,000</strong> lagi untuk naik ke Grade Platinum</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- KELOLA PIN ENTRY CARD -->
+                <div class="menu-group">
+                  <div id="kelola-pin-menu" class="menu-item highlight-entry" onclick="handleKelolaPinClick()">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24">
+                          <path
+                            d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                        </svg></div>
+                      <div id="kelola-pin-label" class="menu-label">
+                        Kelola PIN Mitra1000s <span
+                          style="font-size:10px; color:var(--success-green); font-weight:normal; margin-left:6px;">✓
+                          Aktif</span>
+                      </div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24">
+                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- MENU SCANWIN1000S -->
+                <div class="menu-group">
+                  <div id="scanwin-menu-item" class="menu-item highlight-entry"
+                    onclick="goToScreen('screen-scanwin-list')">
+                    <div class="menu-item-left">
+                      <div class="menu-icon"><svg viewBox="0 0 24 24" fill="#0f9d58">
+                          <path
+                            d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2z" />
+                        </svg></div>
+                      <div class="menu-label" style="font-weight:700; color:#0f9d58;">sCanWin1000s</div>
+                    </div>
+                    <svg class="chevron-right" viewBox="0 0 24 24">
+                      <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="logout-btn-box">
+                  <button class="logout-btn"><svg viewBox="0 0 24 24">
+                      <path
+                        d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z" />
+                    </svg>Log Out</button>
+                </div>
+              </div>
+
+              <!-- BOTTOM NAV -->
+              <div class="bottom-nav">
+                <div class="nav-item"><svg viewBox="0 0 24 24">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+                  </svg><span>Beranda</span></div>
+                <div class="nav-item"><svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                  </svg><span>Brand</span></div>
+                <div class="nav-item"><svg viewBox="0 0 24 24">
+                    <path
+                      d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z" />
+                  </svg><span>Keranjang</span></div>
+                <div class="nav-item"><svg viewBox="0 0 24 24">
+                    <path
+                      d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm7 16H5V5h2v3h10V5h2v14z" />
+                  </svg><span>Transaksi</span></div>
+                <div class="nav-item active"><svg viewBox="0 0 24 24">
+                    <path
+                      d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                  </svg><span>Akun</span></div>
+              </div>
+            </div>
+
+            <!-- =========================================================
+                 SCREEN 2: SCANWIN VOUCHER LIST SCREEN
+                 ========================================================= -->
+            <div class="app-screen" id="screen-scanwin-list">
+              <div class="scanwin-header">
+                <div class="scanwin-top-bar">
+                  <div class="scanner-back-btn" onclick="goToScreen('screen-account')">
+                    <svg viewBox="0 0 24 24">
+                      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                    </svg>
+                  </div>
+                  <h2>
+                    <svg viewBox="0 0 24 24">
+                      <path
+                        d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4 15.38 12 17 10.83 14.92 8H20v6z" />
+                    </svg>
+                    <span>ScanWin</span>
+                  </h2>
+                </div>
+
+                <div class="search-input-box">
+                  <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#94a3b8;">
+                    <path
+                      d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
+                  </svg>
+                  <input type="text" placeholder="Cari nama brand atau program...">
+                </div>
+
+                <div class="scanwin-tabs-bar">
+                  <div class="scanwin-tab-item active">Redeem ScanWin</div>
+                  <div class="scanwin-tab-item" onclick="goToScreen('screen-history')">Riwayat Redeem</div>
+                </div>
+              </div>
+
+              <div class="sub-instruction-bar">
+                Pilih 1 atau lebih voucher lalu scan QR customer
+              </div>
+
+              <div class="voucher-list-scroll">
+                <!-- Voucher Card 1 -->
+                <div class="voucher-card" id="v-card-1">
+                  <div style="font-size:11px; color:#64748b; margin-bottom:6px;">Komisi Langsung ke Saldo Anda</div>
+                  <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+                    <div style="font-size:13.5px; font-weight:800; color:#1e293b;">[GRC Board] Belanja papan semen 3
+                      lembar dapat 1 voucher scanwin!</div>
+                    <div class="grc-logo-box"
+                      style="width:48px; height:32px; border:1px solid #e2e8f0; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                      <span style="font-size:8px; font-weight:800; color:#0b57d0;">GRC board</span>
+                    </div>
+                  </div>
+                  <div
+                    style="display:grid; grid-template-columns:1fr 1.5fr 1fr; gap:8px; font-size:11px; padding-bottom:12px; border-bottom:1px dashed #e2e8f0; margin-bottom:12px;">
+                    <div><label style="color:#94a3b8; display:block;">Komisi</label><strong
+                        style="color:var(--error-red);">5%</strong></div>
+                    <div><label style="color:#94a3b8; display:block;">Hadiah hingga</label><strong>Rp 1,000,000</strong>
+                    </div>
+                    <div><label style="color:#94a3b8; display:block;">Berakhir</label><strong>12 Jan 25</strong></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><label style="font-size:10px; color:#94a3b8;">Sisa Voucher</label><span
+                        style="font-size:12px; font-weight:700; color:#1e293b; display:block;">12 dari 16</span></div>
+                    <div id="v-action-1"><button class="btn-select-voucher" onclick="selectVoucher(1)">Pilih</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Voucher Card 2 -->
+                <div class="voucher-card" id="v-card-2">
+                  <div style="font-size:11px; color:#64748b; margin-bottom:6px;">Komisi diberikan di akhir periode</div>
+                  <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+                    <div style="font-size:13.5px; font-weight:800; color:#1e293b;">[GRC Board] Belanja 5 lembar dapat
+                      komisi akhir periode</div>
+                    <div class="grc-logo-box"
+                      style="width:48px; height:32px; border:1px solid #e2e8f0; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                      <span style="font-size:8px; font-weight:800; color:#0b57d0;">GRC board</span>
+                    </div>
+                  </div>
+                  <div
+                    style="display:grid; grid-template-columns:1fr 1.5fr 1fr; gap:8px; font-size:11px; padding-bottom:12px; border-bottom:1px dashed #e2e8f0; margin-bottom:12px;">
+                    <div><label style="color:#94a3b8; display:block;">Komisi</label><strong
+                        style="color:var(--error-red);">5%</strong></div>
+                    <div><label style="color:#94a3b8; display:block;">Hadiah hingga</label><strong>Rp 1,000,000</strong>
+                    </div>
+                    <div><label style="color:#94a3b8; display:block;">Berakhir</label><strong>12 Jan 25</strong></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><label style="font-size:10px; color:#94a3b8;">Sisa Voucher</label><span
+                        style="font-size:12px; font-weight:700; color:#1e293b; display:block;">12 dari 16</span></div>
+                    <div id="v-action-2"><button class="btn-select-voucher" onclick="selectVoucher(2)">Pilih</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Voucher Card 3 -->
+                <div class="voucher-card" id="v-card-3">
+                  <div style="font-size:11px; color:#64748b; margin-bottom:6px;">Komisi Langsung ke Saldo Anda</div>
+                  <div style="display:flex; justify-content:space-between; gap:10px; margin-bottom:12px;">
+                    <div style="font-size:13.5px; font-weight:800; color:#1e293b;">[Semana Mortar] Belanja 5 sak mortar
+                      dapat komisi instan!</div>
+                    <div class="grc-logo-box"
+                      style="width:48px; height:32px; border:1px solid #e2e8f0; border-radius:6px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                      <span style="font-size:7px; font-weight:800; color:#047857;">SEMANA</span>
+                    </div>
+                  </div>
+                  <div
+                    style="display:grid; grid-template-columns:1fr 1.5fr 1fr; gap:8px; font-size:11px; padding-bottom:12px; border-bottom:1px dashed #e2e8f0; margin-bottom:12px;">
+                    <div><label style="color:#94a3b8; display:block;">Komisi</label><strong
+                        style="color:var(--primary-blue);">Rp 25.000</strong></div>
+                    <div><label style="color:#94a3b8; display:block;">Hadiah hingga</label><strong>Rp 500,000</strong>
+                    </div>
+                    <div><label style="color:#94a3b8; display:block;">Berakhir</label><strong>28 Feb 25</strong></div>
+                  </div>
+                  <div style="display:flex; justify-content:space-between; align-items:center;">
+                    <div><label style="font-size:10px; color:#94a3b8;">Sisa Voucher</label><span
+                        style="font-size:12px; font-weight:700; color:#1e293b; display:block;">8 dari 10</span></div>
+                    <div id="v-action-3"><button class="btn-select-voucher" onclick="selectVoucher(3)">Pilih</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Bottom Action Button -->
+              <div class="sticky-bottom-action" id="sticky-bottom-bar">
+                <button class="btn-action-primary" onclick="proceedToScanner()">
+                  <span id="sticky-btn-text">Redeem ScanWin (4 Voucher)</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- =========================================================
+                 SCREEN 3: CAMERA SCANNER SCREEN (DESIGN SAMPLE: scan.png)
+                 ========================================================= -->
+            <div class="app-screen scan-view-screen" id="screen-scanner">
+              <div class="scan-header">
+                <div class="scanner-back-btn" onclick="goToScreen('screen-scanwin-list')">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                  </svg>
+                </div>
+                <div style="font-size: 15px; font-weight: 700; color: #fff;">Scan QR Customer</div>
+                <div style="width: 36px;"></div>
+              </div>
+
+              <!-- Floating Voucher Count Pill -->
+              <div class="floating-voucher-pill">
+                <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: #fff;">
+                  <path d="M12 2L9.19 8.63 2 9.24l5.46 4.73L5.82 21 12 17.27 18.18 21l-1.64-7.03L22 9.24l-7.19-.61z" />
+                </svg>
+                <span id="floating-pill-count">4 Voucher Siap Diredeem</span>
+              </div>
+
+              <div class="scan-camera-bg">
+                <div class="phone-scan-frame">
+                  <div
+                    style="position:absolute; bottom:16px; left:0; width:100%; text-align:center; font-size:11px; color:rgba(255,255,255,0.7);">
+                    Arahkan Kamera ke QR Customer
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Sheet Panel (EXACT MATCHING L2641-L2666 direct-scan.html) -->
+              <div class="scan-bottom-sheet" id="scan-normal-sheet">
+                <div class="sheet-drag-handle"></div>
+
+                <div class="scan-sheet-card" onclick="triggerScanSuccess()">
+                  <div class="scan-sheet-left">
+                    <div
+                      style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;">
+                      <svg viewBox="0 0 24 24"
+                        style="width: 26px; height: 26px; fill: none; stroke: #1e293b; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;">
+                        <path d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <h4 style="font-size: 15px; font-weight: 800; color: #1e293b; margin: 0 0 2px 0;">Buat &amp;
+                        Kirimkan QR</h4>
+                      <p style="font-size: 12.5px; color: #64748b; margin: 0;">Buat &amp; Kirim kode QR ke Customer</p>
+                    </div>
+                  </div>
+                  <svg viewBox="0 0 24 24"
+                    style="width: 20px; height: 20px; fill: none; stroke: #475569; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;">
+                    <polyline points="9 18 15 12 9 6"></polyline>
+                  </svg>
+                </div>
+
+                <div style="font-size: 14px; font-weight: 800; color: #1e293b; margin-bottom: 10px;">
+                  Voucher diredeem (<span id="sheet-v-count">4</span>)
+                </div>
+
+                <div id="sheet-vouchers-container">
+                  <div class="selected-v-item">
+                    <div class="selected-v-left">
+                      <div class="grc-logo-box" style="width: 38px; height: 26px; background:#e8f0fe;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                      <div class="selected-v-text">[GRC Board] Belanja semen 3 sak dapat 1 voucher scanwin!</div>
+                    </div>
+                    <span style="font-size: 13px; font-weight: 800; color: #1e293b;">x3</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Error State Bottom Sheet -->
+              <div class="qr-error-sheet" id="qr-error-sheet"
+                style="display:none; position:absolute; bottom:0; left:0; width:100%; background:#fff; border-top-left-radius:24px; border-top-right-radius:24px; padding:20px; color:#1e293b; z-index:45; flex-direction:column; align-items:center; text-align:center;">
+                <div
+                  style="width:48px; height:48px; border-radius:50%; background:#fee2e2; color:#ef4444; display:flex; align-items:center; justify-content:center; margin-bottom:12px;">
+                  <svg viewBox="0 0 24 24" style="width:24px;height:24px;fill:currentColor;">
+                    <path
+                      d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z" />
+                  </svg>
+                </div>
+                <h3 style="font-size: 17px; font-weight: 800; color: #1e293b; margin-bottom: 6px;">QR Tidak Bisa
+                  Digunakan...</h3>
+                <p style="font-size: 12.5px; color: #64748b; margin-bottom: 20px;">QR tidak terdaftar atau sudah tidak
+                  berlaku</p>
+                <button class="btn-action-primary" onclick="closeQRError()">Scan Ulang</button>
+              </div>
+            </div>
+
+            <!-- =========================================================
+                 SCREEN 4: OVERLAY PIN INPUT SHEET
+                 ========================================================= -->
+            <div class="app-screen pin-overlay-screen" id="screen-pin">
+              <div class="pin-bottom-sheet">
+                <div style="width: 36px; height: 4px; background: #cbd5e1; border-radius: 2px; margin-bottom: 16px;">
+                </div>
+                <div class="pin-header-text">
+                  <h3>Masukkan PIN Mitra10000s</h3>
+                  <p>Silakan masukin pin Mitra1000s untuk dapat memberikan voucher kepada pelanggan.</p>
+                </div>
+
+                <div class="pin-dots-container" id="pin-dots">
+                  <div class="pin-dot"></div>
+                  <div class="pin-dot"></div>
+                  <div class="pin-dot"></div>
+                  <div class="pin-dot"></div>
+                  <div class="pin-dot"></div>
+                  <div class="pin-dot"></div>
+                </div>
+
+                <div class="pin-error-msg" id="pin-error-msg"></div>
+
+                <div class="keypad-grid">
+                  <button class="keypad-btn" onclick="pressPin('1')">1</button>
+                  <button class="keypad-btn" onclick="pressPin('2')">2</button>
+                  <button class="keypad-btn" onclick="pressPin('3')">3</button>
+                  <button class="keypad-btn" onclick="pressPin('4')">4</button>
+                  <button class="keypad-btn" onclick="pressPin('5')">5</button>
+                  <button class="keypad-btn" onclick="pressPin('6')">6</button>
+                  <button class="keypad-btn" onclick="pressPin('7')">7</button>
+                  <button class="keypad-btn" onclick="pressPin('8')">8</button>
+                  <button class="keypad-btn" onclick="pressPin('9')">9</button>
+                  <button class="keypad-btn action-btn" onclick="goToScreen('screen-scanner')">Batal</button>
+                  <button class="keypad-btn" onclick="pressPin('0')">0</button>
+                  <button class="keypad-btn action-btn" onclick="backspacePin()">
+                    <svg viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: #475569;">
+                      <path
+                        d="M22 3H7c-.69 0-1.23.35-1.59.88L0 12l5.41 8.11c.36.53.9.89 1.59.89h15c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-3 12.59L17.59 17 14 13.41 10.41 17 9 15.59 12.59 12 9 8.41 10.41 7 14 10.59 17.59 7 19 8.41 15.41 12 19 15.59z" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- PIN BLOCKED MODAL SCREEN (EXACT MATCHING USER REFERENCE IMAGE) -->
+            <div class="app-screen blocked-screen" id="screen-blocked">
+              <div class="blocked-icon-box">
+                <svg viewBox="0 0 24 24">
+                  <path
+                    d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+                </svg>
+              </div>
+              <h2>PIN Transaksi Terblokir</h2>
+              <p>Anda telah 3 kali salah memasukkan PIN. Demi keamanan akun, PIN Anda telah diblokir. Silakan ubah di
+                menu Kelola PIN via OTP WhatsApp.</p>
+
+              <a href="scanwin-fde-reset-pin.html" class="btn-blocked-primary">
+                <span>Reset PIN via WhatsApp OTP</span>
+              </a>
+              <button class="btn-blocked-secondary" onclick="goToScreen('screen-account')">
+                <span>Kembali ke Akun</span>
+              </button>
+            </div>
+
+            <!-- =========================================================
+                 SCREEN 5: SUCCESS REDEEM & SHAREABLE QR DISPLAY (PERSIS GAMBAR REFERENCE)
+                 ========================================================= -->
+            <div class="app-screen" id="screen-success" style="background:#fff; overflow-y:auto;">
+              <!-- Header Bar -->
+              <div
+                style="padding: 44px 16px 14px 16px; background:#fff; border-bottom:1px solid #f1f5f9; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:30;">
+                <div style="cursor:pointer; width:32px; height:32px; display:flex; align-items:center;"
+                  onclick="goToScreen('screen-scanner')">
+                  <svg viewBox="0 0 24 24" style="width:20px;height:20px;fill:#000;">
+                    <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" />
+                  </svg>
+                </div>
+                <h3 style="font-size:16px; font-weight:700; color:#000;">Kode ScanWin</h3>
+                <div style="width:32px;"></div>
+              </div>
+
+              <div style="flex:1; padding: 16px 20px 100px 20px;">
+                <!-- Title & Expired Timer -->
+                <div style="text-align:center; margin-bottom:16px;">
+                  <h3 style="font-size:16px; font-weight:800; color:#000;">QR Berhasil Dibuat</h3>
+                  <div style="font-size:13px; font-weight:600; color:#000; margin-top:2px;">
+                    Expired <span style="color:#ef4444; font-weight:700;">23:59:59</span>
+                  </div>
+                </div>
+
+                <!-- QR Code Graphic with Center Coin Badge -->
+                <div style="position:relative; width:220px; height:220px; margin:0 auto 24px auto;">
+                  <svg viewBox="0 0 100 100" style="width:100%; height:100%;">
+                    <rect width="100" height="100" fill="#fff" />
+                    <path
+                      d="M10 10h30v30h-30zM15 15v20h20v-20zM22 22h6v6h-6zM60 10h30v30h-30zM65 15v20h20v-20zM72 22h6v6h-6zM10 60h30v30h-30zM15 65v20h20v-20zM22 72h6v6h-6zM50 50h10v10h-10zM70 50h20v10h-20zM50 70h20v20h-20zM80 80h10v10h-10zM45 15h10v30h-10zM15 45h30v10h-30zM55 45h35v10h-35zM75 60h15v25h-15z"
+                      fill="#000" />
+                  </svg>
+                  <!-- Center Round Rp Coin Badge -->
+                  <div
+                    style="position:absolute; top:50%; left:50%; transform:translate(-50%, -50%); width:44px; height:44px; border-radius:50%; background:#1a73e8; border:3px solid #fff; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 10px rgba(0,0,0,0.15);">
+                    <span style="color:#ffeb3b; font-size:12px; font-weight:900;">Rp ✦</span>
+                  </div>
+                </div>
+
+                <!-- Cara Redeem QR Title -->
+                <h4 style="font-size:15px; font-weight:800; color:#000; margin-bottom:16px;">Cara Redeem QR</h4>
+
+                <!-- Instruction Steps List -->
+                <div style="display:flex; flex-direction:column; gap:18px;">
+                  <!-- Step 1 -->
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <div
+                      style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                      <svg viewBox="0 0 24 24"
+                        style="width:22px;height:22px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"></path>
+                        <polyline points="16 6 12 2 8 6"></polyline>
+                        <line x1="12" y1="2" x2="12" y2="15"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <h5 style="font-size:13.5px; font-weight:700; color:#000; margin-bottom:2px;">Tap Tombol “Kirim
+                        QR”</h5>
+                      <p style="font-size:11.5px; color:#64748b; line-height:1.45;">QR akan dikirimkan dengan format
+                        gambar, dan instruksikan customer untuk mendownload/Screenshot gambar QR</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 2 -->
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <div
+                      style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                      <svg viewBox="0 0 24 24"
+                        style="width:22px;height:22px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                        <rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect>
+                        <line x1="12" y1="18" x2="12.01" y2="18"></line>
+                      </svg>
+                    </div>
+                    <div>
+                      <h5 style="font-size:13.5px; font-weight:700; color:#000; margin-bottom:2px;">Customer Buka
+                        Aplikasi 1000Saudara</h5>
+                      <p style="font-size:11.5px; color:#64748b; line-height:1.45;">Untuk meredeem voucher ini menjadi
+                        saldo, customer harus memiliki aplikasi 1000Saudara</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 3 -->
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <div
+                      style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                      <svg viewBox="0 0 24 24"
+                        style="width:22px;height:22px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                        <path d="M18 11V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v0"></path>
+                        <path d="M14 10V4a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v6"></path>
+                        <path d="M10 10.5V6a2 2 0 0 0-2-2v0a2 2 0 0 0-2 2v8"></path>
+                        <path
+                          d="M18 8a2 2 0 0 1 2 2v4a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.83L7 15">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h5 style="font-size:13.5px; font-weight:700; color:#000; margin-bottom:2px;">Customer Tap Tombol
+                        “Klaim ScanWin”</h5>
+                      <p style="font-size:11.5px; color:#64748b; line-height:1.45;">Lalu pilih metode upload QR</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 4 -->
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <div
+                      style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                      <svg viewBox="0 0 24 24"
+                        style="width:22px;height:22px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                      </svg>
+                    </div>
+                    <div>
+                      <h5 style="font-size:13.5px; font-weight:700; color:#000; margin-bottom:2px;">Pilih Foto QR yang
+                        sudah Didownload</h5>
+                      <p style="font-size:11.5px; color:#64748b; line-height:1.45;">Pilih foto QR yang sudah disimpan ke
+                        gallery handphone customer</p>
+                    </div>
+                  </div>
+
+                  <!-- Step 5 -->
+                  <div style="display:flex; gap:14px; align-items:flex-start;">
+                    <div
+                      style="width:28px; height:28px; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:2px;">
+                      <svg viewBox="0 0 24 24"
+                        style="width:22px;height:22px;fill:none;stroke:#000;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                        <path
+                          d="M12 3l1.912 5.813a2 2 0 001.275 1.275L21 12l-5.813 1.912a2 2 0 00-1.275 1.275L12 21l-1.912-5.813a2 2 0 00-1.275-1.275L3 12l5.813-1.912a2 2 0 001.275-1.275L12 3z">
+                        </path>
+                      </svg>
+                    </div>
+                    <div>
+                      <h5 style="font-size:13.5px; font-weight:700; color:#000; margin-bottom:2px;">Saldo Akan Langsung
+                        Diterima!</h5>
+                      <p style="font-size:11.5px; color:#64748b; line-height:1.45;">Jika beruntung customer bisa
+                        mendapatkan jackpot jutaan rupiah!</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Sticky Bottom Action Buttons -->
+              <div
+                style="position:absolute; bottom:0; left:0; width:100%; background:#fff; padding:12px 20px 20px 20px; border-top:1px solid #f1f5f9; z-index:30; display:flex; flex-direction:column; gap:8px;">
+                <button onclick="shareToWhatsapp()"
+                  style="width:100%; height:46px; border-radius:14px; background:#007bff; color:#fff; font-size:14.5px; font-weight:700; border:none; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; box-shadow:0 4px 14px rgba(0,123,255,0.3);">
+                  <span>Kirim QR Via..</span>
+                  <svg viewBox="0 0 24 24"
+                    style="width:18px;height:18px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;">
+                    <path d="M4 12v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6"></path>
+                    <polyline points="16 6 12 2 8 6"></polyline>
+                    <line x1="12" y1="2" x2="12" y2="15"></line>
+                  </svg>
+                </button>
+                <button onclick="goToScreen('screen-history')"
+                  style="width:100%; height:42px; border-radius:12px; background:#f1f5f9; color:#1e293b; font-size:13.5px; font-weight:700; border:1px solid #cbd5e1; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px;">
+                  <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:#475569;">
+                    <path
+                      d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z" />
+                  </svg>
+                  <span>Lihat Riwayat Redeem</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- PENDING RESULT SCREEN (KODE QR BELUM DI-GENERATE - DIPROSES 1X24 JAM) -->
+            <div class="app-screen pending-screen" id="screen-pending"
+              style="overflow-y: auto; background:#f8fafc; padding:0;">
+              <!-- Top Graphic Banner -->
+              <div
+                style="height: 170px; background: linear-gradient(135deg, #0b57d0 0%, #1a73e8 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+                <div
+                  style="width: 72px; height: 72px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); border: 2px solid rgba(255, 255, 255, 0.4); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);">
+                  <svg viewBox="0 0 24 24" style="width: 38px; height: 38px; fill: #fff;">
+                    <path
+                      d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                  </svg>
+                </div>
+              </div>
+
+              <!-- Overlapping White Sheet Body -->
+              <div
+                style="padding: 24px 20px 40px 20px; margin-top: -30px; background: #fff; border-top-left-radius: 28px; border-top-right-radius: 28px; flex: 1; display: flex; flex-direction: column; align-items: center;">
+                <!-- Floating Round Icon Circle -->
+                <div
+                  style="width: 56px; height: 56px; border-radius: 50%; background: #e8f0fe; border: 2px solid #a8cdff; display: flex; align-items: center; justify-content: center; margin-top: -50px; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                  <svg viewBox="0 0 24 24" style="width: 30px; height: 30px; fill: #0b57d0;">
+                    <path
+                      d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z" />
+                  </svg>
+                </div>
+
+                <h2 style="font-size: 19px; font-weight: 800; color: #1e293b; margin-bottom: 4px; text-align: center;">
+                  Pengajuan Kode QR Sedang Diproses ⏳</h2>
+                <p style="font-size: 12px; color: #64748b; text-align: center; margin-bottom: 20px; line-height: 1.45;">
+                  Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses demi keamanan
+                  transaksi.</p>
+
+                <!-- Notice Box -->
+                <div class="pending-notice-box"
+                  style="width:100%; background: #e8f0fe; border: 1px solid #a8cdff; border-left: 4px solid #0b57d0; border-radius: 16px; padding: 14px; margin-bottom: 16px;">
+                  <h4 style="font-size: 13px; font-weight: 800; color: #0b57d0; margin: 0 0 4px 0;">⏳ Estimasi
+                    Pemrosesan (Maksimal 1x24 Jam)</h4>
+                  <p id="pending-trigger-reason" style="font-size: 12px; color: #1e3a8a; line-height: 1.45; margin: 0;">
+                    Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses (maksimal 1x24 jam).
+                    Kode QR akan otomatis terbit di menu Riwayat setelah selesai diproses.</p>
+                </div>
+
+                <!-- Metrics Clean Summary -->
+                <div class="metrics-summary-clean"
+                  style="width:100%; background: #fafafa; border: 1px solid #f1f5f9; border-radius: 16px; padding: 16px; text-align:center; margin-bottom: 16px;">
+                  <div class="m-label" style="font-size:11px; color:#64748b; font-weight:500;">Nominal Voucher</div>
+                  <div class="m-val-blue" id="pending-nominal-redeem"
+                    style="color: #1e293b; font-size: 24px; font-weight: 800; margin-top:2px;">Rp 200,000</div>
+
+                  <div class="m-label" style="font-size:11px; color:#64748b; font-weight:500; margin-top: 14px;">Status
+                    Kode QR</div>
+                  <div class="m-val-blue" id="pending-komisi-val"
+                    style="font-size: 18px; color: #0b57d0; font-weight: 800; margin-top:2px;">Sedang Diproses (Belum
+                    Terbit)</div>
+                  <div style="font-size: 11.5px; font-weight: 600; color: #059669; margin-top: 4px;">✓ Kode QR dapat
+                    diunduh di menu Riwayat setelah terbit</div>
+                </div>
+
+                <!-- Detail Transaksi -->
+                <div class="detail-redeem-card"
+                  style="width:100%; background:#fff; border:1px solid #e2e8f0; border-radius:16px; padding:14px; margin-bottom: 20px;">
+                  <h4
+                    style="font-size:12.5px; font-weight:800; color:#1e293b; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f1f5f9;">
+                    Detail Pengajuan</h4>
+                  <div class="d-row"
+                    style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:8px;">
+                    <span style="color:#64748b;">Status Pengajuan</span>
+                    <strong style="color: #0b57d0;" id="fde-rule-name">Sedang Diproses</strong>
+                  </div>
+                  <div class="d-row"
+                    style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:8px;">
+                    <span style="color:#64748b;">Nama Customer</span>
+                    <strong>Andhika Wibawa (081298765432)</strong>
+                  </div>
+                  <div class="d-row"
+                    style="display:flex; justify-content:space-between; font-size:11.5px; margin-bottom:8px;">
+                    <span style="color:#64748b;">Waktu Pengajuan</span>
+                    <strong>Hari ini, 14:20 WIB</strong>
+                  </div>
+                  <div class="d-row" style="display:flex; justify-content:space-between; font-size:11.5px;">
+                    <span style="color:#64748b;">ID Program</span>
+                    <strong>VCR/202210/0001</strong>
+                  </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div style="width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+                  <button class="btn-action-primary" onclick="goToScreen('screen-history')"
+                    style="width: 100%; height: 48px; border-radius: 14px; font-size: 15px; font-weight: 700; background: var(--primary-blue); color: #fff; border: none; cursor: pointer; box-shadow: 0 4px 12px rgba(11, 87, 208, 0.3);">
+                    <span>Lihat Status di Riwayat</span>
+                  </button>
+                  <button onclick="goToScreen('screen-scanwin-list')"
+                    style="background: transparent; border: none; color: #1a73e8; font-weight: 700; font-size: 14px; cursor: pointer;">
+                    <span>Kembali ke Beranda ScanWin</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- HISTORY SCREEN -->
+            <div class="app-screen history-screen" id="screen-history">
+              <div class="history-header-box">
+                <div class="scanwin-top-bar">
+                  <div class="scanner-back-btn" onclick="goToScreen('screen-scanwin-list')">
+                    <svg viewBox="0 0 24 24"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z" /></svg>
+                  </div>
+                  <h2>
+                    <svg viewBox="0 0 24 24"><path d="M20 6h-2.18c.11-.31.18-.65.18-1 0-1.66-1.34-3-3-3-1.05 0-1.96.54-2.5 1.35l-.5.67-.5-.68C10.96 2.54 10.05 2 9 2 7.34 2 6 3.34 6 5c0 .35.07.69.18 1H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-5-2c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zM9 4c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm11 15H4v-2h16v2zm0-5H4V8h5.08L7 10.83 8.62 12 12 7.4 15.38 12 17 10.83 14.92 8H20v6z" /></svg>
+                    <span>ScanWin</span>
+                  </h2>
+                </div>
+
+                <div class="search-input-box">
+                  <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#94a3b8;"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" /></svg>
+                  <input type="text" placeholder="Cari nama brand, program, atau customer...">
+                </div>
+
+                <div class="scanwin-tabs-bar">
+                  <div class="scanwin-tab-item" onclick="goToScreen('screen-scanwin-list')">Redeem ScanWin</div>
+                  <div class="scanwin-tab-item active">Riwayat Redeem</div>
+                </div>
+              </div>
+
+              <div class="history-list-scroll">
+                <!-- UNREDEEMED BANNER CARD IN RIWAYAT REDEEM TAB (MATCHING USER INSTRUCTION) -->
+                <div class="unredeemed-banner-card" onclick="openUnredeemedBottomSheet()" style="margin: 0 0 14px 0;">
+                  <div class="unredeemed-banner-left">
+                    <div class="unredeemed-icon-circle">i</div>
+                    <span class="unredeemed-banner-title" id="unredeemed-count-label">2 ScanWin Belum Diredeem</span>
+                  </div>
+                  <svg viewBox="0 0 24 24" style="width:18px;height:18px;fill:#64748b;"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6z"/></svg>
+                </div>
+
+                <!-- Card 1: Status Pending (Pemrosesan Kode QR 1x24 Jam) -->
+                <div class="history-v-card">
+                  <div class="history-v-top">
+                    <span class="history-cust-meta">Andhika Wibawa • Hari ini, 14:20 WIB</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="h-badge pending">Pending</span>
+                      <div class="grc-logo-box" style="width: 38px; height: 24px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="history-v-title">[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                  <div class="history-metrics-row">
+                    <div class="hm-col"><label>Nominal Voucher</label><strong>Rp 200,000</strong></div>
+                    <div class="hm-col"><label>Status Kode QR</label><strong style="color: var(--warning-amber);">Sedang Diproses</strong></div>
+                  </div>
+                  <div class="status-pill-banner pending">
+                    <span>⏳ Permintaan Kode QR sedang diproses (+- 1x24 jam). Kode QR dapat diunduh setelah terbit &gt;</span>
+                  </div>
+                </div>
+
+                <!-- Card 2: Status Selesai (Pencairan Berhasil) -->
+                <div class="history-v-card">
+                  <div class="history-v-top">
+                    <span class="history-cust-meta">Andhika Wibawa • 12 Jan 24, 14:30 WIB</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="h-badge selesai">Selesai</span>
+                      <div class="grc-logo-box" style="width: 38px; height: 24px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="history-v-title">[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                  <div class="history-metrics-row">
+                    <div class="hm-col"><label>Nominal Redeem</label><strong>Rp 200,000</strong></div>
+                    <div class="hm-col"><label>Total Komisi</label><strong style="color:var(--error-red);">Rp 10,000 (5%)</strong></div>
+                  </div>
+                  <div class="status-pill-banner saldo">
+                    <span>✓ Komisi sudah masuk ke saldo Anda!</span>
+                  </div>
+                </div>
+
+                <!-- Card 3: Status Dibatalkan -->
+                <div class="history-v-card">
+                  <div class="history-v-top">
+                    <span class="history-cust-meta">Andhika Wibawa • 11 Jan 24, 10:15 WIB</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="h-badge dibatalkan">Dibatalkan</span>
+                      <div class="grc-logo-box" style="width: 38px; height: 24px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="history-v-title">[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                  <div class="history-metrics-row">
+                    <div class="hm-col"><label>Nominal Redeem</label><strong>Rp 200,000</strong></div>
+                    <div class="hm-col"><label>Total Komisi</label><strong style="color: var(--error-red);">Rp 0 (Gagal)</strong></div>
+                  </div>
+                  <div class="status-pill-banner dibatalkan">
+                    <span>❌ Permintaan Kode QR gagal diterbitkan</span>
+                  </div>
+                </div>
+
+                <!-- Card 4: Jackpot Item -->
+                <div class="history-v-card" style="padding-top: 20px;">
+                  <div class="jackpot-ribbon-tag" style="position: absolute; top: 0; left: 0; background: #fbbf24; color: #78350f; font-size: 9.5px; font-weight: 800; padding: 3px 10px; border-top-left-radius: 15px; border-bottom-right-radius: 10px;">Jackpot!</div>
+                  <div class="history-v-top">
+                    <span class="history-cust-meta">Andhika Wibawa • 12 Jan 24, 14:30 WIB</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="h-badge pending" style="background:#ffedd5; color:#c2410c;">Jackpot</span>
+                      <div class="grc-logo-box" style="width: 38px; height: 24px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="history-v-title">[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                  <div class="history-metrics-row">
+                    <div class="hm-col"><label>Nominal Redeem</label><strong>Rp 5,000</strong></div>
+                    <div class="hm-col"><label>Total Komisi</label><strong style="color:var(--error-red);">Rp 250 (5%)</strong></div>
+                  </div>
+                  <div class="status-pill-banner jackpot" style="background: #fff7ed; color: #d97706; border: 1px solid #ffedd5;">
+                    <span>🕒 Rp 1,000,000 Hadiah Jackpot Belum Diklaim</span>
+                  </div>
+                </div>
+
+                <!-- Card 5: Diberikan di akhir periode -->
+                <div class="history-v-card">
+                  <div class="history-v-top">
+                    <span class="history-cust-meta">Andhika Wibawa • 12 Jan 24, 14:30 WIB</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                      <span class="h-badge selesai">Selesai</span>
+                      <div class="grc-logo-box" style="width: 38px; height: 24px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center;">
+                        <span style="font-size: 7px; font-weight: 800; color: #0b57d0;">GRC</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="history-v-title">[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                  <div class="history-metrics-row">
+                    <div class="hm-col"><label>Nominal Redeem</label><strong>Rp 200,000</strong></div>
+                    <div class="hm-col"><label>Total Komisi</label><strong style="color:var(--error-red);">Rp 10,000 (5%)</strong></div>
+                  </div>
+                  <div class="status-pill-banner info" style="background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0;">
+                    <span>ℹ️ Diberikan di akhir periode</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- UNREDEEMED BOTTOMSHEET MODAL (MATCHING USER ATTACHMENT 2) -->
+            <div class="modal-backdrop" id="unredeemed-modal" onclick="closeUnredeemedBottomSheet(event)">
+              <div class="unredeemed-bottomsheet" onclick="event.stopPropagation()">
+                <div class="bottomsheet-header">
+                  <div class="bottomsheet-title-box">
+                    <h3>ScanWin Belum Diredeem</h3>
+                    <p>ScanWin akan expired 24 jam setelah dibuat</p>
+                  </div>
+                  <div class="btn-close-modal" onclick="closeUnredeemedBottomSheet()">
+                    <svg viewBox="0 0 24 24" style="width:16px;height:16px;fill:currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+                  </div>
+                </div>
+
+                <div class="unredeemed-list-scroll" id="unredeemed-list-body">
+                  <!-- Dynamically rendered via JS -->
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- RIGHT: SIMULATOR CONTROLLER & FDE INSPECTOR -->
+        <div class="feature-right-sidebar">
+    <div class="sidebar-content">
+      <span class="badge-blue">FLOW 2 — SHAREABLE QR &amp; FDE</span>
+      <h3 style="margin-top: 10px;">Alur Shareable QR &amp; Audit FDE</h3>
+      <p>Tampilan layar sukses pembuatan QR untuk dibagikan via media sosial telah disesuaikan 100% presisi dengan
+        desain referensi ("Kode ScanWin").</p>
+
+      <div class="step-guide-card" id="step-guide-box">
+        <h4 id="guide-title">Langkah 1: Akun Merchant Mitra1000s</h4>
+        <p id="guide-desc">Merchant membuka Halaman Akun Mitra1000s dan mengetuk menu "ScanWin1000s" untuk membuka
+          daftar program voucher.</p>
+      </div>
+
+      <!-- SCENARIO SWITCHER -->
+      <div class="scenario-box-sidebar">
+        <h4>PILIH SKENARIO EVALUASI FDE:</h4>
+
+        <button class="scenario-btn-item active" id="scen-btn-happy" onclick="setScenario('happy')">
+          <span>✓ Happy Path (FDE Valid &amp; Bulk QR Created)</span>
+          <span style="font-size: 9px; opacity: 0.8;">Cair Rp 10.000</span>
+        </button>
+
+        <button class="scenario-btn-item" id="scen-btn-self" onclick="setScenario('self_redeem')">
+          <span>⚠️ Fraud: Self-Redeem (Device ID Sama)</span>
+          <span style="font-size: 9px; opacity: 0.8;">Pending Audit</span>
+        </button>
+
+        <button class="scenario-btn-item" id="scen-btn-limit" onclick="setScenario('limit_exceeded')">
+          <span>⚠️ Fraud: Limit Window (&gt;2 Voucher/30m)</span>
+          <span style="font-size: 9px; opacity: 0.8;">Pending Audit</span>
+        </button>
+
+        <button class="scenario-btn-item" id="scen-btn-block" onclick="setScenario('blocked_pin')">
+          <span>🔒 PIN Terblokir (3x Salah PIN)</span>
+          <span style="font-size: 9px; opacity: 0.8;">Block Screen</span>
+        </button>
+
+        <button class="scenario-btn-item" id="scen-btn-qr-err" onclick="setScenario('qr_error')">
+          <span>❌ QR Tidak Valid / Expired</span>
+          <span style="font-size: 9px; opacity: 0.8;">Error State</span>
+        </button>
+
+        <button class="scenario-btn-item" id="scen-btn-history" onclick="setScenario('view_history')">
+          <span>📋 Lihat Riwayat &amp; Detail Pending</span>
+          <span style="font-size: 9px; opacity: 0.8;">Story 2 PRD</span>
+        </button>
+      </div>
+
+      <div class="flow-steps-title">PROGRES ALUR PROSES (FLOW 2)</div>
+      <div class="flow-steps-list">
+        <div class="flow-step-item active" id="flow-step-1" onclick="goToScreen('screen-account')">
+          <div class="step-number">1</div>
+          <div class="step-label">1. Halaman Akun Mitra1000s</div>
+        </div>
+        <div class="flow-step-item" id="flow-step-2" onclick="goToScreen('screen-scanwin-list')">
+          <div class="step-number">2</div>
+          <div class="step-label">2. Daftar Voucher &amp; Stepper Pilih</div>
+        </div>
+        <div class="flow-step-item" id="flow-step-3" onclick="goToScreen('screen-scanner')">
+          <div class="step-number">3</div>
+          <div class="step-label">3. Camera Scan &amp; Kartu "Buat &amp; Kirim QR"</div>
+        </div>
+        <div class="flow-step-item" id="flow-step-4" onclick="goToScreen('screen-pin')">
+          <div class="step-number">4</div>
+          <div class="step-label">4. Input PIN 6-Digit &amp; Audit FDE</div>
+        </div>
+        <div class="flow-step-item" id="flow-step-5" onclick="goToScreen('screen-history')">
+          <div class="step-number">5</div>
+          <div class="step-label">5. Bulk QR Result &amp; WhatsApp Share</div>
+        </div>
+      </div>
+
+      <!-- FDE PAYLOAD INSPECTOR -->
+      <div class="fde-inspector-box">
+        <h5>🔍 REAL-TIME FDE INSPECTOR PAYLOAD</h5>
+        <div class="fde-row"><span>customer_phone:</span> <strong>081298765432</strong></div>
+        <div class="fde-row"><span>merchant_device_id:</span> <strong id="insp-m-dev">DEV-MTR-7721</strong></div>
+        <div class="fde-row"><span>customer_device_id:</span> <strong id="insp-c-dev">DEV-CUST-9902</strong></div>
+        <div class="fde-row"><span>sliding_window_30m:</span> <strong id="insp-window">1 Voucher / Rp 200.000</strong>
+        </div>
+        <div class="fde-row"><span>gps_coords:</span> <strong>-6.1754, 106.8272</strong></div>
+        <div class="fde-row"><span>ip_address:</span> <strong>180.252.10.4</strong></div>
+        <div class="fde-row" style="margin-top: 6px; border-top: 1px dashed #334155; padding-top: 4px;">
+          <span>FDE EVALUATION RESULT:</span>
+          <span class="fde-status-pass" id="insp-fde-result">FDE_VALID</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  </div>
+  </div>
+  </div>
+
+  <script>
+    // State Management
+    let currentScenario = 'happy';
+    let currentPin = '';
+    let pinAttempts = 0;
+    let selectedVouchers = { 1: 1, 2: 0, 3: 0 };
+    let totalVouchers = 1;
+    let accountSaldo = 12000000;
+
+    const vMeta = {
+      1: { name: "[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!", brand: "GRC", bg: "#e8f0fe", color: "#0b57d0" },
+      2: { name: "[GRC Board] Belanja 5 lembar dapat komisi akhir periode", brand: "GRC", bg: "#e8f0fe", color: "#0b57d0" },
+      3: { name: "[Semana Mortar] Belanja 5 sak mortar dapat komisi instan!", brand: "SEMANA", bg: "#ecfdf5", color: "#047857" }
+    };
+
+    function renderSheetVouchersList() {
+      const container = document.getElementById('sheet-vouchers-container');
+      if (!container) return;
+      let html = '';
+      for (let id in selectedVouchers) {
+        const qty = selectedVouchers[id];
+        if (qty > 0) {
+          const item = vMeta[id];
+          html += `
+            <div class="selected-v-item">
+              <div class="selected-v-left">
+                <div class="grc-logo-box" style="width: 38px; height: 26px; background: ${item.bg}; border-color: ${item.color}40;">
+                  <span style="font-size: 6.5px; font-weight: 800; color: ${item.color};">${item.brand}</span>
+                </div>
+                <div class="selected-v-text">${item.name}</div>
+              </div>
+              <span style="font-size: 13px; font-weight: 800; color: #1e293b;">x${qty}</span>
+            </div>
+          `;
+        }
+      }
+      container.innerHTML = html || '<p style="font-size:12px; color:#94a3b8; text-align:center; padding: 10px 0;">Belum ada voucher dipilih</p>';
+    }
+
+    function updateVoucherSelectionUI() {
+      totalVouchers = selectedVouchers[1] + selectedVouchers[2] + selectedVouchers[3];
+      const stickyBar = document.getElementById('sticky-bottom-bar');
+      const stickyText = document.getElementById('sticky-btn-text');
+      const floatingPill = document.getElementById('floating-pill-count');
+      const sheetVCount = document.getElementById('sheet-v-count');
+
+      if (stickyBar) {
+        if (totalVouchers > 0) {
+          stickyBar.classList.add('active');
+          if (stickyText) stickyText.innerText = `Redeem ScanWin (${totalVouchers} Voucher)`;
+        } else {
+          stickyBar.classList.remove('active');
+        }
+      }
+
+      if (floatingPill) floatingPill.innerText = `${totalVouchers} Voucher Siap Diredeem`;
+      if (sheetVCount) sheetVCount.innerText = totalVouchers;
+
+      renderSheetVouchersList();
+
+      updateCardAction(1);
+      updateCardAction(2);
+      updateCardAction(3);
+    }
+
+    function updateCardAction(id) {
+      const card = document.getElementById(`v-card-${id}`);
+      const actionBox = document.getElementById(`v-action-${id}`);
+      const qty = selectedVouchers[id];
+
+      if (card && actionBox) {
+        if (qty > 0) {
+          card.classList.add('selected');
+          actionBox.innerHTML = `
+            <div class="stepper-box">
+              <button class="stepper-btn" onclick="changeQty(${id}, -1)">-</button>
+              <span class="stepper-count">${qty}</span>
+              <button class="stepper-btn" onclick="changeQty(${id}, 1)">+</button>
+            </div>
+          `;
+        } else {
+          card.classList.remove('selected');
+          actionBox.innerHTML = `<button class="btn-select-voucher" onclick="selectVoucher(${id})">Pilih</button>`;
+        }
+      }
+    }
+
+    function selectVoucher(id) {
+      selectedVouchers[id] = 1;
+      updateVoucherSelectionUI();
+    }
+
+    function changeQty(id, delta) {
+      selectedVouchers[id] = Math.max(0, selectedVouchers[id] + delta);
+      updateVoucherSelectionUI();
+    }
+
+    function proceedToScanner() {
+      if (totalVouchers > 0) {
+        goToScreen('screen-scanner');
+      } else {
+        alert('Pilih minimal 1 voucher terlebih dahulu.');
+      }
+    }
+
+    function handleKelolaPinClick() {
+      window.location.href = 'scanwin-fde-ubah-pin.html';
+    }
+
+    function goToScreen(screenId) {
+      document.querySelectorAll('.app-screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(screenId);
+      if (target) target.classList.add('active');
+
+      const statusBar = document.getElementById('status-bar');
+      if (screenId === 'screen-scanner') statusBar.classList.add('dark-mode');
+      else statusBar.classList.remove('dark-mode');
+
+      updateFlowSteps(screenId);
+    }
+
+    function updateFlowSteps(screenId) {
+      const steps = ['flow-step-1', 'flow-step-2', 'flow-step-3', 'flow-step-4', 'flow-step-5'];
+      steps.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.classList.remove('active', 'completed');
+      });
+
+      const guideTitle = document.getElementById('guide-title');
+      const guideDesc = document.getElementById('guide-desc');
+      const guideBox = document.getElementById('step-guide-box');
+      guideBox.className = 'step-guide-card';
+
+      if (screenId === 'screen-account') {
+        document.getElementById('flow-step-1').classList.add('active');
+        guideTitle.innerText = 'Langkah 1: Akun Merchant Mitra1000s';
+        guideDesc.innerText = 'Merchant membuka Halaman Akun Mitra1000s dan mengetuk menu "ScanWin1000s" untuk membuka daftar program voucher.';
+      } else if (screenId === 'screen-scanwin-list') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('active');
+        guideTitle.innerText = 'Langkah 2: Daftar Voucher & Stepper Pilih';
+        guideDesc.innerText = 'Merchant memilih voucher scanwin menggunakan tombol Stepper [- X +] lalu mengetuk button "Redeem ScanWin".';
+      } else if (screenId === 'screen-scanner') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('active');
+        guideTitle.innerText = 'Langkah 3: Camera Scan & Kartu "Buat & Kirim QR"';
+        guideDesc.innerText = 'Kamera scan terbuka. Di bottom sheet, merchant mengetuk kartu "Buat & Kirimkan QR" untuk membagikan QR ke Customer.';
+      } else if (screenId === 'screen-pin') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('completed');
+        document.getElementById('flow-step-4').classList.add('active');
+        guideTitle.innerText = 'Langkah 4: Otorisasi PIN 6-Digit (PIN Valid: 123456)';
+        guideDesc.innerText = 'Masukkan 6-digit PIN transaksi. Sistem mengevaluasi FDE & memverifikasi payload request.';
+      } else if (screenId === 'screen-success') {
+        document.getElementById('flow-step-1').classList.add('completed');
+        document.getElementById('flow-step-2').classList.add('completed');
+        document.getElementById('flow-step-3').classList.add('completed');
+        document.getElementById('flow-step-4').classList.add('completed');
+        document.getElementById('flow-step-5').classList.add('active');
+        guideBox.classList.add('success-state');
+        guideTitle.innerText = 'Langkah 5: Kode ScanWin (Layar QR Berhasil Dibuat)';
+        guideDesc.innerText = 'Tampilan persis gambar referensi! Menampilkan QR Code dengan badge Rp, timer countdown 23:59:59, instruksi 5 langkah cara redeem QR, dan button "Kirim QR Via..".';
+      } else if (screenId === 'screen-pending') {
+        document.getElementById('flow-step-5').classList.add('active');
+        guideBox.classList.add('pending-state');
+        guideTitle.innerText = 'Langkah 5: Pending FDE (Menunggu Tinjauan)';
+        guideDesc.innerText = 'Terdeteksi indikasi fraud! Komisi ditangguhkan sementara dengan status "Menunggu Tinjauan Keamanan" (1x24 jam).';
+      } else if (screenId === 'screen-history') {
+        document.getElementById('flow-step-5').classList.add('active');
+        guideTitle.innerText = 'Langkah 5: Monitoring Riwayat Pending';
+        guideDesc.innerText = 'Riwayat transaksi memuat transaksi berstatus "Menunggu Tinjauan Keamanan" (Pending 1x24 Jam).';
+      }
+    }
+
+    function setScenario(scen) {
+      currentScenario = scen;
+      document.querySelectorAll('.scenario-btn-item').forEach(b => b.classList.remove('active'));
+
+      const inspMDev = document.getElementById('insp-m-dev');
+      const inspCDev = document.getElementById('insp-c-dev');
+      const inspWindow = document.getElementById('insp-window');
+      const inspResult = document.getElementById('insp-fde-result');
+
+      document.getElementById('qr-error-sheet').style.display = 'none';
+      document.getElementById('scan-normal-sheet').style.display = 'block';
+
+      if (scen === 'happy') {
+        document.getElementById('scen-btn-happy').classList.add('active');
+        inspMDev.innerText = 'DEV-MTR-7721';
+        inspCDev.innerText = 'DEV-CUST-9902';
+        inspWindow.innerText = '1 Voucher / Rp 200.000';
+        inspResult.innerText = 'FDE_VALID';
+        inspResult.className = 'fde-status-pass';
+        goToScreen('screen-account');
+      } else if (scen === 'self_redeem') {
+        document.getElementById('scen-btn-self').classList.add('active');
+        inspMDev.innerText = 'DEV-MTR-7721';
+        inspCDev.innerText = 'DEV-MTR-7721 (Device ID Kembar!)';
+        inspWindow.innerText = '1 Voucher / Rp 200.000';
+        inspResult.innerText = 'FDE_INVALID (Self-Redeem)';
+        inspResult.className = 'fde-status-fail';
+        goToScreen('screen-account');
+      } else if (scen === 'limit_exceeded') {
+        document.getElementById('scen-btn-limit').classList.add('active');
+        inspMDev.innerText = 'DEV-MTR-7721';
+        inspCDev.innerText = 'DEV-CUST-9902';
+        inspWindow.innerText = '3 Vouchers / Rp 600.000 (Limit Exceeded!)';
+        inspResult.innerText = 'FDE_INVALID (Sliding Window >2)';
+        inspResult.className = 'fde-status-fail';
+        goToScreen('screen-account');
+      } else if (scen === 'blocked_pin') {
+        document.getElementById('scen-btn-block').classList.add('active');
+        pinAttempts = 3;
+        const errorMsg = document.getElementById('pin-error-msg');
+        if (errorMsg) errorMsg.innerText = 'PIN terblokir karena 3x salah masukan!';
+        const dots = document.querySelectorAll('#pin-dots .pin-dot');
+        dots.forEach(d => d.classList.add('error'));
+        goToScreen('screen-pin');
+        setTimeout(showPinBlocked, 1200);
+      } else if (scen === 'qr_error') {
+        document.getElementById('scen-btn-qr-err').classList.add('active');
+        goToScreen('screen-scanner');
+        document.getElementById('scan-normal-sheet').style.display = 'none';
+        document.getElementById('qr-error-sheet').style.display = 'flex';
+      } else if (scen === 'view_history') {
+        document.getElementById('scen-btn-history').classList.add('active');
+        goToScreen('screen-history');
+      }
+    }
+
+    function closeQRError() {
+      document.getElementById('qr-error-sheet').style.display = 'none';
+      document.getElementById('scan-normal-sheet').style.display = 'block';
+    }
+
+    const CORRECT_PIN = '123456';
+
+    function triggerScanSuccess() {
+      if (currentScenario === 'blocked_pin' || pinAttempts >= 3) {
+        const errorMsg = document.getElementById('pin-error-msg');
+        if (errorMsg) errorMsg.innerText = 'PIN terblokir karena 3x salah masukan!';
+        const dots = document.querySelectorAll('#pin-dots .pin-dot');
+        dots.forEach(d => d.classList.add('error'));
+        goToScreen('screen-pin');
+        setTimeout(showPinBlocked, 1200);
+        return;
+      }
+      currentPin = '';
+      updatePinDots();
+      const errorMsg = document.getElementById('pin-error-msg');
+      if (errorMsg) errorMsg.innerText = 'Masukkan 6 digit PIN Transaksi Mitra1000s (PIN Default: 123456)';
+      goToScreen('screen-pin');
+    }
+
+    function pressPin(num) {
+      if (currentPin.length < 6) {
+        currentPin += num;
+        updatePinDots();
+        if (currentPin.length === 6) {
+          setTimeout(verifyPin, 150);
+        }
+      }
+    }
+
+    function backspacePin() {
+      if (currentPin.length > 0) {
+        currentPin = currentPin.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function updatePinDots() {
+      const dots = document.querySelectorAll('#pin-dots .pin-dot');
+      dots.forEach((dot, idx) => {
+        if (idx < currentPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+        dot.classList.remove('error');
+      });
+    }
+
+    function verifyPin() {
+      if (currentScenario === 'blocked_pin' || pinAttempts >= 3) {
+        showPinBlocked();
+        return;
+      }
+
+      // Check PIN validity (PIN Default: 123456)
+      if (currentPin !== CORRECT_PIN || currentScenario === 'wrong_pin') {
+        pinAttempts++;
+        const errorMsg = document.getElementById('pin-error-msg');
+
+        const dots = document.querySelectorAll('#pin-dots .pin-dot');
+        dots.forEach(d => d.classList.add('error'));
+
+        if (pinAttempts >= 3) {
+          if (errorMsg) errorMsg.innerText = 'PIN terblokir karena 3x salah masukan!';
+          setTimeout(() => {
+            currentPin = '';
+            updatePinDots();
+            showPinBlocked();
+          }, 600);
+        } else {
+          const sisa = 3 - pinAttempts;
+          if (errorMsg) errorMsg.innerText = `PIN salah. Sisa percobaan: ${sisa}x lagi (PIN Default: 123456)`;
+          setTimeout(() => {
+            currentPin = '';
+            updatePinDots();
+          }, 800);
+        }
+        return;
+      }
+
+      // PIN Correct -> Reset attempts & proceed to FDE Engine
+      pinAttempts = 0;
+      currentPin = '';
+      updatePinDots();
+      if (document.getElementById('pin-error-msg')) {
+        document.getElementById('pin-error-msg').innerText = '';
+      }
+      evaluateFDE();
+    }
+
+    function showPinBlocked() {
+      goToScreen('screen-blocked');
+    }
+
+    function evaluateFDE() {
+      const triggerReason = document.getElementById('pending-trigger-reason');
+      const ruleName = document.getElementById('fde-rule-name');
+
+      // Add to unredeemedItems list dynamically
+      const isPending = (currentScenario === 'self_redeem' || currentScenario === 'limit_exceeded');
+      unredeemedItems.unshift({
+        id: Date.now(),
+        dateStr: 'Hari ini, 14:20',
+        expStr: 'Expired Besok, 14:20',
+        status: isPending ? 'pending' : 'belum_redeem',
+        vouchers: [
+          { title: vMeta[1].name, qty: totalVouchers }
+        ]
+      });
+      updateUnredeemedUI();
+
+      if (currentScenario === 'happy' || !currentScenario) {
+        accountSaldo += 10000;
+        const saldoVal = document.getElementById('account-saldo-val');
+        if (saldoVal) saldoVal.innerText = 'Rp ' + accountSaldo.toLocaleString('id-ID');
+        goToScreen('screen-success');
+      } else if (currentScenario === 'self_redeem') {
+        if (ruleName) ruleName.innerText = 'Sedang Diproses';
+        if (triggerReason) triggerReason.innerText = 'Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses (maksimal 1x24 jam). Kode QR akan otomatis terbit di menu Riwayat setelah selesai diproses.';
+        goToScreen('screen-pending');
+      } else if (currentScenario === 'limit_exceeded') {
+        if (ruleName) ruleName.innerText = 'Sedang Diproses';
+        if (triggerReason) triggerReason.innerText = 'Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses (maksimal 1x24 jam). Kode QR akan otomatis terbit di menu Riwayat setelah selesai diproses.';
+        goToScreen('screen-pending');
+      } else {
+        goToScreen('screen-success');
+      }
+    }
+
+    function shareToWhatsapp() {
+      const text = encodeURIComponent(`Halo! Toko Berkat Jaya mengirimkan Voucher Komisi sCanWin1000s. Klaim sekarang di aplikasi 1000Saudara!`);
+      alert(`[SIMULATOR SHARE NATIVE]\n\nMembuka dialog Share Sistem HP / WhatsApp untuk mengirim gambar QR ScanWin.\n\nInstruksi Customer: Download/Screenshot & Klaim di aplikasi 1000Saudara.`);
+    }
+
+    // Unredeemed QR Items Management
+    let unredeemedItems = [
+      {
+        id: 1,
+        dateStr: '12 Jan 24, 14:30',
+        expStr: 'Expired 13 Jan 24, 14:30',
+        status: 'belum_redeem',
+        scenario: 'happy',
+        vouchers: [
+          { title: '[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!', qty: 1 },
+          { title: '[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!', qty: 3 }
+        ]
+      },
+      {
+        id: 2,
+        dateStr: 'Hari ini, 14:20',
+        expStr: 'Expired Besok, 14:20',
+        status: 'pending',
+        scenario: 'self_redeem',
+        vouchers: [
+          { title: '[GRC Board] Belanja papan semen 3 lembar dapat 1 voucher scanwin!', qty: 1 }
+        ]
+      },
+      {
+        id: 3,
+        dateStr: 'Hari ini, 13:50',
+        expStr: 'Expired Besok, 13:50',
+        status: 'pending',
+        scenario: 'limit_exceeded',
+        vouchers: [
+          { title: '[GRC Board] Belanja 5 lembar dapat komisi akhir periode', qty: 2 }
+        ]
+      }
+    ];
+
+    function updateUnredeemedUI() {
+      const countLabel = document.getElementById('unredeemed-count-label');
+      if (countLabel) {
+        countLabel.innerText = unredeemedItems.length + ' ScanWin Belum Diredeem';
+      }
+
+      const listBody = document.getElementById('unredeemed-list-body');
+      if (!listBody) return;
+
+      listBody.innerHTML = '';
+      unredeemedItems.forEach(item => {
+        const card = document.createElement('div');
+        card.className = 'unredeemed-group-card clickable';
+        card.onclick = function () { handleUnredeemedClick(item.id); };
+
+        let statusBadge = item.status === 'pending'
+          ? (item.scenario === 'limit_exceeded' 
+              ? `<span class="badge-status-unredeemed pending">Pending (Limit Exceeded)</span>` 
+              : `<span class="badge-status-unredeemed pending">Pending (Device ID Sama)</span>`)
+          : `<span class="badge-status-unredeemed belum_redeem">Belum Redeem</span>`;
+
+        let vouchersHTML = '';
+        item.vouchers.forEach(v => {
+          vouchersHTML += `
+            <div class="unredeemed-item-row">
+              <div class="unredeemed-item-left">
+                <div class="grc-logo-box" style="width: 32px; height: 22px; border:1px solid #e2e8f0; border-radius:4px; display:flex; align-items:center; justify-content:center; flex-shrink:0;">
+                  <span style="font-size: 6.5px; font-weight: 800; color: #0b57d0;">GRC</span>
+                </div>
+                <div class="unredeemed-item-title">${v.title}</div>
+              </div>
+              <div class="unredeemed-qty-badge">x${v.qty}</div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="unredeemed-group-header">
+            <div>
+              <div class="unredeemed-group-time">${item.dateStr}</div>
+              <div class="unredeemed-group-expired">${item.expStr}</div>
+            </div>
+            ${statusBadge}
+          </div>
+          <div class="unredeemed-vouchers-container">
+            ${vouchersHTML}
+          </div>
+          <div style="font-size:10.5px; color:#1a73e8; font-weight:700; margin-top:8px; text-align:right;">
+            Lihat Detail Screen &gt;
+          </div>
+        `;
+        listBody.appendChild(card);
+      });
+    }
+
+    function handleUnredeemedClick(id) {
+      const item = unredeemedItems.find(x => x.id === id);
+      if (!item) return;
+
+      closeUnredeemedBottomSheetDirect();
+
+      if (item.status === 'belum_redeem') {
+        // 1. Status Belum Redeem -> Tampilkan Kode ScanWin Screen (screen-success)
+        goToScreen('screen-success');
+      } else if (item.status === 'pending') {
+        // 2. Status Pending -> Tampilkan Pending Result Screen (screen-pending)
+        const triggerReason = document.getElementById('pending-trigger-reason');
+        const ruleName = document.getElementById('fde-rule-name');
+
+        if (item.scenario === 'self_redeem') {
+          setScenario('self_redeem');
+          if (ruleName) ruleName.innerText = 'Sedang Diproses';
+          if (triggerReason) triggerReason.innerText = 'Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses (maksimal 1x24 jam). Sistem mendeteksi ID Perangkat Toko dan Customer sama (Self-Redeem).';
+        } else if (item.scenario === 'limit_exceeded') {
+          setScenario('limit_exceeded');
+          if (ruleName) ruleName.innerText = 'Sedang Diproses';
+          if (triggerReason) triggerReason.innerText = 'Permintaan pembuatan Kode QR ScanWin Anda telah kami terima dan sedang diproses (maksimal 1x24 jam). Frekuensi pembuatan QR melebihi batas 30 menit.';
+        } else {
+          setScenario('self_redeem');
+        }
+
+        goToScreen('screen-pending');
+      }
+    }
+
+    function openUnredeemedBottomSheet() {
+      updateUnredeemedUI();
+      const modal = document.getElementById('unredeemed-modal');
+      if (modal) modal.classList.add('active');
+    }
+
+    function closeUnredeemedBottomSheetDirect() {
+      const modal = document.getElementById('unredeemed-modal');
+      if (modal) modal.classList.remove('active');
+    }
+
+    function closeUnredeemedBottomSheet(e) {
+      if (e && e.target !== document.getElementById('unredeemed-modal') && !e.target.closest('.btn-close-modal')) return;
+      closeUnredeemedBottomSheetDirect();
+    }
+
+    // Initialize UI
+    updateVoucherSelectionUI();
+    updateUnredeemedUI();
+  </script>
+</body>
+
+</html>

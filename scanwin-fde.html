@@ -3,124 +3,172 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Scanwin Fraud Detection Engine — Prototype Hub</title>
+  <title>Scanwin Fraud Detection Engine — Interactive Prototype Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
+  
   <style>
     :root {
       --primary-blue: #0b57d0;
       --primary-blue-light: #e8f0fe;
-      --success-green: #0f9d58;
-      --error-red: #d93025;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #1f1f1f;
+      --medium-gray: #5f6368;
+      --light-gray: #f1f3f4;
+      --border-gray: #dadce0;
       --portal-sidebar-bg: #0f172a;
       --portal-sidebar-border: #1e293b;
       --portal-bg: #f8fafc;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
     body { background: var(--portal-bg); min-height: 100vh; overflow: hidden; display: flex; }
 
     .portal-container { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
 
-    /* ========== LEFT SIDEBAR ========== */
-    .portal-sidebar {
-      width: 290px; background: var(--portal-sidebar-bg);
-      border-right: 1px solid var(--portal-sidebar-border);
-      display: flex; flex-direction: column;
-      padding: 28px 20px; color: #f8fafc; flex-shrink: 0;
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 40px 48px;
+      overflow-y: auto;
+      background: #f8fafc;
     }
-    .portal-header { margin-bottom: 24px; padding-bottom: 20px; border-bottom: 1px solid rgba(255,255,255,0.06); }
-    .portal-header h2 { font-size: 20px; font-weight: 800; color: #fff; letter-spacing: -0.5px; }
-    .portal-header .portal-badge {
-      display: inline-block; background: rgba(59,130,246,0.15);
-      border: 1px solid rgba(59,130,246,0.3); color: #93c5fd;
-      font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 20px; margin-top: 6px;
-    }
-    .portal-menu-title { font-size: 11px; font-weight: 700; color: #64748b; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; padding-left: 8px; }
-    .portal-menu-list { display: flex; flex-direction: column; gap: 8px; }
-    .portal-menu-item {
-      display: flex; align-items: center; gap: 12px;
-      padding: 12px 16px; border-radius: 10px; font-size: 13.5px;
-      font-weight: 600; color: #94a3b8; cursor: pointer;
-      transition: all 0.2s ease; text-decoration: none;
-    }
-    .portal-menu-item:hover { background: rgba(255,255,255,0.04); color: #f1f5f9; }
-    .portal-menu-item.active { background: var(--primary-blue); color: #fff; box-shadow: 0 4px 12px rgba(11,87,208,0.2); }
-    .portal-menu-item.disabled { opacity: 0.35; cursor: not-allowed; pointer-events: none; }
-    .portal-menu-icon { width: 18px; height: 18px; fill: currentColor; flex-shrink: 0; }
 
-    .user-flow-btn {
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
-      color: #fff; border: none; border-radius: 12px; padding: 14px 18px;
-      font-size: 13.5px; font-weight: 700; text-decoration: none;
-      cursor: pointer; box-shadow: 0 4px 14px rgba(109,40,217,0.3);
-      transition: all 0.2s ease; margin-bottom: 20px; width: 100%; text-align: center;
+    .hub-hero {
+      margin-bottom: 36px;
+      max-width: 900px;
     }
-    .user-flow-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(109,40,217,0.4); color: #fff; }
-    .btn-icon { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
-    /* ========== MAIN CONTENT ========== */
-    .portal-main { flex: 1; min-width: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 48px 40px; background: var(--portal-bg); overflow-y: auto; }
-
-    .hub-hero { text-align: center; margin-bottom: 56px; }
     .hub-hero-icon {
-      width: 80px; height: 80px; background: #fff; border-radius: 24px;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.06); border: 1px solid #e2e8f0;
-      margin: 0 auto 24px auto;
+      width: 48px;
+      height: 48px;
+      background: rgba(11,87,208,0.1);
+      border: 1px solid rgba(11,87,208,0.2);
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      color: var(--primary-blue);
     }
-    .hub-hero-icon svg { width: 40px; height: 40px; fill: #64748b; }
-    .hub-hero h1 { font-size: 30px; font-weight: 800; color: #1e293b; letter-spacing: -0.7px; margin-bottom: 12px; }
-    .hub-hero p { font-size: 15px; color: #64748b; max-width: 520px; line-height: 1.6; }
 
-    .prd-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; width: 100%; max-width: 900px; }
+    .hub-hero-icon svg { width: 26px; height: 26px; fill: currentColor; }
+
+    .hub-hero h1 {
+      font-size: 28px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.5px;
+      margin-bottom: 8px;
+    }
+
+    .hub-hero p {
+      font-size: 14.5px;
+      color: #64748b;
+      line-height: 1.6;
+    }
+
+    .prd-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+    }
 
     .prd-card {
-      background: #fff; border-radius: 20px; border: 1px solid #e2e8f0;
-      padding: 28px; box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      text-decoration: none; color: inherit;
-      transition: all 0.25s ease; display: flex; flex-direction: column; gap: 16px;
-      position: relative; overflow: hidden;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 20px;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      position: relative;
     }
-    .prd-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--primary-blue); opacity: 0; transition: opacity 0.25s ease; }
-    .prd-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); border-color: #c7d7fd; }
-    .prd-card:hover::before { opacity: 1; }
 
-    .prd-card.disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+    .prd-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 16px 32px -8px rgba(15,23,42,0.08);
+      border-color: #cbd5e1;
+    }
 
     .prd-card-icon {
-      width: 48px; height: 48px; border-radius: 14px;
-      background: var(--primary-blue-light); display: flex;
-      align-items: center; justify-content: center;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      margin-bottom: 16px;
+      transition: all 0.2s ease;
     }
-    .prd-card-icon svg { width: 24px; height: 24px; fill: var(--primary-blue); }
+
+    .prd-card:hover .prd-card-icon {
+      background: var(--primary-blue);
+      color: #fff;
+    }
+
+    .prd-card-icon svg { width: 22px; height: 22px; fill: currentColor; }
 
     .prd-card-badge {
-      display: inline-block; font-size: 10px; font-weight: 700;
-      padding: 3px 10px; border-radius: 20px; width: fit-content;
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
     }
-    .badge-active { background: rgba(15,157,88,0.1); color: var(--success-green); border: 1px solid rgba(15,157,88,0.2); }
-    .badge-wip { background: rgba(11,87,208,0.08); color: var(--primary-blue); border: 1px solid rgba(11,87,208,0.2); }
-    .badge-soon { background: #f1f5f9; color: #64748b; border: 1px solid #e2e8f0; }
 
-    .prd-card-title { font-size: 17px; font-weight: 800; color: #1e293b; letter-spacing: -0.3px; }
-    .prd-card-desc { font-size: 13px; color: #64748b; line-height: 1.55; }
+    .badge-active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
 
-    .prd-card-meta { font-size: 11px; color: #94a3b8; margin-top: 4px; }
-    .prd-card-meta strong { color: #64748b; }
+    .prd-card-title {
+      font-size: 17px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 8px;
+    }
+
+    .prd-card-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .prd-card-meta {
+      font-size: 11px;
+      color: #94a3b8;
+      padding-top: 14px;
+      border-top: 1px solid #f1f5f9;
+      margin-bottom: 14px;
+    }
 
     .prd-card-cta {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 13px; font-weight: 700; color: var(--primary-blue); margin-top: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--primary-blue);
+      font-size: 13px;
+      font-weight: 700;
     }
-    .prd-card-cta svg { width: 16px; height: 16px; fill: var(--primary-blue); }
+
+    .prd-card-cta svg { width: 16px; height: 16px; fill: currentColor; transition: transform 0.2s ease; }
+    .prd-card:hover .prd-card-cta svg { transform: translateX(4px); }
 
     @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
     .hub-hero { animation: fadeIn 0.4s ease; }
     .prd-grid { animation: fadeIn 0.5s ease; }
-  </style>  <script src="sidebar.js"></script>
+  </style>
+  <script src="sidebar.js"></script>
 </head>
 <body>
   <div class="portal-container">
@@ -154,7 +202,7 @@
 
         <!-- PRD 2: Ubah PIN -->
         <a href="scanwin-fde-ubah-pin.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6-3.6z"/></svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">2. Ubah PIN Aktif</div>
           <div class="prd-card-desc">Simulasi alur perubahan PIN bagi merchant yang sudah memiliki PIN aktif. Termasuk verifikasi PIN lama (max 3x percobaan) dan pemblokiran otomatis via OTP WhatsApp.</div>
@@ -178,6 +226,19 @@
           </div>
         </a>
 
+        <!-- PRD 4: Pencegahan Akses Menu -->
+        <a href="scanwin-fde-pencegahan-akses.html" class="prd-card">
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
+          <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
+          <div class="prd-card-title">4. Pencegahan Akses Menu</div>
+          <div class="prd-card-desc">Simulasi gerbang keamanan (Redirection Barrier). Otomatis mencegat & alihkan paksa merchant ke Registrasi PIN Baru / Reset PIN WA jika PIN belum aktif.</div>
+          <div class="prd-card-meta">PRD: <strong>4_Scanwin_Mitra1000s_Pencegahan_Akses_Menu.md</strong></div>
+          <div class="prd-card-cta">
+            <span>Buka Prototype</span>
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+        </a>
+
         <!-- PRD 5: Alur Direct Scan & FDE (Flow 1) -->
         <a href="scanwin-fde-direct-scan.html" class="prd-card">
           <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h2v3h-2v-3zm0-3h3v2h-3v-2zm3 3h3v3h-3v-3z"/></svg></div>
@@ -185,6 +246,19 @@
           <div class="prd-card-title">5. Alur Direct Scan & FDE (Flow 1)</div>
           <div class="prd-card-desc">Simulasi pemindaian QR Code Customer, otorisasi PIN 6-digit, validasi Fraud Detection Engine (Device ID, Sliding Window), serta halaman Riwayat & Detail Pending (1x24 jam).</div>
           <div class="prd-card-meta">PRD: <strong>5_Scanwin_Mitra1000s_Alur_Direct_Scan.md</strong></div>
+          <div class="prd-card-cta">
+            <span>Buka Prototype</span>
+            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+          </div>
+        </a>
+
+        <!-- PRD 6: Alur Shareable QR & FDE (Flow 2) -->
+        <a href="scanwin-fde-shareable-qr.html" class="prd-card">
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>
+          <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
+          <div class="prd-card-title">6. Alur Shareable QR (Flow 2)</div>
+          <div class="prd-card-desc">Simulasi pembuatan QR Code Bulk untuk dibagikan via WhatsApp, otorisasi PIN 6-digit, serta evaluasi FDE lengkap (Device ID Kembar & Sliding Window limit).</div>
+          <div class="prd-card-meta">PRD: <strong>6_Scanwin_Mitra1000s_Alur_Shareable_QR.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
             <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>

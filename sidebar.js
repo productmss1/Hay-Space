@@ -130,13 +130,15 @@
 
     injectStyles();
 
-    // Detect active page from filename or path (handles GitHub Pages subpaths & case variations)
+    // Detect active page from filename or path
     const path = (window.location.pathname || '').toLowerCase();
     let activeKey = 'hub';
     if (path.includes('registrasi-pin')) activeKey = 'registrasi';
     else if (path.includes('ubah-pin')) activeKey = 'ubah';
     else if (path.includes('reset-pin')) activeKey = 'reset';
+    else if (path.includes('pencegahan-akses') || path.includes('pencegahan')) activeKey = 'pencegahan';
     else if (path.includes('direct-scan')) activeKey = 'direct';
+    else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
     else if (path.includes('flowchart')) activeKey = 'flowchart';
 
     const isHub = (activeKey === 'hub');
@@ -171,9 +173,17 @@
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
           <span>3. Reset PIN Terblokir</span>
         </a>
+        <a href="scanwin-fde-pencegahan-akses.html" class="portal-menu-item ${activeKey === 'pencegahan' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          <span>4. Pencegahan Akses Menu</span>
+        </a>
         <a href="scanwin-fde-direct-scan.html" class="portal-menu-item ${activeKey === 'direct' ? 'active' : ''}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h2v3h-2v-3zm0-3h3v2h-3v-2zm3 3h3v3h-3v-3z"/></svg>
           <span>5. Alur Direct Scan & FDE</span>
+        </a>
+        <a href="scanwin-fde-shareable-qr.html" class="portal-menu-item ${activeKey === 'shareable' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
+          <span>6. Alur Shareable QR</span>
         </a>
       </div>
 
@@ -189,7 +199,6 @@
     return true;
   }
 
-  // Polling fallback to guarantee rendering even if DOM parsing takes longer on large files
   function init() {
     if (renderSidebar()) return;
 

@@ -38,7 +38,7 @@
             white-space: nowrap;
             position: relative;
             min-width: 6200px;
-            min-height: 4200px;
+            min-height: 5400px;
         }
 
         /* Figma-style sections */
@@ -272,32 +272,29 @@
         <div id="flow-area">
             <!-- Figma-style sections wrapper inside canvas to scale together -->
             <div id="sections-container">
-                <!-- =========================================================
-                     SECTION 1: Register PIN Mitra1000s
-                     ========================================================= -->
+                <!-- SECTION 1 -->
                 <div class="figma-section" style="left: 450px; top: 200px; width: 2850px; height: 500px;">
                     <span class="section-label" style="background:#8b5cf6;">Register PIN Mitra1000s</span>
                 </div>
-
-                <!-- =========================================================
-                     SECTION 2: Ubah PIN Mitra1000s
-                     ========================================================= -->
+                <!-- SECTION 2 -->
                 <div class="figma-section" style="left: 450px; top: 760px; width: 3080px; height: 500px;">
                     <span class="section-label" style="background:#ec4899;">Ubah PIN Mitra1000s</span>
                 </div>
-
-                <!-- =========================================================
-                     SECTION 3: Reset PIN Terblokir (OTP WA)
-                     ========================================================= -->
+                <!-- SECTION 3 -->
                 <div class="figma-section" style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
                     <span class="section-label" style="background:#f59e0b;">Reset PIN Terblokir (OTP WA)</span>
                 </div>
-
-                <!-- =========================================================
-                     SECTION 4: Direct Scan QR Customer
-                     ========================================================= -->
-                <div class="figma-section" style="left: 450px; top: 1920px; width: 4620px; height: 600px;">
-                    <span class="section-label" style="background:#0b57d0;">Direct Scan QR Customer</span>
+                <!-- SECTION 4 -->
+                <div class="figma-section" style="left: 450px; top: 1920px; width: 3300px; height: 540px;">
+                    <span class="section-label" style="background:#10b981;">Pencegahan Akses Menu (Redirection Barrier - PRD 4)</span>
+                </div>
+                <!-- SECTION 5 -->
+                <div class="figma-section" style="left: 450px; top: 2520px; width: 4620px; height: 600px;">
+                    <span class="section-label" style="background:#0b57d0;">Direct Scan QR Customer (Flow 1)</span>
+                </div>
+                <!-- SECTION 6 -->
+                <div class="figma-section" style="left: 450px; top: 3180px; width: 5250px; height: 600px;">
+                    <span class="section-label" style="background:#25d366;">Shareable Bulk QR &amp; Audit FDE Engine (Flow 2 - PRD 6)</span>
                 </div>
             </div>
 
@@ -315,9 +312,7 @@
     <script>
         const flowData = {
             nodes: [
-                // =========================================================
-                // SECTION 1: Register PIN Mitra1000s (Y: 350-550)
-                // =========================================================
+                // SECTION 1: Register PIN (Y: 350-550)
                 { id: 'f1-start', type: 'n-start', text: 'Start', x: 495, y: 380 },
                 { id: 'f1-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 400 },
                 { id: 'f1-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>Mitra1000s"', x: 860, y: 400 },
@@ -335,9 +330,7 @@
                 { id: 'f1-scanwin', type: 'n-purple', text: 'Klik "Masuk<br>ke sCanWin"', x: 2920, y: 400 },
                 { id: 'f1-end', type: 'n-end', text: 'PIN Aktif &<br>Dashboard sCanWin', x: 3110, y: 355 },
 
-                // =========================================================
-                // SECTION 2: Ubah PIN Mitra1000s (Y: 930-1130)
-                // =========================================================
+                // SECTION 2: Ubah PIN (Y: 930-1130)
                 { id: 'f2-start', type: 'n-start', text: 'Start', x: 495, y: 940 },
                 { id: 'f2-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 960 },
                 { id: 'f2-click', type: 'n-purple', text: 'Klik Menu<br>"Ubah PIN"', x: 860, y: 960 },
@@ -355,9 +348,7 @@
                 { id: 'f2-success-ubah', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Berhasil Diubah', x: 3140, y: 960 },
                 { id: 'f2-end-ubah', type: 'n-end', text: 'End (PIN Terupdate<br>ke Sistem)', x: 3330, y: 915 },
 
-                // =========================================================
-                // SECTION 3: Reset PIN Terblokir (OTP WA) (Y: 1510-1710)
-                // =========================================================
+                // SECTION 3: Reset PIN Terblokir (Y: 1510-1710)
                 { id: 'f3-start', type: 'n-start', text: 'Start', x: 495, y: 1520 },
                 { id: 'f3-block-screen', type: 'n-gray', text: 'Layar PIN Terblokir<br>/ Lupa PIN', x: 640, y: 1540 },
                 { id: 'f3-click-otp', type: 'n-purple', text: 'Klik "Reset PIN<br>via WhatsApp"', x: 860, y: 1540 },
@@ -376,78 +367,132 @@
                 { id: 'f3-success-reset', type: 'n-gray', text: 'Tampilkan Layar<br>Reset PIN Sukses', x: 3360, y: 1540 },
                 { id: 'f3-end-reset', type: 'n-end', text: 'End (PIN Reset<br>& Akun Aktif)', x: 3550, y: 1495 },
 
-                // =========================================================
-                // SECTION 4: Direct Scan QR Customer (Y: 2090-2390)
-                // =========================================================
+                // SECTION 4: Pencegahan Akses Menu (Redirection Barrier - PRD 4 - Y: 2090-2290)
                 { id: 'f4-start', type: 'n-start', text: 'Start', x: 495, y: 2100 },
-                { id: 'f4-account', type: 'n-gray', text: 'Merchant Buka<br>Halaman Akun', x: 640, y: 2120 },
-                { id: 'f4-click-menu', type: 'n-purple', text: 'Klik Menu<br>"ScanWin1000s"', x: 860, y: 2120 },
+                { id: 'f4-click-menu', type: 'n-purple', text: 'Merchant Ketuk Menu<br>"sCanWin1000s"', x: 640, y: 2120 },
+                { id: 'f4-silent-check', type: 'n-gray', text: 'Backend Silent Check<br>Status PIN Merchant', x: 860, y: 2120 },
+                { id: 'f4-dec-status', type: 'n-decision', text: '<span>Status PIN<br>Database?</span>', x: 1100, y: 2090 },
 
-                // Selection & Scanner
-                { id: 'f4-list-vouchers', type: 'n-gray', text: 'Tampilkan Daftar<br>Voucher sCanWin', x: 1080, y: 2120 },
-                { id: 'f4-select-stepper', type: 'n-purple', text: 'Atur Jumlah Voucher<br>Stepper [- X +]', x: 1300, y: 2120 },
-                { id: 'f4-click-redeem', type: 'n-purple', text: 'Klik Button<br>"Redeem ScanWin"', x: 1520, y: 2120 },
-                { id: 'f4-scanner', type: 'n-gray', text: 'Buka Kamera Scan<br>& Floating Pill', x: 1740, y: 2120 },
-                { id: 'f4-dec-qr', type: 'n-decision', text: '<span>Validasi<br>QR Code?</span>', x: 1970, y: 2090 },
-                { id: 'f4-qr-error', type: 'n-gray', text: 'Tampilkan Error Sheet<br>QR Invalid / Expired', x: 1940, y: 2290 },
+                { id: 'f4-belum', type: 'n-gray', text: 'Status: Belum Set<br>(Intercepted)', x: 1340, y: 1990 },
+                { id: 'f4-screen-reg', type: 'n-gray', text: 'Tampilkan Layar:<br>"Buat PIN Transaksi..."', x: 1560, y: 1990 },
+                { id: 'f4-cta-reg', type: 'n-purple', text: 'Merchant Klik:<br>"Buat PIN Sekarang"', x: 1780, y: 1990 },
+                { id: 'f4-go-reg', type: 'n-gray', text: 'Navigasi ke Flow 1:<br>Registrasi PIN Baru', x: 2000, y: 1990 },
 
-                // PIN Authorization
-                { id: 'f4-pin-sheet', type: 'n-gray', text: 'Tampilkan Sheet<br>Input PIN 6-Digit', x: 2220, y: 2120 },
-                { id: 'f4-input-pin', type: 'n-purple', text: 'Merchant Masukkan<br>6-Digit PIN', x: 2440, y: 2120 },
-                { id: 'f4-dec-pin', type: 'n-decision', text: '<span>Validasi<br>PIN & Attempt?</span>', x: 2670, y: 2090 },
-                { id: 'f4-pin-blocked', type: 'n-gray', text: 'Tampilkan Block Screen<br>PIN Terblokir (OTP)', x: 2640, y: 2290 },
+                { id: 'f4-blocked', type: 'n-gray', text: 'Status: 🚫 Terblokir<br>(Intercepted)', x: 1340, y: 2120 },
+                { id: 'f4-screen-reset', type: 'n-gray', text: 'Tampilkan Layar:<br>"PIN Sementara Terblokir"', x: 1560, y: 2120 },
+                { id: 'f4-cta-reset', type: 'n-purple', text: 'Merchant Klik:<br>"Reset PIN via WhatsApp"', x: 1780, y: 2120 },
+                { id: 'f4-go-reset', type: 'n-gray', text: 'Navigasi ke Flow 3:<br>Reset PIN via OTP WA', x: 2000, y: 2120 },
 
-                // FDE Fraud Engine Evaluation
-                { id: 'f4-fde-engine', type: 'n-gray', text: 'Backend Kirim Payload<br>ke FDE Engine', x: 2920, y: 2120 },
-                { id: 'f4-dec-fde', type: 'n-decision', text: '<span>FDE Valid<br>(No Fraud)?</span>', x: 3160, y: 2090 },
+                { id: 'f4-offline', type: 'n-gray', text: 'Status: Offline / Error<br>(Fail-Secure)', x: 1340, y: 2250 },
+                { id: 'f4-modal-error', type: 'n-gray', text: 'Tampilkan Modal:<br>"Koneksi Terputus"', x: 1560, y: 2250 },
+                { id: 'f4-cta-retry', type: 'n-purple', text: 'Merchant Klik:<br>"Coba Lagi"', x: 1780, y: 2250 },
+                { id: 'f4-refetch', type: 'n-gray', text: 'Refetch Status PIN<br>ke Backend', x: 2000, y: 2250 },
 
-                // Happy Path (FDE Valid / Saldo Cair)
-                { id: 'f4-credit-saldo', type: 'n-gray', text: 'Cairkan Komisi &<br>Tambah Saldo Toko', x: 3400, y: 2040 },
-                { id: 'f4-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 3620, y: 2040 },
+                { id: 'f4-end-intercept', type: 'n-end', text: 'Redirection Barrier<br>Dicegat Sistem', x: 2240, y: 2075 },
 
-                // Fraud / Anomaly Path (Device ID Kembar / Limit Window)
-                { id: 'f4-hold-komisi', type: 'n-gray', text: 'Tangguhkan Komisi<br>(Audit 1x24 Jam)', x: 3400, y: 2240 },
-                { id: 'f4-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Result<br>Menunggu Tinjauan', x: 3620, y: 2240 },
+                // SECTION 5: Direct Scan QR Customer (Y: 2690-2990)
+                { id: 'f5-start', type: 'n-start', text: 'Start', x: 495, y: 2700 },
+                { id: 'f5-account', type: 'n-gray', text: 'Merchant Buka<br>Halaman Akun', x: 640, y: 2720 },
+                { id: 'f5-click-menu', type: 'n-purple', text: 'Klik Menu<br>"ScanWin1000s"', x: 860, y: 2720 },
+                { id: 'f5-list-vouchers', type: 'n-gray', text: 'Tampilkan Daftar<br>Voucher sCanWin', x: 1080, y: 2720 },
+                { id: 'f5-select-stepper', type: 'n-purple', text: 'Atur Jumlah Voucher<br>Stepper [- X +]', x: 1300, y: 2720 },
+                { id: 'f5-click-redeem', type: 'n-purple', text: 'Klik Button<br>"Redeem ScanWin"', x: 1520, y: 2720 },
+                { id: 'f5-scanner', type: 'n-gray', text: 'Buka Kamera Scan<br>& Floating Pill', x: 1740, y: 2720 },
+                { id: 'f5-dec-qr', type: 'n-decision', text: '<span>Validasi<br>QR Code?</span>', x: 1970, y: 2690 },
+                { id: 'f5-qr-error', type: 'n-gray', text: 'Tampilkan Error Sheet<br>QR Invalid / Expired', x: 1940, y: 2890 },
 
-                // Monitoring Riwayat & Status (PRD Story 2)
-                { id: 'f4-open-history', type: 'n-purple', text: 'Merchant Klik<br>"Ke Riwayat Redeem"', x: 3880, y: 2120 },
-                { id: 'f4-history-screen', type: 'n-gray', text: 'Tampilkan Layar<br>Riwayat Redeem', x: 4100, y: 2120 },
-                { id: 'f4-dec-status', type: 'n-decision', text: '<span>Status<br>Voucher?</span>', x: 4340, y: 2090 },
+                { id: 'f5-pin-sheet', type: 'n-gray', text: 'Tampilkan Sheet<br>Input PIN 6-Digit', x: 2220, y: 2720 },
+                { id: 'f5-input-pin', type: 'n-purple', text: 'Merchant Masukkan<br>6-Digit PIN', x: 2440, y: 2720 },
+                { id: 'f5-dec-pin', type: 'n-decision', text: '<span>Validasi<br>PIN & Attempt?</span>', x: 2670, y: 2690 },
+                { id: 'f5-pin-blocked', type: 'n-gray', text: 'Tampilkan Block Screen<br>PIN Terblokir (OTP)', x: 2640, y: 2890 },
 
-                { id: 'f4-status-selesai', type: 'n-gray', text: 'Status Selesai:<br>✓ Komisi Masuk Saldo', x: 4580, y: 1990 },
-                { id: 'f4-status-pending', type: 'n-gray', text: 'Status Pending:<br>⏳ Audit System +-1x24h', x: 4580, y: 2120 },
-                { id: 'f4-status-dibatalkan', type: 'n-gray', text: 'Status Dibatalkan:<br>❌ Ditolak Admin / Fraud', x: 4580, y: 2250 },
+                { id: 'f5-fde-engine', type: 'n-gray', text: 'Backend Kirim Payload<br>ke FDE Engine', x: 2920, y: 2720 },
+                { id: 'f5-dec-fde', type: 'n-decision', text: '<span>FDE Valid<br>(No Fraud)?</span>', x: 3160, y: 2690 },
 
-                { id: 'f4-end-history', type: 'n-end', text: 'End (Monitoring<br>Status Transaksi)', x: 4840, y: 2075 }
+                { id: 'f5-credit-saldo', type: 'n-gray', text: 'Cairkan Komisi &<br>Tambah Saldo Toko', x: 3400, y: 2640 },
+                { id: 'f5-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 3620, y: 2640 },
+
+                { id: 'f5-hold-komisi', type: 'n-gray', text: 'Tangguhkan Komisi<br>(Audit 1x24 Jam)', x: 3400, y: 2840 },
+                { id: 'f5-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Result<br>Menunggu Tinjauan', x: 3620, y: 2840 },
+
+                { id: 'f5-open-history', type: 'n-purple', text: 'Merchant Klik<br>"Ke Riwayat Redeem"', x: 3880, y: 2720 },
+                { id: 'f5-history-screen', type: 'n-gray', text: 'Tampilkan Layar<br>Riwayat Redeem', x: 4100, y: 2720 },
+                { id: 'f5-dec-status', type: 'n-decision', text: '<span>Status<br>Voucher?</span>', x: 4340, y: 2690 },
+
+                { id: 'f5-status-selesai', type: 'n-gray', text: 'Status Selesai:<br>✓ Komisi Masuk Saldo', x: 4580, y: 2590 },
+                { id: 'f5-status-pending', type: 'n-gray', text: 'Status Pending:<br>⏳ Audit System +-1x24h', x: 4580, y: 2720 },
+                { id: 'f5-status-dibatalkan', type: 'n-gray', text: 'Status Dibatalkan:<br>❌ Ditolak Admin / Fraud', x: 4580, y: 2850 },
+
+                { id: 'f5-end-history', type: 'n-end', text: 'End (Monitoring<br>Status Transaksi)', x: 4840, y: 2675 },
+
+                // SECTION 6: Shareable Bulk QR & Audit FDE Engine (Flow 2 - PRD 6 - Y: 3350-3750)
+                { id: 'f6-start', type: 'n-start', text: 'Start', x: 495, y: 3360 },
+                { id: 'f6-account', type: 'n-gray', text: 'Merchant Buka<br>Halaman Akun', x: 640, y: 3380 },
+                { id: 'f6-click-menu', type: 'n-purple', text: 'Klik Menu<br>"sCanWin1000s"', x: 860, y: 3380 },
+                { id: 'f6-list-vouchers', type: 'n-gray', text: 'Tampilkan Daftar<br>Voucher sCanWin', x: 1080, y: 3380 },
+                { id: 'f6-select-stepper', type: 'n-purple', text: 'Pilih Voucher & Klik<br>"Redeem ScanWin"', x: 1300, y: 3380 },
+                { id: 'f6-scanner-screen', type: 'n-gray', text: 'Masuk Screen Kamera<br>& Floating Pill', x: 1520, y: 3380 },
+                { id: 'f6-click-share-card', type: 'n-purple', text: 'Klik Sheet Card:<br>"Buat & Kirimkan QR"', x: 1740, y: 3380 },
+                { id: 'f6-input-pin', type: 'n-purple', text: 'Merchant Masukkan<br>6-Digit PIN Transaksi', x: 1960, y: 3380 },
+                { id: 'f6-dec-pin', type: 'n-decision', text: '<span>Validasi PIN<br>& Counter (3x)?</span>', x: 2210, y: 3350 },
+                { id: 'f6-pin-error', type: 'n-gray', text: 'Toast Error PIN Salah<br>& Sisa Attempt (1-2x)', x: 2180, y: 3550 },
+                { id: 'f6-pin-blocked', type: 'n-gray', text: 'Tampilkan Screen:<br>"PIN Terblokir (3x Salah)"', x: 2460, y: 3550 },
+
+                { id: 'f6-fde-engine', type: 'n-gray', text: 'Backend Evaluasi FDE:<br>Device ID & Sliding Window', x: 2460, y: 3380 },
+                { id: 'f6-dec-fde', type: 'n-decision', text: '<span>Hasil Audit<br>FDE Engine?</span>', x: 2700, y: 3350 },
+
+                // Branch 1: Happy Path (FDE Valid)
+                { id: 'f6-gen-qr', type: 'n-gray', text: 'Generate Kode QR<br>& Layar Kode ScanWin', x: 2940, y: 3260 },
+                { id: 'f6-add-unredeemed-happy', type: 'n-gray', text: 'Tambah Item ke Section:<br>"X ScanWin Belum Diredeem"<br>(Status: Belum Redeem)', x: 3160, y: 3260 },
+                { id: 'f6-click-wa', type: 'n-purple', text: 'Merchant Klik<br>"Kirim QR via WhatsApp"', x: 3380, y: 3260 },
+
+                // Branch 2: Device ID Sama (Pending)
+                { id: 'f6-fde-self', type: 'n-gray', text: 'Anomali Device ID:<br>(Merchant == Customer)', x: 2940, y: 3380 },
+                { id: 'f6-pending-self', type: 'n-gray', text: 'Tampilkan Screen Pending:<br>"Pengajuan Sedang Diproses"<br>(Audit FDE 1x24 Jam)', x: 3160, y: 3380 },
+                { id: 'f6-add-unredeemed-self', type: 'n-gray', text: 'Tambah Item ke Section:<br>"X ScanWin Belum Diredeem"<br>(Status: Pending - Device ID)', x: 3380, y: 3380 },
+
+                // Branch 3: Limit Exceeded (Pending)
+                { id: 'f6-fde-limit', type: 'n-gray', text: 'Anomali Limit Frekuensi:<br>(Sliding Window > 2 dalam 30m)', x: 2940, y: 3500 },
+                { id: 'f6-pending-limit', type: 'n-gray', text: 'Tampilkan Screen Pending:<br>"Pengajuan Sedang Diproses"<br>(Audit FDE 1x24 Jam)', x: 3160, y: 3500 },
+                { id: 'f6-add-unredeemed-limit', type: 'n-gray', text: 'Tambah Item ke Section:<br>"X ScanWin Belum Diredeem"<br>(Status: Pending - Limit)', x: 3380, y: 3500 },
+
+                // Monitoring & Bottomsheet Modal
+                { id: 'f6-open-history', type: 'n-purple', text: 'Merchant Buka Tab<br>"Riwayat Redeem"', x: 3620, y: 3380 },
+                { id: 'f6-banner-unredeemed', type: 'n-purple', text: 'Klik Banner Section:<br>"X ScanWin Belum Diredeem"', x: 3840, y: 3380 },
+                { id: 'f6-bottomsheet-modal', type: 'n-gray', text: 'Buka Pop-up Bottomsheet:<br>"ScanWin Belum Diredeem"', x: 4060, y: 3380 },
+                { id: 'f6-click-item-modal', type: 'n-purple', text: 'Merchant Klik Item<br>Daftar Voucher', x: 4280, y: 3380 },
+                { id: 'f6-dec-modal-item', type: 'n-decision', text: '<span>Status Item<br>Modal?</span>', x: 4510, y: 3350 },
+
+                { id: 'f6-show-qr-screen', type: 'n-gray', text: 'Navigasi ke Screen<br>Kode QR & WA Share', x: 4760, y: 3260 },
+                { id: 'f6-show-pending-self', type: 'n-gray', text: 'Navigasi ke Screen Pending<br>(Detail Device ID Sama)', x: 4760, y: 3380 },
+                { id: 'f6-show-pending-limit', type: 'n-gray', text: 'Navigasi ke Screen Pending<br>(Detail Limit Exceeded)', x: 4760, y: 3500 },
+
+                { id: 'f6-cust-claim', type: 'n-gray', text: 'Customer Klaim Mandiri<br>di App 1000Saudara', x: 5000, y: 3260 },
+                { id: 'f6-cair-komisi', type: 'n-gray', text: 'Cairkan Komisi &<br>Update Status Selesai', x: 5220, y: 3260 },
+                { id: 'f6-end-success', type: 'n-end', text: 'End (Komisi Cair<br>& QR Verified)', x: 5410, y: 3215 },
+                { id: 'f6-end-pending', type: 'n-end', text: 'End (Monitoring Audit<br>Sistem 1x24h)', x: 5000, y: 3435 }
             ],
             connections: [
-                // =========================================================
-                // CONNECTIONS SECTION 1: Register PIN Mitra1000s
-                // =========================================================
+                // CONNECTIONS SECTION 1
                 { from: 'f1-start', to: 'f1-akun', f: 'right', t: 'left' },
                 { from: 'f1-akun', to: 'f1-click', f: 'right', t: 'left' },
                 { from: 'f1-click', to: 'f1-form1', f: 'right', t: 'left' },
-                
                 { from: 'f1-form1', to: 'f1-input1', f: 'right', t: 'left' },
                 { from: 'f1-input1', to: 'f1-valid-format', f: 'right', t: 'left' },
                 { from: 'f1-valid-format', to: 'f1-form2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
                 { from: 'f1-valid-format', to: 'f1-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
                 { from: 'f1-error-format', to: 'f1-form1', f: 'bottom', t: 'bottom' },
-
                 { from: 'f1-form2', to: 'f1-input2', f: 'right', t: 'left' },
                 { from: 'f1-input2', to: 'f1-match', f: 'right', t: 'left' },
                 { from: 'f1-match', to: 'f1-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
                 { from: 'f1-match', to: 'f1-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
                 { from: 'f1-error-match', to: 'f1-clear-match', f: 'left', t: 'right' },
                 { from: 'f1-clear-match', to: 'f1-form1', f: 'bottom', t: 'bottom' },
-
                 { from: 'f1-save', to: 'f1-success', f: 'right', t: 'left' },
                 { from: 'f1-success', to: 'f1-scanwin', f: 'right', t: 'left' },
                 { from: 'f1-scanwin', to: 'f1-end', f: 'right', t: 'left' },
 
-                // =========================================================
-                // CONNECTIONS SECTION 2: Ubah PIN Mitra1000s
-                // =========================================================
+                // CONNECTIONS SECTION 2
                 { from: 'f2-start', to: 'f2-akun', f: 'right', t: 'left' },
                 { from: 'f2-akun', to: 'f2-click', f: 'right', t: 'left' },
                 { from: 'f2-click', to: 'f2-form-old', f: 'right', t: 'left' },
@@ -456,7 +501,6 @@
                 { from: 'f2-valid-old', to: 'f2-form-new1', f: 'right', t: 'left', label: 'Benar (Ya)', lClass: 'label-yes' },
                 { from: 'f2-valid-old', to: 'f2-error-old', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
                 { from: 'f2-error-old', to: 'f2-form-old', f: 'bottom', t: 'bottom' },
-
                 { from: 'f2-form-new1', to: 'f2-input-new1', f: 'right', t: 'left' },
                 { from: 'f2-input-new1', to: 'f2-form-new2', f: 'right', t: 'left' },
                 { from: 'f2-form-new2', to: 'f2-input-new2', f: 'right', t: 'left' },
@@ -464,13 +508,10 @@
                 { from: 'f2-match-new', to: 'f2-save-ubah', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
                 { from: 'f2-match-new', to: 'f2-error-new', f: 'bottom', t: 'top', label: 'Beda (Tidak)', lClass: 'label-no' },
                 { from: 'f2-error-new', to: 'f2-form-new1', f: 'bottom', t: 'bottom' },
-
                 { from: 'f2-save-ubah', to: 'f2-success-ubah', f: 'right', t: 'left' },
                 { from: 'f2-success-ubah', to: 'f2-end-ubah', f: 'right', t: 'left' },
 
-                // =========================================================
-                // CONNECTIONS SECTION 3: Reset PIN Terblokir (OTP WA)
-                // =========================================================
+                // CONNECTIONS SECTION 3
                 { from: 'f3-start', to: 'f3-block-screen', f: 'right', t: 'left' },
                 { from: 'f3-block-screen', to: 'f3-click-otp', f: 'right', t: 'left' },
                 { from: 'f3-click-otp', to: 'f3-send-wa', f: 'right', t: 'left' },
@@ -480,7 +521,6 @@
                 { from: 'f3-valid-otp', to: 'f3-form-reset1', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
                 { from: 'f3-valid-otp', to: 'f3-error-otp', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
                 { from: 'f3-error-otp', to: 'f3-otp-screen', f: 'bottom', t: 'bottom' },
-
                 { from: 'f3-form-reset1', to: 'f3-input-reset1', f: 'right', t: 'left' },
                 { from: 'f3-input-reset1', to: 'f3-form-reset2', f: 'right', t: 'left' },
                 { from: 'f3-form-reset2', to: 'f3-input-reset2', f: 'right', t: 'left' },
@@ -488,49 +528,112 @@
                 { from: 'f3-match-reset', to: 'f3-save-reset', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
                 { from: 'f3-match-reset', to: 'f3-error-reset', f: 'bottom', t: 'top', label: 'Beda (Tidak)', lClass: 'label-no' },
                 { from: 'f3-error-reset', to: 'f3-form-reset1', f: 'bottom', t: 'bottom' },
-
                 { from: 'f3-save-reset', to: 'f3-success-reset', f: 'right', t: 'left' },
                 { from: 'f3-success-reset', to: 'f3-end-reset', f: 'right', t: 'left' },
 
-                // =========================================================
-                // CONNECTIONS SECTION 4: Direct Scan QR Customer
-                // =========================================================
-                { from: 'f4-start', to: 'f4-account', f: 'right', t: 'left' },
-                { from: 'f4-account', to: 'f4-click-menu', f: 'right', t: 'left' },
-                { from: 'f4-click-menu', to: 'f4-list-vouchers', f: 'right', t: 'left' },
+                // CONNECTIONS SECTION 4 (PRD 4: Pencegahan Akses Menu)
+                { from: 'f4-start', to: 'f4-click-menu', f: 'right', t: 'left' },
+                { from: 'f4-click-menu', to: 'f4-silent-check', f: 'right', t: 'left' },
+                { from: 'f4-silent-check', to: 'f4-dec-status', f: 'right', t: 'left' },
 
-                { from: 'f4-list-vouchers', to: 'f4-select-stepper', f: 'right', t: 'left' },
-                { from: 'f4-select-stepper', to: 'f4-click-redeem', f: 'right', t: 'left' },
-                { from: 'f4-click-redeem', to: 'f4-scanner', f: 'right', t: 'left' },
-                { from: 'f4-scanner', to: 'f4-dec-qr', f: 'right', t: 'left' },
-                { from: 'f4-dec-qr', to: 'f4-pin-sheet', f: 'right', t: 'left', label: 'QR Valid (Ya)', lClass: 'label-yes' },
-                { from: 'f4-dec-qr', to: 'f4-qr-error', f: 'bottom', t: 'top', label: 'Expired (Tidak)', lClass: 'label-no' },
-                { from: 'f4-qr-error', to: 'f4-scanner', f: 'left', t: 'bottom' },
+                { from: 'f4-dec-status', to: 'f4-belum', f: 'top', t: 'left', label: 'Belum Set PIN', lClass: 'label-no' },
+                { from: 'f4-belum', to: 'f4-screen-reg', f: 'right', t: 'left' },
+                { from: 'f4-screen-reg', to: 'f4-cta-reg', f: 'right', t: 'left' },
+                { from: 'f4-cta-reg', to: 'f4-go-reg', f: 'right', t: 'left' },
+                { from: 'f4-go-reg', to: 'f4-end-intercept', f: 'right', t: 'top' },
 
-                { from: 'f4-pin-sheet', to: 'f4-input-pin', f: 'right', t: 'left' },
-                { from: 'f4-input-pin', to: 'f4-dec-pin', f: 'right', t: 'left' },
-                { from: 'f4-dec-pin', to: 'f4-fde-engine', f: 'right', t: 'left', label: 'PIN Benar (Ya)', lClass: 'label-yes' },
-                { from: 'f4-dec-pin', to: 'f4-pin-blocked', f: 'bottom', t: 'top', label: '3x Salah PIN', lClass: 'label-no' },
+                { from: 'f4-dec-status', to: 'f4-blocked', f: 'right', t: 'left', label: 'PIN Terblokir', lClass: 'label-no' },
+                { from: 'f4-blocked', to: 'f4-screen-reset', f: 'right', t: 'left' },
+                { from: 'f4-screen-reset', to: 'f4-cta-reset', f: 'right', t: 'left' },
+                { from: 'f4-cta-reset', to: 'f4-go-reset', f: 'right', t: 'left' },
+                { from: 'f4-go-reset', to: 'f4-end-intercept', f: 'right', t: 'left' },
 
-                { from: 'f4-fde-engine', to: 'f4-dec-fde', f: 'right', t: 'left' },
-                { from: 'f4-dec-fde', to: 'f4-credit-saldo', f: 'top', t: 'left', label: 'FDE Valid (Ya)', lClass: 'label-yes' },
-                { from: 'f4-credit-saldo', to: 'f4-screen-success', f: 'right', t: 'left' },
+                { from: 'f4-dec-status', to: 'f4-offline', f: 'bottom', t: 'left', label: 'Koneksi Offline', lClass: 'label-no' },
+                { from: 'f4-offline', to: 'f4-modal-error', f: 'right', t: 'left' },
+                { from: 'f4-modal-error', to: 'f4-cta-retry', f: 'right', t: 'left' },
+                { from: 'f4-cta-retry', to: 'f4-refetch', f: 'right', t: 'left' },
+                { from: 'f4-refetch', to: 'f4-end-intercept', f: 'right', t: 'bottom' },
 
-                { from: 'f4-dec-fde', to: 'f4-hold-komisi', f: 'bottom', t: 'left', label: 'Fraud / Anomali (Tidak)', lClass: 'label-no' },
-                { from: 'f4-hold-komisi', to: 'f4-screen-pending', f: 'right', t: 'left' },
+                // CONNECTIONS SECTION 5 (Direct Scan)
+                { from: 'f5-start', to: 'f5-account', f: 'right', t: 'left' },
+                { from: 'f5-account', to: 'f5-click-menu', f: 'right', t: 'left' },
+                { from: 'f5-click-menu', to: 'f5-list-vouchers', f: 'right', t: 'left' },
+                { from: 'f5-list-vouchers', to: 'f5-select-stepper', f: 'right', t: 'left' },
+                { from: 'f5-select-stepper', to: 'f5-click-redeem', f: 'right', t: 'left' },
+                { from: 'f5-click-redeem', to: 'f5-scanner', f: 'right', t: 'left' },
+                { from: 'f5-scanner', to: 'f5-dec-qr', f: 'right', t: 'left' },
+                { from: 'f5-dec-qr', to: 'f5-pin-sheet', f: 'right', t: 'left', label: 'QR Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f5-dec-qr', to: 'f5-qr-error', f: 'bottom', t: 'top', label: 'Expired (Tidak)', lClass: 'label-no' },
+                { from: 'f5-qr-error', to: 'f5-scanner', f: 'left', t: 'bottom' },
+                { from: 'f5-pin-sheet', to: 'f5-input-pin', f: 'right', t: 'left' },
+                { from: 'f5-input-pin', to: 'f5-dec-pin', f: 'right', t: 'left' },
+                { from: 'f5-dec-pin', to: 'f5-fde-engine', f: 'right', t: 'left', label: 'PIN Benar (Ya)', lClass: 'label-yes' },
+                { from: 'f5-dec-pin', to: 'f5-pin-blocked', f: 'bottom', t: 'top', label: '3x Salah PIN', lClass: 'label-no' },
+                { from: 'f5-fde-engine', to: 'f5-dec-fde', f: 'right', t: 'left' },
+                { from: 'f5-dec-fde', to: 'f5-credit-saldo', f: 'top', t: 'left', label: 'FDE Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f5-credit-saldo', to: 'f5-screen-success', f: 'right', t: 'left' },
+                { from: 'f5-dec-fde', to: 'f5-hold-komisi', f: 'bottom', t: 'left', label: 'Fraud / Anomali (Tidak)', lClass: 'label-no' },
+                { from: 'f5-hold-komisi', to: 'f5-screen-pending', f: 'right', t: 'left' },
+                { from: 'f5-screen-success', to: 'f5-open-history', f: 'right', t: 'left' },
+                { from: 'f5-screen-pending', to: 'f5-open-history', f: 'right', t: 'left' },
+                { from: 'f5-open-history', to: 'f5-history-screen', f: 'right', t: 'left' },
+                { from: 'f5-history-screen', to: 'f5-dec-status', f: 'right', t: 'left' },
+                { from: 'f5-dec-status', to: 'f5-status-selesai', f: 'top', t: 'left', label: 'Selesai', lClass: 'label-yes' },
+                { from: 'f5-dec-status', to: 'f5-status-pending', f: 'right', t: 'left', label: 'Pending Audit', lClass: 'label-no' },
+                { from: 'f5-dec-status', to: 'f5-status-dibatalkan', f: 'bottom', t: 'left', label: 'Dibatalkan', lClass: 'label-no' },
+                { from: 'f5-status-selesai', to: 'f5-end-history', f: 'right', t: 'top' },
+                { from: 'f5-status-pending', to: 'f5-end-history', f: 'right', t: 'left' },
+                { from: 'f5-status-dibatalkan', to: 'f5-end-history', f: 'right', t: 'bottom' },
 
-                { from: 'f4-screen-success', to: 'f4-open-history', f: 'right', t: 'left' },
-                { from: 'f4-screen-pending', to: 'f4-open-history', f: 'right', t: 'left' },
+                // CONNECTIONS SECTION 6 (Shareable QR - Flow 2 - PRD 6)
+                { from: 'f6-start', to: 'f6-account', f: 'right', t: 'left' },
+                { from: 'f6-account', to: 'f6-click-menu', f: 'right', t: 'left' },
+                { from: 'f6-click-menu', to: 'f6-list-vouchers', f: 'right', t: 'left' },
+                { from: 'f6-list-vouchers', to: 'f6-select-stepper', f: 'right', t: 'left' },
+                { from: 'f6-select-stepper', to: 'f6-scanner-screen', f: 'right', t: 'left' },
+                { from: 'f6-scanner-screen', to: 'f6-click-share-card', f: 'right', t: 'left' },
+                { from: 'f6-click-share-card', to: 'f6-input-pin', f: 'right', t: 'left' },
+                { from: 'f6-input-pin', to: 'f6-dec-pin', f: 'right', t: 'left' },
 
-                { from: 'f4-open-history', to: 'f4-history-screen', f: 'right', t: 'left' },
-                { from: 'f4-history-screen', to: 'f4-dec-status', f: 'right', t: 'left' },
-                { from: 'f4-dec-status', to: 'f4-status-selesai', f: 'top', t: 'left', label: 'Selesai', lClass: 'label-yes' },
-                { from: 'f4-dec-status', to: 'f4-status-pending', f: 'right', t: 'left', label: 'Pending Audit', lClass: 'label-no' },
-                { from: 'f4-dec-status', to: 'f4-status-dibatalkan', f: 'bottom', t: 'left', label: 'Dibatalkan', lClass: 'label-no' },
+                // PIN Decision Branching
+                { from: 'f6-dec-pin', to: 'f6-fde-engine', f: 'right', t: 'left', label: 'PIN Benar (Ya)', lClass: 'label-yes' },
+                { from: 'f6-dec-pin', to: 'f6-pin-error', f: 'bottom', t: 'top', label: 'Salah (< 3x)', lClass: 'label-no' },
+                { from: 'f6-pin-error', to: 'f6-input-pin', f: 'left', t: 'bottom' },
+                { from: 'f6-pin-error', to: 'f6-pin-blocked', f: 'right', t: 'left', label: '3x Salah', lClass: 'label-no' },
+                { from: 'f6-fde-engine', to: 'f6-dec-fde', f: 'right', t: 'left' },
 
-                { from: 'f4-status-selesai', to: 'f4-end-history', f: 'right', t: 'top' },
-                { from: 'f4-status-pending', to: 'f4-end-history', f: 'right', t: 'left' },
-                { from: 'f4-status-dibatalkan', to: 'f4-end-history', f: 'right', t: 'bottom' }
+                // FDE Decision Branching
+                { from: 'f6-dec-fde', to: 'f6-gen-qr', f: 'top', t: 'left', label: 'FDE Valid (Happy)', lClass: 'label-yes' },
+                { from: 'f6-gen-qr', to: 'f6-add-unredeemed-happy', f: 'right', t: 'left' },
+                { from: 'f6-add-unredeemed-happy', to: 'f6-click-wa', f: 'right', t: 'left' },
+                { from: 'f6-click-wa', to: 'f6-open-history', f: 'right', t: 'left' },
+
+                { from: 'f6-dec-fde', to: 'f6-fde-self', f: 'right', t: 'left', label: 'Device ID Sama', lClass: 'label-no' },
+                { from: 'f6-fde-self', to: 'f6-pending-self', f: 'right', t: 'left' },
+                { from: 'f6-pending-self', to: 'f6-add-unredeemed-self', f: 'right', t: 'left' },
+                { from: 'f6-add-unredeemed-self', to: 'f6-open-history', f: 'right', t: 'left' },
+
+                { from: 'f6-dec-fde', to: 'f6-fde-limit', f: 'bottom', t: 'left', label: 'Limit Exceeded', lClass: 'label-no' },
+                { from: 'f6-fde-limit', to: 'f6-pending-limit', f: 'right', t: 'left' },
+                { from: 'f6-pending-limit', to: 'f6-add-unredeemed-limit', f: 'right', t: 'left' },
+                { from: 'f6-add-unredeemed-limit', to: 'f6-open-history', f: 'right', t: 'left' },
+
+                // Bottomsheet Modal Navigation Connections
+                { from: 'f6-open-history', to: 'f6-banner-unredeemed', f: 'right', t: 'left' },
+                { from: 'f6-banner-unredeemed', to: 'f6-bottomsheet-modal', f: 'right', t: 'left' },
+                { from: 'f6-bottomsheet-modal', to: 'f6-click-item-modal', f: 'right', t: 'left' },
+                { from: 'f6-click-item-modal', to: 'f6-dec-modal-item', f: 'right', t: 'left' },
+
+                { from: 'f6-dec-modal-item', to: 'f6-show-qr-screen', f: 'top', t: 'left', label: 'Belum Redeem', lClass: 'label-yes' },
+                { from: 'f6-show-qr-screen', to: 'f6-cust-claim', f: 'right', t: 'left' },
+                { from: 'f6-cust-claim', to: 'f6-cair-komisi', f: 'right', t: 'left' },
+                { from: 'f6-cair-komisi', to: 'f6-end-success', f: 'right', t: 'left' },
+
+                { from: 'f6-dec-modal-item', to: 'f6-show-pending-self', f: 'right', t: 'left', label: 'Pending (Device ID)', lClass: 'label-no' },
+                { from: 'f6-show-pending-self', to: 'f6-end-pending', f: 'right', t: 'top' },
+
+                { from: 'f6-dec-modal-item', to: 'f6-show-pending-limit', f: 'bottom', t: 'left', label: 'Pending (Limit)', lClass: 'label-no' },
+                { from: 'f6-show-pending-limit', to: 'f6-end-pending', f: 'right', t: 'bottom' }
             ]
         };
 
@@ -657,9 +760,13 @@
                     const bottomY = 1820;
                     const destX = 2000 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
-                } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
-                    const bottomY = 2410;
+                } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
+                    const bottomY = 3010;
                     const destX = 1740 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
+                    const bottomY = 3670;
+                    const destX = 2180 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
                 } else {
                     const isVertical = (conn.f === 'bottom' && conn.t === 'top') || (conn.f === 'top' && conn.t === 'bottom');
@@ -747,9 +854,12 @@
                     } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
                         labelX = 2440;
                         labelY = 1820;
-                    } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
+                    } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
                         labelX = 1840;
-                        labelY = 2410;
+                        labelY = 3010;
+                    } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
+                        labelX = 2390;
+                        labelY = 3670;
                     } else if (points.length === 2) {
                         labelX = (points[0].x + points[1].x) / 2;
                         labelY = (points[0].y + points[1].y) / 2;
@@ -957,9 +1067,12 @@
                         } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
                             labelX = 2440;
                             labelY = 1820;
-                        } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
+                        } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
                             labelX = 1840;
-                            labelY = 2410;
+                            labelY = 3010;
+                        } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
+                            labelX = 2390;
+                            labelY = 3670;
                         } else if (points.length === 2) {
                             labelX = (points[0].x + points[1].x) / 2;
                             labelY = (points[0].y + points[1].y) / 2;
