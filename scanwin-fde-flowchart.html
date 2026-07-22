@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Flow - Registrasi PIN Baru (Mitra1000s)</title>
+    <title>User Flow Architecture - sCanWin Mitra1000s & FDE Engine</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -37,8 +37,8 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            min-width: 4500px;
-            min-height: 2500px;
+            min-width: 6200px;
+            min-height: 4200px;
         }
 
         /* Figma-style sections */
@@ -152,10 +152,7 @@
             padding: 0;
             border-radius: 10px;
         }
-
-        .n-decision:hover {
-            transform: rotate(45deg) scale(1.05);
-        }
+        .n-decision:hover { transform: rotate(45deg) scale(1.05); }
 
         .n-decision span {
             transform: rotate(-45deg);
@@ -174,14 +171,12 @@
             height: 100%;
             pointer-events: none;
             z-index: 15;
-            /* Drawn on top of nodes so arrowheads are 100% visible */
         }
 
         .connection-path {
             fill: none;
             stroke: #94a3b8;
             stroke-width: 2.5;
-            /* Removed stroke-linecap: round to fix broken arrowhead look */
         }
 
         .connection-label {
@@ -197,16 +192,8 @@
             z-index: 25;
             border: 1px solid #e2e8f0;
         }
-
-        .label-yes {
-            color: #059669;
-            border-color: #10b981;
-        }
-
-        .label-no {
-            color: #dc2626;
-            border-color: #ef4444;
-        }
+        .label-yes { color: #059669; border-color: #10b981; }
+        .label-no { color: #dc2626; border-color: #ef4444; }
 
         /* UI Controls */
         .controls {
@@ -256,29 +243,28 @@
 <body>
 
     <div class="controls">
-        <button class="btn-ctrl" onclick="copyAsSVG()" title="Salin SVG untuk Figma (Paste langsung di Figma)"><i
-                class="fas fa-copy"></i></button>
+        <button class="btn-ctrl" onclick="copyAsSVG()" title="Salin SVG untuk Figma (Paste langsung di Figma)"><i class="fas fa-copy"></i></button>
         <button class="btn-ctrl" onclick="zoomView(1.2)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
         <button class="btn-ctrl" onclick="zoomView(0.8)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
         <button class="btn-ctrl" onclick="resetZoom()" title="Reset View"><i class="fas fa-expand"></i></button>
     </div>
 
     <div class="legend space-y-2">
-        <p class="font-extrabold text-gray-800 mb-2 border-b pb-1">Keterangan Node</p>
+        <p class="font-extrabold text-gray-800 mb-2 border-b pb-1">Keterangan Node Flowchart</p>
         <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-green-200 border border-green-500"></div> Titik Mulai
+            <div class="w-3 h-3 rounded-full bg-green-200 border border-green-500"></div> Titik Mulai (Start)
         </div>
         <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded bg-purple-100 border border-purple-400"></div> Aksi User
+            <div class="w-3 h-3 rounded bg-purple-100 border border-purple-400"></div> Aksi User (Merchant)
         </div>
         <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded bg-slate-100 border border-slate-400"></div> Proses Sistem
+            <div class="w-3 h-3 rounded bg-slate-100 border border-slate-400"></div> Proses Sistem / FDE Engine
         </div>
         <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rotate-45 bg-orange-100 border border-orange-400"></div> Keputusan
+            <div class="w-3 h-3 rotate-45 bg-orange-100 border border-orange-400"></div> Keputusan (Decision)
         </div>
         <div class="flex items-center gap-2">
-            <div class="w-3 h-3 rounded-full bg-red-200 border border-red-500"></div> Titik Akhir
+            <div class="w-3 h-3 rounded-full bg-red-200 border border-red-500"></div> Titik Akhir (End)
         </div>
     </div>
 
@@ -286,18 +272,38 @@
         <div id="flow-area">
             <!-- Figma-style sections wrapper inside canvas to scale together -->
             <div id="sections-container">
-                <div class="figma-section" style="left: 450px; top: 250px; width: 2830px; height: 600px;">
+                <!-- =========================================================
+                     SECTION 1: Register PIN Mitra1000s
+                     ========================================================= -->
+                <div class="figma-section" style="left: 450px; top: 200px; width: 2850px; height: 500px;">
                     <span class="section-label" style="background:#8b5cf6;">Register PIN Mitra1000s</span>
                 </div>
-                <div class="figma-section" style="left: 450px; top: 950px; width: 2830px; height: 600px;">
-                    <span class="section-label" style="background:#0b57d0;">Ubah PIN Mitra1000s</span>
+
+                <!-- =========================================================
+                     SECTION 2: Ubah PIN Mitra1000s
+                     ========================================================= -->
+                <div class="figma-section" style="left: 450px; top: 760px; width: 3080px; height: 500px;">
+                    <span class="section-label" style="background:#ec4899;">Ubah PIN Mitra1000s</span>
+                </div>
+
+                <!-- =========================================================
+                     SECTION 3: Reset PIN Terblokir (OTP WA)
+                     ========================================================= -->
+                <div class="figma-section" style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
+                    <span class="section-label" style="background:#f59e0b;">Reset PIN Terblokir (OTP WA)</span>
+                </div>
+
+                <!-- =========================================================
+                     SECTION 4: Direct Scan QR Customer
+                     ========================================================= -->
+                <div class="figma-section" style="left: 450px; top: 1920px; width: 4620px; height: 600px;">
+                    <span class="section-label" style="background:#0b57d0;">Direct Scan QR Customer</span>
                 </div>
             </div>
 
             <svg class="svg-layer" id="svg-layer">
                 <defs>
-                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6"
-                        orient="auto">
+                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6" orient="auto">
                         <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
                     </marker>
                 </defs>
@@ -309,109 +315,222 @@
     <script>
         const flowData = {
             nodes: [
-                // SECTION 1: ENTRY POINT (Register PIN)
-                { id: 'n1-start', type: 'n-start', text: 'Start', x: 495, y: 430 },
-                { id: 'n1-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 450 },
-                { id: 'n1-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>Mitra1000s"', x: 860, y: 450 },
+                // =========================================================
+                // SECTION 1: Register PIN Mitra1000s (Y: 350-550)
+                // =========================================================
+                { id: 'f1-start', type: 'n-start', text: 'Start', x: 495, y: 380 },
+                { id: 'f1-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 400 },
+                { id: 'f1-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>Mitra1000s"', x: 860, y: 400 },
+                { id: 'f1-form1', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 1', x: 1080, y: 400 },
+                { id: 'f1-input1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 1300, y: 400 },
+                { id: 'f1-valid-format', type: 'n-decision', text: '<span>Validasi<br>Format PIN?</span>', x: 1550, y: 370 },
+                { id: 'f1-error-format', type: 'n-gray', text: 'Tampilkan Error Format<br>& Blokir Navigasi', x: 1520, y: 560 },
+                { id: 'f1-form2', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 2', x: 1780, y: 400 },
+                { id: 'f1-input2', type: 'n-purple', text: 'Masukkan PIN Konfirmasi<br>(Re-input)', x: 2000, y: 400 },
+                { id: 'f1-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2250, y: 370 },
+                { id: 'f1-error-match', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 2220, y: 560 },
+                { id: 'f1-clear-match', type: 'n-gray', text: 'Hapus Input & Reset<br>Temporer (1.5s)', x: 2000, y: 560 },
+                { id: 'f1-save', type: 'n-gray', text: 'Hash PIN Baru &<br>Simpan ke DB', x: 2480, y: 400 },
+                { id: 'f1-success', type: 'n-gray', text: 'Tampilkan Layar<br>Registrasi Sukses', x: 2700, y: 400 },
+                { id: 'f1-scanwin', type: 'n-purple', text: 'Klik "Masuk<br>ke sCanWin"', x: 2920, y: 400 },
+                { id: 'f1-end', type: 'n-end', text: 'PIN Aktif &<br>Dashboard sCanWin', x: 3110, y: 355 },
 
-                // SECTION 2: LANGKAH 1 (Register PIN)
-                { id: 'n1-form1', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 1', x: 1080, y: 450 },
-                { id: 'n1-input1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 1300, y: 450 },
-                { id: 'n1-valid-format', type: 'n-decision', text: '<span>Validasi<br>Format PIN?</span>', x: 1550, y: 420 },
-                { id: 'n1-error-format', type: 'n-gray', text: 'Tampilkan Error Format<br>& Reset Input', x: 1520, y: 620 },
+                // =========================================================
+                // SECTION 2: Ubah PIN Mitra1000s (Y: 930-1130)
+                // =========================================================
+                { id: 'f2-start', type: 'n-start', text: 'Start', x: 495, y: 940 },
+                { id: 'f2-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 960 },
+                { id: 'f2-click', type: 'n-purple', text: 'Klik Menu<br>"Ubah PIN"', x: 860, y: 960 },
+                { id: 'f2-form-old', type: 'n-gray', text: 'Tampilkan Form<br>PIN Lama (Current)', x: 1080, y: 960 },
+                { id: 'f2-input-old', type: 'n-purple', text: 'Merchant Masukkan<br>PIN Lama (6-digit)', x: 1300, y: 960 },
+                { id: 'f2-valid-old', type: 'n-decision', text: '<span>Validasi<br>PIN Lama?</span>', x: 1550, y: 930 },
+                { id: 'f2-error-old', type: 'n-gray', text: 'Tampilkan Toast Error<br>PIN Lama Salah', x: 1520, y: 1120 },
+                { id: 'f2-form-new1', type: 'n-gray', text: 'Tampilkan Form<br>PIN Baru (Langkah 1)', x: 1780, y: 960 },
+                { id: 'f2-input-new1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 2000, y: 960 },
+                { id: 'f2-form-new2', type: 'n-gray', text: 'Tampilkan Form<br>Konfirmasi PIN Baru', x: 2220, y: 960 },
+                { id: 'f2-input-new2', type: 'n-purple', text: 'Re-input PIN Baru<br>(Matching)', x: 2440, y: 960 },
+                { id: 'f2-match-new', type: 'n-decision', text: '<span>Kecocokan<br>PIN Baru?</span>', x: 2690, y: 930 },
+                { id: 'f2-error-new', type: 'n-gray', text: 'Error Toast PIN Tidak Match<br>& Reset Input', x: 2660, y: 1120 },
+                { id: 'f2-save-ubah', type: 'n-gray', text: 'Update Hash PIN Baru<br>ke Database', x: 2920, y: 960 },
+                { id: 'f2-success-ubah', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Berhasil Diubah', x: 3140, y: 960 },
+                { id: 'f2-end-ubah', type: 'n-end', text: 'End (PIN Terupdate<br>ke Sistem)', x: 3330, y: 915 },
 
-                // SECTION 3: LANGKAH 2 (Register PIN)
-                { id: 'n1-form2', type: 'n-gray', text: 'Tampilkan Form<br>PIN Langkah 2', x: 1780, y: 450 },
-                { id: 'n1-input2', type: 'n-purple', text: 'Masukkan PIN Konfirmasi<br>(Re-input)', x: 2000, y: 450 },
-                { id: 'n1-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2250, y: 420 },
-                { id: 'n1-error-match', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 2220, y: 620 },
-                { id: 'n1-clear-match', type: 'n-gray', text: 'Hapus Input & Reset<br>Temporer (1.5s)', x: 2000, y: 620 },
+                // =========================================================
+                // SECTION 3: Reset PIN Terblokir (OTP WA) (Y: 1510-1710)
+                // =========================================================
+                { id: 'f3-start', type: 'n-start', text: 'Start', x: 495, y: 1520 },
+                { id: 'f3-block-screen', type: 'n-gray', text: 'Layar PIN Terblokir<br>/ Lupa PIN', x: 640, y: 1540 },
+                { id: 'f3-click-otp', type: 'n-purple', text: 'Klik "Reset PIN<br>via WhatsApp"', x: 860, y: 1540 },
+                { id: 'f3-send-wa', type: 'n-gray', text: 'Sistem Kirim OTP 6-Digit<br>ke WA Terdaftar', x: 1080, y: 1540 },
+                { id: 'f3-otp-screen', type: 'n-gray', text: 'Tampilkan Layar<br>Verifikasi OTP WA', x: 1300, y: 1540 },
+                { id: 'f3-input-otp', type: 'n-purple', text: 'Merchant Masukkan<br>Kode OTP (6-Digit)', x: 1520, y: 1540 },
+                { id: 'f3-valid-otp', type: 'n-decision', text: '<span>Validasi<br>Kode OTP?</span>', x: 1770, y: 1510 },
+                { id: 'f3-error-otp', type: 'n-gray', text: 'Tampilkan Error OTP Invalid<br>& Timer Resend (60s)', x: 1740, y: 1700 },
+                { id: 'f3-form-reset1', type: 'n-gray', text: 'Tampilkan Form Set<br>PIN Baru (Langkah 1)', x: 2000, y: 1540 },
+                { id: 'f3-input-reset1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 2220, y: 1540 },
+                { id: 'f3-form-reset2', type: 'n-gray', text: 'Tampilkan Form Set<br>PIN Baru (Langkah 2)', x: 2440, y: 1540 },
+                { id: 'f3-input-reset2', type: 'n-purple', text: 'Re-input PIN Baru<br>(Matching)', x: 2660, y: 1540 },
+                { id: 'f3-match-reset', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2910, y: 1510 },
+                { id: 'f3-error-reset', type: 'n-gray', text: 'Error PIN Tidak Match<br>& Reset Input', x: 2880, y: 1700 },
+                { id: 'f3-save-reset', type: 'n-gray', text: 'Unblock Account &<br>Simpan Hash PIN Baru', x: 3140, y: 1540 },
+                { id: 'f3-success-reset', type: 'n-gray', text: 'Tampilkan Layar<br>Reset PIN Sukses', x: 3360, y: 1540 },
+                { id: 'f3-end-reset', type: 'n-end', text: 'End (PIN Reset<br>& Akun Aktif)', x: 3550, y: 1495 },
 
-                // SECTION 4: SUCCESS & SCANWIN (Register PIN)
-                { id: 'n1-save', type: 'n-gray', text: 'Hash PIN Baru &<br>Simpan ke DB', x: 2480, y: 450 },
-                { id: 'n1-success', type: 'n-gray', text: 'Tampilkan Layar<br>Registrasi Sukses', x: 2700, y: 450 },
-                { id: 'n1-scanwin', type: 'n-purple', text: 'Klik "Masuk<br>ke sCanWin"', x: 2920, y: 450 },
-                { id: 'n1-end', type: 'n-end', text: 'PIN Aktif &<br>Dashboard sCanWin', x: 3110, y: 405 },
+                // =========================================================
+                // SECTION 4: Direct Scan QR Customer (Y: 2090-2390)
+                // =========================================================
+                { id: 'f4-start', type: 'n-start', text: 'Start', x: 495, y: 2100 },
+                { id: 'f4-account', type: 'n-gray', text: 'Merchant Buka<br>Halaman Akun', x: 640, y: 2120 },
+                { id: 'f4-click-menu', type: 'n-purple', text: 'Klik Menu<br>"ScanWin1000s"', x: 860, y: 2120 },
 
-                // SECTION 5: ENTRY POINT (Ubah PIN)
-                { id: 'n2-start', type: 'n-start', text: 'Start', x: 495, y: 1080 },
-                { id: 'n2-akun', type: 'n-gray', text: 'Halaman Akun<br>Mitra1000s', x: 640, y: 1100 },
-                { id: 'n2-click', type: 'n-purple', text: 'Klik "Ubah PIN<br>Mitra1000s"', x: 860, y: 1100 },
-                { id: 'n2-old-pin', type: 'n-purple', text: 'Masukkan PIN Lama<br>(6-digit)', x: 1080, y: 1100 },
-                { id: 'n2-valid-old', type: 'n-decision', text: '<span>Validasi<br>PIN Lama?</span>', x: 1300, y: 1070 },
-                { id: 'n2-old-error', type: 'n-gray', text: 'Tampilkan Error &<br>Sisa Percobaan', x: 1080, y: 1300 },
-                { id: 'n2-old-block', type: 'n-gray', text: 'Blokir Status PIN<br>(Blocked)', x: 1300, y: 1300 },
-                { id: 'n2-otp-screen', type: 'n-gray', text: 'Auto-Redirect ke<br>Halaman OTP', x: 1520, y: 1300 },
+                // Selection & Scanner
+                { id: 'f4-list-vouchers', type: 'n-gray', text: 'Tampilkan Daftar<br>Voucher sCanWin', x: 1080, y: 2120 },
+                { id: 'f4-select-stepper', type: 'n-purple', text: 'Atur Jumlah Voucher<br>Stepper [- X +]', x: 1300, y: 2120 },
+                { id: 'f4-click-redeem', type: 'n-purple', text: 'Klik Button<br>"Redeem ScanWin"', x: 1520, y: 2120 },
+                { id: 'f4-scanner', type: 'n-gray', text: 'Buka Kamera Scan<br>& Floating Pill', x: 1740, y: 2120 },
+                { id: 'f4-dec-qr', type: 'n-decision', text: '<span>Validasi<br>QR Code?</span>', x: 1970, y: 2090 },
+                { id: 'f4-qr-error', type: 'n-gray', text: 'Tampilkan Error Sheet<br>QR Invalid / Expired', x: 1940, y: 2290 },
 
-                // SECTION 6: LANGKAH 1 & 2 (Ubah PIN)
-                { id: 'n2-input1', type: 'n-purple', text: 'Masukkan PIN Baru<br>(6-digit)', x: 1550, y: 1100 },
-                { id: 'n2-valid-format', type: 'n-decision', text: '<span>Validasi<br>Format PIN?</span>', x: 1780, y: 1070 },
-                { id: 'n2-error-format', type: 'n-gray', text: 'Tampilkan Error Format<br>& Reset Input', x: 1780, y: 1300 },
-                { id: 'n2-input2', type: 'n-purple', text: 'Masukkan PIN Konfirmasi<br>(Re-input)', x: 2000, y: 1100 },
-                { id: 'n2-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 2220, y: 1070 },
-                { id: 'n2-error-match', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 2220, y: 1300 },
-                { id: 'n2-clear-match', type: 'n-gray', text: 'Hapus Input & Reset<br>Temporer (1.5s)', x: 2000, y: 1300 },
+                // PIN Authorization
+                { id: 'f4-pin-sheet', type: 'n-gray', text: 'Tampilkan Sheet<br>Input PIN 6-Digit', x: 2220, y: 2120 },
+                { id: 'f4-input-pin', type: 'n-purple', text: 'Merchant Masukkan<br>6-Digit PIN', x: 2440, y: 2120 },
+                { id: 'f4-dec-pin', type: 'n-decision', text: '<span>Validasi<br>PIN & Attempt?</span>', x: 2670, y: 2090 },
+                { id: 'f4-pin-blocked', type: 'n-gray', text: 'Tampilkan Block Screen<br>PIN Terblokir (OTP)', x: 2640, y: 2290 },
 
-                // SECTION 7: SUCCESS (Ubah PIN)
-                { id: 'n2-save', type: 'n-gray', text: 'Hash PIN Baru &<br>Update ke DB', x: 2450, y: 1100 },
-                { id: 'n2-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Berhasil Diubah', x: 2670, y: 1100 },
-                { id: 'n2-end', type: 'n-end', text: 'PIN Baru Aktif &<br>Kembali ke Akun', x: 2890, y: 1055 }
+                // FDE Fraud Engine Evaluation
+                { id: 'f4-fde-engine', type: 'n-gray', text: 'Backend Kirim Payload<br>ke FDE Engine', x: 2920, y: 2120 },
+                { id: 'f4-dec-fde', type: 'n-decision', text: '<span>FDE Valid<br>(No Fraud)?</span>', x: 3160, y: 2090 },
+
+                // Happy Path (FDE Valid / Saldo Cair)
+                { id: 'f4-credit-saldo', type: 'n-gray', text: 'Cairkan Komisi &<br>Tambah Saldo Toko', x: 3400, y: 2040 },
+                { id: 'f4-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 3620, y: 2040 },
+
+                // Fraud / Anomaly Path (Device ID Kembar / Limit Window)
+                { id: 'f4-hold-komisi', type: 'n-gray', text: 'Tangguhkan Komisi<br>(Audit 1x24 Jam)', x: 3400, y: 2240 },
+                { id: 'f4-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Result<br>Menunggu Tinjauan', x: 3620, y: 2240 },
+
+                // Monitoring Riwayat & Status (PRD Story 2)
+                { id: 'f4-open-history', type: 'n-purple', text: 'Merchant Klik<br>"Ke Riwayat Redeem"', x: 3880, y: 2120 },
+                { id: 'f4-history-screen', type: 'n-gray', text: 'Tampilkan Layar<br>Riwayat Redeem', x: 4100, y: 2120 },
+                { id: 'f4-dec-status', type: 'n-decision', text: '<span>Status<br>Voucher?</span>', x: 4340, y: 2090 },
+
+                { id: 'f4-status-selesai', type: 'n-gray', text: 'Status Selesai:<br>✓ Komisi Masuk Saldo', x: 4580, y: 1990 },
+                { id: 'f4-status-pending', type: 'n-gray', text: 'Status Pending:<br>⏳ Audit System +-1x24h', x: 4580, y: 2120 },
+                { id: 'f4-status-dibatalkan', type: 'n-gray', text: 'Status Dibatalkan:<br>❌ Ditolak Admin / Fraud', x: 4580, y: 2250 },
+
+                { id: 'f4-end-history', type: 'n-end', text: 'End (Monitoring<br>Status Transaksi)', x: 4840, y: 2075 }
             ],
             connections: [
-                // Happy Path Left-to-Right connections (Register PIN)
-                { from: 'n1-start', to: 'n1-akun', f: 'right', t: 'left' },
-                { from: 'n1-akun', to: 'n1-click', f: 'right', t: 'left' },
-                { from: 'n1-click', to: 'n1-form1', f: 'right', t: 'left' },
+                // =========================================================
+                // CONNECTIONS SECTION 1: Register PIN Mitra1000s
+                // =========================================================
+                { from: 'f1-start', to: 'f1-akun', f: 'right', t: 'left' },
+                { from: 'f1-akun', to: 'f1-click', f: 'right', t: 'left' },
+                { from: 'f1-click', to: 'f1-form1', f: 'right', t: 'left' },
+                
+                { from: 'f1-form1', to: 'f1-input1', f: 'right', t: 'left' },
+                { from: 'f1-input1', to: 'f1-valid-format', f: 'right', t: 'left' },
+                { from: 'f1-valid-format', to: 'f1-form2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f1-valid-format', to: 'f1-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
+                { from: 'f1-error-format', to: 'f1-form1', f: 'bottom', t: 'bottom' },
 
-                // Langkah 1 format check (Register PIN)
-                { from: 'n1-form1', to: 'n1-input1', f: 'right', t: 'left' },
-                { from: 'n1-input1', to: 'n1-valid-format', f: 'right', t: 'left' },
-                { from: 'n1-valid-format', to: 'n1-form2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
-                { from: 'n1-valid-format', to: 'n1-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
-                { from: 'n1-error-format', to: 'n1-form1', f: 'bottom', t: 'bottom' },
+                { from: 'f1-form2', to: 'f1-input2', f: 'right', t: 'left' },
+                { from: 'f1-input2', to: 'f1-match', f: 'right', t: 'left' },
+                { from: 'f1-match', to: 'f1-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
+                { from: 'f1-match', to: 'f1-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
+                { from: 'f1-error-match', to: 'f1-clear-match', f: 'left', t: 'right' },
+                { from: 'f1-clear-match', to: 'f1-form1', f: 'bottom', t: 'bottom' },
 
-                // Langkah 2 confirmation check (Register PIN)
-                { from: 'n1-form2', to: 'n1-input2', f: 'right', t: 'left' },
-                { from: 'n1-input2', to: 'n1-match', f: 'right', t: 'left' },
-                { from: 'n1-match', to: 'n1-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
-                { from: 'n1-match', to: 'n1-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
-                { from: 'n1-error-match', to: 'n1-clear-match', f: 'left', t: 'right' },
-                { from: 'n1-clear-match', to: 'n1-form1', f: 'bottom', t: 'bottom' },
+                { from: 'f1-save', to: 'f1-success', f: 'right', t: 'left' },
+                { from: 'f1-success', to: 'f1-scanwin', f: 'right', t: 'left' },
+                { from: 'f1-scanwin', to: 'f1-end', f: 'right', t: 'left' },
 
-                // Success transition (Register PIN)
-                { from: 'n1-save', to: 'n1-success', f: 'right', t: 'left' },
-                { from: 'n1-success', to: 'n1-scanwin', f: 'right', t: 'left' },
-                { from: 'n1-scanwin', to: 'n1-end', f: 'right', t: 'left' },
+                // =========================================================
+                // CONNECTIONS SECTION 2: Ubah PIN Mitra1000s
+                // =========================================================
+                { from: 'f2-start', to: 'f2-akun', f: 'right', t: 'left' },
+                { from: 'f2-akun', to: 'f2-click', f: 'right', t: 'left' },
+                { from: 'f2-click', to: 'f2-form-old', f: 'right', t: 'left' },
+                { from: 'f2-form-old', to: 'f2-input-old', f: 'right', t: 'left' },
+                { from: 'f2-input-old', to: 'f2-valid-old', f: 'right', t: 'left' },
+                { from: 'f2-valid-old', to: 'f2-form-new1', f: 'right', t: 'left', label: 'Benar (Ya)', lClass: 'label-yes' },
+                { from: 'f2-valid-old', to: 'f2-error-old', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
+                { from: 'f2-error-old', to: 'f2-form-old', f: 'bottom', t: 'bottom' },
 
-                // Happy Path Ubah PIN
-                { from: 'n2-start', to: 'n2-akun', f: 'right', t: 'left' },
-                { from: 'n2-akun', to: 'n2-click', f: 'right', t: 'left' },
-                { from: 'n2-click', to: 'n2-old-pin', f: 'right', t: 'left' },
-                { from: 'n2-old-pin', to: 'n2-valid-old', f: 'right', t: 'left' },
+                { from: 'f2-form-new1', to: 'f2-input-new1', f: 'right', t: 'left' },
+                { from: 'f2-input-new1', to: 'f2-form-new2', f: 'right', t: 'left' },
+                { from: 'f2-form-new2', to: 'f2-input-new2', f: 'right', t: 'left' },
+                { from: 'f2-input-new2', to: 'f2-match-new', f: 'right', t: 'left' },
+                { from: 'f2-match-new', to: 'f2-save-ubah', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
+                { from: 'f2-match-new', to: 'f2-error-new', f: 'bottom', t: 'top', label: 'Beda (Tidak)', lClass: 'label-no' },
+                { from: 'f2-error-new', to: 'f2-form-new1', f: 'bottom', t: 'bottom' },
 
-                // Validasi PIN Lama
-                { from: 'n2-valid-old', to: 'n2-input1', f: 'right', t: 'left', label: 'Benar (Ya)', lClass: 'label-yes' },
-                { from: 'n2-valid-old', to: 'n2-old-error', f: 'left', t: 'top', label: 'Salah (< 3x)', lClass: 'label-no' },
-                { from: 'n2-old-error', to: 'n2-old-pin', f: 'top', t: 'bottom' },
-                { from: 'n2-valid-old', to: 'n2-old-block', f: 'bottom', t: 'top', label: 'Salah (>= 3x)', lClass: 'label-no' },
-                { from: 'n2-old-block', to: 'n2-otp-screen', f: 'right', t: 'left' },
+                { from: 'f2-save-ubah', to: 'f2-success-ubah', f: 'right', t: 'left' },
+                { from: 'f2-success-ubah', to: 'f2-end-ubah', f: 'right', t: 'left' },
 
-                // Validasi Format PIN Baru
-                { from: 'n2-input1', to: 'n2-valid-format', f: 'right', t: 'left' },
-                { from: 'n2-valid-format', to: 'n2-input2', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
-                { from: 'n2-valid-format', to: 'n2-error-format', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
-                { from: 'n2-error-format', to: 'n2-input1', f: 'left', t: 'bottom' },
+                // =========================================================
+                // CONNECTIONS SECTION 3: Reset PIN Terblokir (OTP WA)
+                // =========================================================
+                { from: 'f3-start', to: 'f3-block-screen', f: 'right', t: 'left' },
+                { from: 'f3-block-screen', to: 'f3-click-otp', f: 'right', t: 'left' },
+                { from: 'f3-click-otp', to: 'f3-send-wa', f: 'right', t: 'left' },
+                { from: 'f3-send-wa', to: 'f3-otp-screen', f: 'right', t: 'left' },
+                { from: 'f3-otp-screen', to: 'f3-input-otp', f: 'right', t: 'left' },
+                { from: 'f3-input-otp', to: 'f3-valid-otp', f: 'right', t: 'left' },
+                { from: 'f3-valid-otp', to: 'f3-form-reset1', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f3-valid-otp', to: 'f3-error-otp', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
+                { from: 'f3-error-otp', to: 'f3-otp-screen', f: 'bottom', t: 'bottom' },
 
-                // Validasi Kecocokan PIN Baru
-                { from: 'n2-input2', to: 'n2-match', f: 'right', t: 'left' },
-                { from: 'n2-match', to: 'n2-save', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
-                { from: 'n2-match', to: 'n2-error-match', f: 'bottom', t: 'top', label: 'Salah (Tidak)', lClass: 'label-no' },
-                { from: 'n2-error-match', to: 'n2-clear-match', f: 'left', t: 'right' },
-                { from: 'n2-clear-match', to: 'n2-input1', f: 'bottom', t: 'bottom' },
+                { from: 'f3-form-reset1', to: 'f3-input-reset1', f: 'right', t: 'left' },
+                { from: 'f3-input-reset1', to: 'f3-form-reset2', f: 'right', t: 'left' },
+                { from: 'f3-form-reset2', to: 'f3-input-reset2', f: 'right', t: 'left' },
+                { from: 'f3-input-reset2', to: 'f3-match-reset', f: 'right', t: 'left' },
+                { from: 'f3-match-reset', to: 'f3-save-reset', f: 'right', t: 'left', label: 'Cocok (Ya)', lClass: 'label-yes' },
+                { from: 'f3-match-reset', to: 'f3-error-reset', f: 'bottom', t: 'top', label: 'Beda (Tidak)', lClass: 'label-no' },
+                { from: 'f3-error-reset', to: 'f3-form-reset1', f: 'bottom', t: 'bottom' },
 
-                // Sukses Ubah PIN
-                { from: 'n2-save', to: 'n2-success', f: 'right', t: 'left' },
-                { from: 'n2-success', to: 'n2-end', f: 'right', t: 'left' }
+                { from: 'f3-save-reset', to: 'f3-success-reset', f: 'right', t: 'left' },
+                { from: 'f3-success-reset', to: 'f3-end-reset', f: 'right', t: 'left' },
+
+                // =========================================================
+                // CONNECTIONS SECTION 4: Direct Scan QR Customer
+                // =========================================================
+                { from: 'f4-start', to: 'f4-account', f: 'right', t: 'left' },
+                { from: 'f4-account', to: 'f4-click-menu', f: 'right', t: 'left' },
+                { from: 'f4-click-menu', to: 'f4-list-vouchers', f: 'right', t: 'left' },
+
+                { from: 'f4-list-vouchers', to: 'f4-select-stepper', f: 'right', t: 'left' },
+                { from: 'f4-select-stepper', to: 'f4-click-redeem', f: 'right', t: 'left' },
+                { from: 'f4-click-redeem', to: 'f4-scanner', f: 'right', t: 'left' },
+                { from: 'f4-scanner', to: 'f4-dec-qr', f: 'right', t: 'left' },
+                { from: 'f4-dec-qr', to: 'f4-pin-sheet', f: 'right', t: 'left', label: 'QR Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f4-dec-qr', to: 'f4-qr-error', f: 'bottom', t: 'top', label: 'Expired (Tidak)', lClass: 'label-no' },
+                { from: 'f4-qr-error', to: 'f4-scanner', f: 'left', t: 'bottom' },
+
+                { from: 'f4-pin-sheet', to: 'f4-input-pin', f: 'right', t: 'left' },
+                { from: 'f4-input-pin', to: 'f4-dec-pin', f: 'right', t: 'left' },
+                { from: 'f4-dec-pin', to: 'f4-fde-engine', f: 'right', t: 'left', label: 'PIN Benar (Ya)', lClass: 'label-yes' },
+                { from: 'f4-dec-pin', to: 'f4-pin-blocked', f: 'bottom', t: 'top', label: '3x Salah PIN', lClass: 'label-no' },
+
+                { from: 'f4-fde-engine', to: 'f4-dec-fde', f: 'right', t: 'left' },
+                { from: 'f4-dec-fde', to: 'f4-credit-saldo', f: 'top', t: 'left', label: 'FDE Valid (Ya)', lClass: 'label-yes' },
+                { from: 'f4-credit-saldo', to: 'f4-screen-success', f: 'right', t: 'left' },
+
+                { from: 'f4-dec-fde', to: 'f4-hold-komisi', f: 'bottom', t: 'left', label: 'Fraud / Anomali (Tidak)', lClass: 'label-no' },
+                { from: 'f4-hold-komisi', to: 'f4-screen-pending', f: 'right', t: 'left' },
+
+                { from: 'f4-screen-success', to: 'f4-open-history', f: 'right', t: 'left' },
+                { from: 'f4-screen-pending', to: 'f4-open-history', f: 'right', t: 'left' },
+
+                { from: 'f4-open-history', to: 'f4-history-screen', f: 'right', t: 'left' },
+                { from: 'f4-history-screen', to: 'f4-dec-status', f: 'right', t: 'left' },
+                { from: 'f4-dec-status', to: 'f4-status-selesai', f: 'top', t: 'left', label: 'Selesai', lClass: 'label-yes' },
+                { from: 'f4-dec-status', to: 'f4-status-pending', f: 'right', t: 'left', label: 'Pending Audit', lClass: 'label-no' },
+                { from: 'f4-dec-status', to: 'f4-status-dibatalkan', f: 'bottom', t: 'left', label: 'Dibatalkan', lClass: 'label-no' },
+
+                { from: 'f4-status-selesai', to: 'f4-end-history', f: 'right', t: 'top' },
+                { from: 'f4-status-pending', to: 'f4-end-history', f: 'right', t: 'left' },
+                { from: 'f4-status-dibatalkan', to: 'f4-end-history', f: 'right', t: 'bottom' }
             ]
         };
 
@@ -440,11 +559,10 @@
             initDraggable();
         }
 
-        // Accurately calculates the point exactly on the visual border of normal nodes, circles, and 45deg diamonds.
         function getEdgePoint(el, edge) {
             const isDiamond = el.classList.contains('n-decision');
             const isCircle = el.classList.contains('n-start') || el.classList.contains('n-end');
-
+            
             const x = el.offsetLeft;
             const y = el.offsetTop;
             const w = el.offsetWidth;
@@ -453,7 +571,7 @@
             const cy = y + h / 2;
 
             if (isDiamond) {
-                const offset = (w / 2) * Math.SQRT2; // Accurate corner calculation
+                const offset = (w / 2) * Math.SQRT2;
                 switch (edge) {
                     case 'top': return { x: cx, y: cy - offset };
                     case 'bottom': return { x: cx, y: cy + offset };
@@ -461,8 +579,8 @@
                     case 'right': return { x: cx + offset, y: cy };
                 }
             } else if (isCircle) {
-                const r = w / 2;
-                switch (edge) {
+                 const r = w / 2;
+                 switch (edge) {
                     case 'top': return { x: cx, y: cy - r };
                     case 'bottom': return { x: cx, y: cy + r };
                     case 'left': return { x: cx - r, y: cy };
@@ -480,7 +598,6 @@
         }
 
         function updateConnections() {
-            // Keep the arrowhead defs, remove all old paths and labels
             while (svgLayer.firstChild) {
                 if (svgLayer.firstChild.tagName === 'defs') {
                     if (svgLayer.children.length === 1) break;
@@ -501,14 +618,12 @@
                 let start = getEdgePoint(fromEl, conn.f);
                 let end = getEdgePoint(toEl, conn.t);
 
-                // Force perfect collinearity for near-horizontal lines to prevent tiny zigzags
                 if (conn.f === 'right' && conn.t === 'left') {
                     if (Math.abs(start.y - end.y) < 15) {
                         end.y = start.y;
                     }
                 }
 
-                // Force perfect vertical alignment for vertical lines to prevent tiny zigzags
                 if (conn.f === 'bottom' && conn.t === 'top') {
                     if (Math.abs(start.x - end.x) < 20) {
                         end.x = start.x;
@@ -518,29 +633,35 @@
                 let d = "";
                 const points = [start];
 
-                // Custom loop paths
-                if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
-                    // Underneath return loop (goes down to bottom edge and routes left back to form1 bottom edge, left side)
-                    const bottomY = 790;
-                    const destX = 1080 + 40; // 40px from left corner of form1
+                if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
+                    const bottomY = 710;
+                    const destX = 1080 + 40;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
-                } else if (conn.from === 'n2-clear-match' && conn.to === 'n2-input1') {
-                    // Return loop for clear match in Ubah PIN (goes down to y=1450, routes left, up to bottom of input1)
-                    const bottomY = 1450;
-                    const destX = 1550 + 40;
+                } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
+                    const bottomY = 660;
+                    const destX = 1080 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
-                } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
-                    // Return loop for format validation error (goes down, left, and straight up to bottom of form1)
-                    const bottomY = 720;
-                    const destX = 1080 + (fromEl.offsetWidth / 2); // Center of form1
+                } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
+                    const bottomY = 1240;
+                    const destX = 1080 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
-                } else if (conn.from === 'n2-error-format' && conn.to === 'n2-input1') {
-                    // Return loop for format validation error in Ubah PIN (goes down, left, and up to bottom of input1)
-                    const bottomY = 1410;
-                    const destX = 1550 + (toEl.offsetWidth / 2);
+                } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
+                    const bottomY = 1240;
+                    const destX = 1780 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
+                    const bottomY = 1820;
+                    const destX = 1300 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
+                    const bottomY = 1820;
+                    const destX = 2000 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
+                    const bottomY = 2410;
+                    const destX = 1740 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
                 } else {
-                    // Robust elbow routing logic from template
                     const isVertical = (conn.f === 'bottom' && conn.t === 'top') || (conn.f === 'top' && conn.t === 'bottom');
                     const isHorizontal = (conn.f === 'right' && conn.t === 'left') || (conn.f === 'left' && conn.t === 'right');
 
@@ -553,7 +674,7 @@
                         points[0].y = avgY;
                         points.push({ x: end.x, y: avgY });
                     } else {
-                        const offset = 25; // How far to push out before turning
+                        const offset = 25;
 
                         let p1 = { ...start };
                         if (conn.f === 'top') p1.y -= offset;
@@ -568,7 +689,6 @@
                         else if (conn.t === 'left') p2.x -= offset;
                         else if (conn.t === 'right') p2.x += offset;
 
-                        // Create elbow points based on direction
                         if (conn.f === 'left' || conn.f === 'right') {
                             if (conn.t === 'top' || conn.t === 'bottom') {
                                 points.push({ x: p2.x, y: p1.y });
@@ -591,7 +711,6 @@
                         points.push(end);
                     }
 
-                    // Build SVG path
                     d = `M ${points[0].x} ${points[0].y}`;
                     for (let i = 1; i < points.length; i++) {
                         d += ` L ${points[i].x} ${points[i].y}`;
@@ -604,43 +723,49 @@
                 path.setAttribute("marker-end", "url(#arrow)");
                 svgLayer.appendChild(path);
 
-                // Add Label
                 if (conn.label) {
                     const label = document.createElement('div');
                     label.className = `connection-label ${conn.lClass || ''}`;
                     label.innerText = conn.label;
-
-                    // Place label precisely at the center segment of the orthogonal path
+                    
                     let labelX, labelY;
-                    if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
-                        labelX = start.x + (end.x - start.x) / 2;
-                        labelY = 790;
-                    } else if (conn.from === 'n2-clear-match' && conn.to === 'n2-input1') {
-                        labelX = start.x + (end.x - start.x) / 2;
-                        labelY = 1450;
-                    } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
-                        labelX = start.x - 60;
-                        labelY = start.y;
-                    } else if (conn.from === 'n2-error-format' && conn.to === 'n2-input1') {
-                        labelX = start.x - 60;
-                        labelY = start.y;
+                    if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
+                        labelX = 1550;
+                        labelY = 710;
+                    } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
+                        labelX = points[0].x - 60;
+                        labelY = points[0].y;
+                    } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
+                        labelX = 1300;
+                        labelY = 1240;
+                    } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
+                        labelX = 2220;
+                        labelY = 1240;
+                    } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
+                        labelX = 1520;
+                        labelY = 1820;
+                    } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
+                        labelX = 2440;
+                        labelY = 1820;
+                    } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
+                        labelX = 1840;
+                        labelY = 2410;
                     } else if (points.length === 2) {
                         labelX = (points[0].x + points[1].x) / 2;
                         labelY = (points[0].y + points[1].y) / 2;
-                    } else if (points.length === 6) { // 3 segments (standard)
+                    } else if (points.length === 6) {
                         labelX = (points[2].x + points[3].x) / 2;
                         labelY = (points[2].y + points[3].y) / 2;
-                    } else { // 2 segments (corner) or fallback
+                    } else {
                         const midIndex = Math.floor(points.length / 2);
                         labelX = points[midIndex].x;
                         labelY = points[midIndex].y;
                     }
-
-                    // Offset label to the right of vertical lines
+                    
                     if (start.x === end.x && points.length <= 2) {
                         labelX += 65;
                     }
-
+                    
                     label.style.left = `${labelX}px`;
                     label.style.top = `${labelY}px`;
                     area.appendChild(label);
@@ -648,7 +773,6 @@
             });
         }
 
-        // --- DRAG AND DROP ---
         function initDraggable() {
             const nodes = document.querySelectorAll('.node');
             nodes.forEach(node => {
@@ -670,7 +794,6 @@
             });
         }
 
-        // --- PAN & ZOOM CONTROLS ---
         function zoomView(factor) {
             scale *= factor;
             scale = Math.min(Math.max(0.1, scale), 3);
@@ -688,7 +811,7 @@
         let startX, startY, scrollLeft, scrollTop;
 
         container.addEventListener('mousedown', (e) => {
-            if (e.target.closest('.node')) return; // Ignore drag over nodes
+            if (e.target.closest('.node')) return;
             isPanning = true;
             startX = e.pageX - container.offsetLeft;
             startY = e.pageY - container.offsetTop;
@@ -715,31 +838,18 @@
             }
         });
 
-        function escapeXml(str) {
-            if (!str) return '';
-            return str
-                .replace(/&/g, '&amp;')
-                .replace(/</g, '&lt;')
-                .replace(/>/g, '&gt;')
-                .replace(/"/g, '&quot;')
-                .replace(/'/g, '&apos;');
-        }
-
         async function copyAsSVG() {
             try {
-                // Find bounding box of all nodes and sections
                 const nodes = document.querySelectorAll('.node');
-                const elements = document.querySelectorAll('.node, .figma-section');
                 let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
-                elements.forEach(el => {
+                nodes.forEach(el => {
                     const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
                     if (x < minX) minX = x;
                     if (y < minY) minY = y;
                     if (x + w > maxX) maxX = x + w;
                     if (y + h > maxY) maxY = y + h;
                 });
-
-                // Pad the boundary
+                
                 minX = Math.max(0, minX - 100);
                 minY = Math.max(0, minY - 100);
                 maxX += 100;
@@ -748,8 +858,7 @@
                 const height = maxY - minY;
 
                 let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
-
-                // Add Google Inter font styles and definitions
+                
                 svg += `
 <defs>
     <style>
@@ -782,64 +891,75 @@
     </marker>
 </defs>`;
 
-                // 1. Draw sections
                 document.querySelectorAll('.figma-section').forEach(sec => {
                     const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
                     const labelSpan = sec.querySelector('.section-label');
-                    const labelText = labelSpan ? escapeXml(labelSpan.innerText) : '';
+                    const labelText = labelSpan ? labelSpan.innerText : '';
                     const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
-
+                    
                     svg += `
     <!-- Section -->
-    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="rgba(241, 245, 249, 0.4)" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
+    <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
     <rect x="${x + 20}" y="${y - 12}" width="${labelText.length * 7 + 24}" height="24" rx="8" fill="${labelBgColor}" />
     <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="middle">${labelText}</text>`;
                 });
 
-                // 2. Draw connections and explicit arrowheads for Figma (united in a single path)
                 const paths = document.querySelectorAll('.connection-path');
                 flowData.connections.forEach((conn, idx) => {
                     const pathEl = paths[idx];
                     if (!pathEl) return;
                     let d = pathEl.getAttribute('d');
-
+                    
                     const dTokens = d.trim().split(/\s+/);
                     if (dTokens.length >= 3) {
                         const lastY = parseFloat(dTokens[dTokens.length - 1]);
                         const lastX = parseFloat(dTokens[dTokens.length - 2]);
-
-                        // Append open chevron arrowhead directly to the line path d attribute
+                        
                         if (conn.t === 'left') {
                             d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
                         } else if (conn.t === 'right') {
                             d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
                         } else if (conn.t === 'top') {
-                            d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY - 10}`;
+                            d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX - 6} ${lastY - 10}`;
                         } else if (conn.t === 'bottom') {
                             d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
                         }
                     }
-
+                    
                     svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
                     svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
                     svg += `\n        <path d="${d}" class="conn-path" />`;
 
-                    // Draw connection label inside the group
                     if (conn.label) {
                         const points = [];
                         for (let i = 0; i < dTokens.length; i++) {
                             if (dTokens[i] === 'M' || dTokens[i] === 'L') {
-                                points.push({ x: parseFloat(dTokens[i + 1]), y: parseFloat(dTokens[i + 2]) });
+                                points.push({ x: parseFloat(dTokens[i+1]), y: parseFloat(dTokens[i+2]) });
                             }
                         }
-
+                        
                         let labelX, labelY;
-                        if (conn.from === 'n1-clear-match' && conn.to === 'n1-form1') {
+                        if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
                             labelX = 1550;
-                            labelY = 790;
-                        } else if (conn.from === 'n1-error-format' && conn.to === 'n1-form1') {
+                            labelY = 710;
+                        } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
                             labelX = points[0].x - 60;
                             labelY = points[0].y;
+                        } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
+                            labelX = 1300;
+                            labelY = 1240;
+                        } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
+                            labelX = 2220;
+                            labelY = 1240;
+                        } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
+                            labelX = 1520;
+                            labelY = 1820;
+                        } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
+                            labelX = 2440;
+                            labelY = 1820;
+                        } else if (conn.from === 'f4-qr-error' && conn.to === 'f4-scanner') {
+                            labelX = 1840;
+                            labelY = 2410;
                         } else if (points.length === 2) {
                             labelX = (points[0].x + points[1].x) / 2;
                             labelY = (points[0].y + points[1].y) / 2;
@@ -851,30 +971,28 @@
                             labelX = points[midIndex].x;
                             labelY = points[midIndex].y;
                         }
-
-                        if (points[0] && points[points.length - 1] && points[0].x === points[points.length - 1].x && points.length <= 2) {
+                        
+                        if (points[0] && points[points.length-1] && points[0].x === points[points.length-1].x && points.length <= 2) {
                             labelX += 65;
                         }
-
+                        
                         const isYes = conn.lClass === 'label-yes';
                         const strokeColor = isYes ? '#10b981' : '#ef4444';
                         const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
                         const rectW = conn.label.length * 6 + 18;
-                        const escapedConnLabel = escapeXml(conn.label);
-
-                        svg += `\n        <rect x="${labelX - rectW / 2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
-                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt ${textColorClass}">${escapedConnLabel}</text>`;
+                        
+                        svg += `\n        <rect x="${labelX - rectW/2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
+                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt ${textColorClass}">${conn.label}</text>`;
                     }
 
                     svg += `\n    </g>`;
                 });
 
-                // 3. Draw nodes grouped
                 nodes.forEach(el => {
                     const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
                     const cx = x + w / 2, cy = y + h / 2;
-                    const textLines = el.innerHTML.replace(/<span>|<\/span>/g, '').split(/<br\s*\/?>/gi).map(t => escapeXml(t.trim()));
-
+                    const textLines = el.innerHTML.replace(/<span>|<\/span>/g, '').split(/<br\s*\/?>/gi).map(t => t.trim());
+                    
                     svg += `\n    <!-- Node: ${el.id} -->`;
                     svg += `\n    <g id="${el.id}-group">`;
 
@@ -916,60 +1034,28 @@
                 });
 
                 svg += '\n</svg>';
-
-                let success = false;
-
-                // 1. Try document.execCommand('copy') via textarea (Works on local file:// URLs in all browsers!)
-                const ta = document.createElement('textarea');
-                ta.value = svg;
-                ta.style.position = 'fixed';
-                ta.style.left = '-9999px';
-                ta.style.top = '0';
-                document.body.appendChild(ta);
-                ta.focus();
-                ta.select();
-
-                try {
-                    success = document.execCommand('copy');
-                } catch (e) {
-                    console.warn('execCommand copy failed:', e);
-                }
-                document.body.removeChild(ta);
-
-                // 2. Fallback to navigator.clipboard if execCommand didn't succeed
-                if (!success && navigator.clipboard) {
-                    try {
-                        await navigator.clipboard.writeText(svg);
-                        success = true;
-                    } catch (e) {
-                        console.warn('navigator.clipboard failed:', e);
-                    }
-                }
-
-                if (success) {
-                    // Show notification overlay
-                    const toast = document.createElement('div');
-                    toast.style.position = 'fixed';
-                    toast.style.bottom = '30px';
-                    toast.style.right = '30px';
-                    toast.style.background = '#10b981';
-                    toast.style.color = 'white';
-                    toast.style.padding = '12px 24px';
-                    toast.style.borderRadius = '12px';
-                    toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-                    toast.style.fontWeight = 'bold';
-                    toast.style.zIndex = '1000';
-                    toast.style.fontSize = '13px';
-                    toast.innerText = 'SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.';
-                    document.body.appendChild(toast);
-
-                    setTimeout(() => toast.remove(), 3000);
-                } else {
-                    alert('Gagal meng-copy SVG ke clipboard.');
-                }
+                
+                await navigator.clipboard.writeText(svg);
+                
+                const toast = document.createElement('div');
+                toast.style.position = 'fixed';
+                toast.style.bottom = '30px';
+                toast.style.right = '30px';
+                toast.style.background = '#10b981';
+                toast.style.color = 'white';
+                toast.style.padding = '12px 24px';
+                toast.style.borderRadius = '12px';
+                toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+                toast.style.fontWeight = 'bold';
+                toast.style.zIndex = '1000';
+                toast.style.fontSize = '13px';
+                toast.innerText = 'SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.';
+                document.body.appendChild(toast);
+                
+                setTimeout(() => toast.remove(), 3000);
             } catch (err) {
                 console.error('Gagal meng-copy SVG: ', err);
-                alert('Terjadi kesalahan saat memproses SVG: ' + err.message);
+                alert('Gagal meng-copy SVG ke clipboard. Pastikan izin clipboard aktif.');
             }
         }
     </script>
