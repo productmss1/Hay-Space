@@ -1,0 +1,2267 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Presentasi Eksekutif - Manpower Planning Product Owner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg-primary: #ffffff;
+      --bg-secondary: #f8fafc;
+      --bg-card: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --text-light: #94a3b8;
+      --border-color: #e2e8f0;
+      --border-hover: #cbd5e1;
+
+      --accent-blue: #2563eb;
+      --accent-blue-light: #eff6ff;
+      --accent-purple: #7c3aed;
+      --accent-purple-light: #f5f3ff;
+
+      --status-active-bg: #dcfce7;
+      --status-active-text: #15803d;
+      --status-active-border: #86efac;
+
+      --status-vacant-bg: #ffe4e6;
+      --status-vacant-text: #be123c;
+      --status-vacant-border: #fca5a5;
+
+      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+      --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05);
+      --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
+
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-xl: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-main);
+      line-height: 1.6;
+    }
+
+    body {
+      overflow-x: hidden;
+      background-color: #f8fafc;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: transparent;
+      z-index: 1000;
+    }
+
+    .progress-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #2563eb, #7c3aed, #ec4899);
+      width: 0%;
+      transition: width 0.1s ease-out;
+    }
+
+    /* Sticky Navigation Header */
+    header {
+      position: sticky;
+      top: 0;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      z-index: 999;
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--text-main);
+      white-space: nowrap;
+      flex-shrink: 0;
+      padding-right: 24px;
+      border-right: 1px solid var(--border-color);
+    }
+
+    .nav-brand-badge {
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      white-space: nowrap;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding: 4px 0;
+      max-width: 100%;
+      flex-grow: 1;
+    }
+
+    /* Custom thin scrollbar for nav header */
+    nav::-webkit-scrollbar {
+      height: 4px;
+    }
+
+    nav::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    nav::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      font-weight: 500;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: var(--accent-blue);
+      background-color: var(--accent-blue-light);
+      font-weight: 600;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1160px;
+      margin: 0 auto;
+      padding: 40px 24px 80px 24px;
+    }
+
+    /* Sections */
+    section {
+      padding: 60px 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    section:last-of-type {
+      border-bottom: none;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 14px;
+      background: var(--accent-blue-light);
+      color: var(--accent-blue);
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--text-main);
+      letter-spacing: -0.5px;
+      margin-bottom: 12px;
+    }
+
+    .section-subtitle {
+      font-size: 1.1rem;
+      color: var(--text-muted);
+      max-width: 720px;
+      margin-bottom: 36px;
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 70px 20px 50px 20px;
+      background: radial-gradient(circle at 50% 0%, rgba(37, 99, 235, 0.05) 0%, rgba(255, 255, 255, 0) 70%);
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #f1f5f9;
+      border: 1px solid #cbd5e1;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3rem;
+      font-weight: 800;
+      color: var(--text-main);
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-bottom: 16px;
+    }
+
+    .hero-title span {
+      background: linear-gradient(135deg, #2563eb, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-desc {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      max-width: 780px;
+      margin: 0 auto 36px auto;
+    }
+
+    .audience-cards {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 24px;
+    }
+
+    .audience-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .audience-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    .audience-avatar.fandy {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+
+    .audience-avatar.daisy {
+      background: #f3e8ff;
+      color: #6b21a8;
+    }
+
+    .audience-avatar.lead {
+      background: #f1f5f9;
+      color: #334155;
+    }
+
+    .audience-info {
+      text-align: left;
+    }
+
+    .audience-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-main);
+    }
+
+    .audience-role {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Stat KPI Grid */
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      margin-top: 32px;
+    }
+
+    .stat-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-number {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2.75rem;
+      font-weight: 800;
+      color: var(--accent-blue);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .stat-number.warning {
+      color: #e11d48;
+    }
+
+    .stat-number.purple {
+      color: var(--accent-purple);
+    }
+
+    .stat-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-main);
+      margin-bottom: 4px;
+    }
+
+    .stat-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    /* Org Chart Visual */
+    .org-chart-wrapper {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 36px 24px;
+      box-shadow: var(--shadow-md);
+      overflow-x: auto;
+    }
+
+    .org-level-top {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      position: relative;
+      margin-bottom: 30px;
+    }
+
+    .org-node {
+      background: #ffffff;
+      border: 2px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 14px 24px;
+      text-align: center;
+      min-width: 180px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .org-node.management-fandy {
+      border-color: #93c5fd;
+      background: #eff6ff;
+    }
+
+    .org-node.management-daisy {
+      border-color: #c084fc;
+      background: #faf5ff;
+    }
+
+    .org-node.lead-po {
+      border-color: #3b82f6;
+      background: #1e293b;
+      color: #ffffff;
+      min-width: 240px;
+    }
+
+    .org-node-title {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .org-node-subtitle {
+      font-size: 0.8rem;
+      opacity: 0.8;
+      margin-top: 2px;
+    }
+
+    .org-connector {
+      width: 2px;
+      height: 30px;
+      background: #cbd5e1;
+      margin: 0 auto;
+    }
+
+    .org-streams-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .stream-box {
+      background: #f8fafc;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px;
+      text-align: center;
+    }
+
+    .stream-box-name {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 12px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+
+    .badge-active {
+      background: var(--status-active-bg);
+      color: var(--status-active-text);
+      border: 1px solid var(--status-active-border);
+    }
+
+    .badge-vacant {
+      background: var(--status-vacant-bg);
+      color: var(--status-vacant-text);
+      border: 1px solid var(--status-vacant-border);
+    }
+
+    /* 6 Stream Domain Grid Cards */
+    .stream-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .domain-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 28px;
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .domain-card:hover {
+      box-shadow: var(--shadow-lg);
+      border-color: var(--border-hover);
+    }
+
+    .domain-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .domain-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .platform-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .platform-tag {
+      background: #f1f5f9;
+      color: #334155;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .domain-section-subtitle {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .domain-list {
+      list-style: none;
+      margin-bottom: 20px;
+    }
+
+    .domain-list li {
+      font-size: 0.9rem;
+      color: #334155;
+      padding-left: 18px;
+      position: relative;
+      margin-bottom: 6px;
+    }
+
+    .domain-list li::before {
+      content: "•";
+      color: var(--accent-blue);
+      font-weight: bold;
+      font-size: 1.2rem;
+      position: absolute;
+      left: 0;
+      top: -2px;
+    }
+
+    .why-dedicated-box {
+      background: var(--bg-secondary);
+      border-left: 3px solid var(--accent-blue);
+      padding: 14px 16px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      font-size: 0.85rem;
+      color: var(--text-main);
+    }
+
+    .why-dedicated-box.urgent {
+      border-left-color: #e11d48;
+      background: #fff1f2;
+    }
+
+    .why-dedicated-box strong {
+      display: block;
+      margin-bottom: 4px;
+      color: var(--text-main);
+    }
+
+    /* Management Value Dual Cards */
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+      gap: 24px;
+      margin-top: 32px;
+    }
+
+    .value-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-xl);
+      padding: 32px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .value-card-header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 24px;
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .value-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+    }
+
+    .value-icon.fandy {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .value-icon.daisy {
+      background: #f3e8ff;
+      color: #7e22ce;
+    }
+
+    .value-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .value-subtitle {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    .value-item {
+      display: flex;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .value-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .value-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: var(--text-main);
+      font-weight: 700;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .value-text strong {
+      display: block;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      margin-bottom: 2px;
+    }
+
+    .value-text p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    /* Conclusion Callout */
+    .conclusion-box {
+      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      color: #ffffff;
+      border-radius: var(--radius-xl);
+      padding: 48px 36px;
+      text-align: center;
+      box-shadow: var(--shadow-xl);
+      margin-top: 40px;
+    }
+
+    .conclusion-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .conclusion-desc {
+      font-size: 1.1rem;
+      color: #94a3b8;
+      max-width: 760px;
+      margin: 0 auto 32px auto;
+    }
+
+    .conclusion-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-blue);
+      color: #ffffff;
+      padding: 14px 32px;
+      border-radius: 30px;
+      font-weight: 600;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: background 0.2s ease;
+    }
+
+    .conclusion-cta:hover {
+      background: #1d4ed8;
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 40px 20px;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border-color);
+      background: #ffffff;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+      header {
+        padding: 12px 16px;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      nav {
+        overflow-x: auto;
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .hero-title {
+        font-size: 2.25rem;
+      }
+
+      .container {
+        padding: 20px 16px 60px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Reading Progress Bar -->
+  <div class="progress-container">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- Sticky Navigation Header -->
+  <header>
+    <div class="nav-brand">
+      <span>PT. Mitra Seribu Saudara</span>
+      <span class="nav-brand-badge">PO Manpower Plan</span>
+    </div>
+    <nav>
+      <a href="#summary" class="nav-link active">Ringkasan</a>
+      <a href="#orgchart" class="nav-link">Org Chart</a>
+      <a href="#streams" class="nav-link">6 Domain Stream</a>
+      <a href="#value" class="nav-link">Manajemen Value</a>
+      <a href="#backlog-mitra1000s" class="nav-link">Backlog Mitra1000s</a>
+      <a href="#backlog" class="nav-link">Backlog Intechgra</a>
+      <a href="#backlog-scanwin" class="nav-link">Backlog Scanwin</a>
+      <a href="#backlog-project1000s" class="nav-link">Backlog Project1000s</a>
+      <a href="#backlog-renov1000s" class="nav-link">Backlog Renov1000s</a>
+      <a href="#backlog-admin1000s" class="nav-link">Backlog Admin1000s</a>
+    </nav>
+  </header>
+
+  <div class="container">
+
+    <!-- HERO SECTION -->
+    <section class="hero" id="summary">
+      <div class="hero-badge">
+        <span>🚀 Proposal Eksekutif Manpower Planning</span>
+      </div>
+      <h1 class="hero-title">
+        Struktur Organisasi & Headcount<br>
+        <span>Product Owner MSS Ecosystem</span>
+      </h1>
+      <p class="hero-desc">
+        Analisis komprehensif alokasi 8 Product Owner untuk mengoptimalkan rilis fitur komersial, menjamin kualitas
+        teknis, dan mencegah bottleneck operasional.
+      </p>
+
+      <!-- KPI Stats -->
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Platform Digital</div>
+          <div class="stat-sub">Dikelola dalam ekosistem</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number purple">6</div>
+          <div class="stat-label">Core Product Streams</div>
+          <div class="stat-sub">Pengelompokan domain bisnis</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number">8</div>
+          <div class="stat-label">Target Product Owner</div>
+          <div class="stat-sub">+ 1 Lead Product Owner</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-number warning">62.5%</div>
+          <div class="stat-label">Tingkat Vacancy SDM</div>
+          <div class="stat-sub">5 Posisi vacant, 3 aktif</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORG CHART SECTION -->
+    <section id="orgchart">
+      <div class="section-tag">Struktur Tim</div>
+      <h2 class="section-title">Struktur Organisasi Product Owner</h2>
+      <p class="section-subtitle">Pemetaan hirarki manajerial dan alokasi posisi PO aktif vs vacant di setiap stream.
+      </p>
+
+      <div class="org-chart-wrapper">
+        <div class="org-level-top">
+          <div class="org-node management-fandy">
+            <div class="org-node-title">Fandy Gunawan</div>
+            <div class="org-node-subtitle">Report Business Growth</div>
+          </div>
+          <div class="org-node management-daisy">
+            <div class="org-node-title">Daisy</div>
+            <div class="org-node-subtitle">Report Engineering & Tech</div>
+          </div>
+        </div>
+
+        <div class="org-connector"></div>
+
+        <div style="text-align: center;">
+          <div class="org-node lead-po" style="margin: 0 auto; display: inline-block;">
+            <div class="org-node-title">Lead Product Owner</div>
+            <div class="org-node-subtitle">Manajemen & Koordinasi Stream</div>
+          </div>
+        </div>
+
+        <div class="org-connector"></div>
+
+        <div class="org-streams-grid">
+          <div class="stream-box">
+            <div class="stream-box-name">B2B Ecosystem</div>
+            <span class="badge badge-active">1 Aktif</span>
+            <span class="badge badge-vacant">1 Vacant</span>
+          </div>
+          <div class="stream-box">
+            <div class="stream-box-name">B2C Goods</div>
+            <span class="badge badge-vacant">1 Vacant</span>
+          </div>
+          <div class="stream-box">
+            <div class="stream-box-name">B2C Service</div>
+            <span class="badge badge-vacant">1 Vacant</span>
+          </div>
+          <div class="stream-box">
+            <div class="stream-box-name">Point of Sales</div>
+            <span class="badge badge-active">1 Aktif</span>
+          </div>
+          <div class="stream-box">
+            <div class="stream-box-name">Warehouse & TMS</div>
+            <span class="badge badge-vacant">1 Vacant</span>
+          </div>
+          <div class="stream-box">
+            <div class="stream-box-name">Finance</div>
+            <span class="badge badge-active">1 Aktif</span>
+            <span class="badge badge-vacant">1 Vacant</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6 STREAMS DOMAIN CARDS SECTION -->
+    <section id="streams">
+      <div class="section-tag">Analisis Domain</div>
+      <h2 class="section-title">Detail Kebutuhan 6 Core Product Streams</h2>
+      <p class="section-subtitle">Breakdown platform, fokus responsibilitas, dan justifikasi alokasi manpower per
+        stream.</p>
+
+      <div class="stream-cards-grid">
+
+        <!-- STREAM 1: B2B -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">1. B2B Ecosystem</div>
+              <div>
+                <span class="badge badge-active">1 Aktif</span>
+                <span class="badge badge-vacant">1 Vacant</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">Mitra1000s</span>
+              <span class="platform-tag">Distributor</span>
+              <span class="platform-tag">Sales App</span>
+              <span class="platform-tag">Supplier</span>
+              <span class="platform-tag">Brand Owner</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li><strong>PO 1 (Aktif)</strong>: Fokus Revamp Aplikasi B2B berbasis arsitektur <strong>MAUI
+                  Hybrid</strong> (multi-platform: Web, Android, iOS).</li>
+              <li><strong>PO 2 (Vacant)</strong>: Pengembangan fitur-fitur baru & berjalan sesuai kebutuhan bisnis di
+                ekosistem B2B existing.
+              </li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box urgent">
+            <strong>🔥 Mengapa Butuh 2 PO Dedicated?</strong>
+            Memisahkan akselerasi Revamp MAUI Hybrid (Web, Android, iOS) dari pengembangan fitur bisnis existing yang
+            terus berjalan tanpa mengganggu operasional.
+          </div>
+        </div>
+
+        <!-- STREAM 2: B2C GOODS -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">2. B2C Goods</div>
+              <div>
+                <span class="badge badge-vacant">1 Vacant (Fase 1)</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">1000saudara.com</span>
+              <span class="platform-tag">Scanwin1000s</span>
+              <span class="platform-tag">Galery1000s</span>
+              <span class="platform-tag">Project1000s</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li>Pembelian barang bahan bangunan secara retail.</li>
+              <li>Pelaksanaan riset pasar B2C & perilaku konsumen.</li>
+              <li>Analytics data pengguna & optimasi retention/loyalty.</li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box">
+            <strong>💡 Pengelompokan 1 PO (Fase 1):</strong>
+            Dikelompokkan dalam 1 PO karena traffic masih growth stage & terhubung dalam siklus akhir retail barang.
+          </div>
+        </div>
+
+        <!-- STREAM 3: B2C SERVICE -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">3. B2C Service</div>
+              <div>
+                <span class="badge badge-vacant">1 Vacant (Fase 1)</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">Renov1000s</span>
+              <span class="platform-tag">Tukang1000s</span>
+              <span class="platform-tag">Design & Build</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li>Pengelolaan proses jasa renovasi rumah & proyek.</li>
+              <li>Design and build dari sisi customer & arsitek.</li>
+              <li>Ekosistem kerja tukang & interior designer.</li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box">
+            <strong>💡 Justifikasi Service Stream:</strong>
+            Memiliki model bisnis berbasis jasa (non-fisik) yang membutuhkan workflow vendor & penjadwalan khusus.
+          </div>
+        </div>
+
+        <!-- STREAM 4: POS -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">4. Point of Sales (POS)</div>
+              <div>
+                <span class="badge badge-active">1 Aktif</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">inTechgra POS</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li>Kelancaran transaksi kasir offline toko fisik.</li>
+              <li>Manajemen stok toko real-time & alat EDC/printer.</li>
+              <li>Sinkronisasi data transaksi offline-to-online.</li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box">
+            <strong>⚡ High Reliability Requirement:</strong>
+            Mengingat POS menangani kasir offline, keandalan respon sistem tanpa downtime adalah hal kritis.
+          </div>
+        </div>
+
+        <!-- STREAM 5: WAREHOUSE & TRANSPORT -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">5. Warehouse & Transport</div>
+              <div>
+                <span class="badge badge-vacant">1 Vacant</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">WMS Gudang</span>
+              <span class="platform-tag">TMS / Fleet Management</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li>Inbound/outbound, stock picking & packing gudang.</li>
+              <li>Penjadwalan armada, app driver & proof of delivery.</li>
+              <li>Akurasi stok barang antara rak gudang dan aplikasi.</li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box">
+            <strong>📦 One Fulfillment Pipeline:</strong>
+            Warehouse dan Transport berada dalam satu rantai fulfillment agar handoff pengiriman seamless.
+          </div>
+        </div>
+
+        <!-- STREAM 6: FINANCE & ACCOUNTING -->
+        <div class="domain-card">
+          <div>
+            <div class="domain-card-header">
+              <div class="domain-title">6. Finance & Accounting</div>
+              <div>
+                <span class="badge badge-active">1 Aktif</span>
+                <span class="badge badge-vacant">1 Vacant (Accounting)</span>
+              </div>
+            </div>
+            <div class="platform-tags">
+              <span class="platform-tag">Fintech1000s</span>
+              <span class="platform-tag">Payment Gateway</span>
+              <span class="platform-tag">ERP Accounting</span>
+            </div>
+            <div class="domain-section-subtitle">Fokus Responsibilitas:</div>
+            <ul class="domain-list">
+              <li><strong>PO 1 (Aktif)</strong>: Fintech, payment gateway, P2P credit lending.</li>
+              <li><strong>PO 2 (Vacant)</strong>: ERP Accounting, rekonsiliasi, general ledger & pajak.</li>
+            </ul>
+          </div>
+          <div class="why-dedicated-box urgent">
+            <strong>🚨 High Compliance & Audit Risk:</strong>
+            Memisahkan PO Fintech dengan PO Spesialis Accounting krusial untuk mencegah kebocoran angka transaksi.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MANAGEMENT VALUE SECTION -->
+    <section id="value">
+      <div class="section-tag">Value Proposition</div>
+      <h2 class="section-title">Dampak Positif Pembagian Domain</h2>
+      <p class="section-subtitle">Bagaimana alokasi SDM PO per domain secara langsung memberikan dampak positif ke sisi
+        bisnis dan teknis.</p>
+
+      <div class="value-grid">
+
+        <!-- Business Impact Card -->
+        <div class="value-card">
+          <div class="value-card-header">
+            <div class="value-icon fandy">📈</div>
+            <div>
+              <div class="value-title">Dampak Positif Sisi Bisnis</div>
+              <div class="value-subtitle">Akselerasi Pertumbuhan & Ekosistem Bisnis</div>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">1</div>
+            <div class="value-text">
+              <strong>Revenue Velocity</strong>
+              <p>Setiap PO memiliki Key Result jelas untuk menggenjot GMV, transaksi aktif, dan conversion rate di
+                stream-nya.</p>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">2</div>
+            <div class="value-text">
+              <strong>Keterukuran Roadmap Domain</strong>
+              <p>Pemilik lini bisnis memiliki Single Point of Contact (PO) yang paham kebutuhan merchant, customer, &
+                partner.</p>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">3</div>
+            <div class="value-text">
+              <strong>Responsiveness Terhadap Pasar</strong>
+              <p>Respon terhadap feedback lapangan dari tim Sales, CS, dan Partner dieksekusi cepat tanpa antrean lintas
+                domain.</p>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">4</div>
+            <div class="value-text">
+              <strong>Fokus Data Analytics & Riset Domain</strong>
+              <p>Pemisahan PO per domain memungkinkan tim melakukan research & data tracing secara mendalam, sehingga
+                pengembangan dev berjalan berbasis data (data-driven) dengan target metrics bisnis yang terukur.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Technical Impact Card -->
+        <div class="value-card">
+          <div class="value-card-header">
+            <div class="value-icon daisy">⚙️</div>
+            <div>
+              <div class="value-title">Dampak Positif Sisi Teknis</div>
+              <div class="value-subtitle">Kualitas & Efisiensi Pengambangan Teknis</div>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">1</div>
+            <div class="value-text">
+              <strong>Kualitas PRD & Acceptance Criteria</strong>
+              <p>Spesifikasi produk disusun lebih rapi & matang sebelum masuk koding, mengurangi hambatan saat sprint
+                planning.</p>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">2</div>
+            <div class="value-text">
+              <strong>Pengurangan Tech Debt & Rework</strong>
+              <p>PO dedicated memahami arsitektur domain sehingga meminimalkan instruksi bongkar-pasang fitur di tengah
+                jalan.</p>
+            </div>
+          </div>
+
+          <div class="value-item">
+            <div class="value-num">3</div>
+            <div class="value-text">
+              <strong>Kesehatan & Fokus Tim Dev</strong>
+              <p>Mencegah komunikasi yang membingungkan antara kebutuhan bisnis dengan eksekusi koding (clear backlog &
+                zero context switching).</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- BACKLOG DEVELOPMENT REPORT SECTION -->
+    <section id="backlog">
+      <div class="section-tag">Backlog Report</div>
+      <h2 class="section-title">Status Backlog Development: Intechgra Pro</h2>
+      <p class="section-subtitle">Analisis kesiapan dokumen PRD (Product) & progress IT (Dev) untuk Platform Intechgra
+        Pro.</p>
+
+      <!-- Category 1 Card -->
+      <div
+        style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: #16a34a;">Group 1: Product Done &
+            Waiting Dev (PRD 100%)</h3>
+          <span class="badge badge-active">Ready for Dev</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | Pro Phase 1.1 [High Priority]</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 10 Juli 2026 – 31 Juli 2026
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | InTechgra Seller Center
+                1000saudara.com</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 2 Feb 2026 – 31 Des 2027
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | Landing Page</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 10 Juli 2026 – 17 Juli 2026
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Category 2 Card -->
+      <div
+        style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm); border-left: 4px solid #2563eb;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: #2563eb; margin-bottom: 16px;">Group 2:
+          Product On Progress (PRD < 100% / Scheduled)</h3>
+
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px;">
+              <div
+                style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px;">
+                <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | Pro Phase 1.1 [Medium
+                  Priority]</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 8px 0;">🗓️ 10 Ags 2026 – 4 Sep
+                  2026</div>
+                <div style="display: flex; gap: 8px;">
+                  <span
+                    style="font-size: 0.75rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 2px 8px; border-radius: 4px;">PRD:
+                    14.29%</span>
+                  <span
+                    style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 2px 8px; border-radius: 4px;">Dev:
+                    0.00%</span>
+                </div>
+              </div>
+
+              <div
+                style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px;">
+                <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | Pro Phase 1.1 (Low
+                  Priority)</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 8px 0;">🗓️ 7 Sep 2026 – 30 Sep
+                  2026</div>
+                <div style="display: flex; gap: 8px;">
+                  <span
+                    style="font-size: 0.75rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 2px 8px; border-radius: 4px;">PRD:
+                    29.41%</span>
+                  <span
+                    style="font-size: 0.75rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 2px 8px; border-radius: 4px;">Dev:
+                    0.00%</span>
+                </div>
+              </div>
+
+              <div
+                style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px;">
+                <strong style="font-size: 0.95rem; color: var(--text-main);">INTP | Migrasi AWS ke Azure</strong>
+                <div style="font-size: 0.8rem; color: var(--text-muted); margin: 4px 0 8px 0;">🗓️ 1 Juli 2026 – 31 Des
+                  2026</div>
+                <div style="display: flex; gap: 8px;">
+                  <span
+                    style="font-size: 0.75rem; font-weight: 600; color: #475569; background: #e2e8f0; padding: 2px 8px; border-radius: 4px;">Scheduled
+                    in Infra Roadmap</span>
+                </div>
+              </div>
+            </div>
+      </div>
+
+      <!-- Category 3 Table -->
+      <div
+        style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 24px; box-shadow: var(--shadow-sm); border-left: 4px solid #e11d48;">
+        <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.25rem; color: #e11d48; margin-bottom: 16px;">Group 3:
+          Backlog Waiting Timeline Dev (PRD 0% & No Timeline)</h3>
+
+        <div class="table-container" style="margin-top: 0;">
+          <table>
+            <thead>
+              <tr>
+                <th style="width: 35%;">Nama Inisiatif / Project</th>
+                <th>Alasan Belum Dimulai dari Sisi Product</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>[INT] Integrasi 3PL Pengiriman 1000saudara.com</strong></td>
+                <td><span style="color: #b45309; font-weight: 600;">Dependency</span>: Menunggu penyelesaian Seller
+                  Center & integrasi WMS/TMS logistik.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Export report intechgra pro</strong></td>
+                <td><span style="color: #be123c; font-weight: 600;">Manpower PO</span>: Menunggu alokasi kapasitas PO
+                  POS untuk riset kebutuhan format report & penulisan PRD.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra AI Copilot</strong></td>
+                <td><span style="color: #0369a1; font-weight: 600;">Prioritas Product</span>: Belum masuk prioritas
+                  kuartal berjalan (fokus core POS terlebih dahulu).</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra Order to Mitra1000s</strong></td>
+                <td><span style="color: #b45309; font-weight: 600;">Integrasi B2B</span>: Menunggu kesiapan planning
+                  integrasi antar sistem Mitra1000s dan Intechgra.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra x Project1000s</strong></td>
+                <td><span style="color: #b45309; font-weight: 600;">Integrasi System</span>: Menunggu kesiapan planning
+                  integrasi antar sistem dan menunggu timeline Intechgra Seller Center 1000saudara.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra accounting module V2</strong></td>
+                <td><span style="color: #be123c; font-weight: 600;">Dependency & Manpower</span>: Menunggu penyelesaian
+                  Module V1 dan pemenuhan PO Accounting vacant.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Dev POS & EDC BCA Integration</strong></td>
+                <td><span style="color: #0369a1; font-weight: 600;">User Traffic Needs</span>: Menunggu traffic
+                  kebutuhan dari sisi user baru akan di-dev.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra CLM Migration</strong></td>
+                <td><span style="color: #0369a1; font-weight: 600;">Core System</span>: Menunggu Intechgra core
+                  system-nya selesai.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra accounting module V1</strong></td>
+                <td><span style="color: #be123c; font-weight: 600;">Manpower PO</span>: Membutuhkan PO Spesialis
+                  Accounting yang saat ini masih vacant.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra pre-order</strong></td>
+                <td><span style="color: #0369a1; font-weight: 600;">Prioritas Product</span>: Belum masuk prioritas
+                  utama roadmap retail Q3-Q4.</td>
+              </tr>
+              <tr>
+                <td><strong>[INTP] Intechgra tracker system</strong></td>
+                <td><span style="color: #1d4ed8; font-weight: 600;">Data Analytics Dependency</span>: Menunggu tim Data
+                  Analytics karena kebutuhan untuk penyusunan tracer dan dashboard analytics product.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- SCANWIN1000S REPORT SECTION & LEAD PO BOTTLENECK ANALYSIS -->
+    <section id="backlog-scanwin"
+      style="margin-top: 40px; padding-top: 32px; border-top: 2px dashed var(--border-color);">
+      <div class="section-tag" style="background: #e0f2fe; color: #0369a1;">Backlog Scanwin</div>
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 4px;">Status Backlog Platform: Scanwin1000s</h2>
+          <p class="section-subtitle">Retail Check-in, QR Scanning & Catalog Product Management</p>
+        </div>
+        <span class="badge badge-vacant" style="font-size: 0.85rem; padding: 6px 12px;">🚨 Handled by Lead PO (Vacant
+          PO)</span>
+      </div>
+
+      <!-- Scanwin Progress Card -->
+      <div
+        style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #2563eb;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #2563eb; margin: 0;">Group 2: Product
+            On Progress</h3>
+          <span
+            style="font-size: 0.85rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 4px 12px; border-radius: 6px;">PRD
+            Progress: 50.00%</span>
+        </div>
+
+        <div
+          style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 16px;">
+          <div
+            style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px;">
+            <div>
+              <strong style="font-size: 1rem; color: var(--text-main);">[SCAN] Development Scanwin1000s Mobile &
+                System</strong>
+              <div style="font-size: 0.85rem; color: var(--text-muted); margin-top: 6px; line-height: 1.6;">
+                🎨 <strong>Status Product</strong>: Menunggu penyelesaian spesifikasi design dari tim UI/UX.<br>
+                🗓️ <strong>Target End-to-End Selesai</strong>: <strong>31 Juli 2026</strong><br>
+                ⚡ <strong>Jadwal Dev Mencicil</strong>: Tim IT/Dev dapat mencicil koding komponen inti per <strong>27
+                  Juli 2026</strong>.
+              </div>
+            </div>
+            <div>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: #0284c7; background: #e0f2fe; padding: 6px 12px; border-radius: 6px; display: inline-block;">Dev
+                Starts: 27 Jul 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOTTLENECK CALLOUT BANNER -->
+      <div
+        style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: var(--radius-xl); padding: 24px; border-left: 5px solid #e11d48; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 12px;">
+          <span style="font-size: 1.5rem;">⚠️</span>
+          <h4
+            style="font-family: 'Outfit', sans-serif; font-size: 1.15rem; color: #9f1239; font-weight: 700; margin: 0;">
+            Analisis Bottleneck Manpower Product (Dampak Lead PO Overload)
+          </h4>
+        </div>
+        <p style="font-size: 0.9rem; color: #881337; line-height: 1.6; margin-bottom: 14px;">
+          Pengerjaan spesifikasi produk Scanwin1000s mengalami hambatan waktu (*bottleneck*) akibat <strong>kekurangan
+            resource Product Owner</strong> di organisasi saat ini:
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px;">
+          <div style="background: #ffffff; border: 1px solid #ffe4e6; border-radius: var(--radius-md); padding: 14px;">
+            <strong style="font-size: 0.9rem; color: #be123c;">🎯 Lead PO Handling Direct Platform</strong>
+            <p style="font-size: 0.825rem; color: var(--text-main); margin-top: 4px; line-height: 1.5;">
+              Platform Scanwin1000s tidak memiliki dedicated PO (vacant), sehingga penulisan PRD dan koordinasi proyek
+              terpaksa di-handling langsung oleh <strong>Lead Product Owner</strong>.
+            </p>
+          </div>
+
+          <div style="background: #ffffff; border: 1px solid #ffe4e6; border-radius: var(--radius-md); padding: 14px;">
+            <strong style="font-size: 0.9rem; color: #be123c;">🔄 Overload Handling System Tanpa PO</strong>
+            <p style="font-size: 0.825rem; color: var(--text-main); margin-top: 4px; line-height: 1.5;">
+              Selain fungsi utama <em>managing & oversight</em> seluruh PO dan core system, Lead PO terpaksa mengawal
+              produk vacant lain: <strong>1000saudara.com, Renov1000s, Project1000s, & Master SKU Mitra1000s</strong>.
+            </p>
+          </div>
+        </div>
+
+        <div
+          style="margin-top: 14px; padding-top: 10px; border-top: 1px dashed #fecdd3; font-size: 0.85rem; color: #9f1239; font-weight: 600;">
+          💡 Dampak Organisasi: Kondisi ini menciptakan single-point-of-bottleneck pada Lead PO dan membuktikan urgensi
+          pengisian PO B2C Goods & Service serta PO B2B agar rilis produk tidak terhambat.
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECT1000S REPORT SECTION & SHARED DEV RESOURCE ANALYSIS -->
+    <section id="backlog-project1000s"
+      style="margin-top: 40px; padding-top: 32px; border-top: 2px dashed var(--border-color);">
+      <div class="section-tag" style="background: #fef3c7; color: #b45309;">Backlog Project1000s</div>
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 4px;">Status Backlog Platform: Project1000s</h2>
+          <p class="section-subtitle">B2C & B2B Construction Direct Project, Agent Mapping, Quotation & Catalog</p>
+        </div>
+        <span class="badge badge-active"
+          style="font-size: 0.85rem; padding: 6px 12px; background: #dcfce7; color: #15803d;">PRD 100% Done</span>
+      </div>
+
+      <!-- Category 1 Card: Product Done & Waiting Dev -->
+      <div
+        style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 24px; margin-bottom: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; flex-wrap: wrap; gap: 8px;">
+          <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #16a34a; margin: 0;">Group 1: Product
+            Done & Waiting Dev (PRD 100%)</h3>
+          <span class="badge badge-active">Ready for Dev</span>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Project1000s - V.1.4 Mapping Selling Agent to
+                specific Buyer</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 8 Des 2025 – 3 Apr 2026
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Project1000s - V.1.5 Buyer Edit
+                Quotation</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 22 Des 2025 – 3 Apr 2026
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+
+          <div
+            style="background: #f8fafc; border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+            <div>
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Project1000s - V.1.6 Product Katalog</strong>
+              <div style="font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;">🗓️ 22 Des 2025 – 3 Apr 2026
+              </div>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <span
+                style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 6px;">PRD:
+                100.00%</span>
+              <span
+                style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 6px;">Dev:
+                0.00%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SHARED IT DEV RESOURCE WARNING CALLOUT BANNER -->
+      <div
+        style="background: #fffbe6; border: 1px solid #ffe58f; border-radius: var(--radius-xl); padding: 20px; border-left: 5px solid #faad14; margin-bottom: 20px; box-shadow: var(--shadow-sm);">
+        <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 8px;">
+          <span style="font-size: 1.3rem;">⚠️</span>
+          <h4
+            style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: #873800; font-weight: 700; margin: 0;">
+            Catatan Kendala Eksekusi IT/Dev (Shared IT Resource Bottleneck)
+          </h4>
+        </div>
+        <p style="font-size: 0.875rem; color: #613400; line-height: 1.6; margin: 0;">
+          Dari sisi Product, seluruh dokumen spesifikasi (PRD V.1.4, V.1.5, dan V.1.6) sudah <strong>100%
+            selesai</strong>. Namun, tim IT/Dev belum dapat memulai koding karena <strong>keterbatasan alokasi tim
+            IT</strong>, di mana resource pengembang saat ini masih digabung (shared resource) untuk menangani 4
+          platform secara bersamaan: <strong>1000saudara.com, Scanwin1000s, Renov1000s, dan Project1000s</strong>.
+        </p>
+    </section>
+
+    <!-- RENOV1000S REPORT SECTION (UNCOMPLETED PHASES) -->
+    <section id="backlog-renov1000s"
+      style="margin-top: 40px; padding-top: 32px; border-top: 2px dashed var(--border-color);">
+      <div class="section-tag" style="background: #fce7f3; color: #be123c;">Backlog Renov1000s</div>
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 4px;">Status Backlog Platform: Renov1000s</h2>
+          <p class="section-subtitle">B2C Jasa Renovasi, Desain & Build (Fokus pada Uncompleted Phases)</p>
+        </div>
+        <span class="badge badge-vacant" style="font-size: 0.85rem; padding: 6px 12px;">🚨 Handled by Lead PO (Vacant
+          PO)</span>
+      </div>
+
+      <!-- Pending Phases Grid -->
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; margin-bottom: 20px;">
+
+        <!-- Phase: Login & Dashboard Tukang -->
+        <div
+          style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #e11d48;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: #be123c; margin: 0;">Renov1000s
+              Phase 5 | Login & Dashboard Tukang</h3>
+            <span
+              style="font-size: 0.75rem; font-weight: 700; color: #be123c; background: #ffe4e6; padding: 2px 8px; border-radius: 4px;">PRD
+              0.00%</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">🗓️ Timeline: 6 April 2026 – 7
+            Agustus 2026</div>
+          <div
+            style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: var(--radius-md); padding: 12px; font-size: 0.85rem; color: #9f1239; line-height: 1.5;">
+            <strong>🚨 Kendala Manpower PO</strong>: Belum berjalan karena platform Renov1000s tidak memiliki dedicated
+            PO (vacant). Penulisan PRD & koordinasi terpaksa di-handling langsung oleh Lead PO (kondisi bottleneck sama
+            dengan Scanwin1000s).
+          </div>
+        </div>
+
+        <!-- Phase: Cash Flow Finance Renov1000s -->
+        <div
+          style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #b45309;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: #b45309; margin: 0;">Renov1000s
+              Phase 4 | Cash Flow Finance Renov1000s</h3>
+            <span
+              style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+              0%</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">🗓️ Timeline: 1 Juli 2026 – 30
+            Oktober 2026</div>
+          <div
+            style="background: #fffbe6; border: 1px solid #ffe58f; border-radius: var(--radius-md); padding: 12px; font-size: 0.85rem; color: #78350f; line-height: 1.5;">
+            <strong>🔗 Dependency System</strong>: Menunggu penyelesaian <em>Revamp Finance Mitra1000s</em> karena
+            arsitektur flow transaksi dan logic akuntansi keuangan Renov1000s akan mengadopsi proses yang sama dengan
+            Revamp Finance Mitra1000s.
+          </div>
+        </div>
+    </section>
+
+    <!-- ADMINISTRATOR1000S REPORT SECTION (MAUI SYSTEM) -->
+    <section id="backlog-admin1000s"
+      style="margin-top: 40px; padding-top: 32px; border-top: 2px dashed var(--border-color);">
+      <div class="section-tag" style="background: #f3e8ff; color: #6b21a8;">Backlog Admin1000s</div>
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 4px;">Status Backlog Platform: Administrator1000s</h2>
+          <p class="section-subtitle">Sistem Administrator Internal Berbasis MAUI Hybrid (Master SKU & Line Approval)
+          </p>
+        </div>
+        <span class="badge badge-active"
+          style="font-size: 0.85rem; padding: 6px 12px; background: #f3e8ff; color: #6b21a8;">MAUI New System</span>
+      </div>
+
+      <!-- Feature Grid -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+
+        <!-- Item 1: Master SKU Dev On Progress -->
+        <div
+          style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #2563eb;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: #1d4ed8; margin: 0;">
+              Administrator1000s Phase 1 - Master SKU</h3>
+            <span
+              style="font-size: 0.75rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 2px 8px; border-radius: 4px;">Dev
+              On Progress</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">🗓️ Timeline: 18 Mei 2026</div>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <span
+              style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 4px;">PRD:
+              100.00%</span>
+            <span
+              style="font-size: 0.8rem; font-weight: 700; color: #1d4ed8; background: #dbeafe; padding: 3px 8px; border-radius: 4px;">Dev:
+              50.00%</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+            Master SKU PT. Mitra Seribu Saudara: Dokumentasi spesifikasi PRD 100% Selesai dan pengerjaan koding IT/Dev
+            saat ini sedang berlangsung (50%).
+          </p>
+        </div>
+
+        <!-- Item 2: Line Approval Waiting Dev -->
+        <div
+          style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 20px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;">
+            <h3 style="font-family: 'Outfit', sans-serif; font-size: 1.05rem; color: #15803d; margin: 0;">Line Approval
+              System (Administrator1000s)</h3>
+            <span
+              style="font-size: 0.75rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+              100% Done</span>
+          </div>
+          <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 10px;">⚡ Ready for Development</div>
+          <div style="display: flex; gap: 10px; margin-bottom: 10px;">
+            <span
+              style="font-size: 0.8rem; font-weight: 700; color: #15803d; background: #dcfce7; padding: 3px 8px; border-radius: 4px;">PRD:
+              100.00%</span>
+            <span
+              style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); background: #f1f5f9; padding: 3px 8px; border-radius: 4px;">Dev:
+              0.00%</span>
+          </div>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin: 0; line-height: 1.5;">
+            Fitur persetujuan bertingkat yang dapat dikustomisasi sesuai hirarki organisasi (misal: Pembuatan data SKU
+            -> Approval Level 1 ke SPV, Approval Level 2 ke Manager).
+          </p>
+        </div>
+
+    </section>
+
+    <!-- MITRA1000S REPORT SECTION (B2B CORE PLATFORM) -->
+    <section id="backlog-mitra1000s"
+      style="margin-top: 40px; padding-top: 32px; border-top: 2px dashed var(--border-color);">
+      <div class="section-tag" style="background: #e0f2fe; color: #0369a1;">Backlog Mitra1000s</div>
+      <div
+        style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+        <div>
+          <h2 class="section-title" style="margin-bottom: 4px;">Status Backlog Platform: Mitra1000s</h2>
+          <p class="section-subtitle">B2B Core E-commerce, Supply Chain & Partner Ecosystem</p>
+        </div>
+        <span class="badge badge-active"
+          style="font-size: 0.85rem; padding: 6px 12px; background: #e0f2fe; color: #0369a1;">Active PO B2B Core</span>
+      </div>
+
+      <!-- KATEGORI 1: PRODUCT ON PROGRESS / DEV ON PROGRESS -->
+      <div style="margin-bottom: 32px;">
+        <h3
+          style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+          <span
+            style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #2563eb;"></span>
+          1. Product On Progress / Dev On Progress (PRD 100%)
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #2563eb;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Star Sales Fase 1.1</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #2563eb; background: #dbeafe; padding: 2px 8px; border-radius: 4px;">Active
+                Dev</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 13 Mar – 31 Aug 2026 | ⭐
+              On Progress Dev IT</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #eff6ff; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong style="color: #16a34a;">100.00% (Done)</strong></span>
+              <span>Dev: <strong style="color: #2563eb;">22.22% (Active Dev)</strong></span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- KATEGORI 2: PRODUCT DONE & WAITING DEV -->
+      <div style="margin-bottom: 32px;">
+        <h3
+          style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+          <span
+            style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #16a34a;"></span>
+          2. Product Done & Waiting Dev (PRD 100%)
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+
+          <!-- Item 1 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Integrasi stock with
+                Sharelock</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 2 Feb – 24 Apr 2026 | 🔥
+              High Impact</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Waiting Dev)</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 2 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #2563eb;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Program Vitamin growth</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 3 Feb – 28 Mei 2026</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #eff6ff; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: #2563eb;">57.89% (Ready Dev IT)</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; margin-top: 8px; border: 1px solid #bfdbfe;">
+              📌 <strong>Keterangan Dev:</strong> Bagian yang belum selesai adalah menu <em>management promo & report
+                program</em> di sisi UI Administrator Internal.
+            </div>
+          </div>
+
+          <!-- Item 3 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Laporan Merchant - Laporan
+                Sales</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 23 Feb – 27 Feb 2026 |
+              Medium Impact</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e293b; background: #f8fafc; padding: 8px 10px; border-radius: 6px; margin-top: 8px; border: 1px solid var(--border-color); line-height: 1.5;">
+              📌 <strong>Fitur Download Laporan Sales di Administrator (3 Fitur Utama):</strong>
+              <ul style="margin: 4px 0 0 16px; padding: 0;">
+                <li><strong>Data Salesman (All):</strong> Mengunduh seluruh data salesman terdaftar.</li>
+                <li><strong>Order Tanpa Salesman:</strong> Mengunduh nomor ORD yang belum ter-assign ke salesman.</li>
+                <li><strong>Sales of the Month:</strong> Laporan performa penjualan bulanan untuk evaluasi kinerja.</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Item 4 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Administrator - Setting Brand
+                Supplier</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 17 Mar – 27 Mar 2026 |
+              Medium Impact</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 5 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Improvement OTP Fase 2</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 1 Jul – 31 Jul 2026 | Spam
+              Protection & Limit</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 6 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Star Sales Fase 1.2</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🗓️ 6 Jul – 21 Aug 2026 | 🔥
+              High Impact</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Waiting Dev)</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; margin-top: 8px; border: 1px solid #bfdbfe;">
+              📌 <strong>Keterangan Scope:</strong> Scheduler closing bulanan program, pencairan rewards & insentif,
+              serta proses handling revisi order.
+            </div>
+          </div>
+
+          <!-- Item 7 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Mitra1000s | Akun Master</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Medium Impact | Fitur Akun
+              Master</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 8 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Harga Khusus</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Pricing Tier & Merchant Custom
+              Price</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 9 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #16a34a;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Restruk promo & voucher</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #16a34a; background: #dcfce7; padding: 2px 8px; border-radius: 4px;">PRD
+                100%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">Potongan voucher di depan | 🔥
+              High Impact</div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #f8fafc; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>100.00%</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00% (Ready Dev)</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e3a8a; background: #eff6ff; padding: 6px 10px; border-radius: 6px; margin-top: 8px; border: 1px solid #bfdbfe;">
+              📌 <strong>Scope Update:</strong> Update homepage dan tampilan mixing dan duet.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- KATEGORI 3: IN PROGRESS PRODUCT OWNER (PRD ON PROGRESS) -->
+      <div style="margin-bottom: 32px;">
+        <h3
+          style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+          <span
+            style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #d97706;"></span>
+          3. Product On Progress (Penyusunan PRD Tim Product Owner)
+        </h3>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px;">
+
+          <!-- Item 1: Star Sales Fase 2 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Star Sales Fase 2</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                50%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>31 Juli 2026</strong>
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>50.00% (On Progress)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 2: Revamp Finance Phase 1 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Revamp Finance Phase 1: Data
+                Integrity</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                75%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>31 Juli 2026</strong>
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>75.00% (On Progress)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 3: Revamp Finance Phase 2 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Revamp Finance Phase 2:
+                Reconciliation</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                50%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>W2 Agustus 2026</strong>
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>50.00% (On Progress)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 4: Revamp Finance Phase 3 -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">Revamp Finance Phase 3: Disbursement</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                50%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>Akhir Agustus 2026</strong>
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px;">
+              <span>PRD: <strong>50.00% (On Progress)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+          </div>
+
+          <!-- Item 5: Scanwin Fraud Detection Engine (Mitra1000s) -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Scanwin Fraud Detection
+                Engine</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                75%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>31 Juli 2026</strong> | 🔥 Security
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px;">
+              <span>PRD: <strong>75.00% (On Progress)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e293b; background: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border-color); line-height: 1.5;">
+              📌 <strong>Rincian Scope PRD (Sisi Mitra1000s):</strong>
+              <ul style="margin: 4px 0 0 16px; padding: 0;">
+                <li><strong>PIN Toko Khusus:</strong> PIN terpisah dari password login saat pemberian voucher.</li>
+                <li><strong>Logic Fraud Limitation:</strong> Jika pemberian voucher melebihi limit, status otomatis
+                  <em>pending</em> menunggu approval admin.
+                </li>
+                <li><strong>Dashboard Administrator:</strong> UI Monitoring admin untuk persetujuan (<em>Approved</em> &
+                  <em>Reject</em>) voucher.
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Item 6: Revamp MAUI Mitra1000s -->
+          <div
+            style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); padding: 18px; box-shadow: var(--shadow-sm); border-left: 4px solid #d97706;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+              <strong style="font-size: 0.95rem; color: var(--text-main);">[Mitra1000s] Revamp MAUI Core System</strong>
+              <span
+                style="font-size: 0.75rem; font-weight: 700; color: #b45309; background: #fef3c7; padding: 2px 8px; border-radius: 4px;">PRD
+                10%</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px;">🎯 Target PRD Selesai:
+              <strong>Akhir Oktober 2026</strong> | 🔍 User Research
+            </div>
+            <div
+              style="display: flex; justify-content: space-between; font-size: 0.8rem; background: #fffbe6; padding: 6px 10px; border-radius: 6px; margin-bottom: 8px;">
+              <span>PRD: <strong>10.00% (User Research Phase)</strong></span>
+              <span>Dev: <strong style="color: var(--text-muted);">0.00%</strong></span>
+            </div>
+            <div
+              style="font-size: 0.78rem; color: #1e293b; background: #f8fafc; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border-color); line-height: 1.5;">
+              📌 <strong>Status Current:</strong> Berjalan 10% di tahap <em>User Research</em> & perancangan arsitektur
+              sistem baru MAUI Mitra1000s.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- KATEGORI 4: BACKLOG WAITING TIMELINE PRODUCT -->
+      <div>
+        <h3
+          style="font-family: 'Outfit', sans-serif; font-size: 1.1rem; color: #1e293b; margin-bottom: 14px; display: flex; align-items: center; gap: 8px;">
+          <span
+            style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #64748b;"></span>
+          4. Backlog Waiting Timeline Product (Mitra1000s)
+        </h3>
+
+        <div
+          style="background: #ffffff; border: 1px solid var(--border-color); border-radius: var(--radius-xl); overflow: hidden; box-shadow: var(--shadow-sm);">
+          <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem; text-align: left;">
+            <thead>
+              <tr style="background: #f8fafc; border-bottom: 1px solid var(--border-color);">
+                <th style="padding: 12px 16px; font-weight: 600; color: var(--text-main); width: 45%;">Nama Inisiatif /
+                  Project</th>
+                <th style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">Alasan Belum Dimulai dari
+                  Sisi Product</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">1. Mitra1000s | Split Order
+                  to
+                  Multiple Invoice</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Dependency dengan sistem di partner (BNN).
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color); background: #fafafa;">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">2. BNN Penambahan Tipe
+                  Pengiriman Franco Kapal & Dermaga</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Menunggu timeline priority di tim Product.
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">3. Pemisahan Overdue Tempo
+                  Distributor <span
+                    style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Multi-Distributor
+                    Order)</span></td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Agar toko bisa order ke distributor lain —
+                  Menunggu timeline priority tim Product dan bisnis.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color); background: #fafafa;">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">4. Notifikasi Distributor
+                  saat Toko Order & Overdue Belum Terbayar</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Menunggu timeline priority tim Product dan
+                  bisnis.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">5. UI Inject Pengajuan Saldo
+                  di Administrator Internal</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Menunggu timeline priority tim Product dan
+                  bisnis.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color); background: #fafafa;">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">6. Credit Scoring Toko /
+                  Merchant</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Dependency dengan Finance1000s.</td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color);">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">7. Fitur Beli Lagi <span
+                    style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Re-order Fast Track)</span>
+                </td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Dependency dengan penataan arsitektur
+                  <em>Promo & Voucher Engine</em> (perlu validasi real-time ketersediaan promo/voucher aktif saat
+                  re-order agar harga tidak error jika promo expired) — Menunggu timeline priority tim Product.
+                </td>
+              </tr>
+              <tr style="border-bottom: 1px solid var(--border-color); background: #fafafa;">
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">8. Tracker User Behavior &
+                  Loading Time Project</td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Menunggu tim Data Analytics untuk kolaborasi
+                  tracking data dan analisa performa produk.</td>
+              </tr>
+              <tr>
+                <td style="padding: 12px 16px; font-weight: 600; color: var(--text-main);">9. Moderasi Voucher <span
+                    style="font-size: 0.75rem; color: var(--text-muted); font-weight: 400;">(Cost Sharing MSS /
+                    Partner)</span></td>
+                <td style="padding: 12px 16px; color: var(--text-muted);">Menunggu timeline priority tim Product dan
+                  bisnis (agar voucher bisa ditanggung MSS atau Partner).</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXECUTIVE CONCLUSION SECTION -->
+    <section id="conclusion" style="margin-top: 48px; padding-top: 36px; border-top: 3px double var(--border-color);">
+      <div class="section-tag" style="background: #dcfce7; color: #15803d;">Kesimpulan Akhir</div>
+      <h2 class="section-title">Kesimpulan Strategis & Evaluasi Beban per Tim</h2>
+      <p class="section-subtitle">Analisis Pemisahan Perspective & Insight Kendala Antara Tim Product (PO) dan Tim Dev (IT Engineering)</p>
+
+      <div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); border-radius: var(--radius-xl); padding: 32px; color: #ffffff; box-shadow: var(--shadow-lg); margin-top: 24px;">
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 24px; margin-bottom: 28px;">
+          
+          <!-- SISI TIM PRODUCT OWNER -->
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-lg); padding: 22px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #38bdf8;"></span>
+              <h4 style="font-size: 1.1rem; font-family: 'Outfit', sans-serif; color: #38bdf8; margin: 0;">INSIGHT DARI SISI TIM PRODUCT (PO)</h4>
+            </div>
+            
+            <div style="margin-bottom: 14px; background: rgba(56, 189, 248, 0.1); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0; border-left: 3px solid #38bdf8;">
+              <strong>✅ PRD 100% Selesai (Tugas Product Rampung):</strong>
+              <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.8rem;">
+                Tim Product telah merampungkan PRD 100% untuk <strong>9+ fitur bernilai tinggi</strong> (Intechgra Phase 1.1/1.2, Stock Sharelock, Laporan Sales 3 Download Features, OTP 2, Line Approval, Project1000s). Kewajiban penyusunan PRD pada fitur ini sudah tuntas dan tinggal menunggu alokasi developer.
+              </p>
+            </div>
+
+            <div style="background: rgba(239, 68, 68, 0.1); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0; border-left: 3px solid #f87171;">
+              <strong>⚠️ Bottleneck PRD Inisiatif Baru (Kekurangan PO):</strong>
+              <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.8rem;">
+                Untuk inisiatif yang PRD-nya belum selesai (Renov1000s Login Tukang & Finance Flow, Star Sales 2, Revamp Finance 1-3, Scanwin Fraud, Revamp MAUI), keterlambatan murni dipicu oleh <strong>Lead PO yang overloaded</strong> mengurus seluruh platform (1000Saudara, Renov, Scanwin, Master SKU, Mitra) tanpa dedicated PO per domain.
+              </p>
+            </div>
+          </div>
+
+          <!-- SISI TIM DEV IT ENGINEERING -->
+          <div style="background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(74, 222, 128, 0.3); border-radius: var(--radius-lg); padding: 22px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #4ade80;"></span>
+              <h4 style="font-size: 1.1rem; font-family: 'Outfit', sans-serif; color: #4ade80; margin: 0;">INSIGHT DARI SISI TIM DEV IT (ENGINEERING)</h4>
+            </div>
+
+            <div style="margin-bottom: 14px; background: rgba(74, 222, 128, 0.1); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0; border-left: 3px solid #4ade80;">
+              <strong>⚙️ Kapasitas Developer Terbagi (Shared Dev Resource):</strong>
+              <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.8rem;">
+                Tim Dev IT bukan lambat, melainkan resourcenya harus dibagi untuk pengerjaan beberapa platform sekaligus (1000Saudara, Scanwin1000s, Renov1000s, Project1000s, Mitra1000s). Hal ini membuat pengerjaan koding untuk fitur yang PRD-nya sudah 100% harus mengantre alokasi dev.
+              </p>
+            </div>
+
+            <div style="background: rgba(251, 191, 36, 0.1); padding: 10px 14px; border-radius: 6px; font-size: 0.85rem; color: #e2e8f0; border-left: 3px solid #fbbf24;">
+              <strong>🛡️ Mitigasi Context-Switching & Rework IT:</strong>
+              <p style="margin: 4px 0 0 0; color: #cbd5e1; font-size: 0.8rem;">
+                Pencapaian dev Scanwin1000s dimulai 27 Juli 2026 (menunggu UI/UX 31 Juli). Pemenuhan dedicated PO per domain sangat krusial bagi tim Dev IT agar setiap sprint dikawal secara konsisten, mencegah <em>context switching</em> dan perombakan koding (<em>rework</em>).
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <div style="background: rgba(56, 189, 248, 0.1); border: 1px solid rgba(56, 189, 248, 0.3); border-radius: var(--radius-lg); padding: 20px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;">
+          <div>
+            <strong style="font-size: 1rem; color: #38bdf8;">📌 Solusi Manpower 8 PO + 1 Lead PO:</strong>
+            <span style="font-size: 0.875rem; color: #e2e8f0; display: block; margin-top: 4px;">Menyeimbangkan kecepatan suplai PRD dari tim Product dengan kapasitas eksekusi koding tim Dev IT tanpa menciptakan *bottleneck* di salah satu pihak.</span>
+          </div>
+          <a href="#summary" style="background: #2563eb; color: #ffffff; text-decoration: none; font-weight: 700; font-size: 0.85rem; padding: 10px 20px; border-radius: 8px; transition: all 0.2s ease;">
+            ↑ Kembali ke Ringkasan Executive
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <p>© 2026 1000s Group - Executive Presentation: Product Owner Manpower Planning</p>
+  </footer>
+
+  <!-- Script for Reading Progress Bar & Scroll Highlight Navigation -->
+  <script>
+    window.onscroll = function () {
+      // Progress Bar Update
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      document.getElementById("progressBar").style.width = scrolled + "%";
+
+      // Navigation Link Active State Update
+      const sections = document.querySelectorAll("section");
+      const navLinks = document.querySelectorAll("nav a");
+
+      let currentSection = "";
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (winScroll >= sectionTop) {
+          currentSection = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach(link => {
+        const isActive = link.getAttribute("href") === "#" + currentSection;
+        if (isActive && !link.classList.contains("active")) {
+          link.classList.add("active");
+          link.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+        } else if (!isActive) {
+          link.classList.remove("active");
+        }
+      });
+    };
+  </script>
+</body>
+
+</html>
