@@ -1,11 +1,136 @@
 // sidebar.js — Centralized Master Sidebar for Scanwin FDE Prototype Portal
 (function() {
+  // Inject default Sidebar CSS if not present on page
+  function injectStyles() {
+    if (document.getElementById('portal-sidebar-styles')) return;
+    const style = document.createElement('style');
+    style.id = 'portal-sidebar-styles';
+    style.textContent = `
+      :root {
+        --portal-sidebar-bg: #0f172a;
+        --portal-sidebar-border: #1e293b;
+        --primary-blue: #0b57d0;
+      }
+      .portal-sidebar {
+        width: 290px;
+        background: var(--portal-sidebar-bg, #0f172a);
+        border-right: 1px solid var(--portal-sidebar-border, #1e293b);
+        display: flex;
+        flex-direction: column;
+        padding: 28px 20px;
+        color: #f8fafc;
+        flex-shrink: 0;
+        min-height: 100vh;
+        box-sizing: border-box;
+      }
+      .portal-header {
+        margin-bottom: 24px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .portal-header h2 {
+        font-size: 20px;
+        font-weight: 800;
+        color: #fff;
+        letter-spacing: -0.5px;
+        margin: 0;
+      }
+      .portal-header .portal-badge {
+        display: inline-block;
+        background: rgba(59,130,246,0.15);
+        border: 1px solid rgba(59,130,246,0.3);
+        color: #93c5fd;
+        font-size: 10px;
+        font-weight: 700;
+        padding: 3px 8px;
+        border-radius: 20px;
+        margin-top: 6px;
+      }
+      .portal-menu-title {
+        font-size: 11px;
+        font-weight: 700;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-bottom: 12px;
+        padding-left: 8px;
+      }
+      .portal-menu-list {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+      .portal-menu-item {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        border-radius: 10px;
+        font-size: 13.5px;
+        font-weight: 600;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        text-decoration: none;
+      }
+      .portal-menu-item:hover {
+        background: rgba(255,255,255,0.04);
+        color: #f1f5f9;
+      }
+      .portal-menu-item.active {
+        background: var(--primary-blue, #0b57d0);
+        color: #fff;
+        box-shadow: 0 4px 12px rgba(11,87,208,0.2);
+      }
+      .portal-menu-icon {
+        width: 18px;
+        height: 18px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+      .user-flow-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%);
+        color: #fff;
+        border: none;
+        border-radius: 12px;
+        padding: 14px 18px;
+        font-size: 13.5px;
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+        box-shadow: 0 4px 14px rgba(109,40,217,0.3);
+        transition: all 0.2s ease;
+        margin-bottom: 20px;
+        text-align: center;
+        width: 100%;
+        box-sizing: border-box;
+      }
+      .user-flow-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 6px 16px rgba(109,40,217,0.4);
+        color: #fff;
+      }
+      .btn-icon {
+        width: 16px;
+        height: 16px;
+        fill: currentColor;
+        flex-shrink: 0;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   function renderSidebar() {
+    injectStyles();
     const container = document.getElementById('portal-sidebar-container') || document.querySelector('.portal-sidebar');
     if (!container) return;
 
-    // Detect active page from filename or path
-    const path = window.location.pathname.toLowerCase();
+    // Detect active page from filename or path (handles GitHub Pages subpaths & index.html fallback)
+    const path = (window.location.pathname || '').toLowerCase();
     let activeKey = 'hub';
     if (path.includes('registrasi-pin')) activeKey = 'registrasi';
     else if (path.includes('ubah-pin')) activeKey = 'ubah';
@@ -67,4 +192,5 @@
   } else {
     renderSidebar();
   }
+  window.addEventListener('load', renderSidebar);
 })();
