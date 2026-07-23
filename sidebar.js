@@ -1,5 +1,5 @@
 // sidebar.js — Centralized Master Sidebar for Scanwin FDE Prototype Portal
-(function() {
+(function () {
   function injectStyles() {
     if (document.getElementById('portal-sidebar-styles')) return;
     const style = document.createElement('style');
@@ -139,6 +139,7 @@
     else if (path.includes('pencegahan-akses') || path.includes('pencegahan')) activeKey = 'pencegahan';
     else if (path.includes('direct-scan')) activeKey = 'direct';
     else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
+    else if (path.includes('klaim-mandiri') || path.includes('klaim')) activeKey = 'klaim';
     else if (path.includes('flowchart')) activeKey = 'flowchart';
 
     const isHub = (activeKey === 'hub');
@@ -185,6 +186,10 @@
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg>
           <span>6. Alur Shareable QR</span>
         </a>
+        <a href="scanwin-fde-customer-klaim-mandiri.html" class="portal-menu-item ${activeKey === 'klaim' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <span>7. Klaim Mandiri & FDE Akhir</span>
+        </a>
       </div>
 
       ${!isHub ? `
@@ -203,7 +208,7 @@
     if (renderSidebar()) return;
 
     let attempts = 0;
-    const interval = setInterval(function() {
+    const interval = setInterval(function () {
       attempts++;
       if (renderSidebar() || attempts > 60) {
         clearInterval(interval);

@@ -242,8 +242,83 @@
 
 <body>
 
+    <!-- SVG Export Helper Modal -->
+    <div id="svgCopyModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); z-index: 999; justify-content: center; align-items: center;">
+        <div style="background: white; border-radius: 20px; width: 560px; max-width: 90%; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+                <div style="font-weight: 800; font-size: 16px; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-file-code" style="color: #4f46e5;"></i> Export Flowchart SVG ke Figma
+                </div>
+                <button onclick="closeSvgModal()" style="background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer;"><i class="fas fa-times"></i></button>
+            </div>
+
+            <p style="font-size: 12.5px; color: #475569; line-height: 1.5; margin: 0;">
+                Pilih flow yang ingin di-export ke SVG, kemudian salin kode atau download file untuk Figma:
+            </p>
+
+            <!-- Flow Checkbox Selector Container -->
+            <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px;">
+                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-list-check" style="color: #4f46e5;"></i> Centang Flow Flowchart yang Ingin Di-export:
+                    </div>
+                    <label style="font-size: 11px; font-weight: 700; color: #4f46e5; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" id="chkSelectAll" checked onchange="toggleSelectAllFlows(this.checked)"> Pilih Semua
+                    </label>
+                </div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-height: 140px; overflow-y: auto; padding-right: 4px;">
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec1" checked onchange="onFlowCheckboxChange()"> 🟣 1. Register PIN
+                    </label>
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec2" checked onchange="onFlowCheckboxChange()"> 💗 2. Ubah PIN
+                    </label>
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec3" checked onchange="onFlowCheckboxChange()"> 🟠 3. Reset PIN (OTP WA)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec4" checked onchange="onFlowCheckboxChange()"> 🟢 4. Barrier Redirection (PRD 4)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec5" checked onchange="onFlowCheckboxChange()"> 🔵 5. Direct Scan QR Customer
+                    </label>
+                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec6" checked onchange="onFlowCheckboxChange()"> 💚 6. Bulk QR &amp; FDE Audit (PRD 6)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #0369a1; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7" checked onchange="onFlowCheckboxChange()"> 🔷 7. Customer Klaim Mandiri &amp; Validasi FDE (PRD 11)
+                    </label>
+                </div>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                    <span style="background: #10b981; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">1</span> 
+                    Download File .SVG (Rekomendasi 100% Berhasil di Figma):
+                </div>
+                <button onclick="downloadSVG()" style="background: #10b981; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-download"></i> Download File .SVG (Selected Flows)
+                </button>
+                <span style="font-size: 11px; color: #64748b; text-align: center;">Setelah di-download, tinggal <strong>Drag & Drop (Seret & Lepas)</strong> file .svg dari folder Download langsung ke canvas Figma.</span>
+            </div>
+
+            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                    <span style="background: #4f46e5; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">2</span> 
+                    Atau Salin Kode RAW SVG dari Kolom Teks Berikut:
+                </div>
+                <textarea id="rawSvgTextArea" style="width: 100%; height: 90px; font-family: monospace; font-size: 10.5px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; resize: none; background: #ffffff; color: #334155;"></textarea>
+                <button onclick="copyRawAreaText()" style="background: #4f46e5; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                    <i class="fas fa-copy"></i> Select &amp; Copy Raw SVG Code
+                </button>
+            </div>
+        </div>
+    </div>
+
     <div class="controls">
         <button class="btn-ctrl" onclick="copyAsSVG()" title="Salin SVG untuk Figma (Paste langsung di Figma)"><i class="fas fa-copy"></i></button>
+        <button class="btn-ctrl" onclick="downloadSVG()" title="Download File .SVG (Seret & Drop ke Figma)"><i class="fas fa-download"></i></button>
         <button class="btn-ctrl" onclick="zoomView(1.2)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
         <button class="btn-ctrl" onclick="zoomView(0.8)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
         <button class="btn-ctrl" onclick="resetZoom()" title="Reset View"><i class="fas fa-expand"></i></button>
@@ -272,29 +347,44 @@
         <div id="flow-area">
             <!-- Figma-style sections wrapper inside canvas to scale together -->
             <div id="sections-container">
+                <!-- ================= OUTER SECTION 1: MERCHANT SIDE ================= -->
+                <div class="figma-section" data-sec-id="outer-merchant" style="left: 400px; top: 150px; width: 5350px; height: 3680px; border: 3px dashed #64748b; background: rgba(241, 245, 249, 0.25);">
+                    <span class="section-label" style="background:#0f172a; font-size:13px; padding:6px 16px;">MERCHANT SIDE</span>
+                </div>
+
                 <!-- SECTION 1 -->
-                <div class="figma-section" style="left: 450px; top: 200px; width: 2850px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec1" style="left: 450px; top: 200px; width: 2850px; height: 500px;">
                     <span class="section-label" style="background:#8b5cf6;">Register PIN Mitra1000s</span>
                 </div>
                 <!-- SECTION 2 -->
-                <div class="figma-section" style="left: 450px; top: 760px; width: 3080px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec2" style="left: 450px; top: 760px; width: 3080px; height: 500px;">
                     <span class="section-label" style="background:#ec4899;">Ubah PIN Mitra1000s</span>
                 </div>
                 <!-- SECTION 3 -->
-                <div class="figma-section" style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec3" style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
                     <span class="section-label" style="background:#f59e0b;">Reset PIN Terblokir (OTP WA)</span>
                 </div>
                 <!-- SECTION 4 -->
-                <div class="figma-section" style="left: 450px; top: 1920px; width: 3300px; height: 540px;">
+                <div class="figma-section" data-sec-id="sec4" style="left: 450px; top: 1920px; width: 3300px; height: 540px;">
                     <span class="section-label" style="background:#10b981;">Pencegahan Akses Menu (Redirection Barrier - PRD 4)</span>
                 </div>
                 <!-- SECTION 5 -->
-                <div class="figma-section" style="left: 450px; top: 2520px; width: 4620px; height: 600px;">
+                <div class="figma-section" data-sec-id="sec5" style="left: 450px; top: 2520px; width: 4620px; height: 600px;">
                     <span class="section-label" style="background:#0b57d0;">Direct Scan QR Customer (Flow 1)</span>
                 </div>
                 <!-- SECTION 6 -->
-                <div class="figma-section" style="left: 450px; top: 3180px; width: 5250px; height: 600px;">
+                <div class="figma-section" data-sec-id="sec6" style="left: 450px; top: 3180px; width: 5250px; height: 600px;">
                     <span class="section-label" style="background:#25d366;">Shareable Bulk QR &amp; Audit FDE Engine (Flow 2 - PRD 6)</span>
+                </div>
+
+                <!-- ================= OUTER SECTION 2: CUSTOMER SIDE ================= -->
+                <div class="figma-section" data-sec-id="outer-customer" style="left: 400px; top: 3950px; width: 5350px; height: 750px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
+                    <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">CUSTOMER SIDE</span>
+                </div>
+
+                <!-- SUB-SECTION: customer-klaim-mandiri (PRD 11) -->
+                <div class="figma-section" data-sec-id="sec7" style="left: 450px; top: 4000px; width: 5250px; height: 650px;">
+                    <span class="section-label" style="background:#2563eb;">customer-klaim-mandiri (Klaim Mandiri &amp; Validasi FDE Akhir - PRD 11)</span>
                 </div>
             </div>
 
@@ -470,7 +560,39 @@
                 { id: 'f6-cust-claim', type: 'n-gray', text: 'Customer Klaim Mandiri<br>di App 1000Saudara', x: 5000, y: 3260 },
                 { id: 'f6-cair-komisi', type: 'n-gray', text: 'Cairkan Komisi &<br>Update Status Selesai', x: 5220, y: 3260 },
                 { id: 'f6-end-success', type: 'n-end', text: 'End (Komisi Cair<br>& QR Verified)', x: 5410, y: 3215 },
-                { id: 'f6-end-pending', type: 'n-end', text: 'End (Monitoring Audit<br>Sistem 1x24h)', x: 5000, y: 3435 }
+                { id: 'f6-end-pending', type: 'n-end', text: 'End (Monitoring Audit<br>Sistem 1x24h)', x: 5000, y: 3435 },
+
+                // SECTION 7: Customer Klaim Mandiri & Validasi FDE Akhir (customer-klaim-mandiri - PRD 11 - Y: 4000-4650)
+                { id: 'c1-start', type: 'n-start', text: 'Start', x: 495, y: 4220 },
+                { id: 'c1-home', type: 'n-gray', text: 'Customer Buka<br>Beranda App', x: 640, y: 4240 },
+                { id: 'c1-click-banner', type: 'n-purple', text: 'Klik Banner / Button<br>"Klaim ScanWin"', x: 860, y: 4240 },
+                { id: 'c1-page-klaim', type: 'n-gray', text: 'Masuk Layar<br>Kode ScanWin', x: 1080, y: 4240 },
+                { id: 'c1-upload-action', type: 'n-purple', text: 'Customer Upload<br>Foto QR / Pilih File', x: 1300, y: 4240 },
+                { id: 'c1-dec-qr', type: 'n-decision', text: '<span>Validasi<br>Format QR?</span>', x: 1550, y: 4210 },
+                { id: 'c1-qr-invalid', type: 'n-gray', text: 'Tampilkan Bottom Sheet<br>Modal QR Error', x: 1520, y: 4450 },
+                { id: 'c1-click-reupload', type: 'n-purple', text: 'Customer Klik<br>"Upload Ulang"', x: 1300, y: 4450 },
+
+                { id: 'c1-fde-engine', type: 'n-gray', text: 'Backend Jalankan FDE:<br>Cross-Matching Device ID', x: 1780, y: 4240 },
+                { id: 'c1-dec-fde', type: 'n-decision', text: '<span>Evaluasi<br>FDE Akhir?</span>', x: 2030, y: 4210 },
+
+                // Branch Happy Path
+                { id: 'c1-valid-fde', type: 'n-gray', text: 'Device ID Customer<br>Berbeda dari Merchant', x: 2280, y: 4100 },
+                { id: 'c1-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 2500, y: 4100 },
+                { id: 'c1-dec-voucher-happy', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 2740, y: 4070 },
+                { id: 'c1-btn-saldo-happy', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 2980, y: 4040 },
+                { id: 'c1-btn-next-happy', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 2980, y: 4160 },
+                { id: 'c1-click-saldo-happy', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 3240, y: 4100 },
+                { id: 'c1-end-happy', type: 'n-end', text: 'Kembali ke Beranda<br>& Saldo Cair', x: 3470, y: 4055 },
+
+                // Branch Fraud Path
+                { id: 'c1-fraud-fde', type: 'n-gray', text: 'Device ID Customer<br>SAMA (Kembar Merchant)', x: 2280, y: 4350 },
+                { id: 'c1-trigger-email', type: 'n-gray', text: 'Status DB: PENDING &<br>Email Security Alert', x: 2500, y: 4350 },
+                { id: 'c1-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Pending<br>Verifikasi Keamanan', x: 2720, y: 4350 },
+                { id: 'c1-dec-voucher-pending', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 2960, y: 4320 },
+                { id: 'c1-btn-saldo-pending', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 3200, y: 4290 },
+                { id: 'c1-btn-next-pending', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 3200, y: 4410 },
+                { id: 'c1-click-saldo-pending', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 3460, y: 4350 },
+                { id: 'c1-end-pending', type: 'n-end', text: 'Kembali ke Beranda<br>& Status Pending', x: 3690, y: 4305 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -633,7 +755,41 @@
                 { from: 'f6-show-pending-self', to: 'f6-end-pending', f: 'right', t: 'top' },
 
                 { from: 'f6-dec-modal-item', to: 'f6-show-pending-limit', f: 'bottom', t: 'left', label: 'Pending (Limit)', lClass: 'label-no' },
-                { from: 'f6-show-pending-limit', to: 'f6-end-pending', f: 'right', t: 'bottom' }
+                { from: 'f6-show-pending-limit', to: 'f6-end-pending', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 7 (Customer Klaim Mandiri & FDE Akhir - PRD 11)
+                { from: 'c1-start', to: 'c1-home', f: 'right', t: 'left' },
+                { from: 'c1-home', to: 'c1-click-banner', f: 'right', t: 'left' },
+                { from: 'c1-click-banner', to: 'c1-page-klaim', f: 'right', t: 'left' },
+                { from: 'c1-page-klaim', to: 'c1-upload-action', f: 'right', t: 'left' },
+                { from: 'c1-upload-action', to: 'c1-dec-qr', f: 'right', t: 'left' },
+
+                { from: 'c1-dec-qr', to: 'c1-fde-engine', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'c1-dec-qr', to: 'c1-qr-invalid', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
+                { from: 'c1-qr-invalid', to: 'c1-click-reupload', f: 'left', t: 'right' },
+                { from: 'c1-click-reupload', to: 'c1-page-klaim', f: 'top', t: 'bottom' },
+
+                { from: 'c1-fde-engine', to: 'c1-dec-fde', f: 'right', t: 'left' },
+
+                // Decision FDE Branching
+                { from: 'c1-dec-fde', to: 'c1-valid-fde', f: 'top', t: 'left', label: 'Valid (Happy Path)', lClass: 'label-yes' },
+                { from: 'c1-valid-fde', to: 'c1-screen-success', f: 'right', t: 'left' },
+                { from: 'c1-screen-success', to: 'c1-dec-voucher-happy', f: 'right', t: 'left' },
+                { from: 'c1-dec-voucher-happy', to: 'c1-btn-saldo-happy', f: 'top', t: 'left', label: '1 Voucher', lClass: 'label-yes' },
+                { from: 'c1-dec-voucher-happy', to: 'c1-btn-next-happy', f: 'bottom', t: 'left', label: '2+ Voucher', lClass: 'label-no' },
+                { from: 'c1-btn-saldo-happy', to: 'c1-click-saldo-happy', f: 'right', t: 'left' },
+                { from: 'c1-btn-next-happy', to: 'c1-click-saldo-happy', f: 'right', t: 'left' },
+                { from: 'c1-click-saldo-happy', to: 'c1-end-happy', f: 'right', t: 'left' },
+
+                { from: 'c1-dec-fde', to: 'c1-fraud-fde', f: 'bottom', t: 'left', label: 'Self-Redeem Fraud', lClass: 'label-no' },
+                { from: 'c1-fraud-fde', to: 'c1-trigger-email', f: 'right', t: 'left' },
+                { from: 'c1-trigger-email', to: 'c1-screen-pending', f: 'right', t: 'left' },
+                { from: 'c1-screen-pending', to: 'c1-dec-voucher-pending', f: 'right', t: 'left' },
+                { from: 'c1-dec-voucher-pending', to: 'c1-btn-saldo-pending', f: 'top', t: 'left', label: '1 Voucher', lClass: 'label-yes' },
+                { from: 'c1-dec-voucher-pending', to: 'c1-btn-next-pending', f: 'bottom', t: 'left', label: '2+ Voucher', lClass: 'label-no' },
+                { from: 'c1-btn-saldo-pending', to: 'c1-click-saldo-pending', f: 'right', t: 'left' },
+                { from: 'c1-btn-next-pending', to: 'c1-click-saldo-pending', f: 'right', t: 'left' },
+                { from: 'c1-click-saldo-pending', to: 'c1-end-pending', f: 'right', t: 'left' }
             ]
         };
 
@@ -960,43 +1116,93 @@
                 .replace(/'/g, '&apos;');
         }
 
-        async function copyAsSVG() {
-            try {
-                let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+        function getSelectedFlowKeys() {
+            const checkedBoxes = Array.from(document.querySelectorAll('.chk-flow:checked'));
+            return checkedBoxes.map(cb => cb.value);
+        }
 
-                // Calculate bounding box including sections and nodes
-                document.querySelectorAll('.figma-section').forEach(sec => {
-                    const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
-                    if (x < minX) minX = x;
-                    if (y < minY) minY = y;
-                    if (x + w > maxX) maxX = x + w;
-                    if (y + h > maxY) maxY = y + h;
-                });
+        function isNodeInSelectedSecs(nodeId, selectedKeys) {
+            if (!selectedKeys || selectedKeys.length === 0) return true;
+            if (nodeId.startsWith('f1-') && selectedKeys.includes('sec1')) return true;
+            if (nodeId.startsWith('f2-') && selectedKeys.includes('sec2')) return true;
+            if (nodeId.startsWith('f3-') && selectedKeys.includes('sec3')) return true;
+            if (nodeId.startsWith('f4-') && selectedKeys.includes('sec4')) return true;
+            if (nodeId.startsWith('f5-') && selectedKeys.includes('sec5')) return true;
+            if (nodeId.startsWith('f6-') && selectedKeys.includes('sec6')) return true;
+            if (nodeId.startsWith('c1-') && selectedKeys.includes('sec7')) return true;
+            return false;
+        }
 
-                const nodes = document.querySelectorAll('.node');
-                nodes.forEach(el => {
-                    const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
-                    if (x < minX) minX = x;
-                    if (y < minY) minY = y;
-                    if (x + w > maxX) maxX = x + w;
-                    if (y + h > maxY) maxY = y + h;
-                });
+        function onFlowCheckboxChange() {
+            const selected = getSelectedFlowKeys();
+            const allCount = document.querySelectorAll('.chk-flow').length;
+            const chkAll = document.getElementById('chkSelectAll');
+            if (chkAll) chkAll.checked = (selected.length === allCount);
+            
+            const svg = generateFullSVG(selected);
+            const area = document.getElementById('rawSvgTextArea');
+            if (area) area.value = svg;
+        }
 
-                if (minX === Infinity) minX = 0;
-                if (minY === Infinity) minY = 0;
-                if (maxX === -Infinity) maxX = 1000;
-                if (maxY === -Infinity) maxY = 1000;
-                
-                minX = Math.max(0, minX - 60);
-                minY = Math.max(0, minY - 60);
-                maxX += 60;
-                maxY += 60;
-                const width = maxX - minX;
-                const height = maxY - minY;
+        function toggleSelectAllFlows(isAll) {
+            document.querySelectorAll('.chk-flow').forEach(el => {
+                el.checked = isAll;
+            });
+            onFlowCheckboxChange();
+        }
 
-                let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
-                
-                svg += `
+        function generateFullSVG(selectedKeys) {
+            if (!selectedKeys) {
+                selectedKeys = getSelectedFlowKeys();
+            }
+            if (selectedKeys.length === 0) {
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7'];
+            }
+
+            let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+            const activeSecIds = new Set(selectedKeys);
+            const hasMerchant = selectedKeys.some(k => ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].includes(k));
+            if (hasMerchant) activeSecIds.add('outer-merchant');
+            if (selectedKeys.includes('sec7')) activeSecIds.add('outer-customer');
+
+            const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
+                const id = sec.getAttribute('data-sec-id');
+                return id && activeSecIds.has(id);
+            });
+
+            activeSectionEls.forEach(sec => {
+                const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
+                if (x < minX) minX = x;
+                if (y < minY) minY = y;
+                if (x + w > maxX) maxX = x + w;
+                if (y + h > maxY) maxY = y + h;
+            });
+
+            const activeNodeEls = Array.from(document.querySelectorAll('.node')).filter(el => {
+                return isNodeInSelectedSecs(el.id, selectedKeys);
+            });
+
+            activeNodeEls.forEach(el => {
+                const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+                if (x < minX) minX = x;
+                if (y < minY) minY = y;
+                if (x + w > maxX) maxX = x + w;
+                if (y + h > maxY) maxY = y + h;
+            });
+
+            if (minX === Infinity) { minX = 0; minY = 0; maxX = 1000; maxY = 1000; }
+            
+            minX = Math.max(0, minX - 60);
+            minY = Math.max(0, minY - 60);
+            maxX += 60;
+            maxY += 60;
+            const width = maxX - minX;
+            const height = maxY - minY;
+
+            let svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
+            
+            svg += `
 <defs>
     <style type="text/css">
     <![CDATA[
@@ -1030,215 +1236,225 @@
     </marker>
 </defs>`;
 
-                // Render Sections
-                document.querySelectorAll('.figma-section').forEach(sec => {
-                    const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
-                    const labelSpan = sec.querySelector('.section-label');
-                    const rawText = labelSpan ? (labelSpan.textContent || labelSpan.innerText || '').trim() : '';
-                    const labelText = escapeXML(rawText);
-                    const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
-                    const labelWidth = Math.max(120, rawText.length * 7 + 24);
-                    
-                    svg += `
+            activeSectionEls.forEach(sec => {
+                const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
+                const labelSpan = sec.querySelector('.section-label');
+                const rawText = labelSpan ? (labelSpan.textContent || labelSpan.innerText || '').trim() : '';
+                const labelText = escapeXML(rawText);
+                const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
+                const labelWidth = Math.max(120, rawText.length * 7 + 24);
+                
+                svg += `
     <!-- Section -->
     <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
     <rect x="${x + 20}" y="${y - 12}" width="${labelWidth}" height="24" rx="8" fill="${labelBgColor}" />
     <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="central" font-family="Inter, sans-serif" font-size="11px" font-weight="800" fill="#ffffff">${labelText}</text>`;
-                });
+            });
 
-                // Render Connections
-                flowData.connections.forEach((conn) => {
-                    const pathEl = svgLayer.querySelector(`[data-from="${conn.from}"][data-to="${conn.to}"]`);
-                    if (!pathEl) return;
-                    let d = pathEl.getAttribute('d');
-                    if (!d) return;
-                    
-                    const dTokens = d.trim().split(/\s+/);
-                    if (dTokens.length >= 3) {
-                        const lastY = parseFloat(dTokens[dTokens.length - 1]);
-                        const lastX = parseFloat(dTokens[dTokens.length - 2]);
-                        
-                        if (!isNaN(lastX) && !isNaN(lastY)) {
-                            if (conn.t === 'left') {
-                                d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
-                            } else if (conn.t === 'right') {
-                                d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
-                            } else if (conn.t === 'top') {
-                                d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY - 10}`;
-                            } else if (conn.t === 'bottom') {
-                                d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
-                            }
-                        }
-                    }
-                    
-                    svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
-                    svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
-                    svg += `\n        <path d="${d}" class="conn-path" stroke="#94a3b8" stroke-width="2.5" fill="none" />`;
+            const activeConnections = flowData.connections.filter(conn => {
+                return isNodeInSelectedSecs(conn.from, selectedKeys) && isNodeInSelectedSecs(conn.to, selectedKeys);
+            });
 
-                    if (conn.label) {
-                        const points = [];
-                        for (let i = 0; i < dTokens.length; i++) {
-                            if (dTokens[i] === 'M' || dTokens[i] === 'L') {
-                                const px = parseFloat(dTokens[i+1]);
-                                const py = parseFloat(dTokens[i+2]);
-                                if (!isNaN(px) && !isNaN(py)) {
-                                    points.push({ x: px, y: py });
-                                }
-                            }
-                        }
-                        
-                        let labelX = 0, labelY = 0;
-                        if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
-                            labelX = 1550; labelY = 710;
-                        } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
-                            labelX = points.length ? points[0].x - 60 : 1460;
-                            labelY = points.length ? points[0].y : 560;
-                        } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
-                            labelX = 1300; labelY = 1240;
-                        } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
-                            labelX = 2220; labelY = 1240;
-                        } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
-                            labelX = 1520; labelY = 1820;
-                        } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
-                            labelX = 2440; labelY = 1820;
-                        } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
-                            labelX = 1840; labelY = 3010;
-                        } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
-                            labelX = 2390; labelY = 3670;
-                        } else if (points.length === 2) {
-                            labelX = (points[0].x + points[1].x) / 2;
-                            labelY = (points[0].y + points[1].y) / 2;
-                        } else if (points.length === 6) {
-                            labelX = (points[2].x + points[3].x) / 2;
-                            labelY = (points[2].y + points[3].y) / 2;
-                        } else if (points.length > 0) {
-                            const midIndex = Math.floor(points.length / 2);
-                            labelX = points[midIndex].x;
-                            labelY = points[midIndex].y;
-                        }
-                        
-                        if (points[0] && points[points.length-1] && points[0].x === points[points.length-1].x && points.length <= 2) {
-                            labelX += 65;
-                        }
-                        
-                        const isYes = conn.lClass === 'label-yes';
-                        const strokeColor = isYes ? '#10b981' : '#ef4444';
-                        const textColorHex = isYes ? '#059669' : '#dc2626';
-                        const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
-                        const rectW = conn.label.length * 6 + 18;
-                        
-                        svg += `\n        <rect x="${labelX - rectW/2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
-                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="central" class="conn-lbl-txt ${textColorClass}" font-family="Inter, sans-serif" font-size="10px" font-weight="800" fill="${textColorHex}">${escapeXML(conn.label)}</text>`;
-                    }
-
-                    svg += `\n    </g>`;
-                });
-
-                // Render Nodes
-                nodes.forEach(el => {
-                    const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
-                    const cx = x + w / 2, cy = y + h / 2;
-                    
-                    const tempDiv = document.createElement('div');
-                    tempDiv.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
-                    const rawText = tempDiv.textContent || tempDiv.innerText || '';
-                    const textLines = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
-                    
-                    svg += `\n    <!-- Node: ${el.id} -->`;
-                    svg += `\n    <g id="${el.id}-group">`;
-
-                    function getSVGText(color) {
-                        if (textLines.length === 0) return '';
-                        if (textLines.length === 1) {
-                            return `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">${escapeXML(textLines[0])}</text>`;
-                        } else {
-                            let textContent = `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">`;
-                            textLines.forEach((line, idx) => {
-                                const dy = idx === 0 ? -((textLines.length - 1) * 7) : 14;
-                                textContent += `\n            <tspan x="${cx}" dy="${dy}">${escapeXML(line)}</tspan>`;
-                            });
-                            textContent += `\n        </text>`;
-                            return textContent;
-                        }
-                    }
-
-                    if (el.classList.contains('n-decision')) {
-                        const offset = (w / 2) * Math.SQRT2;
-                        svg += `\n        <polygon points="${cx},${cy - offset} ${cx + offset},${cy} ${cx},${cy + offset} ${cx - offset},${cy}" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />`;
-                        svg += getSVGText('#9a3412');
-                    } else if (el.classList.contains('n-start') || el.classList.contains('n-end')) {
-                        const r = w / 2;
-                        const fill = el.classList.contains('n-start') ? '#dcfce7' : '#fee2e2';
-                        const stroke = el.classList.contains('n-start') ? '#22c55e' : '#ef4444';
-                        const textColor = el.classList.contains('n-start') ? '#166534' : '#991b1b';
-                        svg += `\n        <circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
-                        svg += getSVGText(textColor);
-                    } else {
-                        const isPurple = el.classList.contains('n-purple');
-                        const fill = isPurple ? '#f3e8ff' : '#f1f5f9';
-                        const stroke = isPurple ? '#d8b4fe' : '#cbd5e1';
-                        const textColor = isPurple ? '#6b21a8' : '#334155';
-                        svg += `\n        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
-                        svg += getSVGText(textColor);
-                    }
-
-                    svg += `\n    </g>`;
-                });
-
-                svg += '\n</svg>';
+            activeConnections.forEach((conn) => {
+                const pathEl = svgLayer.querySelector(`[data-from="${conn.from}"][data-to="${conn.to}"]`);
+                if (!pathEl) return;
+                let d = pathEl.getAttribute('d');
+                if (!d) return;
                 
-                // Copy to Clipboard with Multi-level Fallbacks
-                let copied = false;
+                const dTokens = d.trim().split(/\s+/);
+                if (dTokens.length >= 3) {
+                    const lastY = parseFloat(dTokens[dTokens.length - 1]);
+                    const lastX = parseFloat(dTokens[dTokens.length - 2]);
+                    
+                    if (!isNaN(lastX) && !isNaN(lastY)) {
+                        if (conn.t === 'left') {
+                            d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
+                        } else if (conn.t === 'right') {
+                            d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
+                        } else if (conn.t === 'top') {
+                            d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY - 10}`;
+                        } else if (conn.t === 'bottom') {
+                            d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
+                        }
+                    }
+                }
+                
+                svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
+                svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
+                svg += `\n        <path d="${d}" class="conn-path" stroke="#94a3b8" stroke-width="2.5" fill="none" />`;
 
-                // Method 1: ClipboardItem with image/svg+xml and text/plain (Optimal for Figma)
-                if (navigator.clipboard && window.ClipboardItem) {
-                    try {
-                        const blobText = new Blob([svg], { type: 'text/plain' });
-                        const blobSvg = new Blob([svg], { type: 'image/svg+xml' });
-                        await navigator.clipboard.write([
-                            new ClipboardItem({
-                                'text/plain': blobText,
-                                'image/svg+xml': blobSvg
-                            })
-                        ]);
-                        copied = true;
-                    } catch (e1) {
-                        console.warn('ClipboardItem write failed, trying writeText fallback:', e1);
+                if (conn.label) {
+                    const points = [];
+                    for (let i = 0; i < dTokens.length; i++) {
+                        if (dTokens[i] === 'M' || dTokens[i] === 'L') {
+                            const px = parseFloat(dTokens[i+1]);
+                            const py = parseFloat(dTokens[i+2]);
+                            if (!isNaN(px) && !isNaN(py)) {
+                                points.push({ x: px, y: py });
+                            }
+                        }
+                    }
+                    
+                    let labelX = 0, labelY = 0;
+                    if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
+                        labelX = 1550; labelY = 710;
+                    } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
+                        labelX = points.length ? points[0].x - 60 : 1460;
+                        labelY = points.length ? points[0].y : 560;
+                    } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
+                        labelX = 1300; labelY = 1240;
+                    } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
+                        labelX = 2220; labelY = 1240;
+                    } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
+                        labelX = 1520; labelY = 1820;
+                    } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
+                        labelX = 2440; labelY = 1820;
+                    } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
+                        labelX = 1840; labelY = 3010;
+                    } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
+                        labelX = 2390; labelY = 3670;
+                    } else if (points.length === 2) {
+                        labelX = (points[0].x + points[1].x) / 2;
+                        labelY = (points[0].y + points[1].y) / 2;
+                    } else if (points.length === 6) {
+                        labelX = (points[2].x + points[3].x) / 2;
+                        labelY = (points[2].y + points[3].y) / 2;
+                    } else if (points.length > 0) {
+                        const midIndex = Math.floor(points.length / 2);
+                        labelX = points[midIndex].x;
+                        labelY = points[midIndex].y;
+                    }
+                    
+                    if (points[0] && points[points.length-1] && points[0].x === points[points.length-1].x && points.length <= 2) {
+                        labelX += 65;
+                    }
+                    
+                    const isYes = conn.lClass === 'label-yes';
+                    const strokeColor = isYes ? '#10b981' : '#ef4444';
+                    const textColorHex = isYes ? '#059669' : '#dc2626';
+                    const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
+                    const rectW = conn.label.length * 6 + 18;
+                    
+                    svg += `\n        <rect x="${labelX - rectW/2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
+                    svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="central" class="conn-lbl-txt ${textColorClass}" font-family="Inter, sans-serif" font-size="10px" font-weight="800" fill="${textColorHex}">${escapeXML(conn.label)}</text>`;
+                }
+
+                svg += `\n    </g>`;
+            });
+
+            activeNodeEls.forEach(el => {
+                const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
+                const cx = x + w / 2, cy = y + h / 2;
+                
+                const tempDiv = document.createElement('div');
+                tempDiv.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+                const rawText = tempDiv.textContent || tempDiv.innerText || '';
+                const textLines = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
+                
+                svg += `\n    <!-- Node: ${el.id} -->`;
+                svg += `\n    <g id="${el.id}-group">`;
+
+                function getSVGText(color) {
+                    if (textLines.length === 0) return '';
+                    if (textLines.length === 1) {
+                        return `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">${escapeXML(textLines[0])}</text>`;
+                    } else {
+                        let textContent = `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">`;
+                        textLines.forEach((line, idx) => {
+                            const dy = idx === 0 ? -((textLines.length - 1) * 7) : 14;
+                            textContent += `\n            <tspan x="${cx}" dy="${dy}">${escapeXML(line)}</tspan>`;
+                        });
+                        textContent += `\n        </text>`;
+                        return textContent;
                     }
                 }
 
-                // Method 2: writeText
-                if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
+                if (el.classList.contains('n-decision')) {
+                    const offset = (w / 2) * Math.SQRT2;
+                    svg += `\n        <polygon points="${cx},${cy - offset} ${cx + offset},${cy} ${cx},${cy + offset} ${cx - offset},${cy}" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />`;
+                    svg += getSVGText('#9a3412');
+                } else if (el.classList.contains('n-start') || el.classList.contains('n-end')) {
+                    const r = w / 2;
+                    const fill = el.classList.contains('n-start') ? '#dcfce7' : '#fee2e2';
+                    const stroke = el.classList.contains('n-start') ? '#22c55e' : '#ef4444';
+                    const textColor = el.classList.contains('n-start') ? '#166534' : '#991b1b';
+                    svg += `\n        <circle cx="${cx}" cy="${cy}" r="${r}" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
+                    svg += getSVGText(textColor);
+                } else {
+                    const isPurple = el.classList.contains('n-purple');
+                    const fill = isPurple ? '#f3e8ff' : '#f1f5f9';
+                    const stroke = isPurple ? '#d8b4fe' : '#cbd5e1';
+                    const textColor = isPurple ? '#6b21a8' : '#334155';
+                    svg += `\n        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" fill="${fill}" stroke="${stroke}" stroke-width="2" />`;
+                    svg += getSVGText(textColor);
+                }
+
+                svg += `\n    </g>`;
+            });
+
+            svg += '\n</svg>';
+            return svg;
+        }
+
+        function downloadSVG() {
+            try {
+                const svg = generateFullSVG(getSelectedFlowKeys());
+                const blob = new Blob([svg], { type: 'image/svg+xml;charset=utf-8' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'scanwin-fde-flowchart-architecture.svg';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+                showToast('File SVG Berhasil Di-download! Silakan Seret (Drag & Drop) File .SVG Ini Langsung ke Canvas Figma.');
+            } catch (e) {
+                alert('Gagal men-download SVG: ' + e.message);
+            }
+        }
+
+        function closeSvgModal() {
+            document.getElementById('svgCopyModal').style.display = 'none';
+        }
+
+        function copyRawAreaText() {
+            const area = document.getElementById('rawSvgTextArea');
+            area.focus();
+            area.select();
+            document.execCommand('copy');
+            showToast('Kode RAW SVG disalin ke clipboard! Silakan Paste (Cmd+V / Ctrl+V) di Figma.');
+        }
+
+        async function copyAsSVG() {
+            try {
+                const selected = getSelectedFlowKeys();
+                const svg = generateFullSVG(selected);
+                
+                // Show modal & fill textarea
+                document.getElementById('rawSvgTextArea').value = svg;
+                document.getElementById('svgCopyModal').style.display = 'flex';
+
+                let copied = false;
+                if (navigator.clipboard && navigator.clipboard.writeText) {
                     try {
                         await navigator.clipboard.writeText(svg);
                         copied = true;
-                    } catch (e2) {
-                        console.warn('writeText failed, trying execCommand fallback:', e2);
-                    }
+                    } catch (e2) {}
                 }
 
-                // Method 3: execCommand fallback (Guaranteed compatibility for file:// URLs)
                 if (!copied) {
-                    const textArea = document.createElement("textarea");
-                    textArea.value = svg;
-                    textArea.style.position = "fixed";
-                    textArea.style.left = "-9999px";
-                    document.body.appendChild(textArea);
+                    const textArea = document.getElementById('rawSvgTextArea');
                     textArea.focus();
                     textArea.select();
                     copied = document.execCommand('copy');
-                    document.body.removeChild(textArea);
                 }
 
                 if (copied) {
-                    showToast('SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.');
-                } else {
-                    throw new Error('Clipboard access denied');
+                    showToast('Kode SVG Flow Pilihan Berhasil Di-copy! Silakan Paste di Figma atau gunakan opsi Download.');
                 }
-
             } catch (err) {
-                console.error('Gagal meng-copy SVG: ', err);
-                alert('Gagal meng-copy SVG ke clipboard. Pastikan izin clipboard aktif.');
+                console.error('Gagal copy SVG: ', err);
             }
         }
 

@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScanWin 1000s - Success Redeem Page (23 Figma Nodes 1:12695 to 1:12730)</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        /* Mobile Device Preview Container (390px x 844px) */
+        .mobile-device-frame {
+            width: 390px;
+            height: 844px;
+            background-color: #0171FF;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* iOS Status Bar (White Icons - Node 1:12736) */
+        .ios-status-bar {
+            width: 390px;
+            height: 45px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: transparent;
+            z-index: 30;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .status-time {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: normal;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            width: 54px;
+            text-align: center;
+        }
+
+        .status-bar-icons-svg {
+            width: 73.2px;
+            height: 11.3px;
+        }
+
+        /* Node 1:12696 - Radial Sunburst Light Rays Background */
+        .sunburst-bg-rays {
+            position: absolute;
+            left: -150px;
+            top: 66px;
+            width: 691px;
+            height: 691px;
+            z-index: 1;
+            pointer-events: none;
+            transform: rotate(-6.19deg);
+            animation: slowRotate 25s linear infinite;
+        }
+
+        @keyframes slowRotate {
+            from { transform: rotate(-6.19deg); }
+            to { transform: rotate(353.81deg); }
+        }
+
+        /* Header Announcement Text (Node 1:12710) */
+        .announcement-container {
+            position: absolute;
+            top: 108px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 278px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .congratulations-title {
+            font-weight: 700;
+            font-size: 24px;
+            line-height: 27px;
+            letter-spacing: -1.2px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #DAEAFF 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2px;
+        }
+
+        .prize-amount-highlight {
+            font-weight: 800;
+            font-size: 28px;
+            line-height: 36px;
+            color: #FFEB0A;
+            letter-spacing: -0.96px;
+            text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Node 1:12711 - Yellow Underline Brush Line */
+        .yellow-underline-svg {
+            position: absolute;
+            left: 98px;
+            top: 204px;
+            width: 192px;
+            height: 6px;
+            z-index: 10;
+        }
+
+        /* Node 1:12730 - Subtitle Store Info */
+        .store-info-subtitle {
+            position: absolute;
+            top: 216px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 231px;
+            font-weight: 500;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            color: #FFEB0A;
+            text-align: center;
+            z-index: 10;
+        }
+
+        /* Nodes 1:12712 & 1:12717 - Secondary Golden Tickets (Group 2085663501) */
+        .secondary-ticket-left {
+            position: absolute;
+            left: 37px;
+            top: 371px;
+            width: 91.86px;
+            height: 99.79px;
+            z-index: 4;
+        }
+
+        .secondary-ticket-right {
+            position: absolute;
+            left: 253px;
+            top: 311px;
+            width: 91.86px;
+            height: 99.79px;
+            z-index: 4;
+        }
+
+        /* Node 1:12722 - Main Golden Ticket (Subtract) & Node 1:12728 (Rp Fill) */
+        .main-ticket-container {
+            position: absolute;
+            left: 76px;
+            top: 303px;
+            width: 223.12px;
+            height: 190.08px;
+            z-index: 6;
+            animation: floatTicket 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes floatTicket {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(-8px); }
+        }
+
+        .main-ticket-svg {
+            width: 100%;
+            height: 100%;
+            transform: rotate(88.75deg);
+        }
+
+        .main-ticket-rp-svg {
+            position: absolute;
+            left: 70.55px;
+            top: 60.63px;
+            width: 69.6px;
+            height: 72.47px;
+            transform: rotate(-6.03deg);
+            z-index: 7;
+        }
+
+        /* Nodes 1:12695, 1:12707, 1:12708, 1:12709, 1:12729 - 3D Golden Coins */
+        .coin-node-1-12707 {
+            position: absolute;
+            left: 34px;
+            top: 274px;
+            width: 95px;
+            height: 67px;
+            z-index: 7;
+        }
+
+        .coin-node-1-12708 {
+            position: absolute;
+            left: 241px;
+            top: 236px;
+            width: 102.49px;
+            height: 114.96px;
+            transform: rotate(63.35deg);
+            z-index: 7;
+        }
+
+        .coin-node-1-12709 {
+            position: absolute;
+            left: 93px;
+            top: 285px;
+            width: 58.94px;
+            height: 56.01px;
+            transform: rotate(36.62deg);
+            filter: blur(1.5px);
+            z-index: 5;
+        }
+
+        .coin-node-1-12695 {
+            position: absolute;
+            left: 27.87px;
+            top: 447.51px;
+            width: 107.25px;
+            height: 85.98px;
+            transform: rotate(167.49deg);
+            z-index: 7;
+        }
+
+        .coin-node-1-12729 {
+            position: absolute;
+            left: 258px;
+            top: 382px;
+            width: 96.18px;
+            height: 112.51px;
+            transform: rotate(69.37deg);
+            z-index: 7;
+        }
+
+        .coin-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Nodes 1:12697 to 1:12706 & 1:12726, 1:12727 - 12 Sparkle Vectors */
+        .sparkle-node {
+            position: absolute;
+            z-index: 9;
+        }
+
+        .sp-node-1-12697 { top: 56.07%; left: 22.05%; width: 12px; height: 14px; }
+        .sp-node-1-12698 { top: 42.62%; left: 4.36%; width: 12px; height: 14px; }
+        .sp-node-1-12699 { top: 50.49%; left: 24.62%; width: 12px; height: 14px; }
+        .sp-node-1-12700 { top: 37.04%; left: 6.92%; width: 12px; height: 14px; }
+        .sp-node-1-12701 { top: 37.28%; left: 21.03%; width: 20px; height: 24px; }
+        .sp-node-1-12702 { top: 30.01%; left: 82.31%; width: 20px; height: 24px; }
+        .sp-node-1-12703 { top: 57.28%; left: 78.21%; width: 8px; height: 10px; }
+        .sp-node-1-12704 { top: 36.56%; left: 92.05%; width: 8px; height: 10px; }
+        .sp-node-1-12705 { top: 53.53%; left: 74.62%; width: 12px; height: 14px; }
+        .sp-node-1-12706 { top: 32.80%; left: 88.46%; width: 12px; height: 14px; }
+        .sp-node-1-12726 { top: 47.59%; left: 16.92%; width: 20px; height: 24px; }
+        .sp-node-1-12727 { top: 43.27%; left: 73.59%; width: 20px; height: 24px; }
+
+        /* Bottom Controls & Voucher Details (Node 1:12731) */
+        .bottom-action-container {
+            position: absolute;
+            top: 573px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 231px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 13px;
+            z-index: 20;
+        }
+
+        .voucher-id-text {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .voucher-id-text strong {
+            font-weight: 700;
+        }
+
+        /* White Pill Action Button (Node 1:12733) */
+        .btn-next-voucher {
+            width: 220px;
+            height: 43px;
+            background: #ffffff;
+            border-radius: 45px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 16px rgba(0, 50, 150, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .btn-next-voucher:hover {
+            transform: scale(1.04);
+            box-shadow: 0px 6px 20px rgba(0, 50, 150, 0.3);
+        }
+
+        .btn-next-voucher-text {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.176px;
+            color: #0171FF;
+        }
+
+        .voucher-counter-text {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.176px;
+            color: #ffffff;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Mobile Device Preview Container (390px x 844px) -->
+    <div class="mobile-device-frame" data-node-id="1:12694">
+
+        <!-- iOS Status Bar (White Icons - Node 1:12736) -->
+        <div class="ios-status-bar" data-node-id="1:12737">
+            <div class="status-time" data-node-id="1:12739">9:41</div>
+            <svg class="status-bar-icons-svg" viewBox="0 0 73.1962 11.3333" fill="none" xmlns="http://www.w3.org/2000/svg" data-node-id="1:12740">
+                <g id="Frame 48098837">
+                    <!-- Battery -->
+                    <g id="Battery">
+                        <rect id="Border" opacity="0.35" x="0.5" y="0.5" width="21" height="10.3333" rx="2.16667" stroke="#ffffff"/>
+                        <path id="Cap" opacity="0.4" d="M23 3.66667V7.66667C23.8047 7.32789 24.328 6.5398 24.328 5.66667C24.328 4.79353 23.8047 4.00544 23 3.66667" fill="#ffffff"/>
+                        <rect id="Capacity" x="2" y="2" width="18" height="7.33333" rx="1.33333" fill="#ffffff"/>
+                    </g>
+                    <!-- Wifi -->
+                    <path id="Wifi" d="M38.5292 8.59346C39.7518 7.51119 41.5429 7.51119 42.7655 8.59346C42.827 8.65167 42.8625 8.73426 42.8642 8.821C42.8658 8.90756 42.8333 8.99078 42.7743 9.05147L40.8603 11.0739C40.8041 11.1334 40.7272 11.1667 40.6474 11.1667C40.5677 11.1667 40.4915 11.1332 40.4355 11.0739L38.5204 9.05147C38.4615 8.99075 38.429 8.90754 38.4306 8.821C38.4323 8.73434 38.4678 8.65162 38.5292 8.59346ZM35.9745 5.8962C38.6086 3.33179 42.6881 3.33179 45.3222 5.8962C45.3816 5.95633 45.4161 6.03917 45.4169 6.12569C45.4176 6.21193 45.3851 6.29491 45.3271 6.35616L44.2196 7.52706C44.1056 7.64618 43.9215 7.64816 43.8046 7.53194C42.9397 6.71235 41.8142 6.25843 40.6474 6.2585C39.4813 6.25905 38.3565 6.71274 37.4921 7.53194C37.3751 7.64825 37.1911 7.64647 37.0771 7.52706L35.9706 6.35616C35.9124 6.29498 35.8801 6.212 35.8808 6.12569C35.8816 6.03929 35.9152 5.9563 35.9745 5.8962ZM33.4198 3.20577C37.4599 -0.846415 43.8339 -0.846319 47.8739 3.20577C47.9324 3.26597 47.9662 3.34843 47.9667 3.43428C47.9671 3.52004 47.9346 3.60292 47.8769 3.66377L46.7685 4.8337C46.6543 4.95366 46.4693 4.95483 46.3534 4.83663C44.8142 3.30512 42.7712 2.45098 40.6474 2.45088C38.5235 2.45092 36.4807 3.30515 34.9413 4.83663C34.8255 4.95505 34.6394 4.95397 34.5253 4.8337L33.4179 3.66377C33.3602 3.60289 33.3276 3.52002 33.328 3.43428C33.3286 3.34852 33.3614 3.26591 33.4198 3.20577Z" fill="#ffffff"/>
+                    <!-- Cellular Connection -->
+                    <path id="Cellular Connection" d="M58.8759 7.00016C59.4031 7.00016 59.831 7.44788 59.831 8.00016V10.0002C59.8308 10.5523 59.403 11.0002 58.8759 11.0002H57.9218C57.3947 11.0002 56.9669 10.5523 56.9667 10.0002V8.00016C56.9667 7.44788 57.3945 7.00016 57.9218 7.00016H58.8759ZM63.331 5.00016C63.8582 5.00016 64.2861 5.44788 64.2861 6.00016V10.0002C64.2859 10.5523 63.8581 11.0002 63.331 11.0002H62.3769C61.8497 11.0002 61.422 10.5523 61.4218 10.0002V6.00016C61.4218 5.44788 61.8496 5.00016 62.3769 5.00016H63.331ZM67.7861 2.66618C68.3132 2.66618 68.741 3.11404 68.7411 3.66618V10.0002C68.741 10.5523 68.3132 11.0002 67.7861 11.0002H66.832C66.3048 11.0002 65.877 10.5523 65.8769 10.0002V3.66618C65.877 3.11404 66.3048 2.66618 66.832 2.66618H67.7861ZM72.2411 0.33317C72.7684 0.33317 73.1962 0.780886 73.1962 1.33317V10.0002C73.196 10.5523 72.7683 11.0002 71.287 11.0002H71.287C70.7599 11.0002 70.3321 10.5523 70.332 10.0002V1.33317C70.332 0.780886 70.7598 0.33317 71.287 0.33317H72.2411Z" fill="#ffffff"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Node 1:12696 - Background Radial Sunburst Light Rays -->
+        <svg class="sunburst-bg-rays" viewBox="0 0 626.963 626.963" fill="none" data-node-id="1:12696">
+            <path id="Vector" opacity="0.4" fill-rule="evenodd" clip-rule="evenodd" d="M332.264 268.122L391.852 0H235.111L294.699 268.122L147.232 36.4074L36.3987 147.223L268.122 294.69L0 235.111V391.852L268.122 332.264L36.4074 479.731L147.223 590.564L294.69 358.84L235.111 626.963H391.852L332.264 358.84L479.731 590.555L590.564 479.74L358.84 332.264L626.963 391.852V235.111L358.84 294.699L590.555 147.232L479.74 36.3987L332.264 268.122Z" fill="url(#sunburstRadial)" fill-opacity="0.5"/>
+            <defs>
+                <radialGradient id="sunburstRadial" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(313.481 313.481) scale(297.306)">
+                    <stop stop-color="white"/>
+                    <stop offset="1" stop-color="white" stop-opacity="0"/>
+                </radialGradient>
+            </defs>
+        </svg>
+
+        <!-- Node 1:12710 - Announcement Text Header -->
+        <div class="announcement-container" data-node-id="1:12710">
+            <h1 class="congratulations-title">Selamat, Anda Mendapatkan Saldo</h1>
+            <div class="prize-amount-highlight" id="prizeAmountDisplay">IDR 200.000!</div>
+        </div>
+
+        <!-- Node 1:12711 - Yellow Underline Brush Line -->
+        <svg class="yellow-underline-svg" viewBox="0 0 192 6" fill="none" data-node-id="1:12711">
+            <path id="Rectangle 9296" d="M0 0H192V1.5L12.7229 6L0 3V0Z" fill="#FFEB0A"/>
+        </svg>
+
+        <!-- Node 1:12730 - Subtitle Store Info -->
+        <p class="store-info-subtitle" id="storeInfoDisplay" data-node-id="1:12730">
+            Dari Pembelian GRC Board di Toko Semesta Abadi
+        </p>
+
+        <!-- Node 1:12717 - Secondary Golden Ticket Left -->
+        <svg class="secondary-ticket-left" viewBox="0 0 91.8558 99.7937" fill="none" data-node-id="1:12717">
+            <g id="Group 2085663501" filter="url(#blurLeft)">
+                <path id="Subtract" d="M46.6102 12.7013C49.9771 8.10882 57.0925 7.54688 60.6942 11.9577L65.2699 17.5614C63.8594 18.6889 62.7225 20.4074 62.1752 22.4842C61.0353 26.8103 62.8794 31.0468 66.2938 31.9465C69.1011 32.6862 72.0939 30.939 73.7037 27.8901L83.1599 39.4707C85.0372 41.7697 85.4738 44.9145 83.9952 47.4882C81.0041 52.6946 74.7627 61.9707 63.9377 71.4659C54.4654 79.7746 46.3405 85.7854 41.1688 89.3798C37.8133 91.712 33.3064 90.8821 30.8245 87.6358L23.4305 77.9639C24.149 77.0059 24.7181 75.8558 25.0579 74.5662C26.1978 70.2401 24.3537 66.0036 20.9394 65.104C18.8771 64.5607 16.7146 65.3596 15.0733 67.0303L9.03711 59.1351C6.40506 55.6921 6.98765 50.7723 10.3127 47.9927C15.1393 43.958 22.4467 37.7457 30.6313 30.433C37.4533 24.3378 42.8271 17.8613 46.6102 12.7013Z" fill="url(#ticketGoldGradLeft)"/>
+            </g>
+            <defs>
+                <filter id="blurLeft" x="3.38" y="4.93" width="85.49" height="89.77" filterUnits="userSpaceOnUse">
+                    <feGaussianBlur stdDeviation="2"/>
+                </filter>
+                <linearGradient id="ticketGoldGradLeft" x1="56.6" y1="9.28" x2="35.2" y2="90.51" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FFEB0A"/>
+                    <stop offset="1" stop-color="#F7B309"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <!-- Node 1:12712 - Secondary Golden Ticket Right -->
+        <svg class="secondary-ticket-right" viewBox="0 0 91.8558 99.7937" fill="none" data-node-id="1:12712">
+            <g id="Group 2085663501" filter="url(#blurRight)">
+                <path id="Subtract" d="M46.6102 12.7013C49.9771 8.10882 57.0925 7.54688 60.6942 11.9577L65.2699 17.5614C63.8594 18.6889 62.7225 20.4074 62.1752 22.4842C61.0353 26.8103 62.8794 31.0468 66.2938 31.9465C69.1011 32.6862 72.0939 30.939 73.7037 27.8901L83.1599 39.4707C85.0372 41.7697 85.4738 44.9145 83.9952 47.4882C81.0041 52.6946 74.7627 61.9707 63.9377 71.4659C54.4654 79.7746 46.3405 85.7854 41.1688 89.3798C37.8133 91.712 33.3064 90.8821 30.8245 87.6358L23.4305 77.9639C24.149 77.0059 24.7181 75.8558 25.0579 74.5662C26.1978 70.2401 24.3537 66.0036 20.9394 65.104C18.8771 64.5607 16.7146 65.3596 15.0733 67.0303L9.03711 59.1351C6.40506 55.6921 6.98765 50.7723 10.3127 47.9927C15.1393 43.958 22.4467 37.7457 30.6313 30.433C37.4533 24.3378 42.8271 17.8613 46.6102 12.7013Z" fill="url(#ticketGoldGradRight)"/>
+            </g>
+            <defs>
+                <filter id="blurRight" x="3.38" y="4.93" width="85.49" height="89.77" filterUnits="userSpaceOnUse">
+                    <feGaussianBlur stdDeviation="2"/>
+                </filter>
+                <linearGradient id="ticketGoldGradRight" x1="56.6" y1="9.28" x2="35.2" y2="90.51" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#FFEB0A"/>
+                    <stop offset="1" stop-color="#F7B309"/>
+                </linearGradient>
+            </defs>
+        </svg>
+
+        <!-- Node 1:12722 - Main Central Golden Ticket Container & Node 1:12728 (Rp Fill) -->
+        <div class="main-ticket-container" data-node-id="1:12722">
+            <svg class="main-ticket-svg" viewBox="0 0 193.337 227.128" fill="none">
+                <g id="Subtract" filter="url(#filterDropShadow)">
+                    <path d="M82.4426 5.96786C84.198 0.550992 90.8576 -1.79738 95.4641 1.54989L124.048 22.3214C121.394 25.8952 119.768 30.7085 119.768 36.003C119.768 47.0313 126.824 55.9717 135.528 55.9718C142.684 55.9718 148.724 49.9279 150.647 41.6495L186.177 67.4688C188.578 69.2136 189.806 72.1301 189.171 75.0294C186.7 86.3232 178.379 116.574 154.732 151.655C132.644 184.422 113.421 206.953 104.787 216.59C102.06 219.634 97.493 219.961 94.2659 217.454L62.26 192.59C63.3713 189.855 63.9992 186.752 63.9993 183.464C63.9993 172.436 56.9435 163.495 48.2395 163.495C42.9814 163.495 38.3252 166.758 35.4622 171.773L7.10962 149.746C3.68719 147.087 2.98843 142.197 5.51977 138.68C13.3224 127.837 30.2747 103.955 49.5666 74.7628C67.4196 47.748 77.6587 20.7327 82.4426 5.96786Z" fill="url(#mainTicketLinear)"/>
+                </g>
+                <defs>
+                    <filter id="filterDropShadow" x="0" y="0" width="193.337" height="227.128" filterUnits="userSpaceOnUse">
+                        <feDropShadow dx="0" dy="4" stdDeviation="2" flood-opacity="0.25"/>
+                    </filter>
+                    <linearGradient id="mainTicketLinear" x1="96.67" y1="0" x2="96.67" y2="219.13" gradientUnits="userSpaceOnUse">
+                        <stop stop-color="#FFEB0A"/>
+                        <stop offset="1" stop-color="#F7B309"/>
+                    </linearGradient>
+                </defs>
+            </svg>
+
+            <!-- Node 1:12728 - Golden Ticket "Rp" Text Fill -->
+            <svg class="main-ticket-rp-svg" viewBox="0 0 62.9924 66.2228" fill="none" data-node-id="1:12728">
+                <g id="Rp">
+                    <path d="M0 30.3725L25.443 0L38.0727 10.4409C40.3618 12.3332 41.9936 14.3767 42.9683 16.5714C43.9612 18.7643 44.2727 20.9965 43.9029 23.2678C43.5414 25.5292 42.491 27.698 40.7518 29.7742C38.9876 31.8802 37.0258 33.2871 34.8661 33.9951C32.7148 34.6932 30.4652 34.7243 28.1173 34.0886C25.7777 33.4429 23.4434 32.1575 21.1145 30.2322L13.1277 23.6295L17.9728 17.8457L24.5862 23.313C25.7009 24.2345 26.7515 24.8604 27.7382 25.1908C28.743 25.5194 29.688 25.5476 30.5731 25.2753C31.4664 24.9931 32.3065 24.3823 33.0933 23.4431C33.8801 22.5038 34.3362 21.5673 34.4616 20.6334C34.5952 19.6896 34.4122 18.7519 33.9126 17.8201C33.4212 16.8784 32.6232 15.9509 31.5184 15.0376L27.8758 12.0263L7.38972 36.4816L0 30.3725ZM28.8411 30.721L24.8265 50.8964L16.765 44.232L20.9289 24.1801L28.8411 30.721Z" fill="#BE8D00"/>
+                    <path d="M18.5768 60.1878L44.8149 28.8661L52.0404 34.8394L48.7731 38.7398L48.997 38.9249C49.8753 38.4796 50.8574 38.1619 51.9431 37.9718C53.0388 37.7899 54.1844 37.8501 55.3799 38.1523C56.5936 38.4528 57.8026 39.1009 59.0068 40.0964C60.5992 41.4129 61.7393 43.0581 62.427 45.0323C63.1246 47.0147 63.1767 49.2247 62.5832 51.6625C61.9897 54.1003 60.5707 56.6589 58.3263 59.3382C56.1646 61.9187 53.9419 63.7375 51.6582 64.7947C49.3844 65.8602 47.1864 66.252 45.0642 65.9701C42.952 65.6965 41.0499 64.8604 39.358 63.4617C38.2035 62.5073 37.3606 61.4926 36.8294 60.4175C36.2982 59.3425 36.0007 58.2598 35.9369 57.1696C35.8831 56.0877 35.996 55.0682 36.2755 54.1112L36.1262 53.9877L25.877 66.2228L18.5768 60.1878ZM42.4247 46.1674C41.3977 47.3934 40.6674 48.5969 40.2339 49.778C39.8103 50.9673 39.7008 52.0733 39.9054 53.0959C40.1283 54.1168 40.6826 54.9934 41.5683 55.7256C42.4641 56.4661 43.4325 56.8484 44.4736 56.8724C45.523 56.8865 46.5879 56.5704 47.6684 55.924C48.7588 55.286 49.8175 54.3539 50.8445 53.128C51.8715 51.902 52.5976 50.7034 53.0228 49.5322C53.458 48.3692 53.5692 47.2813 53.3563 46.2687C53.1533 45.2642 52.599 44.3876 51.6934 43.6389C50.7976 42.8984 49.8334 42.5112 48.8005 42.4773C47.7677 42.4435 46.7052 42.7365 45.6132 43.3565C44.5311 43.9847 43.4682 44.9216 42.4247 46.1674Z" fill="#BE8D00"/>
+                </g>
+            </svg>
+        </div>
+
+        <!-- Node 1:12707 - 3D Coin Asset 4 -->
+        <div class="coin-node-1-12707" data-node-id="1:12707">
+            <img src="http://localhost:3845/assets/9ce1909ffc0956eeedfaf427c004e2549531f8b1.png" class="coin-img" alt="Golden Coin">
+        </div>
+
+        <!-- Node 1:12708 - 3D Coin Asset 8 -->
+        <div class="coin-node-1-12708" data-node-id="1:12708">
+            <img src="http://localhost:3845/assets/9ce1909ffc0956eeedfaf427c004e2549531f8b1.png" class="coin-img" alt="Golden Coin">
+        </div>
+
+        <!-- Node 1:12709 - 3D Coin Asset 3 (Blurred) -->
+        <div class="coin-node-1-12709" data-node-id="1:12709">
+            <img src="http://localhost:3845/assets/9ce1909ffc0956eeedfaf427c004e2549531f8b1.png" class="coin-img" alt="Golden Coin Blurred">
+        </div>
+
+        <!-- Node 1:12695 - 3D Coin Asset 5 -->
+        <div class="coin-node-1-12695" data-node-id="1:12695">
+            <img src="http://localhost:3845/assets/9ce1909ffc0956eeedfaf427c004e2549531f8b1.png" class="coin-img" alt="Golden Coin">
+        </div>
+
+        <!-- Node 1:12729 - 3D Coin Asset 7 -->
+        <div class="coin-node-1-12729" data-node-id="1:12729">
+            <img src="http://localhost:3845/assets/9ce1909ffc0956eeedfaf427c004e2549531f8b1.png" class="coin-img" alt="Golden Coin">
+        </div>
+
+        <!-- 12 Sparkle Star Vectors (Nodes 1:12697 to 1:12706 & 1:12726, 1:12727) -->
+        <svg class="sparkle-node sp-node-1-12697" viewBox="0 0 16 21" fill="none" data-node-id="1:12697"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12698" viewBox="0 0 16 21" fill="none" data-node-id="1:12698"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12699" viewBox="0 0 16 21" fill="none" data-node-id="1:12699"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12700" viewBox="0 0 16 21" fill="none" data-node-id="1:12700"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12701" viewBox="0 0 16 21" fill="none" data-node-id="1:12701"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12702" viewBox="0 0 16 21" fill="none" data-node-id="1:12702"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12703" viewBox="0 0 16 21" fill="none" data-node-id="1:12703"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12704" viewBox="0 0 16 21" fill="none" data-node-id="1:12704"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12705" viewBox="0 0 16 21" fill="none" data-node-id="1:12705"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12706" viewBox="0 0 16 21" fill="none" data-node-id="1:12706"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12726" viewBox="0 0 16 21" fill="none" data-node-id="1:12726"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+        <svg class="sparkle-node sp-node-1-12727" viewBox="0 0 16 21" fill="none" data-node-id="1:12727"><path d="M8 0L9 8L16 10.5L9 13L8 21L7 13L0 10.5L7 8Z" fill="white"/></svg>
+
+        <!-- Node 1:12731 - Bottom Action Container -->
+        <div class="bottom-action-container" data-node-id="1:12731">
+            <!-- Node 1:12732 - Voucher ID -->
+            <div class="voucher-id-text" data-node-id="1:12732">
+                ID Voucher: <strong id="voucherIdDisplay">VCR/01002/19292</strong>
+            </div>
+
+            <!-- Node 1:12733 - White Action Button -->
+            <button class="btn-next-voucher" onclick="handleNextVoucher()" data-node-id="1:12733">
+                <span class="btn-next-voucher-text" id="btnTextDisplay" data-node-id="1:12734">Voucher Selanjutnya</span>
+            </button>
+
+            <!-- Node 1:12735 - Counter Text -->
+            <div class="voucher-counter-text" id="counterDisplay" data-node-id="1:12735">Voucher 1/4</div>
+        </div>
+
+    </div>
+
+    <!-- Interactive Voucher Carousel Script -->
+    <script>
+        const allVouchersData = [
+            { id: "VCR/01002/19292", amount: "IDR 200.000!", store: "Dari Pembelian GRC Board di Toko Semesta Abadi" },
+            { id: "VCR/01002/19293", amount: "IDR 150.000!", store: "Dari Pembelian Semen TR-30 di Toko Maju Jaya" },
+            { id: "VCR/01002/19294", amount: "IDR 100.000!", store: "Dari Pembelian Cat Dulux di Toko Bangunan Sentosa" },
+            { id: "VCR/01002/19295", amount: "IDR 500.000!", store: "Super Jackpot Bonus ScanWin 1000s" }
+        ];
+
+        let vouchersData = [...allVouchersData];
+        let currentIndex = 0;
+
+        function handleNextVoucher() {
+            if (currentIndex < vouchersData.length - 1) {
+                currentIndex++;
+                updateVoucherDisplay();
+            } else {
+                if (window.parent && window.parent !== window) {
+                    window.parent.postMessage({ action: 'GOTO_HOMEPAGE' }, '*');
+                } else {
+                    window.location.href = "scanwin-homepage.html";
+                }
+            }
+        }
+
+        function updateVoucherDisplay() {
+            const current = vouchersData[currentIndex] || vouchersData[0];
+            document.getElementById('prizeAmountDisplay').textContent = current.amount;
+            document.getElementById('storeInfoDisplay').textContent = current.store;
+            document.getElementById('voucherIdDisplay').textContent = current.id;
+            document.getElementById('counterDisplay').textContent = `Voucher ${currentIndex + 1}/${vouchersData.length}`;
+
+            // Button logic: 'Ke Detail Saldo' if single voucher or on last voucher, else 'Voucher Selanjutnya'
+            if (vouchersData.length === 1 || currentIndex === vouchersData.length - 1) {
+                document.getElementById('btnTextDisplay').textContent = "Ke Detail Saldo";
+            } else {
+                document.getElementById('btnTextDisplay').textContent = "Voucher Selanjutnya";
+            }
+        }
+
+        // Listen for parent postMessage to switch between 1 Voucher and 4 Vouchers mode
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.action === 'SET_VOUCHER_COUNT') {
+                const count = event.data.count || 4;
+                if (count === 1) {
+                    vouchersData = [allVouchersData[0]];
+                } else {
+                    vouchersData = [...allVouchersData];
+                }
+                currentIndex = 0;
+                updateVoucherDisplay();
+            }
+        });
+
+        // Initialize button text on page load
+        updateVoucherDisplay();
+    </script>
+</body>
+</html>

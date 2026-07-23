@@ -1,0 +1,1070 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScanWin 1000s - ScanWin Homepage (Figma Nodes 1:11951, 1:12009, 1:12088)</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        body {
+            background-color: #0b0f19;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            padding: 24px;
+        }
+
+        /* Mobile Device Frame Container (390px) */
+        .mobile-device-frame {
+            width: 390px;
+            background-color: #f4f7fc;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        /* --- iOS STATUS BAR (Figma Node 1:12088) --- */
+        .ios-status-bar {
+            width: 390px;
+            height: 44px;
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #016EFF;
+            /* Matches Hero Top Gradient */
+            position: relative;
+            z-index: 20;
+        }
+
+        .status-time {
+            font-weight: 600;
+            font-size: 15px;
+            line-height: normal;
+            letter-spacing: -0.3px;
+            color: #ffffff;
+            width: 54px;
+            text-align: center;
+        }
+
+        .status-bar-icons-svg {
+            width: 73.2px;
+            height: 11.3px;
+        }
+
+        /* --- HERO BANNER SECTION (Figma Node 1:11951) --- */
+        .hero-banner-card {
+            width: 390px;
+            height: 377px;
+            /* 421px total minus 44px status bar height */
+            background: linear-gradient(194.91deg, #016EFF 0%, #458EFC 89.21%);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Top Header Bar */
+        .figma-header-logo {
+            position: absolute;
+            top: 10px;
+            left: 24px;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            border: 1.5px solid rgba(255, 255, 255, 0.9);
+            border-radius: 6px;
+            padding-left: 7px;
+            height: 22px;
+            z-index: 10;
+        }
+
+        .logo-scanwin-text {
+            font-weight: 500;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.95);
+            letter-spacing: -0.3px;
+        }
+
+        .logo-1000s-pill {
+            background: #ffffff;
+            color: #0074FF;
+            font-weight: 800;
+            font-size: 12px;
+            padding: 1px 6px;
+            border-top-right-radius: 4.5px;
+            border-bottom-right-radius: 4.5px;
+            letter-spacing: -0.3px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .figma-header-user {
+            position: absolute;
+            top: 9px;
+            left: 260px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            z-index: 10;
+        }
+
+        .user-name-text {
+            font-weight: 500;
+            font-size: 14px;
+            color: #ffffff;
+            letter-spacing: -0.084px;
+        }
+
+        .user-circle-icon {
+            width: 24px;
+            height: 24px;
+            background: #ffffff;
+            color: #006EFF;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        /* Headline Section */
+        .figma-headline {
+            position: absolute;
+            top: 55px;
+            left: 24px;
+            width: 292px;
+            font-weight: 900;
+            font-style: italic;
+            font-size: 24px;
+            line-height: 26px;
+            letter-spacing: -0.96px;
+            text-transform: uppercase;
+            color: #ffffff;
+            z-index: 10;
+        }
+
+        .gold-gradient-text {
+            background: conic-gradient(from 90deg, #FFE8AD 0%, #FFD979 10.75%, #FFEAB5 29.16%, #FFDB81 39.32%, #FFCC4D 49.47%, #FFDB81 59.37%, #FFEAB5 69.27%, #FFDB81 78.9%, #FFCC4D 88.54%, #FFDA7D 94.27%, #FFE8AD 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline;
+        }
+
+        /* Subtitle */
+        .figma-subtitle {
+            position: absolute;
+            top: 110px;
+            left: 24px;
+            width: 274px;
+            font-weight: 600;
+            font-size: 13px;
+            line-height: 1.35;
+            letter-spacing: -0.3px;
+            color: rgba(255, 255, 255, 0.88);
+            z-index: 10;
+        }
+
+        .figma-subtitle strong {
+            font-weight: 900;
+            text-decoration: underline;
+            color: #ffffff;
+        }
+
+        /* Action Button */
+        .figma-btn-claim {
+            position: absolute;
+            top: 159px;
+            left: 24px;
+            width: 143px;
+            height: 36px;
+            background: linear-gradient(180deg, #FFFFFF 0%, #D0EBFF 100%);
+            border-radius: 45px;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 4px 6px rgba(0, 94, 210, 0.25), inset 0px 2px 0px rgba(187, 224, 255, 0.25), inset 0px -2px 0px rgba(255, 255, 255, 0.25);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            z-index: 10;
+        }
+
+        .figma-btn-claim:hover {
+            transform: scale(1.04);
+        }
+
+        .figma-btn-claim-text {
+            font-weight: 800;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            background: linear-gradient(180deg, #0171FF 0%, #5496E9 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Vector Assets */
+        .scanner-gun-vector {
+            position: absolute;
+            left: -10px;
+            top: 232.2px;
+            width: 160px;
+            height: 146.5px;
+            z-index: 5;
+        }
+
+        .yellow-sunburst-ellipse {
+            position: absolute;
+            left: -69px;
+            top: 242.7px;
+            width: 214px;
+            height: 214px;
+            z-index: 2;
+        }
+
+        .nozzle-ticket-vector {
+            position: absolute;
+            left: 120.26px;
+            top: 233.33px;
+            width: 64.7px;
+            height: 36.4px;
+            z-index: 5;
+        }
+
+        .ticket-small {
+            position: absolute;
+            left: 298px;
+            top: 103.7px;
+            width: 75.2px;
+            height: 71.1px;
+            z-index: 6;
+        }
+
+        .ticket-mid {
+            position: absolute;
+            left: 288px;
+            top: 162.7px;
+            width: 89.2px;
+            height: 84.2px;
+            z-index: 6;
+        }
+
+        .ticket-large {
+            position: absolute;
+            left: 223px;
+            top: 235.7px;
+            width: 151.8px;
+            height: 143.7px;
+            z-index: 6;
+        }
+
+        /* Sparkles Coordinates */
+        .sparkle-node-1-42670 {
+            position: absolute;
+            left: 281px;
+            top: 224px;
+            width: 16px;
+            height: 20.78px;
+            z-index: 8;
+        }
+
+        .sparkle-node-1-42695 {
+            position: absolute;
+            left: 322px;
+            top: 91px;
+            width: 16px;
+            height: 21px;
+            z-index: 8;
+        }
+
+        .sparkle-node-1-42672 {
+            position: absolute;
+            left: 273px;
+            top: 233px;
+            width: 9px;
+            height: 12px;
+            z-index: 8;
+        }
+
+        .sparkle-node-1-42671 {
+            position: absolute;
+            left: 375px;
+            top: 220px;
+            width: 9px;
+            height: 12px;
+            z-index: 8;
+        }
+
+        .sparkle-node-1-42673 {
+            position: absolute;
+            left: 96px;
+            top: 225px;
+            width: 13px;
+            height: 16.88px;
+            z-index: 8;
+        }
+
+        /* --- PROGRAM LIST & SALDO SECTION (Figma Node 1:12009) --- */
+        .saldo-bar-container {
+            background-color: #fe3058;
+            padding: 12px 24px 19px 24px;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            margin-top: -9px;
+            position: relative;
+            z-index: 12;
+            cursor: pointer;
+        }
+
+        .saldo-bar-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .saldo-title {
+            font-weight: 500;
+            font-size: 12px;
+            line-height: 16px;
+            color: #ffffff;
+        }
+
+        .saldo-amount {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 26px;
+            letter-spacing: -0.25px;
+            color: #ffffff;
+        }
+
+        .saldo-chevron-icon {
+            color: #ffffff;
+            font-size: 14px;
+        }
+
+        /* Program Section Wrapper */
+        .program-section-wrapper {
+            background: linear-gradient(to left, #ffffff, #e9f2ff);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding-top: 16px;
+            position: relative;
+            z-index: 13;
+        }
+
+        .program-section-title {
+            padding: 0 24px;
+            font-weight: 600;
+            font-size: 16px;
+            line-height: 24px;
+            letter-spacing: -0.176px;
+            color: #0a0a0a;
+        }
+
+        /* Tabs (Brand vs Toko Bangunan) */
+        .program-tabs {
+            display: flex;
+            gap: 16px;
+            padding: 16px 24px 11px 24px;
+            position: relative;
+        }
+
+        .tab-item {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            cursor: pointer;
+        }
+
+        .tab-item.active {
+            color: #0a0a0a;
+        }
+
+        .tab-item.inactive {
+            color: #757575;
+            font-weight: 500;
+        }
+
+        .tab-indicator {
+            position: absolute;
+            bottom: 0;
+            left: 24px;
+            width: 40px;
+            height: 3px;
+            background-color: #0a0a0a;
+            border-top-left-radius: 6px;
+            border-top-right-radius: 6px;
+        }
+
+        /* Carousel Section */
+        .carousel-container {
+            padding: 16px 24px;
+            position: relative;
+        }
+
+        .promo-banner-card {
+            width: 100%;
+            height: 150px;
+            border-radius: 16px;
+            overflow: hidden;
+            position: relative;
+            background: linear-gradient(135deg, #e61c38 0%, #b80d27 100%);
+            box-shadow: 0 4px 14px rgba(230, 28, 56, 0.3);
+            display: flex;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .promo-banner-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            position: absolute;
+            inset: 0;
+        }
+
+        /* Standardized Promo Banner Content Fallback */
+        .promo-banner-fallback {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(115deg, #e61c38 0%, #d00b27 60%, #990015 100%);
+            padding: 18px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .promo-left-text {
+            color: #ffffff;
+            max-width: 180px;
+        }
+
+        .promo-brand-badge {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .promo-brand-logo {
+            width: 26px;
+            height: 26px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            color: #e61c38;
+            font-size: 10px;
+            border: 2px solid #e61c38;
+        }
+
+        .promo-headline-text {
+            font-weight: 800;
+            font-size: 15px;
+            line-height: 1.25;
+            color: #ffffff;
+            margin-bottom: 6px;
+        }
+
+        .promo-sub-text {
+            font-weight: 800;
+            font-size: 13px;
+            color: #ffe600;
+        }
+
+        .promo-right-image {
+            width: 120px;
+            height: 110px;
+            background: url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=300&q=80') center/cover no-repeat;
+            border-radius: 12px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Carousel Pagination Dots */
+        .carousel-dots {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 10px;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #d1d5db;
+        }
+
+        .dot.active {
+            background-color: #0a0a0a;
+            width: 20px;
+            border-radius: 4px;
+        }
+
+        /* Badge Ribbon "2 Hari Lagi!" */
+        .badge-ribbon-container {
+            position: absolute;
+            top: 8px;
+            right: 24px;
+            z-index: 15;
+        }
+
+        .badge-ribbon {
+            background-color: #fe3058;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 11px;
+            padding: 4px 9px;
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border-top-right-radius: 8px;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15), inset 0px 6px 4px rgba(255, 255, 255, 0.16);
+            white-space: nowrap;
+            position: relative;
+        }
+
+        .badge-ribbon-triangle {
+            position: absolute;
+            bottom: -6px;
+            right: 0;
+            width: 0;
+            height: 0;
+            border-top: 6px solid #b80d27;
+            border-right: 6px solid transparent;
+        }
+
+        /* Grid Program Cards (2 Columns) */
+        .program-cards-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding: 0 24px 24px 24px;
+        }
+
+        .program-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 16px;
+            box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .card-brand-logo-img {
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .card-brand-fallback {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 800;
+            font-size: 13px;
+            color: #006EFF;
+        }
+
+        .card-brand-icon {
+            width: 22px;
+            height: 22px;
+            background: #006EFF;
+            color: #ffffff;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            color: #0a0a0a;
+        }
+
+        .card-description {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+            color: #616161;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            height: 32px;
+        }
+
+        .card-dashed-line {
+            border-bottom: 1.5px dashed #e0e0e0;
+            width: 100%;
+            margin: 2px 0;
+        }
+
+        .card-reward-label {
+            font-weight: 400;
+            font-size: 12px;
+            line-height: 16px;
+            color: #616161;
+        }
+
+        .card-reward-amount {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: 20px;
+            letter-spacing: -0.084px;
+            color: #fe3058;
+        }
+
+        .card-badge-ribbon {
+            position: absolute;
+            top: -6px;
+            right: -2px;
+            z-index: 15;
+        }
+
+        .card-badge-ribbon .badge-ribbon {
+            font-size: 10px;
+            padding: 3px 7px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Mobile Device Preview Container (390px) -->
+    <div class="mobile-device-frame">
+
+        <!-- ================= STATUS BAR (Figma Node 1:12088) ================= -->
+        <div class="ios-status-bar">
+            <!-- Time Style (Node 1:12089 / 1:12090) -->
+            <div class="status-time">9:41</div>
+
+            <!-- Right Icons (Battery, Wi-Fi, Cellular - Node 1:12091) -->
+            <svg class="status-bar-icons-svg" viewBox="0 0 73.1962 11.3333" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g id="Frame 48098837">
+                    <!-- Battery Icon -->
+                    <g id="Battery">
+                        <rect id="Border" opacity="0.35" x="0.5" y="0.5" width="21" height="10.3333" rx="2.16667"
+                            stroke="#ffffff" />
+                        <path id="Cap" opacity="0.4"
+                            d="M23 3.66667V7.66667C23.8047 7.32789 24.328 6.5398 24.328 5.66667C24.328 4.79353 23.8047 4.00544 23 3.66667"
+                            fill="#ffffff" />
+                        <rect id="Capacity" x="2" y="2" width="18" height="7.33333" rx="1.33333" fill="#ffffff" />
+                    </g>
+                    <!-- Wifi Icon -->
+                    <path id="Wifi"
+                        d="M38.5292 8.59346C39.7518 7.51119 41.5429 7.51119 42.7655 8.59346C42.827 8.65167 42.8625 8.73426 42.8642 8.821C42.8658 8.90756 42.8333 8.99078 42.7743 9.05147L40.8603 11.0739C40.8041 11.1334 40.7272 11.1667 40.6474 11.1667C40.5677 11.1667 40.4915 11.1332 40.4355 11.0739L38.5204 9.05147C38.4615 8.99075 38.429 8.90754 38.4306 8.821C38.4323 8.73434 38.4678 8.65162 38.5292 8.59346ZM35.9745 5.8962C38.6086 3.33179 42.6881 3.33179 45.3222 5.8962C45.3816 5.95633 45.4161 6.03917 45.4169 6.12569C45.4176 6.21193 45.3851 6.29491 45.3271 6.35616L44.2196 7.52706C44.1056 7.64618 43.9215 7.64816 43.8046 7.53194C42.9397 6.71235 41.8142 6.25843 40.6474 6.2585C39.4813 6.25905 38.3565 6.71274 37.4921 7.53194C37.3751 7.64825 37.1911 7.64647 37.0771 7.52706L35.9706 6.35616C35.9124 6.29498 35.8801 6.212 35.8808 6.12569C35.8816 6.03929 35.9152 5.9563 35.9745 5.8962ZM33.4198 3.20577C37.4599 -0.846415 43.8339 -0.846319 47.8739 3.20577C47.9324 3.26597 47.9662 3.34843 47.9667 3.43428C47.9671 3.52004 47.9346 3.60292 47.8769 3.66377L46.7685 4.8337C46.6543 4.95366 46.4693 4.95483 46.3534 4.83663C44.8142 3.30512 42.7712 2.45098 40.6474 2.45088C38.5235 2.45092 36.4807 3.30515 34.9413 4.83663C34.8255 4.95505 34.6394 4.95397 34.5253 4.8337L33.4179 3.66377C33.3602 3.60289 33.3276 3.52002 33.328 3.43428C33.3286 3.34852 33.3614 3.26591 33.4198 3.20577Z"
+                        fill="#ffffff" />
+                    <!-- Cellular Connection Icon -->
+                    <path id="Cellular Connection"
+                        d="M58.8759 7.00016C59.4031 7.00016 59.831 7.44788 59.831 8.00016V10.0002C59.8308 10.5523 59.403 11.0002 58.8759 11.0002H57.9218C57.3947 11.0002 56.9669 10.5523 56.9667 10.0002V8.00016C56.9667 7.44788 57.3945 7.00016 57.9218 7.00016H58.8759ZM63.331 5.00016C63.8582 5.00016 64.2861 5.44788 64.2861 6.00016V10.0002C64.2859 10.5523 63.8581 11.0002 63.331 11.0002H62.3769C61.8497 11.0002 61.422 10.5523 61.4218 10.0002V6.00016C61.4218 5.44788 61.8496 5.00016 62.3769 5.00016H63.331ZM67.7861 2.66618C68.3132 2.66618 68.741 3.11404 68.7411 3.66618V10.0002C68.741 10.5523 68.3132 11.0002 67.7861 11.0002H66.832C66.3048 11.0002 65.877 10.5523 65.8769 10.0002V3.66618C65.877 3.11404 66.3048 2.66618 66.832 2.66618H67.7861ZM72.2411 0.33317C72.7684 0.33317 73.1962 0.780886 73.1962 1.33317V10.0002C73.196 10.5523 72.7683 11.0002 71.287 11.0002H71.287C70.7599 11.0002 70.3321 10.5523 70.332 10.0002V1.33317C70.332 0.780886 70.7598 0.33317 71.287 0.33317H72.2411Z"
+                        fill="#ffffff" />
+                </g>
+            </svg>
+        </div>
+
+        <!-- ================= HERO BANNER SECTION (Node 1:11951) ================= -->
+        <div class="hero-banner-card">
+
+            <!-- Yellow Backdrop Circle (Ellipse 6032) -->
+            <svg class="yellow-sunburst-ellipse" viewBox="0 0 214 214" fill="none">
+                <circle cx="107" cy="107" r="107" fill="#FFE600" />
+            </svg>
+
+            <!-- Node 1:42696 Nozzle Golden Ticket Vector (Conic Gradient Starburst Reflection) -->
+            <svg class="nozzle-ticket-vector" viewBox="0 0 64.7016 36.4407" fill="none"
+                xmlns="http://www.w3.org/2000/svg">
+                <g clip-path="url(#nozzleTicketClip)">
+                    <g transform="matrix(-0.000157892 0.0235183 -0.0401045 -9.25916e-05 32.5052 19.7575)">
+                        <foreignObject x="-843.241" y="-843.241" width="1686.48" height="1686.48">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="background:conic-gradient(from 90deg,rgba(255, 231, 173, 1) 0deg,rgba(255, 217, 121, 1) 38.73deg,rgba(255, 233, 180, 1) 105deg,rgba(255, 204, 76, 1) 178.125deg,rgba(255, 233, 180, 1) 249.375deg,rgba(255, 204, 76, 1) 318.75deg,rgba(255, 231, 173, 1) 360deg);height:100%;width:100%;">
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <path opacity="0.9"
+                    d="M45.509 3.88257C46.4611 4.56322 46.517 6.03235 46.7557 7.1781C46.8686 7.72015 47.1635 8.27441 47.6508 8.79653C49.2568 10.517 52.3437 11.2376 54.5454 10.4059C54.5806 10.3926 54.6195 10.3957 54.6502 10.4176L63.8646 17.0055C65.1302 17.9103 64.9235 19.8502 63.4956 20.468L26.9582 36.2762C26.3865 36.5235 25.7323 36.4904 25.1885 36.1866L17.9362 32.1349C17.8826 32.1049 17.8903 32.0272 17.9477 32.0055C20.1495 31.1737 20.5426 29.1944 18.8256 27.5846C17.1086 25.9749 13.9317 25.3437 11.7299 26.1754C11.6714 26.1976 11.6141 26.2205 11.558 26.2442C10.4711 26.7047 9.06155 27.1771 8.031 26.6015L1.02464 22.6876C-0.373835 21.9063 -0.332256 19.8801 1.09709 19.1569L38.5339 0.215427C39.1983 -0.120704 39.9943 -0.0599781 40.6 0.373032L45.509 3.88257Z"
+                    stroke="rgba(255,255,255,0.4)" stroke-width="0.5" fill="none" />
+                <defs>
+                    <clipPath id="nozzleTicketClip">
+                        <path
+                            d="M45.509 3.88257C46.4611 4.56322 46.517 6.03235 46.7557 7.1781C46.8686 7.72015 47.1635 8.27441 47.6508 8.79653C49.2568 10.517 52.3437 11.2376 54.5454 10.4059C54.5806 10.3926 54.6195 10.3957 54.6502 10.4176L63.8646 17.0055C65.1302 17.9103 64.9235 19.8502 63.4956 20.468L26.9582 36.2762C26.3865 36.5235 25.7323 36.4904 25.1885 36.1866L17.9362 32.1349C17.8826 32.1049 17.8903 32.0272 17.9477 32.0055C20.1495 31.1737 20.5426 29.1944 18.8256 27.5846C17.1086 25.9749 13.9317 25.3437 11.7299 26.1754C11.6714 26.1976 11.6141 26.2205 11.558 26.2442C10.4711 26.7047 9.06155 27.1771 8.031 26.6015L1.02464 22.6876C-0.373835 21.9063 -0.332256 19.8801 1.09709 19.1569L38.5339 0.215427C39.1983 -0.120704 39.9943 -0.0599781 40.6 0.373032L45.509 3.88257Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+
+            <!-- 3D Scanner Gun Vector (Group 2085663159 / Node 1:11965) -->
+            <svg class="scanner-gun-vector" viewBox="0 0 160 146.534" fill="none">
+                <g id="Group 2085663159">
+                    <path id="Rectangle 39439"
+                        d="M5.30726 112.333L129.877 52.7148L155.293 64.0108L33.8611 119.863L5.30726 112.333Z"
+                        fill="#143FAF" />
+                    <path id="Rectangle 39440"
+                        d="M129.877 52.7147L133.329 43.6152L160 55.5387L155.293 64.0108L129.877 52.7147Z"
+                        fill="#2250C7" />
+                    <path id="Rectangle 39441" d="M133.015 43.929L121.719 0L150.9 17.8854L160 55.5388L133.015 43.929Z"
+                        fill="#3D75DA" />
+                    <path id="Rectangle 39443" d="M121.405 43.929L110.109 0H121.719L133.015 43.929H121.405Z"
+                        fill="#89B4FC" />
+                    <path id="Rectangle 39444" d="M121.405 43.929H133.329L130.191 52.7148L121.405 43.929Z"
+                        fill="#548CEF" />
+                    <path id="Rectangle 39442" d="M6.56235 99.1539V52.401L110.109 0L121.405 43.929L6.56235 99.1539Z"
+                        fill="#568AF1" />
+                    <path id="Rectangle 39445"
+                        d="M6.24808 99.1539L121.396 43.6174L130.182 52.7169L6.24808 112.333L6.24808 99.1539Z"
+                        fill="#2151C5" />
+                    <g id="Group 2085663158">
+                        <path id="Rectangle 39451"
+                            d="M68.3766 106.371L78.7313 109.822L72.4557 117.039L60.2184 113.902L68.3766 106.371Z"
+                            fill="#103FAC" />
+                        <path id="Rectangle 39452"
+                            d="M69.6317 89.113L78.7313 93.8197V109.822L68.3766 106.371L69.6317 89.113Z"
+                            fill="#2450C5" />
+                        <path id="Rectangle 39453" d="M60.2184 113.901L72.4557 117.039L74.6522 146.534H60.2184V113.901Z"
+                            fill="#2350C6" />
+                        <path id="Rectangle 39454"
+                            d="M39.8371 103.547L69.6459 89.4268L68.3838 106.371L60.2256 113.901V146.534H34.4885C34.4885 146.534 34.7857 131.787 35.1128 125.511C35.4398 119.236 39.8371 103.547 39.8371 103.547Z"
+                            fill="#568AF1" />
+                    </g>
+                    <path id="Rectangle 39448"
+                        d="M94.0997 80.9547C94.0997 80.9547 95.3616 79.072 97.558 79.072C99.7545 79.072 100.696 80.9547 100.696 80.9547L101.944 109.195L94.7272 118.922L72.7627 123.942C72.7627 123.942 69.9439 124.57 69.0033 121.432C68.0627 118.294 71.8214 117.667 71.8214 117.667L90.3343 112.333L94.0997 106.685V80.9547Z"
+                        fill="#578AF2" />
+                </g>
+            </svg>
+
+            <!-- Golden Ticket 1 (Top Right Small) -->
+            <svg class="ticket-small" viewBox="0 0 89.177 84.1628" fill="none">
+                <g clip-path="url(#ticketSmallClip)">
+                    <g transform="matrix(-0.0002 0.05 -0.05 -0.0002 44.5 42)">
+                        <foreignObject x="-843.241" y="-843.241" width="1686.48" height="1686.48">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="background:conic-gradient(from 90deg,rgba(255, 231, 173, 1) 0deg,rgba(255, 217, 121, 1) 38.73deg,rgba(255, 233, 180, 1) 105deg,rgba(255, 204, 76, 1) 178.125deg,rgba(255, 233, 180, 1) 249.375deg,rgba(255, 204, 76, 1) 318.75deg,rgba(255, 231, 173, 1) 360deg);height:100%;width:100%;">
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="ticketSmallClip">
+                        <path
+                            d="M45.8305 0.535445C48.0538 -0.735481 50.9334 0.36008 51.9175 2.72442C54.2936 8.43341 59.252 18.5981 67.7908 28.7629C76.3555 38.9584 83.9726 47.4615 88.1236 52.0238C89.8278 53.8968 89.4125 56.8678 87.2517 58.1884L76.1879 64.9499C74.2583 66.1292 71.7002 65.2691 69.5898 64.4563C68.9215 64.1989 68.1955 64.0578 67.4363 64.0578C64.1226 64.0578 61.4363 66.7441 61.4363 70.0578C61.4364 71.9688 61.0735 74.1865 59.443 75.1831L45.7039 83.5805C44.2557 84.4656 42.412 84.3384 41.1346 83.2209C37.0402 79.6388 27.5567 70.9388 16.6326 58.1896C5.87378 45.6334 1.63651 34.6945 0.149244 29.7948C-0.344411 28.1684 0.424189 26.493 1.89965 25.6494L13.1682 19.2067C15.4377 17.9091 18.5035 19.3577 20.8647 20.48C21.644 20.8505 22.5159 21.0578 23.4363 21.0578C26.7498 21.0577 29.4361 18.3712 29.4363 15.0578C29.4363 12.7141 62.1208 9.74429 31.7554 8.5812L45.8305 0.535445Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+
+            <!-- Golden Ticket 2 (Mid Right) -->
+            <svg class="ticket-mid" viewBox="0 0 89.177 84.1628" fill="none">
+                <g clip-path="url(#ticketMidClip)">
+                    <g transform="matrix(-0.0002 0.05 -0.05 -0.0002 44.5 42)">
+                        <foreignObject x="-843.241" y="-843.241" width="1686.48" height="1686.48">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="background:conic-gradient(from 90deg,rgba(255, 231, 173, 1) 0deg,rgba(255, 217, 121, 1) 38.73deg,rgba(255, 233, 180, 1) 105deg,rgba(255, 204, 76, 1) 178.125deg,rgba(255, 233, 180, 1) 249.375deg,rgba(255, 204, 76, 1) 318.75deg,rgba(255, 231, 173, 1) 360deg);height:100%;width:100%;">
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <defs>
+                    <clipPath id="ticketMidClip">
+                        <path
+                            d="M45.8305 0.535445C48.0538 -0.735481 50.9334 0.36008 51.9175 2.72442C54.2936 8.43341 59.252 18.5981 67.7908 28.7629C76.3555 38.9584 83.9726 47.4615 88.1236 52.0238C89.8278 53.8968 89.4125 56.8678 87.2517 58.1884L76.1879 64.9499C74.2583 66.1292 71.7002 65.2691 69.5898 64.4563C68.9215 64.1989 68.1955 64.0578 67.4363 64.0578C64.1226 64.0578 61.4363 66.7441 61.4363 70.0578C61.4364 71.9688 61.0735 74.1865 59.443 75.1831L45.7039 83.5805C44.2557 84.4656 42.412 84.3384 41.1346 83.2209C37.0402 79.6388 27.5567 70.9388 16.6326 58.1896C5.87378 45.6334 1.63651 34.6945 0.149244 29.7948C-0.344411 28.1684 0.424189 26.493 1.89965 25.6494L13.1682 19.2067C15.4377 17.9091 18.5035 19.3577 20.8647 20.48C21.644 20.8505 22.5159 21.0578 23.4363 21.0578C26.7498 21.0577 29.4361 18.3712 29.4363 15.0578C29.4363 12.7141 62.1208 9.74429 31.7554 8.5812L45.8305 0.535445Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+
+            <!-- Golden Ticket 3 Node 1:42649 & 1:42691 (Group 2085663556 / Subtract - Bottom Right Large Conic Gradient) -->
+            <svg class="ticket-large" viewBox="0 0 151.793 143.725" fill="none">
+                <g clip-path="url(#ticketLargeClip)">
+                    <g transform="matrix(-0.000370421 0.0927577 -0.094087 -0.000365188 76.2587 77.9251)">
+                        <foreignObject x="-843.241" y="-843.241" width="1686.48" height="1686.48">
+                            <div xmlns="http://www.w3.org/1999/xhtml"
+                                style="background:conic-gradient(from 90deg,rgba(255, 231, 173, 1) 0deg,rgba(255, 217, 121, 1) 38.73deg,rgba(255, 233, 180, 1) 105deg,rgba(255, 204, 76, 1) 178.125deg,rgba(255, 233, 180, 1) 249.375deg,rgba(255, 204, 76, 1) 318.75deg,rgba(255, 231, 173, 1) 360deg);height:100%;width:100%;">
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g id="Rp">
+                    <path
+                        d="M52.7141 72.2127L66.799 49.1234L76.386 54.8864C78.1236 55.931 79.433 57.1444 80.3141 58.5266C81.2073 59.9059 81.6446 61.3809 81.626 62.9516C81.612 64.5148 81.1236 66.0856 80.1607 67.664C79.1842 69.2649 78.003 70.4142 76.6172 71.1117C75.2361 71.8017 73.7207 72.0516 72.0713 71.8612C70.4264 71.6634 68.72 71.0331 66.9522 69.9704L60.8895 66.3259L63.5717 61.9291L68.5918 64.9468C69.4379 65.4555 70.2108 65.7711 70.9104 65.8937C71.6221 66.0134 72.2628 65.9363 72.8325 65.6625C73.4068 65.3811 73.9118 64.8834 74.3474 64.1694C74.7829 63.4554 74.9955 62.7768 74.9852 62.1337C74.9794 61.4831 74.7605 60.8687 74.3284 60.2905C73.901 59.7049 73.268 59.16 72.4294 58.6559L69.6643 56.9937L58.3235 75.5847L52.7141 72.2127ZM72.2173 69.5145L71.5595 83.5412L65.4401 79.8627L66.2113 65.9041L72.2173 69.5145Z"
+                        fill="#B28000" />
+                    <path
+                        d="M68.2859 90.4486L82.811 66.6378L88.2958 69.9348L86.487 72.8999L86.657 73.0021C87.2046 72.6122 87.8352 72.2979 88.5487 72.0591C89.2698 71.8249 90.0492 71.749 90.8869 71.8314C91.7367 71.9108 92.6187 72.2253 93.5328 72.7748C94.7416 73.5014 95.6784 74.4961 96.3434 75.7587C97.0159 77.0258 97.2759 78.5123 97.1232 80.2182C96.9706 81.9241 96.273 83.7954 95.0305 85.8323C93.8338 87.7939 92.5185 89.2477 91.0845 90.1936C89.658 91.144 88.2143 91.6321 86.7531 91.6577C85.2995 91.6878 83.9306 91.3169 82.6463 90.5449C81.7699 90.018 81.0978 89.4188 80.6298 88.7472C80.1619 88.0756 79.851 87.3751 79.6971 86.6457C79.5507 85.9208 79.5232 85.2212 79.6146 84.5467L79.5012 84.4786L73.8274 93.7797L68.2859 90.4486ZM82.9573 78.5593C82.3887 79.4912 82.0182 80.3779 81.8457 81.2193C81.6808 82.0651 81.7194 82.8228 81.9615 83.4922C82.2157 84.1587 82.679 84.694 83.3514 85.0982C84.0313 85.5069 84.7239 85.6664 85.4291 85.5767C86.1389 85.4795 86.8256 85.1578 87.4891 84.6117C88.1603 84.0701 88.7801 83.3333 89.3486 82.4013C89.9171 81.4693 89.2854 80.5864 90.4533 79.7526C90.6288 78.9233 90.5932 78.1777 90.3465 77.5158C90.1073 76.8584 96.644 75.9098 88.2766 75.9098C88.2766 75.5011 88.5863 75.3378 86.8857 75.42C86.1851 75.5022 85.4977 75.808 84.8236 76.3376C84.1571 76.8717 83.535 77.6122 82.9573 78.5593Z"
+                        fill="#B28000" />
+                </g>
+                <defs>
+                    <clipPath id="ticketLargeClip">
+                        <path
+                            d="M92.1471 11.7187C95.1547 13.4435 95.9053 17.4397 95.657 20.8978C95.6355 21.1973 95.6246 21.4997 95.6246 21.8046C95.6249 28.708 101.221 34.3046 108.125 34.3046C110.756 34.3046 113.196 33.4912 115.21 32.1023C118.06 30.1361 121.884 28.7744 124.888 30.4972L148.943 44.2928C151.149 45.5581 152.298 48.0698 151.58 50.5098C149.214 58.5537 142.122 77.5207 123.465 99.3652C104.558 121.503 88.1954 136.464 81.4986 142.314C79.5764 143.994 76.8113 144.177 74.6353 142.843L52.0173 128.975C49.4035 127.372 48.5898 124.011 48.6238 120.945C48.6243 120.898 48.6246 120.852 48.6246 120.805C48.6246 113.901 43.0281 108.305 36.1246 108.305C34.0306 108.305 32.0574 108.82 30.3242 109.73C27.6128 111.154 24.2549 111.952 21.644 110.351L2.87602 98.8445C-0.355787 96.863 -0.971319 92.4122 1.57792 89.6064C8.44726 82.046 21.7265 67.2099 36.7183 49.3056C51.6577 31.4638 60.1337 13.6222 64.0053 4.10677C65.4552 0.54305 69.7811 -1.10792 73.1186 0.806102L92.1471 11.7187Z" />
+                    </clipPath>
+                </defs>
+            </svg>
+
+            <!-- Sparkle Vectors -->
+            <svg class="sparkle-node-1-42670" viewBox="0 0 15.9995 20.7768" fill="none">
+                <path
+                    d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.53475 17.7761C7.37678 16.0478 6.77548 14.4388 5.82767 13.2082C4.87986 11.9776 3.64071 11.1971 2.30975 10.9923L0.18975 10.665C-0.06325 10.626 -0.06325 10.1508 0.18975 10.1118L2.31075 9.78456C3.64168 9.57942 4.88072 8.79858 5.82835 7.56776C6.77597 6.33695 7.37703 4.7278 7.53475 2.99942L7.78675 0.246408Z"
+                    fill="white" />
+            </svg>
+
+            <svg class="sparkle-node-1-42695" viewBox="0 0 15.9995 20.7768" fill="none">
+                <path
+                    d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.53475 17.7761C7.37678 16.0478 6.77548 14.4388 5.82767 13.2082C4.87986 11.9776 3.64071 11.1971 2.30975 10.9923L0.18975 10.665C-0.06325 10.626 -0.06325 10.1508 0.18975 10.1118L2.31075 9.78456C3.64168 9.57942 4.88072 8.79858 5.82835 7.56776C6.77597 6.33695 7.37703 4.7278 7.53475 2.99942L7.78675 0.246408Z"
+                    fill="white" />
+            </svg>
+
+            <svg class="sparkle-node-1-42672" viewBox="0 0 9 12" fill="none">
+                <path d="M4.5 0 L5 4 L9 6 L5 8 L4.5 12 L4 8 L0 6 L4 4 Z" fill="white" />
+            </svg>
+
+            <svg class="sparkle-node-1-42671" viewBox="0 0 9 12" fill="none">
+                <path d="M4.5 0 L5 4 L9 6 L5 8 L4.5 12 L4 8 L0 6 L4 4 Z" fill="white" />
+            </svg>
+
+            <svg class="sparkle-node-1-42673" viewBox="0 0 13 16.88" fill="none">
+                <path d="M6.5 0 L7.2 6.5 L13 8.4 L7.2 10.3 L6.5 16.88 L5.8 10.3 L0 8.4 L5.8 6.5 Z" fill="white" />
+            </svg>
+
+            <!-- Top Header Logo Badge -->
+            <div class="figma-header-logo">
+                <span class="logo-scanwin-text">ScanWin</span>
+                <div class="logo-1000s-pill">1000s</div>
+            </div>
+
+            <!-- Top Header User Profile -->
+            <div class="figma-header-user">
+                <span class="user-name-text">Andhika M..</span>
+                <div class="user-circle-icon">
+                    <i class="fas fa-user"></i>
+                </div>
+            </div>
+
+            <!-- Headline -->
+            <div class="figma-headline">
+                BELANJA & DAPAT UANG HINGGA <span class="gold-gradient-text">JUTAAN RUPIAH</span>
+            </div>
+
+            <!-- Subtitle -->
+            <div class="figma-subtitle">
+                Belanja di toko bangunan, scan QR, dan <strong>pasti dapat saldo</strong> yang bisa anda uangkan!
+            </div>
+
+            <!-- Action Button -->
+            <button class="figma-btn-claim" onclick="window.location.href='scanwin-klaim-page.html'">
+                <span class="figma-btn-claim-text">Klaim ScanWin</span>
+            </button>
+
+        </div>
+
+
+        <!-- ================= PROGRAM LIST & SALDO SECTION (Figma Node 1:12009) ================= -->
+
+        <!-- Red Total Saldo Bar (Node 1:12010) -->
+        <div class="saldo-bar-container">
+            <div class="saldo-bar-content">
+                <div>
+                    <div class="saldo-title">Total Saldo</div>
+                    <div class="saldo-amount">IDR 600.000</div>
+                </div>
+                <div class="saldo-chevron-icon">
+                    <i class="fas fa-chevron-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Program Section (Node 1:12016) -->
+        <div class="program-section-wrapper">
+
+            <!-- Section Header Title (Node 1:12018) -->
+            <div class="program-section-title">
+                Jelajah Berbagai Program
+            </div>
+
+            <!-- Tabs: Brand / Toko Bangunan (Node 1:12019) -->
+            <div class="program-tabs">
+                <div class="tab-item active">Brand</div>
+                <div class="tab-item inactive">Toko Bangunan</div>
+                <div class="tab-indicator"></div>
+            </div>
+
+            <!-- Promo Banner Carousel (Node 1:12024) -->
+            <div class="carousel-container">
+                <!-- Ribbon Badge 2 Hari Lagi! (Node 1:12031) -->
+                <div class="badge-ribbon-container">
+                    <div class="badge-ribbon">
+                        2 Hari Lagi!
+                        <div class="badge-ribbon-triangle"></div>
+                    </div>
+                </div>
+
+                <div class="promo-banner-card" data-node-id="1:12025"
+                    data-name="WhatsApp Image 2025-07-29 at 16.31.24 1">
+                    <!-- Localhost Figma Asset Image (Node 1:12025) / High Fidelity Fallback -->
+                    <img src="http://localhost:3845/assets/1b95fb55962bece1c4ed19729267159ed6f36061.png"
+                        alt="WhatsApp Image TR-30 Tiga Roda (Node 1:12025)"
+                        style="width: 100%; height: 114%; object-fit: cover; position: absolute; top: 0; left: 0;"
+                        onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+
+                    <div class="promo-banner-fallback" style="display: none;">
+                        <div class="promo-left-text">
+                            <div class="promo-brand-badge">
+                                <div class="promo-brand-logo">TR</div>
+                                <span style="font-weight:800; font-size:12px; color:#fff;">Tiga Roda</span>
+                            </div>
+                            <div class="promo-headline-text">Beli 3 Sak Acian Putih TR-30 Tiga Roda</div>
+                            <div class="promo-sub-text">Langsung Dapat 1 Voucher sCAN WIN</div>
+                        </div>
+                        <div class="promo-right-image"></div>
+                    </div>
+                </div>
+
+                <!-- Carousel Dots Indicator (Node 1:12026) -->
+                <div class="carousel-dots">
+                    <div class="dot active"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                    <div class="dot"></div>
+                </div>
+            </div>
+
+            <!-- 2-Column Program Cards Grid (Node 1:12035) -->
+            <div class="program-cards-grid">
+
+                <!-- Card Row 1 - Item 1 (Node 1:12038) -->
+                <div class="program-card">
+                    <!-- Ribbon Badge (Node 1:12058) -->
+                    <div class="card-badge-ribbon">
+                        <div class="badge-ribbon">
+                            2 Hari Lagi!
+                            <div class="badge-ribbon-triangle"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-brand-fallback">
+                        <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
+                            alt="GRC Board" class="card-brand-logo-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;" class="card-brand-fallback">
+                            <div class="card-brand-icon">GRC</div>
+                            <span>GRC board</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-title">GRC Board</div>
+                        <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                    </div>
+                    <div class="card-dashed-line"></div>
+                    <div>
+                        <div class="card-reward-label">Hadiah hingga</div>
+                        <div class="card-reward-amount">Rp 1,000,000</div>
+                    </div>
+                </div>
+
+                <!-- Card Row 1 - Item 2 (Node 1:12048) -->
+                <div class="program-card">
+                    <div class="card-brand-fallback">
+                        <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
+                            alt="GRC Board" class="card-brand-logo-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;" class="card-brand-fallback">
+                            <div class="card-brand-icon">GRC</div>
+                            <span>GRC board</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-title">GRC Board</div>
+                        <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                    </div>
+                    <div class="card-dashed-line"></div>
+                    <div>
+                        <div class="card-reward-label">Hadiah hingga</div>
+                        <div class="card-reward-amount">Rp 1,000,000</div>
+                    </div>
+                </div>
+
+                <!-- Card Row 2 - Item 1 (Node 1:12064) -->
+                <div class="program-card">
+                    <!-- Ribbon Badge (Node 1:12084) -->
+                    <div class="card-badge-ribbon">
+                        <div class="badge-ribbon">
+                            2 Hari Lagi!
+                            <div class="badge-ribbon-triangle"></div>
+                        </div>
+                    </div>
+
+                    <div class="card-brand-fallback">
+                        <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
+                            alt="GRC Board" class="card-brand-logo-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;" class="card-brand-fallback">
+                            <div class="card-brand-icon">GRC</div>
+                            <span>GRC board</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-title">GRC Board</div>
+                        <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                    </div>
+                    <div class="card-dashed-line"></div>
+                    <div>
+                        <div class="card-reward-label">Hadiah hingga</div>
+                        <div class="card-reward-amount">Rp 1,000,000</div>
+                    </div>
+                </div>
+
+                <!-- Card Row 2 - Item 2 (Node 1:12074) -->
+                <div class="program-card">
+                    <div class="card-brand-fallback">
+                        <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
+                            alt="GRC Board" class="card-brand-logo-img"
+                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                        <div style="display:none;" class="card-brand-fallback">
+                            <div class="card-brand-icon">GRC</div>
+                            <span>GRC board</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="card-title">GRC Board</div>
+                        <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
+                    </div>
+                    <div class="card-dashed-line"></div>
+                    <div>
+                        <div class="card-reward-label">Hadiah hingga</div>
+                        <div class="card-reward-amount">Rp 1,000,000</div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alur Klaim Mandiri & Validasi FDE Akhir — sCanWin FDE Prototype</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800;1,900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* Master Variables & Tokens */
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --dark-gray: #0f172a;
+      --medium-gray: #64748b;
+      --light-gray: #f8fafc;
+      --border-gray: #e2e8f0;
+      --success-green: #10b981;
+      --warning-amber: #f59e0b;
+      --error-red: #fe3058;
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Workstation Grid Layout */
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 440px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Left Mobile Canvas */
+    .feature-left-canvas {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      background: #0b0f19;
+      padding: 20px;
+      overflow-y: auto;
+      border-right: 1px solid #1e293b;
+      position: relative;
+      flex: 1;
+    }
+
+    .canvas-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #94a3b8;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 390px Mobile Frame */
+    .mobile-frame-wrapper {
+      width: 390px;
+      min-height: 844px;
+      background: #ffffff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Right Control Workspace (Fixed 440px Width) */
+    .feature-right-sidebar {
+      width: 440px;
+      display: flex;
+      flex-direction: column;
+      background: #ffffff;
+      padding: 16px 20px;
+      overflow-y: auto;
+      gap: 12px;
+      border-left: 1px solid #e2e8f0;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .header-info-box {
+      border-bottom: 1px solid #e2e8f0;
+      padding-bottom: 8px;
+    }
+
+    .header-info-box h1 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      margin-bottom: 2px;
+    }
+
+    .header-info-box p {
+      font-size: 11.5px;
+      color: #64748b;
+      line-height: 1.4;
+    }
+
+    /* Scenario Selection Card Grid (Compact) */
+    .scenarios-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .scenario-card {
+      border: 1.5px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+    }
+
+    .scenario-card:hover {
+      border-color: #cbd5e1;
+      transform: translateY(-1px);
+    }
+
+    .scenario-card.active {
+      border-color: var(--primary-blue);
+      background: rgba(11, 87, 208, 0.03);
+      box-shadow: 0 2px 8px rgba(11, 87, 208, 0.12);
+    }
+
+    .scenario-badge {
+      font-size: 8.5px;
+      font-weight: 800;
+      padding: 1.5px 5px;
+      border-radius: 20px;
+      align-self: flex-start;
+      text-transform: uppercase;
+    }
+
+    .badge-happy {
+      background: #dcfce7;
+      color: #15803d;
+    }
+
+    .badge-fraud {
+      background: #ffe4e6;
+      color: #e11d48;
+    }
+
+    .badge-error {
+      background: #fef3c7;
+      color: #b45309;
+    }
+
+    .scenario-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .scenario-desc {
+      font-size: 10.5px;
+      color: #64748b;
+      line-height: 1.3;
+    }
+
+    /* Configurator Form Panel (Compact) */
+    .config-panel {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .config-title {
+      font-size: 10.5px;
+      font-weight: 800;
+      color: #334155;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .input-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .field-group label {
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #475569;
+    }
+
+    .field-group input {
+      padding: 5px 8px;
+      border: 1px solid #cbd5e1;
+      border-radius: 6px;
+      font-size: 11.5px;
+      font-weight: 600;
+      color: #0f172a;
+      background: #ffffff;
+    }
+
+    .btn-run-simulation {
+      background: linear-gradient(135deg, #0b57d0 0%, #1d4ed8 100%);
+      color: #ffffff;
+      border: none;
+      border-radius: 8px;
+      padding: 8px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 2px 8px rgba(11, 87, 208, 0.25);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-run-simulation:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(11, 87, 208, 0.35);
+    }
+
+    /* Live FDE Audit Terminal (Compact) */
+    .audit-terminal {
+      background: #0f172a;
+      border-radius: 12px;
+      padding: 10px 12px;
+      color: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-family: monospace;
+    }
+
+    .terminal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1e293b;
+      padding-bottom: 6px;
+    }
+
+    .terminal-title {
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .terminal-logs {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 11px;
+      max-height: 90px;
+      overflow-y: auto;
+    }
+
+    .log-line {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      line-height: 1.3;
+    }
+
+    .log-time {
+      color: #64748b;
+      font-size: 10px;
+      flex-shrink: 0;
+    }
+
+    .log-text-valid {
+      color: #4ade80;
+    }
+
+    .log-text-fraud {
+      color: #fb7185;
+      font-weight: bold;
+    }
+
+    .log-text-info {
+      color: #cbd5e1;
+    }
+
+    /* Admin Email Drawer Modal */
+    .admin-email-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.7);
+      backdrop-filter: blur(4px);
+      z-index: 999;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .admin-email-box {
+      width: 580px;
+      background: #ffffff;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+      animation: modalSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes modalSlide {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .email-header {
+      background: #0f172a;
+      color: #ffffff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .email-title {
+      font-size: 15px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .email-close {
+      background: none;
+      border: none;
+      color: #94a3b8;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .email-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .email-meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    .email-meta-table td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .email-meta-table td:first-child {
+      font-weight: 700;
+      color: #475569;
+      width: 160px;
+    }
+
+    /* Tabs for PRD Spec (Compact) */
+    .prd-spec-box {
+      border-top: 1px solid #e2e8f0;
+      padding-top: 10px;
+    }
+
+    .prd-spec-title {
+      font-size: 12px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 6px;
+    }
+
+    .spec-bullets {
+      font-size: 11.5px;
+      color: #475569;
+      line-height: 1.4;
+      padding-left: 16px;
+    }
+
+    .spec-bullets li {
+      margin-bottom: 4px;
+    }
+  </style>
+
+  <!-- Include Centralized Sidebar Script -->
+  <script src="sidebar.js"></script>
+</head>
+
+<body>
+  <div class="portal-container">
+
+    <!-- MASTER SIDEBAR CONTAINER -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- MAIN PORTAL WORKSPACE -->
+    <div class="portal-main">
+      <div class="feature-container">
+
+        <!-- ================= LEFT CANVAS: MOBILE DEVICE FRAME (390px) ================= -->
+        <div class="feature-left-canvas">
+          <div class="canvas-badge">
+            <i class="fas fa-mobile-screen-button"></i> App 1000Saudara Preview (Customer)
+          </div>
+
+          <!-- Dynamic 390px Mobile Frame -->
+          <div class="mobile-frame-wrapper" id="mobilePreviewFrame">
+
+            <!-- SCREEN 1: HOMEPAGE (scanwin-homepage.html design) -->
+            <div id="screenHomepage" style="display: block; width: 390px;">
+              <iframe src="../../Design sample/scanwin-homepage.html" style="width: 390px; height: 844px; border: none;"
+                id="iframeHomepage"></iframe>
+            </div>
+
+            <!-- SCREEN 2: KODE SCANWIN / UPLOAD QR (scanwin-klaim-page.html design) -->
+            <div id="screenKlaim" style="display: none; width: 390px;">
+              <iframe src="../../Design sample/scanwin-klaim-page.html"
+                style="width: 390px; height: 844px; border: none;" id="iframeKlaim"></iframe>
+            </div>
+
+            <!-- SCREEN 3: SUCCESS REDEEM (scanwin-success-redeem-page.html design) -->
+            <div id="screenSuccess" style="display: none; width: 390px;">
+              <iframe src="../../Design sample/scanwin-success-redeem-page.html"
+                style="width: 390px; height: 844px; border: none;" id="iframeSuccess"></iframe>
+            </div>
+
+            <!-- SCREEN 4: ERROR UPLOAD QR MODAL (scanwin-upload-qr-error.html design) -->
+            <div id="screenError" style="display: none; width: 390px;">
+              <iframe src="../../Design sample/scanwin-upload-qr-error.html"
+                style="width: 390px; height: 844px; border: none;" id="iframeError"></iframe>
+            </div>
+
+            <!-- SCREEN 5: PENDING REVIEW STATE (SELF-REDEEM FRAUD DETECTED - USER-FRIENDLY TONE & CAROUSEL) -->
+            <div id="screenPendingFraud" style="display: none; width: 390px; height: 844px; background: #0171FF; border-radius: 28px; overflow: hidden; position: relative; color: #fff;">
+              
+              <!-- Sunburst Light Rays Animation -->
+              <svg class="sunburst-bg-rays" style="position: absolute; left: -150px; top: 66px; width: 691px; height: 691px; z-index: 1; pointer-events: none; opacity: 0.85;" viewBox="0 0 691 691" fill="none">
+                <g opacity="0.6">
+                  <path d="M345.5 345.5L0 120L100 0L345.5 345.5Z" fill="url(#sunburst_grad_p2)"/>
+                  <path d="M345.5 345.5L691 120L591 0L345.5 345.5Z" fill="url(#sunburst_grad_p2)"/>
+                  <path d="M345.5 345.5L691 571L591 691L345.5 345.5Z" fill="url(#sunburst_grad_p2)"/>
+                  <path d="M345.5 345.5L0 571L100 691L345.5 345.5Z" fill="url(#sunburst_grad_p2)"/>
+                </g>
+                <defs>
+                  <linearGradient id="sunburst_grad_p2" x1="345.5" y1="345.5" x2="345.5" y2="0" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#73B2FF" stop-opacity="0.8"/>
+                    <stop offset="1" stop-color="#0171FF" stop-opacity="0"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+
+              <!-- Header Announcement -->
+              <div style="position: absolute; top: 76px; left: 50%; transform: translateX(-50%); width: 320px; text-align: center; z-index: 10;">
+                <div style="font-weight: 700; font-size: 22px; line-height: 26px; color: #FFFFFF; margin-bottom: 4px;">
+                  Voucher sCanWin Diterima!
+                </div>
+                <div style="font-weight: 800; font-size: 21px; line-height: 28px; color: #FFEB0A; text-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);">
+                  Dalam Verifikasi Keamanan
+                </div>
+                <!-- Yellow Underline -->
+                <svg viewBox="0 0 192 6" fill="none" style="width: 180px; height: 6px; margin: 4px auto 8px auto; display: block;">
+                  <path d="M2 3.5C40 1.5 152 1.5 190 3.5" stroke="#FFEB0A" stroke-width="4" stroke-linecap="round"/>
+                </svg>
+                <div style="font-size: 12.5px; line-height: 17px; color: #E0EDFF; font-weight: 500;">
+                  Peninjauan estimasi maks. 1x24 jam oleh sistem FDE Backend. Hadiah akan otomatis cair setelah verifikasi.
+                </div>
+              </div>
+
+              <!-- Ticket Box Visual & Shield Overlay -->
+              <div style="position: absolute; left: 76px; top: 250px; width: 238px; height: 180px; z-index: 6; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div style="width: 100px; height: 100px; background: rgba(255, 235, 10, 0.15); border: 2px solid #FFEB0A; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #FFEB0A; font-size: 44px; box-shadow: 0 0 30px rgba(255, 235, 10, 0.4);">
+                  <i class="fas fa-shield-halved"></i>
+                </div>
+                <div style="margin-top: 10px; background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.3); padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; color: #FFEB0A; letter-spacing: 0.5px;">
+                  STATUS: PENDING VERIFIKASI
+                </div>
+              </div>
+
+              <!-- Bottom Sheet Voucher Card Container & Carousel -->
+              <div style="position: absolute; bottom: 0; left: 0; width: 390px; background: #ffffff; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 20px 20px 24px 20px; color: #0a0a0a; z-index: 20; box-shadow: 0 -10px 30px rgba(0,0,0,0.15); display: flex; flex-direction: column; gap: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #f1f5f9; padding-bottom: 10px;">
+                  <div style="font-weight: 700; font-size: 14px; color: #0a0a0a;" id="pendingVoucherIdText">VCR/01002/19292</div>
+                  <span style="background: #fef3c7; color: #b45309; font-size: 10px; font-weight: 800; padding: 3px 8px; border-radius: 12px;" id="pendingCounterText">Voucher 1/4</span>
+                </div>
+
+                <div style="background: #f8fafc; border: 1px dashed #cbd5e1; border-radius: 12px; padding: 12px; font-size: 12px; color: #475569; line-height: 1.5;" id="pendingInfoText">
+                  <div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;">
+                    <i class="fas fa-circle-info" style="color: #0b57d0;"></i> Informasi Klaim Voucher
+                  </div>
+                  Klaim voucher sCanWin kamu telah tercatat di sistem. Backend FDE sedang mencocokkan data transaksi untuk memastikan keamanan komisi merchant & saldo customer.
+                </div>
+
+                <button onclick="handlePendingNextVoucher()" style="width: 100%; height: 46px; background: #0171FF; color: #ffffff; border: none; border-radius: 12px; font-size: 14px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 14px rgba(1, 113, 255, 0.3);">
+                  <span id="btnPendingText">Ke Detail Saldo</span>
+                </button>
+              </div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ================= RIGHT WORKSPACE: CONTROLS & FDE AUDIT TERMINAL ================= -->
+        <div class="feature-right-sidebar">
+
+          <!-- Header Information -->
+          <div class="header-info-box">
+            <h1>Alur Klaim Mandiri & Validasi FDE Akhir</h1>
+            <p>Simulasi PRD 11: Customer mengunggah QR bulk WhatsApp di aplikasi 1000Saudara. Backend menjalankan
+              evaluasi <strong>FDE Akhir (Pencocokan Silang Device ID, GPS, IP)</strong> untuk memvalidasi kelayakan
+              pencairan komisi merchant & saldo hadiah customer.</p>
+          </div>
+
+          <!-- Scenario Selection Card Grid -->
+          <div class="scenarios-grid">
+
+            <!-- Scenario 1: Happy Path -->
+            <div class="scenario-card active" id="scenHappy" onclick="selectScenario('happy')">
+              <span class="scenario-badge badge-happy"><i class="fas fa-check-circle"></i> Happy Path</span>
+              <div class="scenario-title">1. FDE Akhir Valid</div>
+              <div class="scenario-desc">Customer Device ID <strong>berbeda</strong> dari Merchant. Voucher set
+                <code>Used</code>, Saldo cair instan!</div>
+            </div>
+
+            <!-- Scenario 2: Self-Redeem Fraud -->
+            <div class="scenario-card" id="scenFraud" onclick="selectScenario('fraud')">
+              <span class="scenario-badge badge-fraud"><i class="fas fa-triangle-exclamation"></i> Fraud
+                Terdeteksi</span>
+              <div class="scenario-title">2. Self-Redeem Fraud</div>
+              <div class="scenario-desc">Device ID <strong>sama / kembar</strong> (Merchant klaim via HP sendiri).
+                Transaksi ditangguhkan ke <code>Pending</code>.</div>
+            </div>
+
+            <!-- Scenario 3: Error QR -->
+            <div class="scenario-card" id="scenError" onclick="selectScenario('error')">
+              <span class="scenario-badge badge-error"><i class="fas fa-circle-xmark"></i> QR Invalid</span>
+              <div class="scenario-title">3. QR Tidak Terdaftar</div>
+              <div class="scenario-desc">Gambar QR tidak terdaftar di sistem. Memicu modal bottom sheet error
+                <em>"Upload Ulang"</em>.</div>
+            </div>
+
+          </div>
+
+          <!-- Skenario Jumlah Voucher Klaim Card (Visible in Right Sidebar) -->
+          <div class="config-panel" style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 10px 12px; display: flex; flex-direction: column; gap: 6px;">
+            <div style="font-size: 11px; font-weight: 800; color: #0b57d0; text-transform: uppercase; letter-spacing: 0.5px; display: flex; align-items: center; justify-content: space-between;">
+              <span><i class="fas fa-ticket"></i> Skenario Jumlah Voucher Klaim</span>
+              <span id="activeScenarioLabel" style="color:#64748b; font-size:10px; font-weight:600;">[ 4 Voucher ]</span>
+            </div>
+            <div style="display: flex; gap: 16px; margin-top: 2px;">
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; color: #0f172a;">
+                <input type="radio" name="voucherCountRadio" value="1" onchange="setVoucherScenario(1)"> 1 Voucher (Single)
+              </label>
+              <label style="display: flex; align-items: center; gap: 6px; font-size: 11.5px; font-weight: 600; cursor: pointer; color: #0f172a;">
+                <input type="radio" name="voucherCountRadio" value="4" checked onchange="setVoucherScenario(4)"> 4 Voucher (Multiple)
+              </label>
+            </div>
+          </div>
+
+          <!-- Hidden Payload Inputs (For JS Engine) -->
+          <div style="display: none;">
+            <input type="text" id="custDeviceId" value="DEV_CUST_MOBILE_9921">
+            <input type="text" id="merchDeviceId" value="DEV_MERCH_STORE_4412">
+            <input type="text" id="gpsCoord" value="-6.2088, 106.8456" readonly>
+            <input type="text" id="ipAddress" value="182.253.12.98" readonly>
+          </div>
+
+          <!-- Live FDE Audit Terminal -->
+          <div class="audit-terminal">
+            <div class="terminal-header">
+              <div class="terminal-title">
+                <i class="fas fa-terminal"></i> Log Evaluasi Real-Time FDE Akhir Backend
+              </div>
+              <button onclick="showAdminEmailModal()" id="btnViewEmail"
+                style="display:none; background:#ef4444; color:#fff; border:none; border-radius:6px; padding:4px 10px; font-size:11px; font-weight:700; cursor:pointer;">
+                <i class="fas fa-envelope"></i> Lihat Email Security Admin
+              </button>
+            </div>
+
+            <div class="terminal-logs" id="terminalLogs">
+              <div class="log-line"><span class="log-time">[15:52:01]</span> <span class="log-text-info">System
+                  initialized. Awaiting customer QR submission...</span></div>
+            </div>
+          </div>
+
+          <!-- PRD Requirement Specification -->
+          <div class="prd-spec-box">
+            <div class="prd-spec-title"><i class="fas fa-file-contract"></i> Ringkasan Aturan FDE Akhir (PRD 11)</div>
+            <ul class="spec-bullets">
+              <li><strong>Pencocokan Silang (Cross-Matching):</strong> Backend membandingkan
+                <code>customer_device_id</code> dengan <code>merchant_device_id</code> pembuat QR bulk.</li>
+              <li><strong>Happy Path (Valid):</strong> Jika Device ID berbeda, status voucher diubah menjadi
+                <code>Used</code>, komisi merchant langsung cair ke Saldo Utama, dan customer melihat Halaman Sukses
+                Redeem (Hadiah +Rp 200.000).</li>
+              <li><strong>Edge Case (Self-Redeem Fraud):</strong> Jika Device ID terdeteksi sama/kembar (Merchant
+                mengklaim sendiri dari HP yang sama), transaksi ditangguhkan ke status <code>Pending</code>, memicu
+                Notifikasi Email Keamanan ke Admin, dan menampilkan label <em>"Menunggu Tinjauan Keamanan 1x24 Jam"</em>
+                di aplikasi.</li>
+            </ul>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= ADMIN SECURITY EMAIL MODAL ================= -->
+  <div class="admin-email-modal" id="adminEmailModal">
+    <div class="admin-email-box">
+      <div class="email-header">
+        <div class="email-title">
+          <i class="fas fa-shield-triangle-exclamation" style="color:#f87171;"></i>
+          <span>Email Alert Keamanan sCanWin FDE (Real-Time Notification)</span>
+        </div>
+        <button class="email-close" onclick="hideAdminEmailModal()"><i class="fas fa-times"></i></button>
+      </div>
+
+      <div class="email-body">
+        <div
+          style="background:#fef2f2; border:1px solid #fecaca; border-radius:12px; padding:14px; color:#991b1b; font-size:13px;">
+          <strong>PERINGATAN DETEKSI FRAUD: Self-Redeem (Device ID Kembar)</strong><br>
+          Sistem FDE Akhir mendeteksi indikasi kecurangan transaksi klaim mandiri QR Bulk.
+        </div>
+
+        <table class="email-meta-table">
+          <tr>
+            <td>Kepada:</td>
+            <td>security-admin@scanwin.com</td>
+          </tr>
+          <tr>
+            <td>Waktu Kejadian:</td>
+            <td id="emailTimeText">2026-07-23 15:52:05 WIB</td>
+          </tr>
+          <tr>
+            <td>Kode Voucher / QR:</td>
+            <td>VCR-TR30-882910-BULK</td>
+          </tr>
+          <tr>
+            <td>Merchant Pembuat:</td>
+            <td>Toko Bangunan Sumber Makmur (ID: M-49102)</td>
+          </tr>
+          <tr>
+            <td>Merchant Device ID:</td>
+            <td id="emailMerchDev">DEV_MERCH_STORE_4412</td>
+          </tr>
+          <tr>
+            <td>Customer Device ID:</td>
+            <td id="emailCustDev">DEV_MERCH_STORE_4412 <span style="color:#dc2626; font-weight:800;">(MATCH /
+                KEMBAR)</span></td>
+          </tr>
+          <tr>
+            <td>GPS & IP Customer:</td>
+            <td>-6.2088, 106.8456 (IP: 182.253.12.98)</td>
+          </tr>
+          <tr>
+            <td>Tindakan Sistem:</td>
+            <td><span
+                style="background:#fef3c7; color:#b45309; font-weight:700; padding:2px 6px; border-radius:4px;">Status
+                DB = PENDING (Ditangguhkan 1x24 jam)</span></td>
+          </tr>
+        </table>
+
+        <button onclick="hideAdminEmailModal()"
+          style="background:#0f172a; color:#ffffff; border:none; border-radius:8px; padding:10px; font-weight:600; cursor:pointer;">Tutup
+          Pratinjau Email</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Interactive JavaScript Engine -->
+  <script>
+    let currentScenario = 'happy';
+
+    function selectScenario(scen) {
+      currentScenario = scen;
+      document.querySelectorAll('.scenario-card').forEach(c => c.classList.remove('active'));
+
+      if (scen === 'happy') {
+        document.getElementById('scenHappy').classList.add('active');
+        document.getElementById('custDeviceId').value = 'DEV_CUST_MOBILE_9921';
+        document.getElementById('merchDeviceId').value = 'DEV_MERCH_STORE_4412';
+        document.getElementById('activeScenarioLabel').innerText = '[ Happy Path Mode ]';
+        switchScreen('screenKlaim');
+      } else if (scen === 'fraud') {
+        document.getElementById('scenFraud').classList.add('active');
+        document.getElementById('custDeviceId').value = 'DEV_MERCH_STORE_4412';
+        document.getElementById('merchDeviceId').value = 'DEV_MERCH_STORE_4412';
+        document.getElementById('activeScenarioLabel').innerText = '[ Self-Redeem Fraud Mode ]';
+        switchScreen('screenKlaim');
+      } else if (scen === 'error') {
+        document.getElementById('scenError').classList.add('active');
+        document.getElementById('custDeviceId').value = 'DEV_CUST_MOBILE_9921';
+        document.getElementById('merchDeviceId').value = 'DEV_MERCH_STORE_4412';
+        document.getElementById('activeScenarioLabel').innerText = '[ QR Invalid Mode ]';
+        switchScreen('screenKlaim');
+      }
+    }
+
+    function switchScreen(screenId) {
+      document.getElementById('screenHomepage').style.display = 'none';
+      document.getElementById('screenKlaim').style.display = 'none';
+      document.getElementById('screenSuccess').style.display = 'none';
+      document.getElementById('screenError').style.display = 'none';
+      document.getElementById('screenPendingFraud').style.display = 'none';
+
+      document.getElementById(screenId).style.display = 'block';
+    }
+
+    function addLog(text, type = 'info') {
+      const logs = document.getElementById('terminalLogs');
+      const now = new Date();
+      const timeStr = now.toTimeString().split(' ')[0];
+
+      let typeClass = 'log-text-info';
+      if (type === 'valid') typeClass = 'log-text-valid';
+      if (type === 'fraud') typeClass = 'log-text-fraud';
+
+      const line = document.createElement('div');
+      line.className = 'log-line';
+      line.innerHTML = `<span class="log-time">[${timeStr}]</span> <span class="${typeClass}">${text}</span>`;
+      logs.appendChild(line);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    function executeClaimFDE() {
+      const custDev = document.getElementById('custDeviceId').value;
+      const merchDev = document.getElementById('merchDeviceId').value;
+
+      document.getElementById('btnViewEmail').style.display = 'none';
+      addLog('--- Memulai Klaim Mandiri QR WhatsApp & Evaluasi FDE Akhir ---', 'info');
+      addLog(`Mengirim Payload: Customer DevID=${custDev}, Merchant DevID=${merchDev}`, 'info');
+
+      setTimeout(() => {
+        addLog('Mendekode metadata QR Bulk... Merchant Pembuat: Toko Bangunan Sumber Makmur (M-49102)', 'info');
+
+        setTimeout(() => {
+          addLog('Jalankan Evaluasi FDE Akhir: Cross-Matching Device ID...', 'info');
+
+          if (currentScenario === 'error') {
+            addLog('❌ QR Code TIDAK TERDAFTAR di Database ScanWin1000s!', 'fraud');
+            switchScreen('screenError');
+            return;
+          }
+
+          if (custDev === merchDev) {
+            // FRAUD DETECTED
+            addLog('⚠️ DETEKSI FRAUD FDE AKHIR: Device ID Customer SAMA DENGAN Merchant! (Self-Redeem Indication)', 'fraud');
+            addLog('DB Status: Transaksi ditangguhkan ke PENDING. Komisi merchant & komisi customer DITUNDA.', 'fraud');
+            addLog('Memicu Email Security Alert Real-Time ke Administrator sCanWin...', 'fraud');
+
+            document.getElementById('btnViewEmail').style.display = 'inline-block';
+            document.getElementById('emailMerchDev').innerText = merchDev;
+            document.getElementById('emailCustDev').innerText = `${custDev} (MATCH / KEMBAR)`;
+
+            switchScreen('screenPendingFraud');
+            updatePendingVoucherDisplay();
+          } else {
+            // HAPPY PATH
+            addLog('✅ EVALUASI FDE AKHIR VALID: Customer Device ID Berbeda dari Merchant Pembuat!', 'valid');
+            addLog('DB Status: Voucher diubah menjadi USED permanen.', 'valid');
+            addLog('Pencairan Komisi: Rp 10.000 cair ke Saldo Utama Merchant & Saldo Hadiah Customer +Rp 200.000!', 'valid');
+
+            switchScreen('screenSuccess');
+            // Sync current voucher count scenario to iframeSuccess
+            const iframeSuccess = document.getElementById('iframeSuccess');
+            if (iframeSuccess && iframeSuccess.contentWindow) {
+              iframeSuccess.contentWindow.postMessage({ action: 'SET_VOUCHER_COUNT', count: currentVoucherCount }, '*');
+            }
+          }
+        }, 600);
+      }, 400);
+    }
+
+    // Pending Vouchers Carousel Engine
+    let currentVoucherCount = 4;
+    const allPendingVouchers = [
+      { id: "VCR/01002/19292", info: "Klaim voucher sCanWin kamu telah tercatat di sistem. Backend FDE sedang mencocokkan data transaksi untuk memastikan keamanan komisi merchant & saldo customer." },
+      { id: "VCR/01002/19293", info: "Pencocokan silang Device ID & log pasif GPS/IP sedang diproses oleh FDE backend (estimasi maks. 1x24 jam)." },
+      { id: "VCR/01002/19294", info: "Status saldo hadiah & komisi ditangguhkan sementara hingga verifikasi FDE selesai secara otomatis." },
+      { id: "VCR/01002/19295", info: "Monitoring evaluasi 1x24 jam berjalan secara otomatis." }
+    ];
+    let activePendingVouchers = [...allPendingVouchers];
+    let pendingIndex = 0;
+
+    function setVoucherScenario(count) {
+      currentVoucherCount = count;
+      addLog(`[CONFIG] Skenario Jumlah Voucher diubah ke: ${count} Voucher`, 'info');
+
+      if (count === 1) {
+        activePendingVouchers = [allPendingVouchers[0]];
+      } else {
+        activePendingVouchers = [...allPendingVouchers];
+      }
+      pendingIndex = 0;
+      updatePendingVoucherDisplay();
+
+      // Sync to iframeSuccess
+      const iframeSuccess = document.getElementById('iframeSuccess');
+      if (iframeSuccess && iframeSuccess.contentWindow) {
+        iframeSuccess.contentWindow.postMessage({ action: 'SET_VOUCHER_COUNT', count: count }, '*');
+      }
+    }
+
+    function handlePendingNextVoucher() {
+      if (pendingIndex < activePendingVouchers.length - 1) {
+        pendingIndex++;
+        updatePendingVoucherDisplay();
+      } else {
+        switchScreen('screenHomepage');
+      }
+    }
+
+    function updatePendingVoucherDisplay() {
+      const current = activePendingVouchers[pendingIndex] || activePendingVouchers[0];
+      const idElem = document.getElementById('pendingVoucherIdText');
+      const infoElem = document.getElementById('pendingInfoText');
+      const counterElem = document.getElementById('pendingCounterText');
+      const btnElem = document.getElementById('btnPendingText');
+
+      if (idElem) idElem.textContent = current.id;
+      if (infoElem) infoElem.innerHTML = `<div style="font-weight: 700; color: #0f172a; margin-bottom: 4px; display: flex; align-items: center; gap: 6px;"><i class="fas fa-circle-info" style="color: #0b57d0;"></i> Informasi Klaim Voucher</div>${current.info}`;
+      if (counterElem) counterElem.textContent = `Voucher ${pendingIndex + 1}/${activePendingVouchers.length}`;
+
+      // Button Text Logic: 'Ke Detail Saldo' if single voucher or on last voucher, else 'Voucher Selanjutnya'
+      if (btnElem) {
+        if (activePendingVouchers.length === 1 || pendingIndex === activePendingVouchers.length - 1) {
+          btnElem.textContent = "Ke Detail Saldo";
+        } else {
+          btnElem.textContent = "Voucher Selanjutnya";
+        }
+      }
+    }
+
+    function showAdminEmailModal() {
+      document.getElementById('adminEmailModal').style.display = 'flex';
+    }
+
+    function hideAdminEmailModal() {
+      document.getElementById('adminEmailModal').style.display = 'none';
+    }
+
+    // Listen to iframe messages (postMessage from mobile app screens)
+    window.addEventListener('message', function(event) {
+      if (!event.data) return;
+
+      if (event.data.action === 'GOTO_HOMEPAGE') {
+        switchScreen('screenHomepage');
+      } else if (event.data.action === 'GOTO_KLAIM') {
+        switchScreen('screenKlaim');
+      } else if (event.data.action === 'UPLOAD_QR_SUCCESS') {
+        const fileName = event.data.fileName || 'bulk-qr.png';
+        addLog(`[ACTION] Customer mengunggah berkas QR: "${fileName}"`, 'info');
+        executeClaimFDE();
+      } else if (event.data.action === 'REUPLOAD') {
+        switchScreen('screenKlaim');
+      }
+    });
+
+    // Auto listen to initial load
+    window.addEventListener('load', () => {
+      switchScreen('screenHomepage');
+    });
+  </script>
+</body>
+
+</html>
