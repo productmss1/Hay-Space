@@ -828,6 +828,8 @@
                 path.setAttribute("d", d);
                 path.setAttribute("class", "connection-path");
                 path.setAttribute("marker-end", "url(#arrow)");
+                path.setAttribute("data-from", conn.from);
+                path.setAttribute("data-to", conn.to);
                 svgLayer.appendChild(path);
 
                 if (conn.label) {
@@ -948,10 +950,30 @@
             }
         });
 
+        function escapeXML(str) {
+            if (!str) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
+
         async function copyAsSVG() {
             try {
-                const nodes = document.querySelectorAll('.node');
                 let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+
+                // Calculate bounding box including sections and nodes
+                document.querySelectorAll('.figma-section').forEach(sec => {
+                    const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
+                    if (x < minX) minX = x;
+                    if (y < minY) minY = y;
+                    if (x + w > maxX) maxX = x + w;
+                    if (y + h > maxY) maxY = y + h;
+                });
+
+                const nodes = document.querySelectorAll('.node');
                 nodes.forEach(el => {
                     const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
                     if (x < minX) minX = x;
@@ -959,11 +981,16 @@
                     if (x + w > maxX) maxX = x + w;
                     if (y + h > maxY) maxY = y + h;
                 });
+
+                if (minX === Infinity) minX = 0;
+                if (minY === Infinity) minY = 0;
+                if (maxX === -Infinity) maxX = 1000;
+                if (maxY === -Infinity) maxY = 1000;
                 
-                minX = Math.max(0, minX - 100);
-                minY = Math.max(0, minY - 100);
-                maxX += 100;
-                maxY += 100;
+                minX = Math.max(0, minX - 60);
+                minY = Math.max(0, minY - 60);
+                maxX += 60;
+                maxY += 60;
                 const width = maxX - minX;
                 const height = maxY - minY;
 
@@ -971,8 +998,9 @@
                 
                 svg += `
 <defs>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap');
+    <style type="text/css">
+    <![CDATA[
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
         text {
             font-family: 'Inter', sans-serif;
             font-size: 11px;
@@ -995,91 +1023,95 @@
         }
         .lbl-yes { fill: #059669; }
         .lbl-no { fill: #dc2626; }
+    ]]>
     </style>
     <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6" orient="auto">
         <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
     </marker>
 </defs>`;
 
+                // Render Sections
                 document.querySelectorAll('.figma-section').forEach(sec => {
                     const x = sec.offsetLeft, y = sec.offsetTop, w = sec.offsetWidth, h = sec.offsetHeight;
                     const labelSpan = sec.querySelector('.section-label');
-                    const labelText = labelSpan ? labelSpan.innerText : '';
+                    const rawText = labelSpan ? (labelSpan.textContent || labelSpan.innerText || '').trim() : '';
+                    const labelText = escapeXML(rawText);
                     const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
+                    const labelWidth = Math.max(120, rawText.length * 7 + 24);
                     
                     svg += `
     <!-- Section -->
     <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
-    <rect x="${x + 20}" y="${y - 12}" width="${labelText.length * 7 + 24}" height="24" rx="8" fill="${labelBgColor}" />
-    <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="middle">${labelText}</text>`;
+    <rect x="${x + 20}" y="${y - 12}" width="${labelWidth}" height="24" rx="8" fill="${labelBgColor}" />
+    <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="central" font-family="Inter, sans-serif" font-size="11px" font-weight="800" fill="#ffffff">${labelText}</text>`;
                 });
 
-                const paths = document.querySelectorAll('.connection-path');
-                flowData.connections.forEach((conn, idx) => {
-                    const pathEl = paths[idx];
+                // Render Connections
+                flowData.connections.forEach((conn) => {
+                    const pathEl = svgLayer.querySelector(`[data-from="${conn.from}"][data-to="${conn.to}"]`);
                     if (!pathEl) return;
                     let d = pathEl.getAttribute('d');
+                    if (!d) return;
                     
                     const dTokens = d.trim().split(/\s+/);
                     if (dTokens.length >= 3) {
                         const lastY = parseFloat(dTokens[dTokens.length - 1]);
                         const lastX = parseFloat(dTokens[dTokens.length - 2]);
                         
-                        if (conn.t === 'left') {
-                            d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
-                        } else if (conn.t === 'right') {
-                            d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
-                        } else if (conn.t === 'top') {
-                            d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX - 6} ${lastY - 10}`;
-                        } else if (conn.t === 'bottom') {
-                            d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
+                        if (!isNaN(lastX) && !isNaN(lastY)) {
+                            if (conn.t === 'left') {
+                                d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
+                            } else if (conn.t === 'right') {
+                                d += ` M ${lastX + 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX + 10} ${lastY + 6}`;
+                            } else if (conn.t === 'top') {
+                                d += ` M ${lastX - 6} ${lastY - 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY - 10}`;
+                            } else if (conn.t === 'bottom') {
+                                d += ` M ${lastX - 6} ${lastY + 10} L ${lastX} ${lastY} L ${lastX + 6} ${lastY + 10}`;
+                            }
                         }
                     }
                     
                     svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
                     svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
-                    svg += `\n        <path d="${d}" class="conn-path" />`;
+                    svg += `\n        <path d="${d}" class="conn-path" stroke="#94a3b8" stroke-width="2.5" fill="none" />`;
 
                     if (conn.label) {
                         const points = [];
                         for (let i = 0; i < dTokens.length; i++) {
                             if (dTokens[i] === 'M' || dTokens[i] === 'L') {
-                                points.push({ x: parseFloat(dTokens[i+1]), y: parseFloat(dTokens[i+2]) });
+                                const px = parseFloat(dTokens[i+1]);
+                                const py = parseFloat(dTokens[i+2]);
+                                if (!isNaN(px) && !isNaN(py)) {
+                                    points.push({ x: px, y: py });
+                                }
                             }
                         }
                         
-                        let labelX, labelY;
+                        let labelX = 0, labelY = 0;
                         if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
-                            labelX = 1550;
-                            labelY = 710;
+                            labelX = 1550; labelY = 710;
                         } else if (conn.from === 'f1-error-format' && conn.to === 'f1-form1') {
-                            labelX = points[0].x - 60;
-                            labelY = points[0].y;
+                            labelX = points.length ? points[0].x - 60 : 1460;
+                            labelY = points.length ? points[0].y : 560;
                         } else if (conn.from === 'f2-error-old' && conn.to === 'f2-form-old') {
-                            labelX = 1300;
-                            labelY = 1240;
+                            labelX = 1300; labelY = 1240;
                         } else if (conn.from === 'f2-error-new' && conn.to === 'f2-form-new1') {
-                            labelX = 2220;
-                            labelY = 1240;
+                            labelX = 2220; labelY = 1240;
                         } else if (conn.from === 'f3-error-otp' && conn.to === 'f3-otp-screen') {
-                            labelX = 1520;
-                            labelY = 1820;
+                            labelX = 1520; labelY = 1820;
                         } else if (conn.from === 'f3-error-reset' && conn.to === 'f3-form-reset1') {
-                            labelX = 2440;
-                            labelY = 1820;
+                            labelX = 2440; labelY = 1820;
                         } else if (conn.from === 'f5-qr-error' && conn.to === 'f5-scanner') {
-                            labelX = 1840;
-                            labelY = 3010;
+                            labelX = 1840; labelY = 3010;
                         } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
-                            labelX = 2390;
-                            labelY = 3670;
+                            labelX = 2390; labelY = 3670;
                         } else if (points.length === 2) {
                             labelX = (points[0].x + points[1].x) / 2;
                             labelY = (points[0].y + points[1].y) / 2;
                         } else if (points.length === 6) {
                             labelX = (points[2].x + points[3].x) / 2;
                             labelY = (points[2].y + points[3].y) / 2;
-                        } else {
+                        } else if (points.length > 0) {
                             const midIndex = Math.floor(points.length / 2);
                             labelX = points[midIndex].x;
                             labelY = points[midIndex].y;
@@ -1091,32 +1123,39 @@
                         
                         const isYes = conn.lClass === 'label-yes';
                         const strokeColor = isYes ? '#10b981' : '#ef4444';
+                        const textColorHex = isYes ? '#059669' : '#dc2626';
                         const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
                         const rectW = conn.label.length * 6 + 18;
                         
                         svg += `\n        <rect x="${labelX - rectW/2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
-                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt ${textColorClass}">${conn.label}</text>`;
+                        svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="central" class="conn-lbl-txt ${textColorClass}" font-family="Inter, sans-serif" font-size="10px" font-weight="800" fill="${textColorHex}">${escapeXML(conn.label)}</text>`;
                     }
 
                     svg += `\n    </g>`;
                 });
 
+                // Render Nodes
                 nodes.forEach(el => {
                     const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
                     const cx = x + w / 2, cy = y + h / 2;
-                    const textLines = el.innerHTML.replace(/<span>|<\/span>/g, '').split(/<br\s*\/?>/gi).map(t => t.trim());
+                    
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
+                    const rawText = tempDiv.textContent || tempDiv.innerText || '';
+                    const textLines = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
                     
                     svg += `\n    <!-- Node: ${el.id} -->`;
                     svg += `\n    <g id="${el.id}-group">`;
 
                     function getSVGText(color) {
+                        if (textLines.length === 0) return '';
                         if (textLines.length === 1) {
-                            return `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${color}">${textLines[0]}</text>`;
+                            return `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">${escapeXML(textLines[0])}</text>`;
                         } else {
-                            let textContent = `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="middle" fill="${color}">`;
+                            let textContent = `\n        <text x="${cx}" y="${cy}" text-anchor="middle" dominant-baseline="central" fill="${color}" font-family="Inter, sans-serif" font-size="11px" font-weight="700">`;
                             textLines.forEach((line, idx) => {
                                 const dy = idx === 0 ? -((textLines.length - 1) * 7) : 14;
-                                textContent += `\n            <tspan x="${cx}" dy="${dy}">${line}</tspan>`;
+                                textContent += `\n            <tspan x="${cx}" dy="${dy}">${escapeXML(line)}</tspan>`;
                             });
                             textContent += `\n        </text>`;
                             return textContent;
@@ -1148,28 +1187,77 @@
 
                 svg += '\n</svg>';
                 
-                await navigator.clipboard.writeText(svg);
-                
-                const toast = document.createElement('div');
-                toast.style.position = 'fixed';
-                toast.style.bottom = '30px';
-                toast.style.right = '30px';
-                toast.style.background = '#10b981';
-                toast.style.color = 'white';
-                toast.style.padding = '12px 24px';
-                toast.style.borderRadius = '12px';
-                toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
-                toast.style.fontWeight = 'bold';
-                toast.style.zIndex = '1000';
-                toast.style.fontSize = '13px';
-                toast.innerText = 'SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.';
-                document.body.appendChild(toast);
-                
-                setTimeout(() => toast.remove(), 3000);
+                // Copy to Clipboard with Multi-level Fallbacks
+                let copied = false;
+
+                // Method 1: ClipboardItem with image/svg+xml and text/plain (Optimal for Figma)
+                if (navigator.clipboard && window.ClipboardItem) {
+                    try {
+                        const blobText = new Blob([svg], { type: 'text/plain' });
+                        const blobSvg = new Blob([svg], { type: 'image/svg+xml' });
+                        await navigator.clipboard.write([
+                            new ClipboardItem({
+                                'text/plain': blobText,
+                                'image/svg+xml': blobSvg
+                            })
+                        ]);
+                        copied = true;
+                    } catch (e1) {
+                        console.warn('ClipboardItem write failed, trying writeText fallback:', e1);
+                    }
+                }
+
+                // Method 2: writeText
+                if (!copied && navigator.clipboard && navigator.clipboard.writeText) {
+                    try {
+                        await navigator.clipboard.writeText(svg);
+                        copied = true;
+                    } catch (e2) {
+                        console.warn('writeText failed, trying execCommand fallback:', e2);
+                    }
+                }
+
+                // Method 3: execCommand fallback (Guaranteed compatibility for file:// URLs)
+                if (!copied) {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = svg;
+                    textArea.style.position = "fixed";
+                    textArea.style.left = "-9999px";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    copied = document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                }
+
+                if (copied) {
+                    showToast('SVG Berhasil di-Copy! Silakan Paste (Ctrl+V) langsung di Figma.');
+                } else {
+                    throw new Error('Clipboard access denied');
+                }
+
             } catch (err) {
                 console.error('Gagal meng-copy SVG: ', err);
                 alert('Gagal meng-copy SVG ke clipboard. Pastikan izin clipboard aktif.');
             }
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '30px';
+            toast.style.right = '30px';
+            toast.style.background = '#10b981';
+            toast.style.color = 'white';
+            toast.style.padding = '12px 24px';
+            toast.style.borderRadius = '12px';
+            toast.style.boxShadow = '0 10px 15px -3px rgba(0, 0, 0, 0.1)';
+            toast.style.fontWeight = 'bold';
+            toast.style.zIndex = '1000';
+            toast.style.fontSize = '13px';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
     </script>
 </body>
