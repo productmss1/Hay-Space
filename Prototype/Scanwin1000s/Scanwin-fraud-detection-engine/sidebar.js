@@ -133,7 +133,8 @@
     // Detect active page from filename or path
     const path = (window.location.pathname || '').toLowerCase();
     let activeKey = 'hub';
-    if (path.includes('registrasi-pin')) activeKey = 'registrasi';
+    if (path.includes('customer-registrasi-ubah-reset-pin') || path.includes('customer-registrasi-pin')) activeKey = 'customer-registrasi';
+    else if (path.includes('registrasi-pin')) activeKey = 'registrasi';
     else if (path.includes('ubah-pin')) activeKey = 'ubah';
     else if (path.includes('reset-pin')) activeKey = 'reset';
     else if (path.includes('pencegahan-akses') || path.includes('pencegahan')) activeKey = 'pencegahan';
@@ -189,6 +190,10 @@
         <a href="scanwin-fde-customer-klaim-mandiri.html" class="portal-menu-item ${activeKey === 'klaim' ? 'active' : ''}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
           <span>7. Klaim Mandiri & FDE Akhir</span>
+        </a>
+        <a href="scanwin-fde-customer-registrasi-ubah-reset-pin.html" class="portal-menu-item ${activeKey === 'customer-registrasi' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <span>8. Kelola PIN Customer</span>
         </a>
       </div>
 

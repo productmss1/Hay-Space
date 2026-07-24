@@ -1,13 +1,15 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Scanwin Fraud Detection Engine — Interactive Prototype Hub</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
   <style>
     :root {
       --primary-blue: #0b57d0;
@@ -22,10 +24,27 @@
       --portal-bg: #f8fafc;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
-    body { background: var(--portal-bg); min-height: 100vh; overflow: hidden; display: flex; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
 
-    .portal-container { display: flex; width: 100vw; height: 100vh; overflow: hidden; }
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
 
     .portal-main {
       flex: 1;
@@ -45,8 +64,8 @@
     .hub-hero-icon {
       width: 48px;
       height: 48px;
-      background: rgba(11,87,208,0.1);
-      border: 1px solid rgba(11,87,208,0.2);
+      background: rgba(11, 87, 208, 0.1);
+      border: 1px solid rgba(11, 87, 208, 0.2);
       border-radius: 14px;
       display: flex;
       align-items: center;
@@ -55,7 +74,11 @@
       color: var(--primary-blue);
     }
 
-    .hub-hero-icon svg { width: 26px; height: 26px; fill: currentColor; }
+    .hub-hero-icon svg {
+      width: 26px;
+      height: 26px;
+      fill: currentColor;
+    }
 
     .hub-hero h1 {
       font-size: 28px;
@@ -87,13 +110,13 @@
       flex-direction: column;
       text-decoration: none;
       transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.02);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
       position: relative;
     }
 
     .prd-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 16px 32px -8px rgba(15,23,42,0.08);
+      box-shadow: 0 16px 32px -8px rgba(15, 23, 42, 0.08);
       border-color: #cbd5e1;
     }
 
@@ -115,7 +138,11 @@
       color: #fff;
     }
 
-    .prd-card-icon svg { width: 22px; height: 22px; fill: currentColor; }
+    .prd-card-icon svg {
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+    }
 
     .prd-card-badge {
       position: absolute;
@@ -127,7 +154,11 @@
       border-radius: 20px;
     }
 
-    .badge-active { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+    .badge-active {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
 
     .prd-card-title {
       font-size: 17px;
@@ -161,15 +192,40 @@
       font-weight: 700;
     }
 
-    .prd-card-cta svg { width: 16px; height: 16px; fill: currentColor; transition: transform 0.2s ease; }
-    .prd-card:hover .prd-card-cta svg { transform: translateX(4px); }
+    .prd-card-cta svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+      transition: transform 0.2s ease;
+    }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
-    .hub-hero { animation: fadeIn 0.4s ease; }
-    .prd-grid { animation: fadeIn 0.5s ease; }
+    .prd-card:hover .prd-card-cta svg {
+      transform: translateX(4px);
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .hub-hero {
+      animation: fadeIn 0.4s ease;
+    }
+
+    .prd-grid {
+      animation: fadeIn 0.5s ease;
+    }
   </style>
   <script src="sidebar.js"></script>
 </head>
+
 <body>
   <div class="portal-container">
 
@@ -180,101 +236,163 @@
     <div class="portal-main">
       <div class="hub-hero">
         <div class="hub-hero-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          <svg viewBox="0 0 24 24">
+            <path
+              d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+          </svg>
         </div>
         <h1>Scanwin Fraud Detection Engine</h1>
-        <p>Kumpulan prototipe interaktif berbasis PRD untuk fitur keamanan PIN transaksi Mitra1000s. Pilih salah satu alur PRD di bawah untuk memulai simulasi.</p>
+        <p>Kumpulan prototipe interaktif berbasis PRD untuk fitur keamanan PIN transaksi Mitra1000s. Pilih salah satu
+          alur PRD di bawah untuk memulai simulasi.</p>
       </div>
 
       <div class="prd-grid">
         <!-- PRD 1: Registrasi PIN -->
         <a href="scanwin-fde-registrasi-pin.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">1. Registrasi PIN Baru</div>
-          <div class="prd-card-desc">Simulasi alur pendaftaran PIN transaksi 6-digit untuk merchant yang belum memiliki PIN. Termasuk validasi Two-Step Verification (buat & konfirmasi PIN).</div>
+          <div class="prd-card-desc">Simulasi alur pendaftaran PIN transaksi 6-digit untuk merchant yang belum memiliki
+            PIN. Termasuk validasi Two-Step Verification (buat & konfirmasi PIN).</div>
           <div class="prd-card-meta">PRD: <strong>1_Scanwin_Mitra1000s_Registrasi_PIN_Baru.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 2: Ubah PIN -->
         <a href="scanwin-fde-ubah-pin.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6-3.6z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6-3.6z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">2. Ubah PIN Aktif</div>
-          <div class="prd-card-desc">Simulasi alur perubahan PIN bagi merchant yang sudah memiliki PIN aktif. Termasuk verifikasi PIN lama (max 3x percobaan) dan pemblokiran otomatis via OTP WhatsApp.</div>
+          <div class="prd-card-desc">Simulasi alur perubahan PIN bagi merchant yang sudah memiliki PIN aktif. Termasuk
+            verifikasi PIN lama (max 3x percobaan) dan pemblokiran otomatis via OTP WhatsApp.</div>
           <div class="prd-card-meta">PRD: <strong>2_Scanwin_Mitra1000s_Ubah_PIN_Aktif.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 3: Reset PIN Terblokir -->
         <a href="scanwin-fde-reset-pin.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">3. Reset PIN Terblokir</div>
-          <div class="prd-card-desc">Simulasi alur pemulihan PIN via OTP WhatsApp bagi merchant yang akunnya terblokir akibat 3 kali gagal verifikasi PIN lama.</div>
+          <div class="prd-card-desc">Simulasi alur pemulihan PIN via OTP WhatsApp bagi merchant yang akunnya terblokir
+            akibat 3 kali gagal verifikasi PIN lama.</div>
           <div class="prd-card-meta">PRD: <strong>3_Scanwin_Mitra1000s_Reset_PIN_Terblokir.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 4: Pencegahan Akses Menu -->
         <a href="scanwin-fde-pencegahan-akses.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">4. Pencegahan Akses Menu</div>
-          <div class="prd-card-desc">Simulasi gerbang keamanan (Redirection Barrier). Otomatis mencegat & alihkan paksa merchant ke Registrasi PIN Baru / Reset PIN WA jika PIN belum aktif.</div>
+          <div class="prd-card-desc">Simulasi gerbang keamanan (Redirection Barrier). Otomatis mencegat & alihkan paksa
+            merchant ke Registrasi PIN Baru / Reset PIN WA jika PIN belum aktif.</div>
           <div class="prd-card-meta">PRD: <strong>4_Scanwin_Mitra1000s_Pencegahan_Akses_Menu.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 5: Alur Direct Scan & FDE (Flow 1) -->
         <a href="scanwin-fde-direct-scan.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h2v3h-2v-3zm0-3h3v2h-3v-2zm3 3h3v3h-3v-3z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path d="M4 4h6v6H4V4zm10 0h6v6h-6V4zM4 14h6v6H4v-6zm10 3h2v3h-2v-3zm0-3h3v2h-3v-2zm3 3h3v3h-3v-3z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">5. Alur Direct Scan & FDE (Flow 1)</div>
-          <div class="prd-card-desc">Simulasi pemindaian QR Code Customer, otorisasi PIN 6-digit, validasi Fraud Detection Engine (Device ID, Sliding Window), serta halaman Riwayat & Detail Pending (1x24 jam).</div>
+          <div class="prd-card-desc">Simulasi pemindaian QR Code Customer, otorisasi PIN 6-digit, validasi Fraud
+            Detection Engine (Device ID, Sliding Window), serta halaman Riwayat & Detail Pending (1x24 jam).</div>
           <div class="prd-card-meta">PRD: <strong>5_Scanwin_Mitra1000s_Alur_Direct_Scan.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 6: Alur Shareable QR & FDE (Flow 2) -->
         <a href="scanwin-fde-shareable-qr.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92c0-1.61-1.31-2.92-2.92-2.92z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">6. Alur Shareable QR (Flow 2)</div>
-          <div class="prd-card-desc">Simulasi pembuatan QR Code Bulk untuk dibagikan via WhatsApp, otorisasi PIN 6-digit, serta evaluasi FDE lengkap (Device ID Kembar & Sliding Window limit).</div>
+          <div class="prd-card-desc">Simulasi pembuatan QR Code Bulk untuk dibagikan via WhatsApp, otorisasi PIN
+            6-digit, serta evaluasi FDE lengkap (Device ID Kembar & Sliding Window limit).</div>
           <div class="prd-card-meta">PRD: <strong>6_Scanwin_Mitra1000s_Alur_Shareable_QR.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
 
         <!-- PRD 7: Alur Klaim Mandiri & Validasi FDE Akhir -->
         <a href="scanwin-fde-customer-klaim-mandiri.html" class="prd-card">
-          <div class="prd-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path
+                d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+            </svg></div>
           <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
           <div class="prd-card-title">7. Klaim Mandiri & Validasi FDE Akhir</div>
-          <div class="prd-card-desc">Simulasi klaim mandiri QR WhatsApp oleh customer di aplikasi 1000Saudara, evaluasi FDE Akhir (Pencocokan Silang Device ID, GPS, & IP), notifikasi email admin security, dan pencairan saldo komisi.</div>
+          <div class="prd-card-desc">Simulasi klaim mandiri QR WhatsApp oleh customer di aplikasi 1000Saudara, evaluasi
+            FDE Akhir (Pencocokan Silang Device ID, GPS, & IP), notifikasi email admin security, dan pencairan saldo
+            komisi.</div>
           <div class="prd-card-meta">PRD: <strong>11_Scanwin_sCanWin_Klaim_Mandiri_FDE_Akhir.md</strong></div>
           <div class="prd-card-cta">
             <span>Buka Prototype</span>
-            <svg viewBox="0 0 24 24"><path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/></svg>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
+        </a>
+
+        <!-- PRD 8, 9, 10: Kelola PIN Customer -->
+        <a href="scanwin-fde-customer-registrasi-ubah-reset-pin.html" class="prd-card">
+          <div class="prd-card-icon"><svg viewBox="0 0 24 24">
+              <path d="M12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22Z" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8H12.01" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg></div>
+          <span class="prd-card-badge badge-active">✓ Prototype Aktif</span>
+          <div class="prd-card-title">8. Kelola PIN Customer (Registrasi, Ubah, & Reset)</div>
+          <div class="prd-card-desc">Simulasi lengkap Kelola PIN sCanWin untuk Customer 1000Saudara. Mendukung registrasi PIN baru, perubahan PIN aktif (otentikasi batas 3x salah), dan pemulihan PIN terblokir via OTP WhatsApp dengan timer cooldown.</div>
+          <div class="prd-card-meta">PRD: <strong>8_Registrasi_PIN, 9_Ubah_PIN, 10_Reset_PIN</strong></div>
+          <div class="prd-card-cta">
+            <span>Buka Prototype</span>
+            <svg viewBox="0 0 24 24">
+              <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z" />
+            </svg>
           </div>
         </a>
       </div>
@@ -282,4 +400,5 @@
 
   </div>
 </body>
+
 </html>

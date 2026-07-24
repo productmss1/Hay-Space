@@ -37,7 +37,7 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            min-width: 6200px;
+            min-width: 11800px;
             min-height: 5400px;
         }
 
@@ -289,6 +289,15 @@
                     <label style="font-size: 11px; font-weight: 700; color: #0369a1; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
                         <input type="checkbox" class="chk-flow" value="sec7" checked onchange="onFlowCheckboxChange()"> 🔷 7. Customer Klaim Mandiri &amp; Validasi FDE (PRD 11)
                     </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec8" checked onchange="onFlowCheckboxChange()"> 🔑 8. Customer Registrasi PIN (PRD 8)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec9" checked onchange="onFlowCheckboxChange()"> ⚙️ 9. Customer Ubah PIN Aktif (PRD 9)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec10" checked onchange="onFlowCheckboxChange()"> 🛡️ 10. Customer Reset PIN Terblokir (PRD 10)
+                    </label>
                 </div>
             </div>
 
@@ -378,13 +387,28 @@
                 </div>
 
                 <!-- ================= OUTER SECTION 2: CUSTOMER SIDE ================= -->
-                <div class="figma-section" data-sec-id="outer-customer" style="left: 400px; top: 3950px; width: 5350px; height: 750px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
+                <div class="figma-section" data-sec-id="outer-customer" style="left: 5800px; top: 150px; width: 5350px; height: 3680px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
                     <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">CUSTOMER SIDE</span>
                 </div>
 
                 <!-- SUB-SECTION: customer-klaim-mandiri (PRD 11) -->
-                <div class="figma-section" data-sec-id="sec7" style="left: 450px; top: 4000px; width: 5250px; height: 650px;">
+                <div class="figma-section" data-sec-id="sec7" style="left: 5850px; top: 200px; width: 5250px; height: 600px;">
                     <span class="section-label" style="background:#2563eb;">customer-klaim-mandiri (Klaim Mandiri &amp; Validasi FDE Akhir - PRD 11)</span>
+                </div>
+
+                <!-- SUB-SECTION: Registrasi PIN Baru Customer (PRD 8) -->
+                <div class="figma-section" data-sec-id="sec8" style="left: 5850px; top: 880px; width: 5250px; height: 600px;">
+                    <span class="section-label" style="background:#9333ea;">Registrasi PIN Baru Customer (PRD 8)</span>
+                </div>
+
+                <!-- SUB-SECTION: Ubah PIN Aktif Customer (PRD 9) -->
+                <div class="figma-section" data-sec-id="sec9" style="left: 5850px; top: 1560px; width: 5250px; height: 700px;">
+                    <span class="section-label" style="background:#db2777;">Ubah PIN Aktif Customer (PRD 9)</span>
+                </div>
+
+                <!-- SUB-SECTION: Reset PIN Terblokir Customer (PRD 10) -->
+                <div class="figma-section" data-sec-id="sec10" style="left: 5850px; top: 2360px; width: 5250px; height: 750px;">
+                    <span class="section-label" style="background:#4b5563;">Reset PIN Terblokir Customer (PRD 10)</span>
                 </div>
             </div>
 
@@ -562,37 +586,97 @@
                 { id: 'f6-end-success', type: 'n-end', text: 'End (Komisi Cair<br>& QR Verified)', x: 5410, y: 3215 },
                 { id: 'f6-end-pending', type: 'n-end', text: 'End (Monitoring Audit<br>Sistem 1x24h)', x: 5000, y: 3435 },
 
-                // SECTION 7: Customer Klaim Mandiri & Validasi FDE Akhir (customer-klaim-mandiri - PRD 11 - Y: 4000-4650)
-                { id: 'c1-start', type: 'n-start', text: 'Start', x: 495, y: 4220 },
-                { id: 'c1-home', type: 'n-gray', text: 'Customer Buka<br>Beranda App', x: 640, y: 4240 },
-                { id: 'c1-click-banner', type: 'n-purple', text: 'Klik Banner / Button<br>"Klaim ScanWin"', x: 860, y: 4240 },
-                { id: 'c1-page-klaim', type: 'n-gray', text: 'Masuk Layar<br>Kode ScanWin', x: 1080, y: 4240 },
-                { id: 'c1-upload-action', type: 'n-purple', text: 'Customer Upload<br>Foto QR / Pilih File', x: 1300, y: 4240 },
-                { id: 'c1-dec-qr', type: 'n-decision', text: '<span>Validasi<br>Format QR?</span>', x: 1550, y: 4210 },
-                { id: 'c1-qr-invalid', type: 'n-gray', text: 'Tampilkan Bottom Sheet<br>Modal QR Error', x: 1520, y: 4450 },
-                { id: 'c1-click-reupload', type: 'n-purple', text: 'Customer Klik<br>"Upload Ulang"', x: 1300, y: 4450 },
+                // SECTION 7: Customer Klaim Mandiri & Validasi FDE Akhir (customer-klaim-mandiri - PRD 11)
+                // Positioned to the RIGHT of Merchant Side (x offset +5350, y reset to 200)
+                { id: 'c1-start', type: 'n-start', text: 'Start', x: 5895, y: 420 },
+                { id: 'c1-home', type: 'n-gray', text: 'Customer Buka<br>Beranda App', x: 6040, y: 440 },
+                { id: 'c1-click-banner', type: 'n-purple', text: 'Klik Banner / Button<br>"Klaim ScanWin"', x: 6260, y: 440 },
+                { id: 'c1-page-klaim', type: 'n-gray', text: 'Masuk Layar<br>Kode ScanWin', x: 6480, y: 440 },
+                { id: 'c1-upload-action', type: 'n-purple', text: 'Customer Upload<br>Foto QR / Pilih File', x: 6700, y: 440 },
+                { id: 'c1-dec-qr', type: 'n-decision', text: '<span>Validasi<br>Format QR?</span>', x: 6950, y: 410 },
+                { id: 'c1-qr-invalid', type: 'n-gray', text: 'Tampilkan Bottom Sheet<br>Modal QR Error', x: 6920, y: 640 },
+                { id: 'c1-click-reupload', type: 'n-purple', text: 'Customer Klik<br>"Upload Ulang"', x: 6700, y: 640 },
 
-                { id: 'c1-fde-engine', type: 'n-gray', text: 'Backend Jalankan FDE:<br>Cross-Matching Device ID', x: 1780, y: 4240 },
-                { id: 'c1-dec-fde', type: 'n-decision', text: '<span>Evaluasi<br>FDE Akhir?</span>', x: 2030, y: 4210 },
+                { id: 'c1-fde-engine', type: 'n-gray', text: 'Backend Jalankan FDE:<br>Cross-Matching Device ID', x: 7180, y: 440 },
+                { id: 'c1-dec-fde', type: 'n-decision', text: '<span>Evaluasi<br>FDE Akhir?</span>', x: 7430, y: 410 },
 
                 // Branch Happy Path
-                { id: 'c1-valid-fde', type: 'n-gray', text: 'Device ID Customer<br>Berbeda dari Merchant', x: 2280, y: 4100 },
-                { id: 'c1-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 2500, y: 4100 },
-                { id: 'c1-dec-voucher-happy', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 2740, y: 4070 },
-                { id: 'c1-btn-saldo-happy', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 2980, y: 4040 },
-                { id: 'c1-btn-next-happy', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 2980, y: 4160 },
-                { id: 'c1-click-saldo-happy', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 3240, y: 4100 },
-                { id: 'c1-end-happy', type: 'n-end', text: 'Kembali ke Beranda<br>& Saldo Cair', x: 3470, y: 4055 },
+                { id: 'c1-valid-fde', type: 'n-gray', text: 'Device ID Customer<br>Berbeda dari Merchant', x: 7680, y: 310 },
+                { id: 'c1-screen-success', type: 'n-gray', text: 'Tampilkan Layar<br>Sukses Redeem', x: 7900, y: 310 },
+                { id: 'c1-dec-voucher-happy', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 8140, y: 280 },
+                { id: 'c1-btn-saldo-happy', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 8380, y: 240 },
+                { id: 'c1-btn-next-happy', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 8380, y: 360 },
+                { id: 'c1-click-saldo-happy', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 8640, y: 310 },
+                { id: 'c1-end-happy', type: 'n-end', text: 'Kembali ke Beranda<br>& Saldo Cair', x: 8870, y: 265 },
 
                 // Branch Fraud Path
-                { id: 'c1-fraud-fde', type: 'n-gray', text: 'Device ID Customer<br>SAMA (Kembar Merchant)', x: 2280, y: 4350 },
-                { id: 'c1-trigger-email', type: 'n-gray', text: 'Status DB: PENDING &<br>Email Security Alert', x: 2500, y: 4350 },
-                { id: 'c1-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Pending<br>Verifikasi Keamanan', x: 2720, y: 4350 },
-                { id: 'c1-dec-voucher-pending', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 2960, y: 4320 },
-                { id: 'c1-btn-saldo-pending', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 3200, y: 4290 },
-                { id: 'c1-btn-next-pending', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 3200, y: 4410 },
-                { id: 'c1-click-saldo-pending', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 3460, y: 4350 },
-                { id: 'c1-end-pending', type: 'n-end', text: 'Kembali ke Beranda<br>& Status Pending', x: 3690, y: 4305 }
+                { id: 'c1-fraud-fde', type: 'n-gray', text: 'Device ID Customer<br>SAMA (Kembar Merchant)', x: 7680, y: 550 },
+                { id: 'c1-trigger-email', type: 'n-gray', text: 'Status DB: PENDING &<br>Email Security Alert', x: 7900, y: 550 },
+                { id: 'c1-screen-pending', type: 'n-gray', text: 'Tampilkan Layar Pending<br>Verifikasi Keamanan', x: 8120, y: 550 },
+                { id: 'c1-dec-voucher-pending', type: 'n-decision', text: '<span>Jumlah<br>Voucher?</span>', x: 8360, y: 520 },
+                { id: 'c1-btn-saldo-pending', type: 'n-gray', text: 'Tombol: "Ke Detail Saldo"<br>(Counter 1/1)', x: 8600, y: 490 },
+                { id: 'c1-btn-next-pending', type: 'n-purple', text: 'Tombol: "Voucher Selanjutnya"<br>(Akhir: Ke Detail Saldo)', x: 8600, y: 610 },
+                { id: 'c1-click-saldo-pending', type: 'n-purple', text: 'Customer Klik<br>"Ke Detail Saldo"', x: 8860, y: 550 },
+                { id: 'c1-end-pending', type: 'n-end', text: 'Kembali ke Beranda<br>& Status Pending', x: 9090, y: 505 },
+
+                // SECTION 8: Registrasi PIN Baru Customer (PRD 8)
+                { id: 'c8-start', type: 'n-start', text: 'Start', x: 5895, y: 1100 },
+                { id: 'c8-home', type: 'n-gray', text: 'Customer Buka<br>Beranda App', x: 6040, y: 1120 },
+                { id: 'c8-profile', type: 'n-purple', text: 'Klik Avatar / Profil<br>Andhika M..', x: 6260, y: 1120 },
+                { id: 'c8-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>sCanWin" (Belum Aktif)', x: 6480, y: 1120 },
+                { id: 'c8-form1', type: 'n-gray', text: 'Tampilkan Layar<br>Buat PIN Baru', x: 6700, y: 1120 },
+                { id: 'c8-input1', type: 'n-purple', text: 'Masukkan 6 Digit<br>PIN Baru', x: 6920, y: 1120 },
+                { id: 'c8-form2', type: 'n-gray', text: 'Tampilkan Layar<br>Konfirmasi PIN', x: 7140, y: 1120 },
+                { id: 'c8-input2', type: 'n-purple', text: 'Masukkan Kembali<br>6 Digit PIN', x: 7360, y: 1120 },
+                { id: 'c8-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 7610, y: 1090 },
+                { id: 'c8-error', type: 'n-gray', text: 'Tampilkan Error Toast &<br>Getarkan Kolom (Shake)', x: 7580, y: 1300 },
+                { id: 'c8-save', type: 'n-gray', text: 'Simpan Hash PIN Baru,<br>Status -> Aktif', x: 7840, y: 1120 },
+                { id: 'c8-success', type: 'n-gray', text: 'Tampilkan Layar<br>Registrasi Sukses', x: 8060, y: 1120 },
+                { id: 'c8-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 8280, y: 1075 },
+
+                // SECTION 9: Ubah PIN Aktif Customer (PRD 9)
+                { id: 'c9-start', type: 'n-start', text: 'Start', x: 5895, y: 1800 },
+                { id: 'c9-home', type: 'n-gray', text: 'Customer Masuk<br>Halaman Akun', x: 6040, y: 1820 },
+                { id: 'c9-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>sCanWin" (Aktif)', x: 6260, y: 1820 },
+                { id: 'c9-form-old', type: 'n-gray', text: 'Tampilkan Layar<br>Masukkan PIN Lama', x: 6480, y: 1820 },
+                { id: 'c9-input-old', type: 'n-purple', text: 'Masukkan 6 Digit<br>PIN Lama', x: 6700, y: 1820 },
+                { id: 'c9-verify-old', type: 'n-decision', text: '<span>Validasi PIN<br>Lama (Max 3x)?</span>', x: 6950, y: 1790 },
+                { id: 'c9-error-old', type: 'n-gray', text: 'Error Toast PIN Salah<br>& Sisa Kesempatan', x: 6920, y: 1990 },
+                { id: 'c9-blocked', type: 'n-gray', text: 'Status PIN -> Blocked,<br>Toast Blokir & Redirect', x: 7140, y: 1990 },
+                { id: 'c9-redirect-end', type: 'n-end', text: 'End (Lanjut ke<br>Reset PIN Flow)', x: 7360, y: 1945 },
+                { id: 'c9-form-new1', type: 'n-gray', text: 'Tampilkan Layar<br>Masukkan PIN Baru', x: 7360, y: 1820 },
+                { id: 'c9-input-new1', type: 'n-purple', text: 'Masukkan 6 Digit<br>PIN Baru', x: 7580, y: 1820 },
+                { id: 'c9-form-new2', type: 'n-gray', text: 'Tampilkan Layar<br>Konfirmasi PIN Baru', x: 7800, y: 1820 },
+                { id: 'c9-input-new2', type: 'n-purple', text: 'Konfirmasi 6 Digit<br>PIN Baru', x: 8020, y: 1820 },
+                { id: 'c9-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 8270, y: 1790 },
+                { id: 'c9-error-new', type: 'n-gray', text: 'Error Toast PIN Beda<br>& Reset Input', x: 8240, y: 1990 },
+                { id: 'c9-save', type: 'n-gray', text: 'Simpan Hash PIN Baru,<br>Reset Counter Salah', x: 8500, y: 1820 },
+                { id: 'c9-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Sukses Diubah', x: 8720, y: 1820 },
+                { id: 'c9-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 8940, y: 1775 },
+
+                // SECTION 10: Reset PIN Terblokir Customer (PRD 10)
+                { id: 'c10-start', type: 'n-start', text: 'Start', x: 5895, y: 2600 },
+                { id: 'c10-home', type: 'n-gray', text: 'Customer Masuk<br>Halaman Akun', x: 6040, y: 2620 },
+                { id: 'c10-click', type: 'n-purple', text: 'Klik "Kelola PIN<br>sCanWin" (Terblokir)', x: 6260, y: 2620 },
+                { id: 'c10-screen-req', type: 'n-gray', text: 'Tampilkan Layar<br>Reset PIN (Minta OTP)', x: 6480, y: 2620 },
+                { id: 'c10-click-otp', type: 'n-purple', text: 'Klik "Minta Kode OTP<br>via WhatsApp"', x: 6700, y: 2620 },
+                { id: 'c10-check-limit', type: 'n-decision', text: '<span>Cek Rate Limit<br>& Cooldown WA?</span>', x: 6950, y: 2590 },
+                { id: 'c10-error-limit', type: 'n-gray', text: 'Tampilkan Pesan Error<br>Limit Harian Habis (3x)', x: 6920, y: 2800 },
+                { id: 'c10-send-wa', type: 'n-gray', text: 'Kirim OTP 6-Digit via WA,<br>Mulai Cooldown 60s', x: 7180, y: 2620 },
+                { id: 'c10-form-verify', type: 'n-gray', text: 'Tampilkan Layar<br>Verifikasi OTP WA', x: 7400, y: 2620 },
+                { id: 'c10-input-otp', type: 'n-purple', text: 'Masukkan 6 Digit<br>Kode OTP WA', x: 7620, y: 2620 },
+                { id: 'c10-verify-otp', type: 'n-decision', text: '<span>Validasi OTP<br>(Max 3x)?</span>', x: 7870, y: 2590 },
+                { id: 'c10-error-otp', type: 'n-gray', text: 'Error Toast OTP Salah,<br>Sisa Kesempatan', x: 7840, y: 2800 },
+                { id: 'c10-otp-expired', type: 'n-gray', text: 'Kode OTP Expired,<br>Minta Ulang OTP', x: 8060, y: 2800 },
+                { id: 'c10-form-new1', type: 'n-gray', text: 'Tampilkan Layar<br>Buat PIN Baru', x: 8280, y: 2620 },
+                { id: 'c10-input-new1', type: 'n-purple', text: 'Masukkan 6 Digit<br>PIN Baru', x: 8500, y: 2620 },
+                { id: 'c10-form-new2', type: 'n-gray', text: 'Tampilkan Layar<br>Konfirmasi PIN Baru', x: 8720, y: 2620 },
+                { id: 'c10-input-new2', type: 'n-purple', text: 'Konfirmasi 6 Digit<br>PIN Baru', x: 8940, y: 2620 },
+                { id: 'c10-match', type: 'n-decision', text: '<span>Validasi<br>Kecocokan?</span>', x: 9190, y: 2590 },
+                { id: 'c10-error-new', type: 'n-gray', text: 'Error Toast PIN Beda<br>& Reset Input', x: 9160, y: 2800 },
+                { id: 'c10-save', type: 'n-gray', text: 'Simpan Hash PIN Baru,<br>Status PIN -> Aktif', x: 9420, y: 2620 },
+                { id: 'c10-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Sukses Dipulihkan', x: 9640, y: 2620 },
+                { id: 'c10-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 9860, y: 2575 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -789,7 +873,70 @@
                 { from: 'c1-dec-voucher-pending', to: 'c1-btn-next-pending', f: 'bottom', t: 'left', label: '2+ Voucher', lClass: 'label-no' },
                 { from: 'c1-btn-saldo-pending', to: 'c1-click-saldo-pending', f: 'right', t: 'left' },
                 { from: 'c1-btn-next-pending', to: 'c1-click-saldo-pending', f: 'right', t: 'left' },
-                { from: 'c1-click-saldo-pending', to: 'c1-end-pending', f: 'right', t: 'left' }
+                { from: 'c1-click-saldo-pending', to: 'c1-end-pending', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 8 (Registrasi PIN Baru Customer - PRD 8)
+                { from: 'c8-start', to: 'c8-home', f: 'right', t: 'left' },
+                { from: 'c8-home', to: 'c8-profile', f: 'right', t: 'left' },
+                { from: 'c8-profile', to: 'c8-click', f: 'right', t: 'left' },
+                { from: 'c8-click', to: 'c8-form1', f: 'right', t: 'left' },
+                { from: 'c8-form1', to: 'c8-input1', f: 'right', t: 'left' },
+                { from: 'c8-input1', to: 'c8-form2', f: 'right', t: 'left' },
+                { from: 'c8-form2', to: 'c8-input2', f: 'right', t: 'left' },
+                { from: 'c8-input2', to: 'c8-match', f: 'right', t: 'left' },
+                { from: 'c8-match', to: 'c8-save', f: 'right', t: 'left', label: 'Ya (Cocok)', lClass: 'label-yes' },
+                { from: 'c8-match', to: 'c8-error', f: 'bottom', t: 'top', label: 'Tidak (Beda)', lClass: 'label-no' },
+                { from: 'c8-error', to: 'c8-form1', f: 'left', t: 'bottom' },
+                { from: 'c8-save', to: 'c8-success', f: 'right', t: 'left' },
+                { from: 'c8-success', to: 'c8-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 9 (Ubah PIN Aktif Customer - PRD 9)
+                { from: 'c9-start', to: 'c9-home', f: 'right', t: 'left' },
+                { from: 'c9-home', to: 'c9-click', f: 'right', t: 'left' },
+                { from: 'c9-click', to: 'c9-form-old', f: 'right', t: 'left' },
+                { from: 'c9-form-old', to: 'c9-input-old', f: 'right', t: 'left' },
+                { from: 'c9-input-old', to: 'c9-verify-old', f: 'right', t: 'left' },
+                { from: 'c9-verify-old', to: 'c9-form-new1', f: 'right', t: 'left', label: 'Benar (< 3x)', lClass: 'label-yes' },
+                { from: 'c9-verify-old', to: 'c9-error-old', f: 'bottom', t: 'top', label: 'Salah', lClass: 'label-no' },
+                { from: 'c9-error-old', to: 'c9-blocked', f: 'right', t: 'left', label: '>= 3x Salah', lClass: 'label-no' },
+                { from: 'c9-blocked', to: 'c9-redirect-end', f: 'right', t: 'left', label: 'Redirect Reset', lClass: 'label-no' },
+                { from: 'c9-error-old', to: 'c9-form-old', f: 'left', t: 'bottom', label: 'Coba Lagi', lClass: 'label-yes' },
+                { from: 'c9-form-new1', to: 'c9-input-new1', f: 'right', t: 'left' },
+                { from: 'c9-input-new1', to: 'c9-form-new2', f: 'right', t: 'left' },
+                { from: 'c9-form-new2', to: 'c9-input-new2', f: 'right', t: 'left' },
+                { from: 'c9-input-new2', to: 'c9-match', f: 'right', t: 'left' },
+                { from: 'c9-match', to: 'c9-save', f: 'right', t: 'left', label: 'Ya (Cocok)', lClass: 'label-yes' },
+                { from: 'c9-match', to: 'c9-error-new', f: 'bottom', t: 'top', label: 'Tidak (Beda)', lClass: 'label-no' },
+                { from: 'c9-error-new', to: 'c9-form-new1', f: 'left', t: 'bottom' },
+                { from: 'c9-save', to: 'c9-success', f: 'right', t: 'left' },
+                { from: 'c9-success', to: 'c9-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 10 (Reset PIN Terblokir Customer - PRD 10)
+                { from: 'c10-start', to: 'c10-home', f: 'right', t: 'left' },
+                { from: 'c10-home', to: 'c10-click', f: 'right', t: 'left' },
+                { from: 'c10-click', to: 'c10-screen-req', f: 'right', t: 'left' },
+                { from: 'c10-screen-req', to: 'c10-click-otp', f: 'right', t: 'left' },
+                { from: 'c10-click-otp', to: 'c10-check-limit', f: 'right', t: 'left' },
+                { from: 'c10-check-limit', to: 'c10-send-wa', f: 'right', t: 'left', label: 'Lolos Limit', lClass: 'label-yes' },
+                { from: 'c10-check-limit', to: 'c10-error-limit', f: 'bottom', t: 'top', label: 'Limit Habis', lClass: 'label-no' },
+                { from: 'c10-error-limit', to: 'c10-screen-req', f: 'left', t: 'bottom', label: 'Coba Besok', lClass: 'label-no' },
+                { from: 'c10-send-wa', to: 'c10-form-verify', f: 'right', t: 'left' },
+                { from: 'c10-form-verify', to: 'c10-input-otp', f: 'right', t: 'left' },
+                { from: 'c10-input-otp', to: 'c10-verify-otp', f: 'right', t: 'left' },
+                { from: 'c10-verify-otp', to: 'c10-form-new1', f: 'right', t: 'left', label: 'Valid OTP', lClass: 'label-yes' },
+                { from: 'c10-verify-otp', to: 'c10-error-otp', f: 'bottom', t: 'top', label: 'OTP Salah', lClass: 'label-no' },
+                { from: 'c10-error-otp', to: 'c10-otp-expired', f: 'right', t: 'left', label: '>= 3x Salah', lClass: 'label-no' },
+                { from: 'c10-otp-expired', to: 'c10-screen-req', f: 'left', t: 'bottom', label: 'Minta OTP Baru' },
+                { from: 'c10-error-otp', to: 'c10-form-verify', f: 'left', t: 'bottom', label: 'Coba Lagi', lClass: 'label-yes' },
+                { from: 'c10-form-new1', to: 'c10-input-new1', f: 'right', t: 'left' },
+                { from: 'c10-input-new1', to: 'c10-form-new2', f: 'right', t: 'left' },
+                { from: 'c10-form-new2', to: 'c10-input-new2', f: 'right', t: 'left' },
+                { from: 'c10-input-new2', to: 'c10-match', f: 'right', t: 'left' },
+                { from: 'c10-match', to: 'c10-save', f: 'right', t: 'left', label: 'Ya (Cocok)', lClass: 'label-yes' },
+                { from: 'c10-match', to: 'c10-error-new', f: 'bottom', t: 'top', label: 'Tidak (Beda)', lClass: 'label-no' },
+                { from: 'c10-error-new', to: 'c10-form-new1', f: 'left', t: 'bottom', label: 'Ulangi' },
+                { from: 'c10-save', to: 'c10-success', f: 'right', t: 'left' },
+                { from: 'c10-success', to: 'c10-end', f: 'right', t: 'left' }
             ]
         };
 
@@ -1130,6 +1277,9 @@
             if (nodeId.startsWith('f5-') && selectedKeys.includes('sec5')) return true;
             if (nodeId.startsWith('f6-') && selectedKeys.includes('sec6')) return true;
             if (nodeId.startsWith('c1-') && selectedKeys.includes('sec7')) return true;
+            if (nodeId.startsWith('c8-') && selectedKeys.includes('sec8')) return true;
+            if (nodeId.startsWith('c9-') && selectedKeys.includes('sec9')) return true;
+            if (nodeId.startsWith('c10-') && selectedKeys.includes('sec10')) return true;
             return false;
         }
 
@@ -1156,7 +1306,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -1164,7 +1314,7 @@
             const activeSecIds = new Set(selectedKeys);
             const hasMerchant = selectedKeys.some(k => ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].includes(k));
             if (hasMerchant) activeSecIds.add('outer-merchant');
-            if (selectedKeys.includes('sec7')) activeSecIds.add('outer-customer');
+            if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10')) activeSecIds.add('outer-customer');
 
             const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
                 const id = sec.getAttribute('data-sec-id');
