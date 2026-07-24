@@ -298,6 +298,9 @@
                     <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0; grid-column: span 2;">
                         <input type="checkbox" class="chk-flow" value="sec10" checked onchange="onFlowCheckboxChange()"> 🛡️ 10. Customer Reset PIN Terblokir (PRD 10)
                     </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec12" checked onchange="onFlowCheckboxChange()"> 💳 12. Customer Validasi Pencairan E-Wallet (PRD 12)
+                    </label>
                 </div>
             </div>
 
@@ -326,8 +329,8 @@
     </div>
 
     <div class="controls">
-        <button class="btn-ctrl" onclick="copyAsSVG()" title="Salin SVG untuk Figma (Paste langsung di Figma)"><i class="fas fa-copy"></i></button>
-        <button class="btn-ctrl" onclick="downloadSVG()" title="Download File .SVG (Seret & Drop ke Figma)"><i class="fas fa-download"></i></button>
+        <button class="btn-ctrl" onclick="openSvgModal()" title="Buka Pop-up Export &amp; Salin SVG Flowchart untuk Figma"><i class="fas fa-file-code"></i></button>
+        <button class="btn-ctrl" onclick="downloadSVG()" title="Download File .SVG (Seret &amp; Drop ke Figma)"><i class="fas fa-download"></i></button>
         <button class="btn-ctrl" onclick="zoomView(1.2)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
         <button class="btn-ctrl" onclick="zoomView(0.8)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
         <button class="btn-ctrl" onclick="resetZoom()" title="Reset View"><i class="fas fa-expand"></i></button>
@@ -387,7 +390,7 @@
                 </div>
 
                 <!-- ================= OUTER SECTION 2: CUSTOMER SIDE ================= -->
-                <div class="figma-section" data-sec-id="outer-customer" style="left: 5800px; top: 150px; width: 5350px; height: 3680px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
+                <div class="figma-section" data-sec-id="outer-customer" style="left: 5800px; top: 150px; width: 5350px; height: 3880px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
                     <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">CUSTOMER SIDE</span>
                 </div>
 
@@ -409,6 +412,11 @@
                 <!-- SUB-SECTION: Reset PIN Terblokir Customer (PRD 10) -->
                 <div class="figma-section" data-sec-id="sec10" style="left: 5850px; top: 2360px; width: 5250px; height: 750px;">
                     <span class="section-label" style="background:#4b5563;">Reset PIN Terblokir Customer (PRD 10)</span>
+                </div>
+
+                <!-- SUB-SECTION: Validasi Pencairan E-Wallet & FDE Customer (PRD 12) -->
+                <div class="figma-section" data-sec-id="sec12" style="left: 5850px; top: 3180px; width: 5250px; height: 800px;">
+                    <span class="section-label" style="background:#0284c7;">Validasi Pencairan E-Wallet &amp; FDE Customer (PRD 12)</span>
                 </div>
             </div>
 
@@ -676,7 +684,29 @@
                 { id: 'c10-error-new', type: 'n-gray', text: 'Error Toast PIN Beda<br>& Reset Input', x: 9160, y: 2800 },
                 { id: 'c10-save', type: 'n-gray', text: 'Simpan Hash PIN Baru,<br>Status PIN -> Aktif', x: 9420, y: 2620 },
                 { id: 'c10-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Sukses Dipulihkan', x: 9640, y: 2620 },
-                { id: 'c10-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 9860, y: 2575 }
+                { id: 'c10-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 9860, y: 2575 },
+
+                // SECTION 12: Customer Validasi Pencairan E-Wallet & FDE (PRD 12)
+                { id: 'c12-start', type: 'n-start', text: 'Start', x: 5895, y: 3400 },
+                { id: 'c12-saldo', type: 'n-gray', text: 'Customer Buka<br>Halaman Saldo', x: 6040, y: 3420 },
+                { id: 'c12-click-tarik', type: 'n-purple', text: 'Customer Klik<br>"Tarik Saldo"', x: 6260, y: 3420 },
+                { id: 'c12-check-pin', type: 'n-decision', text: '<span>Cek Status PIN<br>Customer?</span>', x: 6510, y: 3390 },
+                { id: 'c12-pin-unreg', type: 'n-gray', text: 'Screen Info:<br>"PIN Belum Dibuat"', x: 6480, y: 3620 },
+                { id: 'c12-btn-unreg', type: 'n-pink', text: 'Tombol "Buat PIN Baru"<br>(Disabled / Non-aktif)', x: 6700, y: 3620 },
+                { id: 'c12-pin-blocked', type: 'n-gray', text: 'Screen Info:<br>"PIN Terblokir"', x: 6480, y: 3820 },
+                { id: 'c12-btn-blocked', type: 'n-pink', text: 'Tombol "Reset PIN"<br>(Disabled / Non-aktif)', x: 6700, y: 3820 },
+                { id: 'c12-select-ewallet', type: 'n-purple', text: 'Pilih E-Wallet Tujuan<br>(OVO, Gopay, Shopee, DANA)', x: 6760, y: 3420 },
+                { id: 'c12-form-nominal', type: 'n-gray', text: 'Input Nominal Tarik<br>& No. HP E-Wallet', x: 6980, y: 3420 },
+                { id: 'c12-click-submit', type: 'n-purple', text: 'Customer Klik<br>"Tarik Saldo" (Submit)', x: 7200, y: 3420 },
+                { id: 'c12-modal-pin', type: 'n-gray', text: 'Tampilkan Bottom Sheet<br>Input 6-Digit PIN', x: 7420, y: 3420 },
+                { id: 'c12-input-pin', type: 'n-purple', text: 'Customer Masukkan<br>6-Digit PIN sCanWin', x: 7640, y: 3420 },
+                { id: 'c12-valid-pin', type: 'n-decision', text: '<span>Validasi PIN<br>(Hash & Lock)?</span>', x: 7890, y: 3390 },
+                { id: 'c12-err-pin', type: 'n-gray', text: 'Error Toast PIN Salah<br>& Sisa Percobaan', x: 7860, y: 3620 },
+                { id: 'c12-fde-eval', type: 'n-decision', text: '<span>Evaluasi Risiko<br>FDE Engine?</span>', x: 8200, y: 3390 },
+                { id: 'c12-disburse', type: 'n-purple', text: 'Hit Espay API<br>Disbursement Direct', x: 8460, y: 3320 },
+                { id: 'c12-success-screen', type: 'n-end', text: 'Screen Penarikan<br>Berhasil Langsung!', x: 8700, y: 3275 },
+                { id: 'c12-pending-audit', type: 'n-gray', text: 'Flag Risk Kondisi A/B<br>& Tangguhkan Transfer', x: 8460, y: 3520 },
+                { id: 'c12-pending-screen', type: 'n-end', text: 'Screen Penarikan<br>Sedang Diproses (1x24h)', x: 8700, y: 3475 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -936,7 +966,30 @@
                 { from: 'c10-match', to: 'c10-error-new', f: 'bottom', t: 'top', label: 'Tidak (Beda)', lClass: 'label-no' },
                 { from: 'c10-error-new', to: 'c10-form-new1', f: 'left', t: 'bottom', label: 'Ulangi' },
                 { from: 'c10-save', to: 'c10-success', f: 'right', t: 'left' },
-                { from: 'c10-success', to: 'c10-end', f: 'right', t: 'left' }
+                { from: 'c10-success', to: 'c10-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 12 (Customer Validasi Pencairan E-Wallet - PRD 12)
+                { from: 'c12-start', to: 'c12-saldo', f: 'right', t: 'left' },
+                { from: 'c12-saldo', to: 'c12-click-tarik', f: 'right', t: 'left' },
+                { from: 'c12-click-tarik', to: 'c12-check-pin', f: 'right', t: 'left' },
+                { from: 'c12-check-pin', to: 'c12-select-ewallet', f: 'right', t: 'left', label: 'PIN Aktif', lClass: 'label-yes' },
+                { from: 'c12-check-pin', to: 'c12-pin-unreg', f: 'bottom', t: 'top', label: 'Belum Set', lClass: 'label-no' },
+                { from: 'c12-pin-unreg', to: 'c12-btn-unreg', f: 'right', t: 'left' },
+                { from: 'c12-check-pin', to: 'c12-pin-blocked', f: 'bottom', t: 'top', label: 'Terblokir', lClass: 'label-no' },
+                { from: 'c12-pin-blocked', to: 'c12-btn-blocked', f: 'right', t: 'left' },
+                { from: 'c12-select-ewallet', to: 'c12-form-nominal', f: 'right', t: 'left' },
+                { from: 'c12-form-nominal', to: 'c12-click-submit', f: 'right', t: 'left' },
+                { from: 'c12-click-submit', to: 'c12-modal-pin', f: 'right', t: 'left' },
+                { from: 'c12-modal-pin', to: 'c12-input-pin', f: 'right', t: 'left' },
+                { from: 'c12-input-pin', to: 'c12-valid-pin', f: 'right', t: 'left' },
+                { from: 'c12-valid-pin', to: 'c12-fde-eval', f: 'right', t: 'left', label: 'PIN Benar', lClass: 'label-yes' },
+                { from: 'c12-valid-pin', to: 'c12-err-pin', f: 'bottom', t: 'top', label: 'PIN Salah (<3x)', lClass: 'label-no' },
+                { from: 'c12-err-pin', to: 'c12-modal-pin', f: 'left', t: 'bottom', label: 'Re-entry PIN', lClass: 'label-no' },
+                { from: 'c12-valid-pin', to: 'c12-pin-blocked', f: 'bottom', t: 'right', label: 'Salah >= 3x (Terblokir)', lClass: 'label-no' },
+                { from: 'c12-fde-eval', to: 'c12-disburse', f: 'top', t: 'left', label: 'Happy Path', lClass: 'label-yes' },
+                { from: 'c12-disburse', to: 'c12-success-screen', f: 'right', t: 'left' },
+                { from: 'c12-fde-eval', to: 'c12-pending-audit', f: 'bottom', t: 'left', label: 'Kondisi A / B', lClass: 'label-no' },
+                { from: 'c12-pending-audit', to: 'c12-pending-screen', f: 'right', t: 'left' }
             ]
         };
 
@@ -1280,6 +1333,7 @@
             if (nodeId.startsWith('c8-') && selectedKeys.includes('sec8')) return true;
             if (nodeId.startsWith('c9-') && selectedKeys.includes('sec9')) return true;
             if (nodeId.startsWith('c10-') && selectedKeys.includes('sec10')) return true;
+            if (nodeId.startsWith('c12-') && selectedKeys.includes('sec12')) return true;
             return false;
         }
 
@@ -1306,7 +1360,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -1314,7 +1368,7 @@
             const activeSecIds = new Set(selectedKeys);
             const hasMerchant = selectedKeys.some(k => ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].includes(k));
             if (hasMerchant) activeSecIds.add('outer-merchant');
-            if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10')) activeSecIds.add('outer-customer');
+            if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12')) activeSecIds.add('outer-customer');
 
             const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
                 const id = sec.getAttribute('data-sec-id');
@@ -1350,7 +1404,7 @@
             const width = maxX - minX;
             const height = maxY - minY;
 
-            let svg = `<?xml version="1.0" encoding="UTF-8"?>\n<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
+            let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
             
             svg += `
 <defs>
@@ -1568,44 +1622,40 @@
             document.getElementById('svgCopyModal').style.display = 'none';
         }
 
-        function copyRawAreaText() {
+        async function copyRawAreaText() {
             const area = document.getElementById('rawSvgTextArea');
-            area.focus();
-            area.select();
-            document.execCommand('copy');
-            showToast('Kode RAW SVG disalin ke clipboard! Silakan Paste (Cmd+V / Ctrl+V) di Figma.');
+            if (area) {
+                area.focus();
+                area.select();
+            }
+            const svg = (area && area.value) ? area.value : generateFullSVG();
+
+            let copied = false;
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                try {
+                    await navigator.clipboard.writeText(svg);
+                    copied = true;
+                } catch (e) {}
+            }
+
+            if (!copied && area) {
+                try {
+                    area.focus();
+                    area.select();
+                    copied = document.execCommand('copy');
+                } catch (e2) {}
+            }
+
+            showToast('✨ Kode SVG Vektor Disalin! Buka Figma lalu tekan Cmd+V (atau Ctrl+V).');
+        }
+
+        function openSvgModal() {
+            onFlowCheckboxChange();
+            document.getElementById('svgCopyModal').style.display = 'flex';
         }
 
         async function copyAsSVG() {
-            try {
-                const selected = getSelectedFlowKeys();
-                const svg = generateFullSVG(selected);
-                
-                // Show modal & fill textarea
-                document.getElementById('rawSvgTextArea').value = svg;
-                document.getElementById('svgCopyModal').style.display = 'flex';
-
-                let copied = false;
-                if (navigator.clipboard && navigator.clipboard.writeText) {
-                    try {
-                        await navigator.clipboard.writeText(svg);
-                        copied = true;
-                    } catch (e2) {}
-                }
-
-                if (!copied) {
-                    const textArea = document.getElementById('rawSvgTextArea');
-                    textArea.focus();
-                    textArea.select();
-                    copied = document.execCommand('copy');
-                }
-
-                if (copied) {
-                    showToast('Kode SVG Flow Pilihan Berhasil Di-copy! Silakan Paste di Figma atau gunakan opsi Download.');
-                }
-            } catch (err) {
-                console.error('Gagal copy SVG: ', err);
-            }
+            openSvgModal();
         }
 
         function showToast(message) {

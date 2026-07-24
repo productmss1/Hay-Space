@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScanWin 1000s – Detail Tarik Saldo (Berhasil In Process)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0b0f19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* ── Mobile Frame Container (390px x 844px) ── */
+    .mobile-device-frame {
+      width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #f8fafc;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── iOS Status Bar (Dark Text) ── */
+    .ios-status-bar {
+      width: 100%;
+      height: 45px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.3px;
+      width: 54px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #0a0a0a;
+      font-size: 12px;
+    }
+
+    /* ── Top Navigation ── */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 16px;
+      height: 66px;
+      background: #ffffff;
+      box-shadow: 0px 2px 25px 0px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0a0a;
+      font-size: 18px;
+    }
+
+    .nav-icon {
+      font-size: 20px;
+      color: #0a0a0a;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.252px;
+      flex: 1;
+    }
+
+    /* ── Main Content Container ── */
+    .main-content {
+      flex: 1;
+      padding: 24px 16px;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .main-content::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ── Card Detail ── */
+    .detail-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 32px 16px 22px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0px 2px 50px 0px rgba(0, 0, 0, 0.04);
+      width: 100%;
+    }
+
+    /* ── Icon Bubble ── */
+    .status-icon-bubble {
+      width: 32px;
+      height: 32px;
+      background: #0171ff;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 6px;
+      flex-shrink: 0;
+    }
+
+    .status-icon-bubble svg {
+      width: 22px;
+      height: 22px;
+      fill: #ffffff;
+    }
+
+    .clock-badge-orange {
+      position: absolute;
+      left: 19.5px;
+      top: -3px;
+      width: 16px;
+      height: 16px;
+      background: #fa8910;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-badge-orange i {
+      font-size: 9px;
+      color: #ffffff;
+    }
+
+    /* ── Header Titles ── */
+    .card-header-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .status-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.252px;
+      line-height: 26px;
+    }
+
+    .status-subtitle {
+      font-size: 12px;
+      font-weight: 500;
+      color: #757575;
+      line-height: 16px;
+    }
+
+    /* ── Transaction Info Summary ── */
+    .summary-group {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      align-items: center;
+    }
+
+    .summary-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+
+    .summary-label {
+      font-size: 14px;
+      font-weight: 400;
+      color: #616161;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .summary-value-blue {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0171ff;
+      letter-spacing: -0.252px;
+      line-height: 26px;
+    }
+
+    .summary-subvalue-blue {
+      font-size: 14px;
+      font-weight: 400;
+      color: #0171ff;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    /* ── Dashed Divider ── */
+    .dashed-line {
+      width: 100%;
+      border-top: 1px dashed #e0e0e0;
+      margin: 4px 0;
+    }
+
+    /* ── Payment Details Section ── */
+    .payment-details {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      width: 100%;
+    }
+
+    .payment-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+    }
+
+    .payment-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 14px;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+      width: 100%;
+    }
+
+    .payment-row-label {
+      font-weight: 400;
+      color: #757575;
+    }
+
+    .payment-row-value {
+      font-weight: 500;
+      color: #404040;
+    }
+
+    /* ── Footer Sticky Action ── */
+    .footer-action {
+      padding: 16px;
+      margin-top: auto;
+    }
+
+    .back-home-btn {
+      width: 100%;
+      height: 48px;
+      background: #0171ff;
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.176px;
+      cursor: pointer;
+      box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.06), inset 0px 1px 6px 0px rgba(255, 255, 255, 0.25);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .back-home-btn:active {
+      transform: scale(0.99);
+      background: #005fd6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-device-frame">
+
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <i class="fas fa-battery-full"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-signal"></i>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="top-nav">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <i class="far fa-credit-card nav-icon"></i>
+      <span class="page-title">Detail Tarik Saldo</span>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+      <!-- Detail Card -->
+      <div class="detail-card">
+        
+        <!-- Status Icon & Title -->
+        <div class="status-icon-bubble">
+          <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          <div class="clock-badge-orange">
+            <i class="fas fa-clock"></i>
+          </div>
+        </div>
+
+        <div class="card-header-group">
+          <h2 class="status-title">Berhasil Tarik Saldo (In Process)</h2>
+          <p class="status-subtitle">Saldo akan ditransfer maksimal 2×24jam</p>
+        </div>
+
+        <!-- Transaction Summary -->
+        <div class="summary-group">
+          <div class="summary-item">
+            <span class="summary-label">Nominal Tarik Saldo</span>
+            <span class="summary-value-blue">Rp 1,000,000</span>
+          </div>
+
+          <div class="summary-item">
+            <span class="summary-label">Ke E-Wallet</span>
+            <span class="summary-value-blue">Shopee Pay</span>
+            <span class="summary-subvalue-blue">0821-9292-9292 (Ageng Widodo)</span>
+          </div>
+        </div>
+
+        <div class="dashed-line"></div>
+
+        <!-- Payment Details -->
+        <div class="payment-details">
+          <h3 class="payment-title">Detail bayar</h3>
+
+          <div class="payment-row">
+            <span class="payment-row-label">Nominal tarik saldo</span>
+            <span class="payment-row-value">Rp 1,000,000</span>
+          </div>
+
+          <div class="payment-row">
+            <span class="payment-row-label">Biaya layanan</span>
+            <span class="payment-row-value">Rp 1,650</span>
+          </div>
+
+          <div class="dashed-line"></div>
+
+          <div class="payment-row">
+            <span class="payment-row-label">Total saldo ditarik</span>
+            <span class="payment-row-value">Rp 1,001,650</span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Footer Action -->
+    <div class="footer-action">
+      <button class="back-home-btn" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'resetFlow' }, '*'); } else { window.location.href='scanwin-saldo.html'; }">
+        Kembali
+      </button>
+    </div>
+
+  </div>
+</body>
+
+</html>

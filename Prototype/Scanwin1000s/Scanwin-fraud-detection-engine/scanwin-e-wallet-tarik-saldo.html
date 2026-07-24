@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScanWin 1000s – Pilih E-Wallet Tarik Saldo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0b0f19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .mobile-device-frame {
+      width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #0171ff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ios-status-bar {
+      width: 100%;
+      height: 45px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      width: 54px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+      font-size: 12px;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 16px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.252px;
+    }
+
+    .saldo-hero {
+      padding: 8px 24px 28px;
+      flex-shrink: 0;
+    }
+
+    .saldo-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+      margin-bottom: 2px;
+    }
+
+    .saldo-amount {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.588px;
+      line-height: 36px;
+      margin-bottom: 4px;
+    }
+
+    .saldo-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      line-height: 20px;
+    }
+
+    .saldo-sub strong {
+      font-weight: 600;
+    }
+
+    .tarik-btn-wrap {
+      padding: 0 24px 20px;
+      flex-shrink: 0;
+    }
+
+    .tarik-btn {
+      width: 100%;
+      height: 43px;
+      background: rgba(255,255,255,0.3);
+      border: none;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.176px;
+      transition: background 0.2s ease, transform 0.15s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .tarik-btn:hover { background: rgba(255,255,255,0.4); }
+    .tarik-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.98); }
+
+    .history-panel {
+      flex: 1;
+      background: linear-gradient(135deg, #ffffff 0%, #e9f2ff 100%);
+      border-radius: 16px 16px 0 0;
+      overflow-y: auto;
+      padding: 24px 24px 16px;
+      scrollbar-width: none;
+    }
+
+    .history-panel::-webkit-scrollbar { display: none; }
+
+    .history-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+      margin-bottom: 12px;
+    }
+
+    .txn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .txn-card {
+      background: rgba(255,255,255,0.75);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0px 2px 50px 0px rgba(0,0,0,0.04);
+      position: relative;
+    }
+
+    .txn-icon-wrap {
+      padding: 4px;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .txn-icon-wrap.blue { background: #0171ff; }
+    .txn-icon-wrap.red  { background: #fe3058; }
+
+    .txn-icon-wrap svg {
+      width: 15px;
+      height: 15px;
+      fill: #ffffff;
+      display: block;
+    }
+
+    .clock-badge {
+      position: absolute;
+      left: 12px;
+      top: -3px;
+      width: 14px;
+      height: 14px;
+      background: #fa8910;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-badge i { font-size: 8px; color: #ffffff; }
+
+    .clock-badge-card {
+      position: absolute;
+      left: 28px;
+      top: 18px;
+      width: 14px;
+      height: 14px;
+      background: #fa8910;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-badge-card i { font-size: 8px; color: #ffffff; }
+
+    .txn-details {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .txn-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .txn-amount {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .txn-date {
+      font-size: 12px;
+      color: #616161;
+      line-height: 16px;
+      white-space: nowrap;
+    }
+
+    .txn-pending-note {
+      font-size: 12px;
+      line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fa8910;
+    }
+
+    .txn-pending-note strong {
+      font-weight: 700;
+      color: #fa8910;
+      font-style: normal;
+    }
+    .txn-pending-note span { color: #fa8910; font-weight: 500; }
+
+    .txn-desc {
+      font-size: 12px;
+      color: #616161;
+      line-height: 16px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .txn-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #616161;
+      line-height: 16px;
+    }
+
+    .txn-meta-dot {
+      width: 3px;
+      height: 3px;
+      background: #616161;
+      border-radius: 50%;
+    }
+
+    .jackpot-badge-wrap {
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .jackpot-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 7px;
+      border-radius: 8px 8px 8px 0;
+      background: linear-gradient(
+        90deg,
+        #ffe8ad 0%, #ffd979 11%, #ffeab5 29%,
+        #ffdb81 39%, #ffcc4d 49%, #ffdb81 59%,
+        #ffeab5 69%, #ffdb81 79%, #ffcc4d 89%,
+        #ffdabd 94%, #ffe8ad 100%
+      );
+      font-size: 11px;
+      font-weight: 700;
+      color: #7d5a00;
+      letter-spacing: -0.066px;
+      white-space: nowrap;
+      box-shadow: inset 0px 6px 4px 0px rgba(255,255,255,0.16);
+    }
+
+    .jackpot-tail {
+      width: 0;
+      height: 0;
+      border-left: 6px solid #c49a00;
+      border-top: 7px solid transparent;
+    }
+
+    .txn-card.has-jackpot {
+      padding-left: 20px;
+      overflow: visible;
+      margin-top: 4px;
+    }
+
+    /* ── Backdrop Overlay ── */
+    .modal-backdrop {
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      z-index: 10;
+    }
+
+    /* ── Bottom Sheet Container ── */
+    .bottom-sheet {
+      background: #ffffff;
+      border-radius: 16px 16px 0 0;
+      padding: 20px 16px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      width: 100%;
+      max-height: 80vh;
+      animation: slideUp 0.3s ease-out;
+    }
+
+    @keyframes slideUp {
+      from { transform: translateY(100%); }
+      to { transform: translateY(0); }
+    }
+
+    .sheet-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .header-text-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .sheet-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+    }
+
+    .sheet-subtitle {
+      font-size: 14px;
+      font-weight: 500;
+      color: #404040;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .sheet-subtitle span.admin-label {
+      color: #757575;
+    }
+
+    .close-btn {
+      width: 28px;
+      height: 28px;
+      background: #f5f5f5;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      color: #616161;
+      font-size: 14px;
+      transition: background 0.2s;
+    }
+
+    .close-btn:hover {
+      background: #e0e0e0;
+    }
+
+    .ewallet-list {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      overflow-y: auto;
+      max-height: 400px;
+      scrollbar-width: none;
+      padding-bottom: 8px;
+    }
+
+    .ewallet-list::-webkit-scrollbar {
+      display: none;
+    }
+
+    .ewallet-item {
+      border: 1px solid #ededed;
+      border-radius: 12px;
+      padding: 12px 16px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background: #ffffff;
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .ewallet-item:hover {
+      border-color: #0171ff;
+      background-color: #f8fbff;
+    }
+
+    .ewallet-item-left {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .ewallet-logo {
+      width: 42px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .logo-badge {
+      font-weight: 800;
+      font-size: 13px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-ovo { color: #4c2a86; }
+    .logo-gopay { color: #00a5cf; }
+    .logo-shopee { color: #ee4d2d; }
+    .logo-jago { color: #ff6b00; }
+    .logo-linkaja { color: #e31e25; }
+    .logo-dana { color: #108ee9; }
+
+    .ewallet-name {
+      font-size: 14px;
+      font-weight: 500;
+      color: #404040;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .chevron-icon {
+      color: #757575;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-device-frame">
+
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <i class="fas fa-battery-full"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-signal"></i>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="top-nav">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span class="page-title">Saldo</span>
+    </div>
+
+    <!-- Saldo Hero -->
+    <div class="saldo-hero">
+      <p class="saldo-label">Total Saldo</p>
+      <p class="saldo-amount">IDR 2.000.000</p>
+      <p class="saldo-sub">
+        <strong>IDR 6.200.000</strong> Sudah anda dapatkan dari ScanWin1000s
+      </p>
+    </div>
+
+    <!-- Tarik Saldo Button -->
+    <div class="tarik-btn-wrap">
+      <button class="tarik-btn">
+        Tarik Saldo
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5l-4-4 1.41-1.41L11 13.17V8h2v5.17l2.59-2.58L17 12l-4 4-.56-.44-.44.44z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Riwayat Saldo Panel -->
+    <div class="history-panel">
+      <p class="history-title">Riwayat Saldo</p>
+      <div class="txn-list">
+        <!-- Txn 1: +5.000 Pending + Jackpot -->
+        <div class="txn-card has-jackpot">
+          <div class="jackpot-badge-wrap">
+            <div class="jackpot-badge">Jackpot!</div>
+            <div class="jackpot-tail"></div>
+          </div>
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="clock-badge"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 5.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-pending-note"><strong>Hadiah Pending:</strong><span> IDR 1.000.000</span></p>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 2: +1.000.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 3: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 4: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 5: +5.000 Pending + Jackpot ke-2 -->
+        <div class="txn-card has-jackpot">
+          <div class="jackpot-badge-wrap">
+            <div class="jackpot-badge">Jackpot!</div>
+            <div class="jackpot-tail"></div>
+          </div>
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="clock-badge"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 5.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-pending-note"><strong>Hadiah Pending:</strong><span> IDR 1.000.000</span></p>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 6: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 7: -1.000.000 In Process -->
+        <div class="txn-card" style="position:relative;">
+          <div class="txn-icon-wrap red">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-5h-2v-2h2v2zm0-4h-2V7h2v4z"/></svg>
+          </div>
+          <div class="clock-badge-card"><i class="fas fa-clock"></i></div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">-IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <div class="txn-meta-row">
+              <span>Penarikan Saldo</span>
+              <div class="txn-meta-dot"></div>
+              <span>Gopay</span>
+              <div class="txn-meta-dot"></div>
+              <span>In Process</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Txn 8: +1.000.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 9: -1.000.000 Berhasil -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap red">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-5h-2v-2h2v2zm0-4h-2V7h2v4z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">-IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <div class="txn-meta-row">
+              <span>Penarikan Saldo</span>
+              <div class="txn-meta-dot"></div>
+              <span>Gopay</span>
+              <div class="txn-meta-dot"></div>
+              <span>Berhasil</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Bottom Sheet Modal overlay -->
+    <div class="modal-backdrop">
+      <div class="bottom-sheet">
+        
+        <!-- Sheet Header -->
+        <div class="sheet-header">
+          <div class="header-text-group">
+            <h3 class="sheet-title">Pilih E-Wallet</h3>
+            <p class="sheet-subtitle"><span class="admin-label">Biaya Admin:</span> Rp 1.650</p>
+          </div>
+          <button class="close-btn" onclick="history.back()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <!-- E-Wallet List -->
+        <div class="ewallet-list">
+
+          <!-- 1. OVO -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'OVO' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-ovo">OVO</span>
+              </div>
+              <span class="ewallet-name">OVO</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+          <!-- 2. GOPAY -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'GOPAY' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-gopay">gopay</span>
+              </div>
+              <span class="ewallet-name">GOPAY</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+          <!-- 3. Shopee Pay -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'Shopee Pay' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-shopee">Shopee</span>
+              </div>
+              <span class="ewallet-name">Shopee Pay</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+          <!-- 4. Bank Jago -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'Bank Jago' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-jago">jago</span>
+              </div>
+              <span class="ewallet-name">Bank Jago</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+          <!-- 5. Link Aja -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'Link Aja' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-linkaja">LinkAja!</span>
+              </div>
+              <span class="ewallet-name">Link Aja</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+          <!-- 6. DANA -->
+          <div class="ewallet-item" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'ewalletSelect', ewallet: 'DANA' }, '*'); } else { window.location.href='scanwin-form-tarik-saldo.html'; }">
+            <div class="ewallet-item-left">
+              <div class="ewallet-logo">
+                <span class="logo-badge logo-dana">DANA</span>
+              </div>
+              <span class="ewallet-name">DANA</span>
+            </div>
+            <i class="fas fa-chevron-right chevron-icon"></i>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

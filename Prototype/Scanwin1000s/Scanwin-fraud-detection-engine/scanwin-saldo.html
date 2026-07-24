@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScanWin 1000s – Saldo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0b0f19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .mobile-device-frame {
+      width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #0171ff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .ios-status-bar {
+      width: 100%;
+      height: 45px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.3px;
+      width: 54px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #ffffff;
+      font-size: 12px;
+    }
+
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 16px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-size: 18px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.252px;
+    }
+
+    .saldo-hero {
+      padding: 8px 24px 28px;
+      flex-shrink: 0;
+    }
+
+    .saldo-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+      margin-bottom: 2px;
+    }
+
+    .saldo-amount {
+      font-size: 28px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.588px;
+      line-height: 36px;
+      margin-bottom: 4px;
+    }
+
+    .saldo-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.9);
+      line-height: 20px;
+    }
+
+    .saldo-sub strong {
+      font-weight: 600;
+    }
+
+    .tarik-btn-wrap {
+      padding: 0 24px 20px;
+      flex-shrink: 0;
+    }
+
+    .tarik-btn {
+      width: 100%;
+      height: 43px;
+      background: rgba(255,255,255,0.3);
+      border: none;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.176px;
+      transition: background 0.2s ease, transform 0.15s ease;
+      backdrop-filter: blur(4px);
+    }
+
+    .tarik-btn:hover { background: rgba(255,255,255,0.4); }
+    .tarik-btn:active { background: rgba(255,255,255,0.2); transform: scale(0.98); }
+
+    .history-panel {
+      flex: 1;
+      background: linear-gradient(135deg, #ffffff 0%, #e9f2ff 100%);
+      border-radius: 16px 16px 0 0;
+      overflow-y: auto;
+      padding: 24px 24px 16px;
+      scrollbar-width: none;
+    }
+
+    .history-panel::-webkit-scrollbar { display: none; }
+
+    .history-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+      margin-bottom: 12px;
+    }
+
+    .txn-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .txn-card {
+      background: rgba(255,255,255,0.75);
+      border-radius: 12px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0px 2px 50px 0px rgba(0,0,0,0.04);
+      position: relative;
+    }
+
+    .txn-icon-wrap {
+      /* Figma: padding 4px, icon 15px → total 23px */
+      padding: 4px;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .txn-icon-wrap.blue { background: #0171ff; }
+    .txn-icon-wrap.red  { background: #fe3058; }
+
+    .txn-icon-wrap svg {
+      width: 15px;
+      height: 15px;
+      fill: #ffffff;
+      display: block;
+    }
+
+    /* Clock badge di atas bubble (untuk Pending): background oranye #fa8910, icon jam putih (Figma node 1:13177) */
+    .clock-badge {
+      position: absolute;
+      left: 12px;
+      top: -3px;
+      width: 14px;
+      height: 14px;
+      background: #fa8910;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-badge i { font-size: 8px; color: #ffffff; }
+
+    /* Clock badge di luar bubble (untuk Penarikan In Process): left:28px top:18px dari kartu */
+    .clock-badge-card {
+      position: absolute;
+      left: 28px;
+      top: 18px;
+      width: 14px;
+      height: 14px;
+      background: #fa8910;
+      border-radius: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .clock-badge-card i { font-size: 8px; color: #ffffff; }
+
+    .txn-details {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .txn-top-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+
+    .txn-amount {
+      font-size: 14px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .txn-date {
+      font-size: 12px;
+      font-weight: 400;
+      color: #616161;
+      line-height: 16px;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+
+    /* Pending note: orange, semi-bold label + medium value */
+    .txn-pending-note {
+      font-size: 12px;
+      line-height: 16px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: #fa8910;
+    }
+
+    .txn-pending-note strong {
+      font-weight: 700;
+      color: #fa8910;
+      font-style: normal;
+    }
+    .txn-pending-note span { color: #fa8910; font-weight: 500; }
+
+    .txn-desc {
+      font-size: 12px;
+      font-weight: 400;
+      color: #616161;
+      line-height: 16px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+    }
+
+    .txn-meta-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: #616161;
+      line-height: 16px;
+    }
+
+    .txn-meta-dot {
+      width: 3.75px;
+      height: 3.75px;
+      background: #616161;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .txn-meta-row span {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .jackpot-badge-wrap {
+      position: absolute;
+      left: -6px;
+      top: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      pointer-events: none;
+      z-index: 2;
+    }
+
+    .jackpot-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 7px;
+      border-radius: 8px 8px 8px 0;
+      background: linear-gradient(
+        90deg,
+        #ffe8ad 0%, #ffd979 11%, #ffeab5 29%,
+        #ffdb81 39%, #ffcc4d 49%, #ffdb81 59%,
+        #ffeab5 69%, #ffdb81 79%, #ffcc4d 89%,
+        #ffdabd 94%, #ffe8ad 100%
+      );
+      font-size: 11px;
+      font-weight: 700;
+      color: #7d5a00;
+      letter-spacing: -0.066px;
+      white-space: nowrap;
+      box-shadow: inset 0px 6px 4px 0px rgba(255,255,255,0.16);
+    }
+
+    .jackpot-tail {
+      width: 0;
+      height: 0;
+      border-left: 6px solid #c49a00;
+      border-top: 7px solid transparent;
+    }
+
+    /* Kartu dengan Jackpot badge: padding kiri lebih besar agar konten tak tertindih badge */
+    .txn-card.has-jackpot {
+      padding-left: 20px;
+      overflow: visible;
+      margin-top: 4px; /* sedikit jarak agar badge tidak menggesek kartu sebelumnya */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-device-frame">
+
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <i class="fas fa-battery-full"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-signal"></i>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="top-nav">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span class="page-title">Saldo</span>
+    </div>
+
+    <!-- Saldo Hero -->
+    <div class="saldo-hero">
+      <p class="saldo-label">Total Saldo</p>
+      <p class="saldo-amount">IDR 2.000.000</p>
+      <p class="saldo-sub">
+        <strong>IDR 6.200.000</strong> Sudah anda dapatkan dari ScanWin1000s
+      </p>
+    </div>
+
+    <!-- Tarik Saldo Button -->
+    <div class="tarik-btn-wrap">
+      <button class="tarik-btn" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'tarikSaldoClick' }, '*'); } else { window.location.href='scanwin-e-wallet-tarik-saldo.html'; }">
+        Tarik Saldo
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="white">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm-1-5l-4-4 1.41-1.41L11 13.17V8h2v5.17l2.59-2.58L17 12l-4 4-.56-.44-.44.44z"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Riwayat Saldo Panel -->
+    <div class="history-panel">
+      <p class="history-title">Riwayat Saldo</p>
+      <div class="txn-list">
+        <!-- Txn 1: +5.000 Pending + Jackpot -->
+        <div class="txn-card has-jackpot">
+          <div class="jackpot-badge-wrap">
+            <div class="jackpot-badge">Jackpot!</div>
+            <div class="jackpot-tail"></div>
+          </div>
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="clock-badge"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 5.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-pending-note"><strong>Hadiah Pending:</strong><span> IDR 1.000.000</span></p>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 2: +1.000.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 3: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 4: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 5: +5.000 Pending + Jackpot ke-2 -->
+        <div class="txn-card has-jackpot">
+          <div class="jackpot-badge-wrap">
+            <div class="jackpot-badge">Jackpot!</div>
+            <div class="jackpot-tail"></div>
+          </div>
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+            <div class="clock-badge"><i class="fas fa-clock"></i></div>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 5.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-pending-note"><strong>Hadiah Pending:</strong><span> IDR 1.000.000</span></p>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 6: +200.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 200.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 7: -1.000.000 In Process -->
+        <div class="txn-card" style="position:relative;">
+          <div class="txn-icon-wrap red">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-5h-2v-2h2v2zm0-4h-2V7h2v4z"/></svg>
+          </div>
+          <!-- Clock badge relatif ke kartu (Figma: left:28px top:18px) -->
+          <div class="clock-badge-card"><i class="fas fa-clock"></i></div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">-IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <div class="txn-meta-row">
+              <span>Penarikan Saldo</span>
+              <div class="txn-meta-dot"></div>
+              <span>Gopay</span>
+              <div class="txn-meta-dot"></div>
+              <span>In Process</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Txn 8: +1.000.000 -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap blue">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">+IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <p class="txn-desc">ScanWin GRC Board Belanja papan semen 3 lembar dapat 1 voucher scanwin!</p>
+          </div>
+        </div>
+
+        <!-- Txn 9: -1.000.000 Berhasil -->
+        <div class="txn-card">
+          <div class="txn-icon-wrap red">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm1-5h-2v-2h2v2zm0-4h-2V7h2v4z"/></svg>
+          </div>
+          <div class="txn-details">
+            <div class="txn-top-row">
+              <span class="txn-amount">-IDR 1.000.000</span>
+              <span class="txn-date">12 Jan 24, 14:30</span>
+            </div>
+            <div class="txn-meta-row">
+              <span>Penarikan Saldo</span>
+              <div class="txn-meta-dot"></div>
+              <span>Gopay</span>
+              <div class="txn-meta-dot"></div>
+              <span>Berhasil</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

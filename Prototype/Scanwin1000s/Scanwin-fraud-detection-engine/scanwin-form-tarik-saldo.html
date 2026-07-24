@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScanWin 1000s – Form Tarik Saldo</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #0b0f19;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    /* ── Mobile Frame Container (390px x 844px) ── */
+    .mobile-device-frame {
+      width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #fafafa;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── iOS Status Bar (Dark Text) ── */
+    .ios-status-bar {
+      width: 100%;
+      height: 45px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      flex-shrink: 0;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.3px;
+      width: 54px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #0a0a0a;
+      font-size: 12px;
+    }
+
+    /* ── Top Navigation ── */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      padding: 12px 16px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0a0a0a;
+      font-size: 18px;
+    }
+
+    .page-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.252px;
+    }
+
+    /* ── Form Container ── */
+    .form-container {
+      flex: 1;
+      padding: 16px 24px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      overflow-y: auto;
+      scrollbar-width: none;
+    }
+
+    .form-container::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ── E-Wallet Selected Info Card ── */
+    .ewallet-selected-card {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      width: 100%;
+    }
+
+    .ewallet-logo-box {
+      width: 60px;
+      height: 56px;
+      background: #ffffff;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0px 2px 25px 0px rgba(0, 0, 0, 0.04);
+      flex-shrink: 0;
+    }
+
+    .logo-badge-shopee {
+      font-size: 14px;
+      font-weight: 800;
+      color: #ee4d2d;
+      letter-spacing: -0.5px;
+    }
+
+    .ewallet-meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+
+    .ewallet-name {
+      font-size: 16px;
+      font-weight: 600;
+      color: #0a0a0a;
+      letter-spacing: -0.176px;
+      line-height: 24px;
+    }
+
+    .admin-fee {
+      font-size: 12px;
+      color: #404040;
+      line-height: 16px;
+    }
+
+    .admin-fee strong {
+      font-weight: 600;
+    }
+
+    /* ── Input Field Group ── */
+    .input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      width: 100%;
+    }
+
+    .input-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: #404040;
+      letter-spacing: -0.084px;
+      line-height: 20px;
+    }
+
+    .input-label-sub {
+      font-size: 12px;
+      font-weight: 500;
+      color: #757575;
+    }
+
+    .input-box {
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 15px 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      transition: border-color 0.2s;
+    }
+
+    .input-box.focused {
+      border-color: #0171ff;
+    }
+
+    .input-field {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 14px;
+      font-weight: 500;
+      color: #404040;
+      letter-spacing: -0.084px;
+      width: 100%;
+    }
+
+    .clear-icon {
+      color: #c2c2c2;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    /* ── Nominal Group Special ── */
+    .nominal-group-header {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .saldo-info {
+      font-size: 12px;
+      font-weight: 500;
+      color: #616161;
+      line-height: 16px;
+    }
+
+    .nominal-input-wrap {
+      border: 1px solid #0171ff;
+      border-radius: 12px;
+      padding: 15px 13px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: #ffffff;
+    }
+
+    .currency-prefix {
+      font-size: 14px;
+      font-weight: 500;
+      color: #404040;
+      letter-spacing: -0.084px;
+    }
+
+    .blinking-cursor {
+      width: 1px;
+      height: 18px;
+      background-color: #404040;
+      animation: blink 1s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+
+    /* ── Footer Sticky Action ── */
+    .footer-action {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      align-items: center;
+      padding-top: 16px;
+    }
+
+    .transfer-note {
+      font-size: 12px;
+      font-weight: 500;
+      color: #404040;
+      text-align: center;
+      line-height: 16px;
+    }
+
+    .submit-btn {
+      width: 100%;
+      height: 48px;
+      background: #0171ff;
+      border: none;
+      border-radius: 12px;
+      color: #ffffff;
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.176px;
+      cursor: pointer;
+      box-shadow: 0px 2px 1px 0px rgba(0, 0, 0, 0.06), inset 0px 1px 6px 0px rgba(255, 255, 255, 0.25);
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .submit-btn:active {
+      transform: scale(0.99);
+      background: #005fd6;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-device-frame">
+
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <i class="fas fa-battery-full"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-signal"></i>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="top-nav">
+      <button class="back-btn" onclick="history.back()">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+      <span class="page-title">Tarik Saldo</span>
+    </div>
+
+    <!-- Main Form Content -->
+    <div class="form-container">
+
+      <!-- Selected E-Wallet -->
+      <div class="ewallet-selected-card">
+        <div class="ewallet-logo-box">
+          <span class="logo-badge-shopee">Shopee</span>
+        </div>
+        <div class="ewallet-meta">
+          <p class="ewallet-name">Shopee Pay</p>
+          <p class="admin-fee">Biaya Admin: <strong>Rp 1.650</strong></p>
+        </div>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="input-group">
+        <label class="input-label">Nomor Handphone</label>
+        <div class="input-box">
+          <input type="text" class="input-field" value="082212221929">
+          <i class="fas fa-times-circle clear-icon"></i>
+        </div>
+      </div>
+
+      <!-- Nominal Tarik Saldo Field -->
+      <div class="input-group">
+        <div class="nominal-group-header">
+          <label class="input-label">Nominal Tarik Saldo <span class="input-label-sub">(Min. Rp 10.000)</span></label>
+          <p class="saldo-info">Saldo anda: Rp 2.000.000</p>
+        </div>
+        <div class="nominal-input-wrap">
+          <span class="currency-prefix">Rp</span>
+          <div class="blinking-cursor"></div>
+        </div>
+      </div>
+
+      <!-- Footer Action Button -->
+      <div class="footer-action">
+        <p class="transfer-note">Saldo akan ditransfer ke e-wallet anda max. 2×24jam</p>
+        <button class="submit-btn" onclick="if(window.parent && window.parent !== window){ window.parent.postMessage({ action: 'openPinModal' }, '*'); } else { alert('Submit Tarik Saldo'); }">
+          Tarik Saldo
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</body>
+
+</html>

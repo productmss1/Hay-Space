@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ScanWin 1000s – Informasi PIN</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .mobile-device-frame {
+      width: 390px;
+      height: 100vh;
+      max-height: 844px;
+      background: #ffffff;
+      border-radius: 28px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* iOS Status Bar */
+    .ios-status-bar {
+      width: 100%;
+      height: 45px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      flex-shrink: 0;
+    }
+
+    .status-time {
+      font-size: 15px;
+      font-weight: 600;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      width: 54px;
+    }
+
+    .status-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #0f172a;
+      font-size: 12px;
+    }
+
+    /* Top Nav */
+    .top-nav {
+      display: flex;
+      align-items: center;
+      padding: 12px 20px;
+      height: 50px;
+      flex-shrink: 0;
+    }
+
+    .back-btn {
+      background: #f1f5f9;
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      font-size: 16px;
+      transition: background 0.2s;
+    }
+
+    .back-btn:hover {
+      background: #e2e8f0;
+    }
+
+    /* Content Area */
+    .info-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 28px 40px;
+      text-align: center;
+    }
+
+    .icon-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 24px;
+    }
+
+    .icon-circle.unregistered {
+      background: #eff6ff;
+      color: #0171ff;
+    }
+
+    .icon-circle.blocked {
+      background: #ffe4e6;
+      color: #e11d48;
+    }
+
+    .info-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .info-desc {
+      font-size: 14px;
+      color: #64748b;
+      line-height: 1.6;
+      max-width: 310px;
+    }
+
+    /* Footer Action */
+    .footer-action {
+      padding: 20px 24px 36px;
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .action-btn {
+      width: 100%;
+      height: 50px;
+      border-radius: 25px;
+      border: none;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: 0.2px;
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.1);
+      cursor: default;
+    }
+
+    .action-btn.blue {
+      background: #0171ff;
+    }
+
+    .action-btn.red {
+      background: #f43f5e;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="mobile-device-frame">
+
+    <!-- iOS Status Bar -->
+    <div class="ios-status-bar">
+      <span class="status-time">9:41</span>
+      <div class="status-icons">
+        <i class="fas fa-battery-full"></i>
+        <i class="fas fa-wifi"></i>
+        <i class="fas fa-signal"></i>
+      </div>
+    </div>
+
+    <!-- Top Nav -->
+    <div class="top-nav">
+      <button class="back-btn" onclick="window.location.href='scanwin-saldo.html'">
+        <i class="fas fa-arrow-left"></i>
+      </button>
+    </div>
+
+    <!-- Content -->
+    <div class="info-content">
+      <div class="icon-circle" id="info-icon-box">
+        <i id="info-icon" class="fas fa-shield-alt"></i>
+      </div>
+      <h2 class="info-title" id="info-title">PIN sCanWin Belum Dibuat</h2>
+      <p class="info-desc" id="info-desc">
+        Untuk keamanan akun & pencairan saldo, Anda perlu membuat 6-digit PIN sCanWin terlebih dahulu.
+      </p>
+    </div>
+
+    <!-- Footer Action Button -->
+    <div class="footer-action">
+      <button class="action-btn blue" id="info-btn" onclick="return false;">
+        Buat PIN Baru
+      </button>
+    </div>
+
+  </div>
+
+  <script>
+    // Read type parameter from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const type = urlParams.get('type') || 'blocked';
+
+    const iconBox = document.getElementById('info-icon-box');
+    const icon = document.getElementById('info-icon');
+    const title = document.getElementById('info-title');
+    const desc = document.getElementById('info-desc');
+    const btn = document.getElementById('info-btn');
+
+    if (type === 'unregistered') {
+      iconBox.className = 'icon-circle unregistered';
+      icon.className = 'fas fa-shield-alt';
+      title.textContent = 'PIN sCanWin Belum Dibuat';
+      desc.textContent = 'Untuk keamanan akun & pencairan saldo, Anda perlu membuat 6-digit PIN sCanWin terlebih dahulu.';
+      btn.className = 'action-btn blue';
+      btn.textContent = 'Buat PIN Baru';
+    } else {
+      iconBox.className = 'icon-circle blocked';
+      icon.className = 'fas fa-user-lock';
+      title.textContent = 'PIN Transaksi Terblokir';
+      desc.textContent = 'PIN Anda telah terblokir karena 3 kali berturut-turut salah memasukkan PIN. Silakan lakukan pemulihan via WhatsApp OTP.';
+      btn.className = 'action-btn red';
+      btn.textContent = 'Reset PIN Transaksi';
+    }
+  </script>
+</body>
+
+</html>
