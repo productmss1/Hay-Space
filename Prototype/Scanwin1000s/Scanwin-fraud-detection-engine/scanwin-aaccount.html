@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ScanWin 1000s - ScanWin Homepage (Figma Nodes 1:11951, 1:12009, 1:12088)</title>
+    <title>ScanWin 1000s - Account Menu (Figma Node 1:41915)</title>
     <!-- Google Fonts & FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -64,7 +64,6 @@
             align-items: center;
             justify-content: space-between;
             background: #016EFF;
-            /* Matches Hero Top Gradient */
             position: relative;
             z-index: 20;
         }
@@ -202,6 +201,41 @@
             color: #ffffff;
         }
 
+        /* --- BACKDROP OVERLAY & BOTTOM SHEET DIALOG (Figma Node 1:42027 / 1:42045) --- */
+        .backdrop-overlay {
+            position: absolute;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 50;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .bottom-sheet {
+            width: 100%;
+            background-color: #fafafa;
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            box-shadow: 0px -4px 16px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94) forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
+        }
+
         /* Action Button */
         .figma-btn-claim {
             position: absolute;
@@ -217,12 +251,7 @@
             justify-content: center;
             box-shadow: 0px 4px 6px rgba(0, 94, 210, 0.25), inset 0px 2px 0px rgba(187, 224, 255, 0.25), inset 0px -2px 0px rgba(255, 255, 255, 0.25);
             cursor: pointer;
-            transition: transform 0.2s ease;
             z-index: 10;
-        }
-
-        .figma-btn-claim:hover {
-            transform: scale(1.04);
         }
 
         .figma-btn-claim-text {
@@ -290,7 +319,7 @@
             z-index: 6;
         }
 
-        /* Sparkles Coordinates */
+        /* Sparkles */
         .sparkle-node-1-42670 {
             position: absolute;
             left: 281px;
@@ -336,7 +365,7 @@
             z-index: 8;
         }
 
-        /* --- PROGRAM LIST & SALDO SECTION (Figma Node 1:12009) --- */
+        /* --- PROGRAM LIST & SALDO SECTION --- */
         .saldo-bar-container {
             background-color: #fe3058;
             padding: 12px 24px 19px 24px;
@@ -345,7 +374,6 @@
             margin-top: -9px;
             position: relative;
             z-index: 12;
-            cursor: pointer;
         }
 
         .saldo-bar-content {
@@ -382,6 +410,7 @@
             padding-top: 16px;
             position: relative;
             z-index: 13;
+            min-height: 400px;
         }
 
         .program-section-title {
@@ -393,7 +422,7 @@
             color: #0a0a0a;
         }
 
-        /* Tabs (Brand vs Toko Bangunan) */
+        /* Tabs */
         .program-tabs {
             display: flex;
             gap: 16px;
@@ -406,16 +435,11 @@
             font-size: 14px;
             line-height: 20px;
             letter-spacing: -0.084px;
-            cursor: pointer;
+            color: #757575;
         }
 
         .tab-item.active {
             color: #0a0a0a;
-        }
-
-        .tab-item.inactive {
-            color: #757575;
-            font-weight: 500;
         }
 
         .tab-indicator {
@@ -429,7 +453,7 @@
             border-top-right-radius: 6px;
         }
 
-        /* Carousel Section */
+        /* Carousel */
         .carousel-container {
             padding: 16px 24px;
             position: relative;
@@ -443,79 +467,14 @@
             position: relative;
             background: linear-gradient(135deg, #e61c38 0%, #b80d27 100%);
             box-shadow: 0 4px 14px rgba(230, 28, 56, 0.3);
-            display: flex;
-            align-items: center;
-            padding: 20px;
         }
 
         .promo-banner-card img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            position: absolute;
-            inset: 0;
         }
 
-        /* Standardized Promo Banner Content Fallback */
-        .promo-banner-fallback {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(115deg, #e61c38 0%, #d00b27 60%, #990015 100%);
-            padding: 18px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .promo-left-text {
-            color: #ffffff;
-            max-width: 180px;
-        }
-
-        .promo-brand-badge {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            margin-bottom: 12px;
-        }
-
-        .promo-brand-logo {
-            width: 26px;
-            height: 26px;
-            background: #ffffff;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 900;
-            color: #e61c38;
-            font-size: 10px;
-            border: 2px solid #e61c38;
-        }
-
-        .promo-headline-text {
-            font-weight: 800;
-            font-size: 15px;
-            line-height: 1.25;
-            color: #ffffff;
-            margin-bottom: 6px;
-        }
-
-        .promo-sub-text {
-            font-weight: 800;
-            font-size: 13px;
-            color: #ffe600;
-        }
-
-        .promo-right-image {
-            width: 120px;
-            height: 110px;
-            background: url('https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=300&q=80') center/cover no-repeat;
-            border-radius: 12px;
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
-        }
-
-        /* Carousel Pagination Dots */
         .carousel-dots {
             display: flex;
             align-items: center;
@@ -537,152 +496,15 @@
             border-radius: 4px;
         }
 
-        /* Badge Ribbon "2 Hari Lagi!" */
-        .badge-ribbon-container {
-            position: absolute;
-            top: 8px;
-            right: 24px;
-            z-index: 15;
-        }
-
-        .badge-ribbon {
-            background-color: #fe3058;
-            color: #ffffff;
-            font-weight: 700;
-            font-size: 11px;
-            padding: 4px 9px;
-            border-top-left-radius: 8px;
-            border-bottom-left-radius: 8px;
-            border-top-right-radius: 8px;
-            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.15), inset 0px 6px 4px rgba(255, 255, 255, 0.16);
-            white-space: nowrap;
-            position: relative;
-        }
-
-        .badge-ribbon-triangle {
-            position: absolute;
-            bottom: -6px;
-            right: 0;
-            width: 0;
-            height: 0;
-            border-top: 6px solid #b80d27;
-            border-right: 6px solid transparent;
-        }
-
-        /* Grid Program Cards (2 Columns) */
-        .program-cards-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            padding: 0 24px 24px 24px;
-        }
-
-        .program-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(10px);
-            border-radius: 12px;
-            padding: 16px;
-            box-shadow: 0px 2px 30px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .card-brand-logo-img {
-            height: 22px;
-            object-fit: contain;
-        }
-
-        .card-brand-fallback {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            font-weight: 800;
-            font-size: 13px;
-            color: #006EFF;
-        }
-
-        .card-brand-icon {
-            width: 22px;
-            height: 22px;
-            background: #006EFF;
-            color: #ffffff;
-            border-radius: 4px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 10px;
-        }
-
-        .card-title {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: -0.084px;
-            color: #0a0a0a;
-        }
-
-        .card-description {
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 16px;
-            color: #616161;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            height: 32px;
-        }
-
-        .card-dashed-line {
-            border-bottom: 1.5px dashed #e0e0e0;
-            width: 100%;
-            margin: 2px 0;
-        }
-
-        .card-reward-label {
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 16px;
-            color: #616161;
-        }
-
-        .card-reward-amount {
-            font-weight: 600;
-            font-size: 14px;
-            line-height: 20px;
-            letter-spacing: -0.084px;
-            color: #fe3058;
-        }
-
-        .card-badge-ribbon {
-            position: absolute;
-            top: -6px;
-            right: -2px;
-            z-index: 15;
-        }
-
-        .card-badge-ribbon .badge-ribbon {
-            font-size: 10px;
-            padding: 3px 7px;
-        }
-
         /* --- BACKDROP OVERLAY & BOTTOM SHEET DIALOG (Figma Node 1:42027 / 1:42045) --- */
         .backdrop-overlay {
             position: absolute;
             inset: 0;
             background-color: rgba(0, 0, 0, 0.4);
-            z-index: 150;
-            display: none;
-            /* Hidden by default */
+            z-index: 50;
+            display: flex;
             align-items: flex-end;
             justify-content: center;
-        }
-
-        .backdrop-overlay.active {
-            display: flex;
         }
 
         .bottom-sheet {
@@ -695,14 +517,21 @@
             flex-direction: column;
             gap: 8px;
             box-shadow: 0px -4px 16px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94) forwards;
             box-sizing: border-box;
-            transform: translateY(100%);
-            transition: transform 0.3s cubic-bezier(0.1, 0.76, 0.55, 0.94);
         }
 
-        .backdrop-overlay.active .bottom-sheet {
-            transform: translateY(0);
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+
+            to {
+                transform: translateY(0);
+            }
         }
+
+
 
         .sheet-header {
             display: flex;
@@ -717,6 +546,7 @@
             gap: 7px;
         }
 
+        /* Profile Avatar styling following Figma spec: 70px size, light blue bg, white silhouette icon */
         .profile-avatar {
             width: 70px;
             height: 70px;
@@ -749,6 +579,7 @@
             color: #616161;
         }
 
+        /* Close Button circle container */
         .close-btn-circle {
             width: 20px;
             height: 20px;
@@ -767,6 +598,7 @@
             background-color: #e5e5e5;
         }
 
+        /* Action Menu Container Card */
         .menu-list-card {
             background: #ffffff;
             border-radius: 12px;
@@ -807,10 +639,12 @@
             justify-content: center;
         }
 
+        /* Log out specific styles */
         .logout-color {
             color: #0a0a0a;
         }
 
+        /* Hapus akun specific styles (Red accent) */
         .danger-color {
             color: #ff0101;
         }
@@ -822,6 +656,11 @@
             letter-spacing: -0.084px;
             flex-grow: 1;
         }
+
+        .chevron-right-icon {
+            color: #9e9e9e;
+            font-size: 14px;
+        }
     </style>
 </head>
 
@@ -832,10 +671,10 @@
 
         <!-- ================= STATUS BAR (Figma Node 1:12088) ================= -->
         <div class="ios-status-bar">
-            <!-- Time Style (Node 1:12089 / 1:12090) -->
+            <!-- Time Style -->
             <div class="status-time">9:41</div>
 
-            <!-- Right Icons (Battery, Wi-Fi, Cellular - Node 1:12091) -->
+            <!-- Right Icons (Battery, Wi-Fi, Cellular) -->
             <svg class="status-bar-icons-svg" viewBox="0 0 73.1962 11.3333" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <g id="Frame 48098837">
@@ -850,7 +689,7 @@
                     </g>
                     <!-- Wifi Icon -->
                     <path id="Wifi"
-                        d="M38.5292 8.59346C39.7518 7.51119 41.5429 7.51119 42.7655 8.59346C42.827 8.65167 42.8625 8.73426 42.8642 8.821C42.8658 8.90756 42.8333 8.99078 42.7743 9.05147L40.8603 11.0739C40.8041 11.1334 40.7272 11.1667 40.6474 11.1667C40.5677 11.1667 40.4915 11.1332 40.4355 11.0739L38.5204 9.05147C38.4615 8.99075 38.429 8.90754 38.4306 8.821C38.4323 8.73434 38.4678 8.65162 38.5292 8.59346ZM35.9745 5.8962C38.6086 3.33179 42.6881 3.33179 45.3222 5.8962C45.3816 5.95633 45.4161 6.03917 45.4169 6.12569C45.4176 6.21193 45.3851 6.29491 45.3271 6.35616L44.2196 7.52706C44.1056 7.64618 43.9215 7.64816 43.8046 7.53194C42.9397 6.71235 41.8142 6.25843 40.6474 6.2585C39.4813 6.25905 38.3565 6.71274 37.4921 7.53194C37.3751 7.64825 37.1911 7.64647 37.0771 7.52706L35.9706 6.35616C35.9124 6.29498 35.8801 6.212 35.8808 6.12569C35.8816 6.03929 35.9152 5.9563 35.9745 5.8962ZM33.4198 3.20577C37.4599 -0.846415 43.8339 -0.846319 47.8739 3.20577C47.9324 3.26597 47.9662 3.34843 47.9667 3.43428C47.9671 3.52004 47.9346 3.60292 47.8769 3.66377L46.7685 4.8337C46.6543 4.95366 46.4693 4.95483 46.3534 4.83663C44.8142 3.30512 42.7712 2.45098 40.6474 2.45088C38.5235 2.45092 36.4807 3.30515 34.9413 4.83663C34.8255 4.95505 34.6394 4.95397 34.5253 4.8337L33.4179 3.66377C33.3602 3.60289 33.3276 3.52002 33.328 3.43428C33.3286 3.34852 33.3614 3.26591 33.4198 3.20577Z"
+                        d="M38.5292 8.59346C39.7518 7.51119 41.5429 7.51119 42.7655 8.59346C42.827 8.65167 42.8625 8.73426 42.8642 8.821C42.8658 8.90756 42.8333 8.99078 42.7743 9.05147L40.8603 11.0739C40.8041 11.1334 40.7272 11.1667 40.6474 11.1667C40.5677 11.1667 40.4915 11.1332 40.4355 11.0739L38.5204 9.05147C38.4615 8.99075 38.429 8.90754 38.4306 8.821C38.4323 8.73434 38.4678 8.65162 38.5292 8.59346ZM35.9745 5.8962C38.6086 3.33179 42.6881 3.33179 45.3222 5.8962C45.3816 5.95633 45.4161 6.03917 45.4169 6.12569C45.4176 6.21193 45.3851 6.29491 45.3271 6.35616L44.2196 7.52706C44.1056 7.64618 43.9215 7.64816 43.8046 7.53194C42.9397 6.71235 41.8142 6.25843 40.6474 6.2585C39.4813 6.25905 38.3565 6.71274 37.4921 7.53194C37.3751 7.64825 37.1911 7.64647 37.0771 7.52706L35.9706 6.35616C35.9124 6.29498 35.8801 6.212 35.8808 6.12569C35.8816 6.03929 35.9152 5.9563 35.9745 5.8962ZM33.4198 3.20577C37.4599 -0.846415 43.8339 -0.846319 47.8739 3.20577C47.9324 3.26597 47.9662 3.43428 47.9667 3.43428C47.9671 3.52004 47.9346 3.60292 47.8769 3.66377L46.7685 4.8337C46.6543 4.95366 46.4693 4.95483 46.3534 4.83663C44.8142 3.30512 42.7712 2.45098 40.6474 2.45088C38.5235 2.45092 36.4807 3.30515 34.9413 4.83663C34.8255 4.95505 34.6394 4.95397 34.5253 4.8337L33.4179 3.66377C33.3602 3.60289 33.3276 3.52002 33.328 3.43428C33.3286 3.34852 33.3614 3.26591 33.4198 3.20577Z"
                         fill="#ffffff" />
                     <!-- Cellular Connection Icon -->
                     <path id="Cellular Connection"
@@ -864,12 +703,12 @@
             <!-- ================= HERO BANNER SECTION (Node 1:11951) ================= -->
             <div class="hero-banner-card">
 
-                <!-- Yellow Backdrop Circle (Ellipse 6032) -->
+                <!-- Yellow Backdrop Circle -->
                 <svg class="yellow-sunburst-ellipse" viewBox="0 0 214 214" fill="none">
                     <circle cx="107" cy="107" r="107" fill="#FFE600" />
                 </svg>
 
-                <!-- Node 1:42696 Nozzle Golden Ticket Vector (Conic Gradient Starburst Reflection) -->
+                <!-- Nozzle Golden Ticket Vector -->
                 <svg class="nozzle-ticket-vector" viewBox="0 0 64.7016 36.4407" fill="none"
                     xmlns="http://www.w3.org/2000/svg">
                     <g clip-path="url(#nozzleTicketClip)">
@@ -892,7 +731,7 @@
                     </defs>
                 </svg>
 
-                <!-- 3D Scanner Gun Vector (Group 2085663159 / Node 1:11965) -->
+                <!-- 3D Scanner Gun Vector -->
                 <svg class="scanner-gun-vector" viewBox="0 0 160 146.534" fill="none">
                     <g id="Group 2085663159">
                         <path id="Rectangle 39439"
@@ -931,7 +770,7 @@
                     </g>
                 </svg>
 
-                <!-- Golden Ticket 1 (Top Right Small) -->
+                <!-- Golden Ticket 1 -->
                 <svg class="ticket-small" viewBox="0 0 89.177 84.1628" fill="none">
                     <g clip-path="url(#ticketSmallClip)">
                         <g transform="matrix(-0.0002 0.05 -0.05 -0.0002 44.5 42)">
@@ -950,7 +789,7 @@
                     </defs>
                 </svg>
 
-                <!-- Golden Ticket 2 (Mid Right) -->
+                <!-- Golden Ticket 2 -->
                 <svg class="ticket-mid" viewBox="0 0 89.177 84.1628" fill="none">
                     <g clip-path="url(#ticketMidClip)">
                         <g transform="matrix(-0.0002 0.05 -0.05 -0.0002 44.5 42)">
@@ -969,7 +808,7 @@
                     </defs>
                 </svg>
 
-                <!-- Golden Ticket 3 Node 1:42649 & 1:42691 (Group 2085663556 / Subtract - Bottom Right Large Conic Gradient) -->
+                <!-- Golden Ticket 3 -->
                 <svg class="ticket-large" viewBox="0 0 151.793 143.725" fill="none">
                     <g clip-path="url(#ticketLargeClip)">
                         <g transform="matrix(-0.000370421 0.0927577 -0.094087 -0.000365188 76.2587 77.9251)">
@@ -999,13 +838,13 @@
                 <!-- Sparkle Vectors -->
                 <svg class="sparkle-node-1-42670" viewBox="0 0 15.9995 20.7768" fill="none">
                     <path
-                        d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.53475 17.7761C7.37678 16.0478 6.77548 14.4388 5.82767 13.2082C4.87986 11.9776 3.64071 11.1971 2.30975 10.9923L0.18975 10.665C-0.06325 10.626 -0.06325 10.1508 0.18975 10.1118L2.31075 9.78456C3.64168 9.57942 4.88072 8.79858 5.82835 7.56776C6.77597 6.33695 7.37703 4.7278 7.53475 2.99942L7.78675 0.246408Z"
+                        d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.78675 20.5304Z"
                         fill="white" />
                 </svg>
 
                 <svg class="sparkle-node-1-42695" viewBox="0 0 15.9995 20.7768" fill="none">
                     <path
-                        d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.53475 17.7761C7.37678 16.0478 6.77548 14.4388 5.82767 13.2082C4.87986 11.9776 3.64071 11.1971 2.30975 10.9923L0.18975 10.665C-0.06325 10.626 -0.06325 10.1508 0.18975 10.1118L2.31075 9.78456C3.64168 9.57942 4.88072 8.79858 5.82835 7.56776C6.77597 6.33695 7.37703 4.7278 7.53475 2.99942L7.78675 0.246408Z"
+                        d="M7.78675 0.246408C7.81675 -0.0821359 8.18275 -0.0821359 8.21275 0.246408L8.46475 3.00072C8.62267 4.72886 9.22383 6.33772 10.1714 7.56827C11.119 8.79883 12.358 9.57948 13.6888 9.78456L15.8098 10.1118C16.0628 10.1508 16.0628 10.626 15.8098 10.665L13.6888 10.9923C12.358 11.1973 11.119 11.978 10.1714 13.2085C9.22383 14.4391 8.62267 16.048 8.46475 17.7761L8.21275 20.5304C8.18275 20.8589 7.81675 20.8589 7.78675 20.5304L7.78675 20.5304Z"
                         fill="white" />
                 </svg>
 
@@ -1028,7 +867,7 @@
                 </div>
 
                 <!-- Top Header User Profile -->
-                <div class="figma-header-user" onclick="window.location.href='scanwin-aaccount.html'" style="cursor: pointer;">
+                <div class="figma-header-user">
                     <span class="user-name-text">Andhika M..</span>
                     <div class="user-circle-icon">
                         <i class="fas fa-user"></i>
@@ -1046,16 +885,14 @@
                 </div>
 
                 <!-- Action Button -->
-                <button class="figma-btn-claim" onclick="window.location.href='scanwin-klaim-page.html'">
+                <button class="figma-btn-claim">
                     <span class="figma-btn-claim-text">Klaim ScanWin</span>
                 </button>
 
             </div>
 
 
-            <!-- ================= PROGRAM LIST & SALDO SECTION (Figma Node 1:12009) ================= -->
-
-            <!-- Red Total Saldo Bar (Node 1:12010) -->
+            <!-- ================= PROGRAM LIST & SALDO SECTION ================= -->
             <div class="saldo-bar-container">
                 <div class="saldo-bar-content">
                     <div>
@@ -1068,53 +905,25 @@
                 </div>
             </div>
 
-            <!-- Program Section (Node 1:12016) -->
+            <!-- Program Section -->
             <div class="program-section-wrapper">
-
-                <!-- Section Header Title (Node 1:12018) -->
                 <div class="program-section-title">
                     Jelajah Berbagai Program
                 </div>
 
-                <!-- Tabs: Brand / Toko Bangunan (Node 1:12019) -->
                 <div class="program-tabs">
                     <div class="tab-item active">Brand</div>
-                    <div class="tab-item inactive">Toko Bangunan</div>
+                    <div class="tab-item">Toko Bangunan</div>
                     <div class="tab-indicator"></div>
                 </div>
 
-                <!-- Promo Banner Carousel (Node 1:12024) -->
                 <div class="carousel-container">
-                    <!-- Ribbon Badge 2 Hari Lagi! (Node 1:12031) -->
-                    <div class="badge-ribbon-container">
-                        <div class="badge-ribbon">
-                            2 Hari Lagi!
-                            <div class="badge-ribbon-triangle"></div>
-                        </div>
-                    </div>
-
-                    <div class="promo-banner-card" data-node-id="1:12025"
-                        data-name="WhatsApp Image 2025-07-29 at 16.31.24 1">
-                        <!-- Localhost Figma Asset Image (Node 1:12025) / High Fidelity Fallback -->
+                    <div class="promo-banner-card">
                         <img src="http://localhost:3845/assets/1b95fb55962bece1c4ed19729267159ed6f36061.png"
-                            alt="WhatsApp Image TR-30 Tiga Roda (Node 1:12025)"
-                            style="width: 100%; height: 114%; object-fit: cover; position: absolute; top: 0; left: 0;"
-                            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-
-                        <div class="promo-banner-fallback" style="display: none;">
-                            <div class="promo-left-text">
-                                <div class="promo-brand-badge">
-                                    <div class="promo-brand-logo">TR</div>
-                                    <span style="font-weight:800; font-size:12px; color:#fff;">Tiga Roda</span>
-                                </div>
-                                <div class="promo-headline-text">Beli 3 Sak Acian Putih TR-30 Tiga Roda</div>
-                                <div class="promo-sub-text">Langsung Dapat 1 Voucher sCAN WIN</div>
-                            </div>
-                            <div class="promo-right-image"></div>
-                        </div>
+                            alt="WhatsApp Image TR-30 Tiga Roda"
+                            onerror="this.src='https://images.unsplash.com/photo-1589939705384-5185137a7f0f?auto=format&fit=crop&w=350&q=80';">
                     </div>
 
-                    <!-- Carousel Dots Indicator (Node 1:12026) -->
                     <div class="carousel-dots">
                         <div class="dot active"></div>
                         <div class="dot"></div>
@@ -1122,120 +931,135 @@
                         <div class="dot"></div>
                     </div>
                 </div>
-
-                <!-- 2-Column Program Cards Grid (Node 1:12035) -->
-                <div class="program-cards-grid">
-
-                    <!-- Card Row 1 - Item 1 (Node 1:12038) -->
-                    <div class="program-card">
-                        <!-- Ribbon Badge (Node 1:12058) -->
-                        <div class="card-badge-ribbon">
-                            <div class="badge-ribbon">
-                                2 Hari Lagi!
-                                <div class="badge-ribbon-triangle"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-brand-fallback">
-                            <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
-                                alt="GRC Board" class="card-brand-logo-img"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="card-brand-fallback">
-                                <div class="card-brand-icon">GRC</div>
-                                <span>GRC board</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-title">GRC Board</div>
-                            <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
-                        </div>
-                        <div class="card-dashed-line"></div>
-                        <div>
-                            <div class="card-reward-label">Hadiah hingga</div>
-                            <div class="card-reward-amount">Rp 1,000,000</div>
-                        </div>
-                    </div>
-
-                    <!-- Card Row 1 - Item 2 (Node 1:12048) -->
-                    <div class="program-card">
-                        <div class="card-brand-fallback">
-                            <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
-                                alt="GRC Board" class="card-brand-logo-img"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="card-brand-fallback">
-                                <div class="card-brand-icon">GRC</div>
-                                <span>GRC board</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-title">GRC Board</div>
-                            <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
-                        </div>
-                        <div class="card-dashed-line"></div>
-                        <div>
-                            <div class="card-reward-label">Hadiah hingga</div>
-                            <div class="card-reward-amount">Rp 1,000,000</div>
-                        </div>
-                    </div>
-
-                    <!-- Card Row 2 - Item 1 (Node 1:12064) -->
-                    <div class="program-card">
-                        <!-- Ribbon Badge (Node 1:12084) -->
-                        <div class="card-badge-ribbon">
-                            <div class="badge-ribbon">
-                                2 Hari Lagi!
-                                <div class="badge-ribbon-triangle"></div>
-                            </div>
-                        </div>
-
-                        <div class="card-brand-fallback">
-                            <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
-                                alt="GRC Board" class="card-brand-logo-img"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="card-brand-fallback">
-                                <div class="card-brand-icon">GRC</div>
-                                <span>GRC board</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-title">GRC Board</div>
-                            <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
-                        </div>
-                        <div class="card-dashed-line"></div>
-                        <div>
-                            <div class="card-reward-label">Hadiah hingga</div>
-                            <div class="card-reward-amount">Rp 1,000,000</div>
-                        </div>
-                    </div>
-
-                    <!-- Card Row 2 - Item 2 (Node 1:12074) -->
-                    <div class="program-card">
-                        <div class="card-brand-fallback">
-                            <img src="http://localhost:3845/assets/109e68379af2e7a59773562d0498f078542798ff.png"
-                                alt="GRC Board" class="card-brand-logo-img"
-                                onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
-                            <div style="display:none;" class="card-brand-fallback">
-                                <div class="card-brand-icon">GRC</div>
-                                <span>GRC board</span>
-                            </div>
-                        </div>
-                        <div>
-                            <div class="card-title">GRC Board</div>
-                            <div class="card-description">Belanja papan semen 3 lembar dapat 1 voucher scanwin!</div>
-                        </div>
-                        <div class="card-dashed-line"></div>
-                        <div>
-                            <div class="card-reward-label">Hadiah hingga</div>
-                            <div class="card-reward-amount">Rp 1,000,000</div>
-                        </div>
-                    </div>
-
-                </div>
-
             </div>
+
+            <!-- ================= BACKDROP OVERLAY & BOTTOM SHEET DIALOG (Figma Node 1:42027 / 1:42045) ================= -->
+            <div class="backdrop-overlay" id="account-overlay">
+                <div class="bottom-sheet" data-node-id="1:42045">
+                    <!-- User Profile Header Section (Node 1:42046) -->
+                    <div class="sheet-header" data-node-id="1:42046">
+                        <div class="profile-container" data-node-id="1:42047">
+                            <!-- Profile Avatar placeholder circle size 70px (Node 1:42048) -->
+                            <div class="profile-avatar" data-node-id="1:42048">
+                                <svg width="42" height="42" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path fill-rule="evenodd" clip-rule="evenodd"
+                                        d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM12 6C13.93 6 15.5 7.57 15.5 9.5C15.5 11.43 13.93 13 12 13C10.07 13 8.5 11.43 8.5 9.5C8.5 7.57 10.07 6 12 6ZM12 20C9.08 20 6.55 18.51 5.1 16.27C5.14 13.94 9.7 12.65 12 12.65C14.29 12.65 18.85 13.94 18.9 16.27C17.45 18.51 14.92 20 12 20Z"
+                                        fill="#FFFFFF" />
+                                </svg>
+                            </div>
+                            <div class="profile-info" data-node-id="1:42049">
+                                <div class="profile-name" data-node-id="1:42050">Andhika Mulyana</div>
+                                <div class="profile-phone" data-node-id="1:42051">0812-1922-1223</div>
+                            </div>
+                        </div>
+                        <!-- Close button in #f5f5f5 background-color rounded-circle (Node 1:42052) -->
+                        <button class="close-btn-circle" data-node-id="1:42052"
+                            onclick="window.location.href='scanwin-homepage.html'">
+                            <svg width="10" height="10" viewBox="0 0 24 24" fill="none"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M18 6L6 18M6 6L18 18" stroke="#757575" stroke-width="2.5"
+                                    stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Action Menu Card (Node 1:42054) -->
+                    <div class="menu-list-card" data-node-id="1:42054">
+                        <!-- Kelola PIN sCanWin Action Row -->
+                        <button class="menu-item" style="color: #0A0A0A;" onclick="if(window.parent) { window.parent.postMessage('startPinRegistration', '*'); } else { window.location.href='../Prototype/scanwin-fraud%20-detection-engine/scanwin-fde-customer-registrasi-ubah-reset-pin.html'; }">
+                            <div class="menu-icon" style="display: flex; align-items: center; justify-content: center; width: 24px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 15C13.657 15 15 13.657 15 12C15 10.343 13.657 9 12 9C10.343 9 9 10.343 9 12C9 13.657 10.343 15 12 15Z" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                    <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2Z" stroke="#0A0A0A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                            <span class="menu-label" style="display: flex; align-items: center; justify-content: space-between; width: 100%;">
+                                <span>Kelola PIN sCanWin</span>
+                                <span id="pin-status-badge" style="font-size: 10px; font-weight: 700; padding: 2px 8px; border-radius: 12px; margin-right: 8px;">Belum Aktif</span>
+                            </span>
+                            <div style="display: flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 9L5 5L1 1" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </div>
+                        </button>
+
+                        <!-- Log Out Action Row (Node 1:42055) -->
+                        <button class="menu-item logout-color" data-node-id="1:42055"
+                            onclick="alert('Anda telah keluar dari aplikasi.'); window.location.href='scanwin-homepage.html';">
+                            <div class="menu-icon" data-node-id="1:42056"
+                                style="display: flex; align-items: center; justify-content: center; width: 24px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path
+                                        d="M17 16L21 12M21 12L17 8M21 12H9M13 16V17C13 18.6569 11.6569 20 10 20H6C4.34315 20 3 18.6569 3 17V7C3 5.34315 4.34315 4 6 4H10C11.6569 4 13 5.34315 13 7V8"
+                                        stroke="#0A0A0A" stroke-width="2" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <span class="menu-label" data-node-id="1:42057">Log Out</span>
+                            <div data-node-id="1:42058"
+                                style="display: flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 9L5 5L1 1" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </button>
+
+                        <!-- Hapus Akun Action Row (Node 1:42059) -->
+                        <button class="menu-item danger-color" data-node-id="1:42059"
+                            onclick="if(confirm('Apakah Anda yakin ingin menghapus akun Anda secara permanen? Tindakan ini tidak dapat dibatalkan.')) { alert('Akun berhasil dihapus.'); window.location.href='scanwin-homepage.html'; }">
+                            <div class="menu-icon" data-node-id="1:42060"
+                                style="display: flex; align-items: center; justify-content: center; width: 24px;">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M18 6L6 18M6 6L18 18" stroke="#FF0101" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                            <span class="menu-label" data-node-id="1:42061">Hapus Akun</span>
+                            <div data-node-id="1:42062"
+                                style="display: flex; align-items: center; justify-content: center; width: 20px; height: 20px;">
+                                <svg width="6" height="10" viewBox="0 0 6 10" fill="none"
+                                    xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M1 9L5 5L1 1" stroke="#9E9E9E" stroke-width="1.5" stroke-linecap="round"
+                                        stroke-linejoin="round" />
+                                </svg>
+                            </div>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
-    </div>
-
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+        const status = localStorage.getItem('scanwin_pin_status') || 'unregistered';
+        const badge = document.getElementById('pin-status-badge');
+        if (badge) {
+          if (status === 'active') {
+            badge.className = 'pin-status-badge status-active';
+            badge.innerText = 'Aktif';
+            badge.style.background = '#e8f5e9';
+            badge.style.color = '#2e7d32';
+          } else if (status === 'blocked') {
+            badge.className = 'pin-status-badge status-blocked';
+            badge.innerText = 'Diblokir';
+            badge.style.background = '#ffebee';
+            badge.style.color = '#c62828';
+          } else {
+            badge.className = 'pin-status-badge status-unregistered';
+            badge.innerText = 'Belum Aktif';
+            badge.style.background = '#fff3e0';
+            badge.style.color = '#ef6c00';
+          }
+        }
+      });
+    </script>
 </body>
+
 </html>
