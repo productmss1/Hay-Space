@@ -628,7 +628,7 @@
 
             <!-- Real customer-homepage.html loaded directly inside simulator! -->
             <iframe id="homepage-frame" class="homepage-iframe"
-              src="../../Design sample/scanwin-homepage.html"></iframe>
+              src="scanwin-homepage.html"></iframe>
 
             <!-- SIMULATED WHATSAPP NOTIFICATION TOAST -->
             <div id="wa-notification" style="position: absolute; top: 12px; left: 12px; right: 12px; background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); border-radius: 12px; padding: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); display: none; align-items: flex-start; gap: 10px; z-index: 999; animation: slideDownNotify 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);">
@@ -1136,9 +1136,9 @@
       const frame = document.getElementById('homepage-frame');
       if (frame) {
         if (isPinRegistered || localStorage.getItem('scanwin_pin_status') === 'active') {
-          frame.src = "../../Design sample/scanwin-aaccount.html";
+          frame.src = "scanwin-aaccount.html";
         } else {
-          frame.src = "../../Design sample/scanwin-homepage.html";
+          frame.src = "scanwin-homepage.html";
         }
       }
       navigateTo('screen-account');
