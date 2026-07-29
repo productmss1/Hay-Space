@@ -141,6 +141,8 @@
     else if (path.includes('direct-scan')) activeKey = 'direct';
     else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
     else if (path.includes('klaim-mandiri') || path.includes('klaim')) activeKey = 'klaim';
+    else if (path.includes('validasi-pencairan-ewallet')) activeKey = 'validasi-ewallet';
+    else if (path.includes('monitoring-penarikan-ewallet') || path.includes('dashboard-monitoring')) activeKey = 'monitoring-ewallet';
     else if (path.includes('flowchart')) activeKey = 'flowchart';
 
     const isHub = (activeKey === 'hub');
@@ -198,6 +200,10 @@
         <a href="scanwin-fde-validasi-pencairan-ewallet.html" class="portal-menu-item ${activeKey === 'validasi-ewallet' ? 'active' : ''}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
           <span>9. Validasi Pencairan E-Wallet</span>
+        </a>
+        <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-ewallet' ? 'active' : ''}" style="${activeKey === 'monitoring-ewallet' ? '' : 'color: #c7d2fe;'}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
+          <span>10. Monitoring Pencairan (Admin) ↗</span>
         </a>
       </div>
 

@@ -1,0 +1,476 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="350 150 3030 1500" width="3030" height="1500">
+<defs>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&amp;display=swap');
+        text {
+            font-family: 'Inter', sans-serif;
+            font-size: 11px;
+            font-weight: 700;
+            fill: #1e293b;
+        }
+        .sec-label-txt {
+            font-size: 11px;
+            font-weight: 800;
+            fill: #ffffff;
+        }
+        .conn-path {
+            fill: none;
+            stroke: #94a3b8;
+            stroke-width: 2.5;
+        }
+        .conn-lbl-txt {
+            font-size: 10px;
+            font-weight: 800;
+        }
+        .lbl-yes { fill: #059669; }
+        .lbl-no { fill: #dc2626; }
+    </style>
+    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
+    </marker>
+</defs>
+<!-- Section: Register PIN Mitra1000s -->
+<rect x="450" y="250" width="2830" height="600" rx="20" ry="20" fill="rgba(241, 245, 249, 0.4)" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
+<rect x="470" y="238" width="185" height="24" rx="8" fill="#8b5cf6" />
+<text x="482" y="254" class="sec-label-txt" dominant-baseline="middle">Register PIN Mitra1000s</text>
+<!-- Section: Ubah PIN Mitra1000s -->
+<rect x="450" y="950" width="2830" height="600" rx="20" ry="20" fill="rgba(241, 245, 249, 0.4)" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
+<rect x="470" y="938" width="157" height="24" rx="8" fill="#0b57d0" />
+<text x="482" y="954" class="sec-label-txt" dominant-baseline="middle">Ubah PIN Mitra1000s</text>
+<!-- Connection: n1-start -> n1-akun -->
+<g id="conn-n1-start-n1-akun">
+  <path d="M 585.0 475.0 L 610.0 475.0 L 612.5 475.0 L 612.5 475.0 L 615 475.0 L 640 475.0 M 630 469.0 L 640 475.0 L 630 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-akun -> n1-click -->
+<g id="conn-n1-akun-n1-click">
+  <path d="M 810 475.0 L 835 475.0 L 835.0 475.0 L 835.0 475.0 L 835 475.0 L 860 475.0 M 850 469.0 L 860 475.0 L 850 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-click -> n1-form1 -->
+<g id="conn-n1-click-n1-form1">
+  <path d="M 1030 475.0 L 1055 475.0 L 1055.0 475.0 L 1055.0 475.0 L 1055 475.0 L 1080 475.0 M 1070 469.0 L 1080 475.0 L 1070 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-form1 -> n1-input1 -->
+<g id="conn-n1-form1-n1-input1">
+  <path d="M 1250 475.0 L 1275 475.0 L 1275.0 475.0 L 1275.0 475.0 L 1275 475.0 L 1300 475.0 M 1290 469.0 L 1300 475.0 L 1290 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-input1 -> n1-valid-format -->
+<g id="conn-n1-input1-n1-valid-format">
+  <path d="M 1470 475.0 L 1495 475.0 L 1498.60912703474 475.0 L 1498.60912703474 475.0 L 1502.2182540694798 475.0 L 1527.2182540694798 475.0 M 1517.2182540694798 469.0 L 1527.2182540694798 475.0 L 1517.2182540694798 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-valid-format -> n1-form2 -->
+<g id="conn-n1-valid-format-n1-form2">
+  <path d="M 1682.7817459305202 475.0 L 1707.7817459305202 475.0 L 1731.39087296526 475.0 L 1731.39087296526 475.0 L 1755 475.0 L 1780 475.0 M 1770 469.0 L 1780 475.0 L 1770 481.0" class="conn-path" />
+  <rect x="1692.39087296526" y="465.0" width="78" height="20" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1" />
+  <text x="1731.39087296526" y="476.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-yes">Valid (Ya)</text>
+</g>
+<!-- Connection: n1-valid-format -> n1-error-format -->
+<g id="conn-n1-valid-format-n1-error-format">
+  <path d="M 1605.0 552.7817459305202 L 1605.0 577.7817459305202 L 1605.0 586.3908729652601 L 1605.0 586.3908729652601 L 1605.0 595 L 1605.0 620 M 1599.0 610 L 1605.0 620 L 1611.0 610" class="conn-path" />
+  <rect x="1551.0" y="576.3908729652601" width="108" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="1605.0" y="587.3908729652601" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Invalid (Tidak)</text>
+</g>
+<!-- Connection: n1-error-format -> n1-form1 -->
+<g id="conn-n1-error-format-n1-form1">
+  <path d="M 1605.0 670 L 1605.0 720 L 1165 720 L 1165 500 M 1159.0 510 L 1165.0 500 L 1171.0 510" class="conn-path" />
+</g>
+<!-- Connection: n1-form2 -> n1-input2 -->
+<g id="conn-n1-form2-n1-input2">
+  <path d="M 1950 475.0 L 1975 475.0 L 1975.0 475.0 L 1975.0 475.0 L 1975 475.0 L 2000 475.0 M 1990 469.0 L 2000 475.0 L 1990 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-input2 -> n1-match -->
+<g id="conn-n1-input2-n1-match">
+  <path d="M 2170 475.0 L 2195 475.0 L 2198.6091270347397 475.0 L 2198.6091270347397 475.0 L 2202.21825406948 475.0 L 2227.21825406948 475.0 M 2217.21825406948 469.0 L 2227.21825406948 475.0 L 2217.21825406948 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-match -> n1-save -->
+<g id="conn-n1-match-n1-save">
+  <path d="M 2382.78174593052 475.0 L 2407.78174593052 475.0 L 2431.3908729652603 475.0 L 2431.3908729652603 475.0 L 2455 475.0 L 2480 475.0 M 2470 469.0 L 2480 475.0 L 2470 481.0" class="conn-path" />
+  <rect x="2392.3908729652603" y="465.0" width="78" height="20" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1" />
+  <text x="2431.3908729652603" y="476.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-yes">Cocok (Ya)</text>
+</g>
+<!-- Connection: n1-match -> n1-error-match -->
+<g id="conn-n1-match-n1-error-match">
+  <path d="M 2305.0 552.7817459305202 L 2305.0 577.7817459305202 L 2305.0 586.3908729652601 L 2305.0 586.3908729652601 L 2305.0 595 L 2305.0 620 M 2299.0 610 L 2305.0 620 L 2311.0 610" class="conn-path" />
+  <rect x="2257.0" y="576.3908729652601" width="96" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="2305.0" y="587.3908729652601" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Salah (Tidak)</text>
+</g>
+<!-- Connection: n1-error-match -> n1-clear-match -->
+<g id="conn-n1-error-match-n1-clear-match">
+  <path d="M 2220 645.0 L 2195 645.0 L 2195.0 645.0 L 2195.0 645.0 L 2195 645.0 L 2170 645.0 M 2180 639.0 L 2170 645.0 L 2180 651.0" class="conn-path" />
+</g>
+<!-- Connection: n1-clear-match -> n1-form1 -->
+<g id="conn-n1-clear-match-n1-form1">
+  <path d="M 2085.0 670 L 2085.0 790 L 1120 790 L 1120 500 M 1159.0 510 L 1165.0 500 L 1171.0 510" class="conn-path" />
+</g>
+<!-- Connection: n1-save -> n1-success -->
+<g id="conn-n1-save-n1-success">
+  <path d="M 2650 475.0 L 2675 475.0 L 2675.0 475.0 L 2675.0 475.0 L 2675 475.0 L 2700 475.0 M 2690 469.0 L 2700 475.0 L 2690 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-success -> n1-scanwin -->
+<g id="conn-n1-success-n1-scanwin">
+  <path d="M 2870 475.0 L 2895 475.0 L 2895.0 475.0 L 2895.0 475.0 L 2895 475.0 L 2920 475.0 M 2910 469.0 L 2920 475.0 L 2910 481.0" class="conn-path" />
+</g>
+<!-- Connection: n1-scanwin -> n1-end -->
+<g id="conn-n1-scanwin-n1-end">
+  <path d="M 3090 475.0 L 3115 475.0 L 3100.0 475.0 L 3100.0 475.0 L 3085.0 475.0 L 3110.0 475.0 M 3100.0 469.0 L 3110.0 475.0 L 3100.0 481.0" class="conn-path" />
+</g>
+<!-- Connection: n2-start -> n2-akun -->
+<g id="conn-n2-start-n2-akun">
+  <path d="M 585.0 1125.0 L 610.0 1125.0 L 612.5 1125.0 L 612.5 1125.0 L 615 1125.0 L 640 1125.0 M 630 1119.0 L 640 1125.0 L 630 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-akun -> n2-click -->
+<g id="conn-n2-akun-n2-click">
+  <path d="M 810 1125.0 L 835 1125.0 L 835.0 1125.0 L 835.0 1125.0 L 835 1125.0 L 860 1125.0 M 850 1119.0 L 860 1125.0 L 850 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-click -> n2-old-pin -->
+<g id="conn-n2-click-n2-old-pin">
+  <path d="M 1030 1125.0 L 1055 1125.0 L 1055.0 1125.0 L 1055.0 1125.0 L 1055 1125.0 L 1080 1125.0 M 1070 1119.0 L 1080 1125.0 L 1070 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-old-pin -> n2-valid-old -->
+<g id="conn-n2-old-pin-n2-valid-old">
+  <path d="M 1250 1125.0 L 1275 1125.0 L 1263.60912703474 1125.0 L 1263.60912703474 1125.0 L 1252.2182540694798 1125.0 L 1277.2182540694798 1125.0 M 1267.2182540694798 1119.0 L 1277.2182540694798 1125.0 L 1267.2182540694798 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-valid-old -> n2-input1 -->
+<g id="conn-n2-valid-old-n2-input1">
+  <path d="M 1432.7817459305202 1125.0 L 1457.7817459305202 1125.0 L 1491.39087296526 1125.0 L 1491.39087296526 1125.0 L 1525 1125.0 L 1550 1125.0 M 1540 1119.0 L 1550 1125.0 L 1540 1131.0" class="conn-path" />
+  <rect x="1452.39087296526" y="1115.0" width="78" height="20" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1" />
+  <text x="1491.39087296526" y="1126.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-yes">Benar (Ya)</text>
+</g>
+<!-- Connection: n2-valid-old -> n2-old-error -->
+<g id="conn-n2-valid-old-n2-old-error">
+  <path d="M 1277.2182540694798 1125.0 L 1252.2182540694798 1125.0 L 1165.0 1125.0 L 1165.0 1275 L 1165.0 1300 M 1159.0 1290 L 1165.0 1300 L 1171.0 1290" class="conn-path" />
+  <rect x="1120.0" y="1115.0" width="90" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="1165.0" y="1126.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Salah (&lt; 3x)</text>
+</g>
+<!-- Connection: n2-old-error -> n2-old-pin -->
+<g id="conn-n2-old-error-n2-old-pin">
+  <path d="M 1165.0 1300 L 1165.0 1275 L 1165.0 1225.0 L 1165.0 1225.0 L 1165.0 1175 L 1165.0 1150 M 1159.0 1160 L 1165.0 1150 L 1171.0 1160" class="conn-path" />
+</g>
+<!-- Connection: n2-valid-old -> n2-old-block -->
+<g id="conn-n2-valid-old-n2-old-block">
+  <path d="M 1355.0 1202.7817459305202 L 1355.0 1227.7817459305202 L 1355.0 1251.39087296526 L 1385.0 1251.39087296526 L 1385.0 1275 L 1385.0 1300 M 1379.0 1290 L 1385.0 1300 L 1391.0 1290" class="conn-path" />
+  <rect x="1322.0" y="1241.39087296526" width="96" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="1370.0" y="1252.39087296526" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Salah (&gt;= 3x)</text>
+</g>
+<!-- Connection: n2-old-block -> n2-otp-screen -->
+<g id="conn-n2-old-block-n2-otp-screen">
+  <path d="M 1470 1325.0 L 1495 1325.0 L 1495.0 1325.0 L 1495.0 1325.0 L 1495 1325.0 L 1520 1325.0 M 1510 1319.0 L 1520 1325.0 L 1510 1331.0" class="conn-path" />
+</g>
+<!-- Connection: n2-input1 -> n2-valid-format -->
+<g id="conn-n2-input1-n2-valid-format">
+  <path d="M 1720 1125.0 L 1745 1125.0 L 1738.60912703474 1125.0 L 1738.60912703474 1125.0 L 1732.2182540694798 1125.0 L 1757.2182540694798 1125.0 M 1747.2182540694798 1119.0 L 1757.2182540694798 1125.0 L 1747.2182540694798 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-valid-format -> n2-input2 -->
+<g id="conn-n2-valid-format-n2-input2">
+  <path d="M 1912.7817459305202 1125.0 L 1937.7817459305202 1125.0 L 1956.39087296526 1125.0 L 1956.39087296526 1125.0 L 1975 1125.0 L 2000 1125.0 M 1990 1119.0 L 2000 1125.0 L 1990 1131.0" class="conn-path" />
+  <rect x="1917.39087296526" y="1115.0" width="78" height="20" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1" />
+  <text x="1956.39087296526" y="1126.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-yes">Valid (Ya)</text>
+</g>
+<!-- Connection: n2-valid-format -> n2-error-format -->
+<g id="conn-n2-valid-format-n2-error-format">
+  <path d="M 1835.0 1202.7817459305202 L 1835.0 1227.7817459305202 L 1835.0 1251.39087296526 L 1865.0 1251.39087296526 L 1865.0 1275 L 1865.0 1300 M 1859.0 1290 L 1865.0 1300 L 1871.0 1290" class="conn-path" />
+  <rect x="1796.0" y="1241.39087296526" width="108" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="1850.0" y="1252.39087296526" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Invalid (Tidak)</text>
+</g>
+<!-- Connection: n2-error-format -> n2-input1 -->
+<g id="conn-n2-error-format-n2-input1">
+  <path d="M 1780 1325.0 L 1780 1410 L 1635 1410 L 1635 1150 M 1629.0 1160 L 1635.0 1150 L 1641.0 1160" class="conn-path" />
+</g>
+<!-- Connection: n2-input2 -> n2-match -->
+<g id="conn-n2-input2-n2-match">
+  <path d="M 2170 1125.0 L 2195 1125.0 L 2183.6091270347397 1125.0 L 2183.6091270347397 1125.0 L 2172.21825406948 1125.0 L 2197.21825406948 1125.0 M 2187.21825406948 1119.0 L 2197.21825406948 1125.0 L 2187.21825406948 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-match -> n2-save -->
+<g id="conn-n2-match-n2-save">
+  <path d="M 2352.78174593052 1125.0 L 2377.78174593052 1125.0 L 2401.3908729652603 1125.0 L 2401.3908729652603 1125.0 L 2425 1125.0 L 2450 1125.0 M 2440 1119.0 L 2450 1125.0 L 2440 1131.0" class="conn-path" />
+  <rect x="2362.3908729652603" y="1115.0" width="78" height="20" rx="6" fill="#ffffff" stroke="#10b981" stroke-width="1" />
+  <text x="2401.3908729652603" y="1126.0" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-yes">Cocok (Ya)</text>
+</g>
+<!-- Connection: n2-match -> n2-error-match -->
+<g id="conn-n2-match-n2-error-match">
+  <path d="M 2275.0 1202.7817459305202 L 2275.0 1227.7817459305202 L 2275.0 1251.39087296526 L 2305.0 1251.39087296526 L 2305.0 1275 L 2305.0 1300 M 2299.0 1290 L 2305.0 1300 L 2311.0 1290" class="conn-path" />
+  <rect x="2242.0" y="1241.39087296526" width="96" height="20" rx="6" fill="#ffffff" stroke="#ef4444" stroke-width="1" />
+  <text x="2290.0" y="1252.39087296526" text-anchor="middle" dominant-baseline="middle" class="conn-lbl-txt lbl-no">Salah (Tidak)</text>
+</g>
+<!-- Connection: n2-error-match -> n2-clear-match -->
+<g id="conn-n2-error-match-n2-clear-match">
+  <path d="M 2220 1325.0 L 2195 1325.0 L 2195.0 1325.0 L 2195.0 1325.0 L 2195 1325.0 L 2170 1325.0 M 2180 1319.0 L 2170 1325.0 L 2180 1331.0" class="conn-path" />
+</g>
+<!-- Connection: n2-clear-match -> n2-input1 -->
+<g id="conn-n2-clear-match-n2-input1">
+  <path d="M 2085.0 1350 L 2085.0 1450 L 1590 1450 L 1590 1150 M 1629.0 1160 L 1635.0 1150 L 1641.0 1160" class="conn-path" />
+</g>
+<!-- Connection: n2-save -> n2-success -->
+<g id="conn-n2-save-n2-success">
+  <path d="M 2620 1125.0 L 2645 1125.0 L 2645.0 1125.0 L 2645.0 1125.0 L 2645 1125.0 L 2670 1125.0 M 2660 1119.0 L 2670 1125.0 L 2660 1131.0" class="conn-path" />
+</g>
+<!-- Connection: n2-success -> n2-end -->
+<g id="conn-n2-success-n2-end">
+  <path d="M 2840 1125.0 L 2865 1125.0 L 2865.0 1125.0 L 2865.0 1125.0 L 2865.0 1125.0 L 2890.0 1125.0 M 2880.0 1119.0 L 2890.0 1125.0 L 2880.0 1131.0" class="conn-path" />
+</g>
+<!-- Node: n1-start -->
+<g id="n1-start-group">
+  <circle cx="540.0" cy="475.0" r="45.0" fill="#dcfce7" stroke="#22c55e" stroke-width="2" />
+  <text x="540.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#166534">Start</text>
+</g>
+<!-- Node: n1-akun -->
+<g id="n1-akun-group">
+  <rect x="640" y="450" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="725.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="725.0" dy="-7">Halaman Akun</tspan>
+    <tspan x="725.0" dy="14">Mitra1000s</tspan>
+  </text>
+</g>
+<!-- Node: n1-click -->
+<g id="n1-click-group">
+  <rect x="860" y="450" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="945.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="945.0" dy="-7">Klik &quot;Kelola PIN</tspan>
+    <tspan x="945.0" dy="14">Mitra1000s&quot;</tspan>
+  </text>
+</g>
+<!-- Node: n1-form1 -->
+<g id="n1-form1-group">
+  <rect x="1080" y="450" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1165.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1165.0" dy="-7">Tampilkan Form</tspan>
+    <tspan x="1165.0" dy="14">PIN Langkah 1</tspan>
+  </text>
+</g>
+<!-- Node: n1-input1 -->
+<g id="n1-input1-group">
+  <rect x="1300" y="450" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="1385.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="1385.0" dy="-7">Masukkan PIN Baru</tspan>
+    <tspan x="1385.0" dy="14">(6-digit)</tspan>
+  </text>
+</g>
+<!-- Node: n1-valid-format -->
+<g id="n1-valid-format-group">
+  <polygon points="1605.0,397.21825406947977 1682.7817459305202,475.0 1605.0,552.7817459305202 1527.2182540694798,475.0" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />
+  <text x="1605.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#9a3412">
+    <tspan x="1605.0" dy="-7">Validasi</tspan>
+    <tspan x="1605.0" dy="14">Format PIN?</tspan>
+  </text>
+</g>
+<!-- Node: n1-error-format -->
+<g id="n1-error-format-group">
+  <rect x="1520" y="620" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1605.0" y="645.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1605.0" dy="-7">Tampilkan Error Format</tspan>
+    <tspan x="1605.0" dy="14">&amp;amp; Reset Input</tspan>
+  </text>
+</g>
+<!-- Node: n1-form2 -->
+<g id="n1-form2-group">
+  <rect x="1780" y="450" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1865.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1865.0" dy="-7">Tampilkan Form</tspan>
+    <tspan x="1865.0" dy="14">PIN Langkah 2</tspan>
+  </text>
+</g>
+<!-- Node: n1-input2 -->
+<g id="n1-input2-group">
+  <rect x="2000" y="450" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="2085.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="2085.0" dy="-7">Masukkan PIN Konfirmasi</tspan>
+    <tspan x="2085.0" dy="14">(Re-input)</tspan>
+  </text>
+</g>
+<!-- Node: n1-match -->
+<g id="n1-match-group">
+  <polygon points="2305.0,397.21825406947977 2382.78174593052,475.0 2305.0,552.7817459305202 2227.21825406948,475.0" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />
+  <text x="2305.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#9a3412">
+    <tspan x="2305.0" dy="-7">Validasi</tspan>
+    <tspan x="2305.0" dy="14">Kecocokan?</tspan>
+  </text>
+</g>
+<!-- Node: n1-error-match -->
+<g id="n1-error-match-group">
+  <rect x="2220" y="620" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2305.0" y="645.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2305.0" dy="-7">Tampilkan Error Toast &amp;amp;</tspan>
+    <tspan x="2305.0" dy="14">Getarkan Kolom (Shake)</tspan>
+  </text>
+</g>
+<!-- Node: n1-clear-match -->
+<g id="n1-clear-match-group">
+  <rect x="2000" y="620" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2085.0" y="645.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2085.0" dy="-7">Hapus Input &amp;amp; Reset</tspan>
+    <tspan x="2085.0" dy="14">Temporer (1.5s)</tspan>
+  </text>
+</g>
+<!-- Node: n1-save -->
+<g id="n1-save-group">
+  <rect x="2480" y="450" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2565.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2565.0" dy="-7">Hash PIN Baru &amp;amp;</tspan>
+    <tspan x="2565.0" dy="14">Simpan ke DB</tspan>
+  </text>
+</g>
+<!-- Node: n1-success -->
+<g id="n1-success-group">
+  <rect x="2700" y="450" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2785.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2785.0" dy="-7">Tampilkan Layar</tspan>
+    <tspan x="2785.0" dy="14">Registrasi Sukses</tspan>
+  </text>
+</g>
+<!-- Node: n1-scanwin -->
+<g id="n1-scanwin-group">
+  <rect x="2920" y="450" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="3005.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="3005.0" dy="-7">Klik &quot;Masuk</tspan>
+    <tspan x="3005.0" dy="14">ke sCanWin&quot;</tspan>
+  </text>
+</g>
+<!-- Node: n1-end -->
+<g id="n1-end-group">
+  <circle cx="3180.0" cy="475.0" r="70.0" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+  <text x="3180.0" y="475.0" text-anchor="middle" dominant-baseline="middle" fill="#991b1b">
+    <tspan x="3180.0" dy="-7">PIN Aktif &amp;amp;</tspan>
+    <tspan x="3180.0" dy="14">Dashboard sCanWin</tspan>
+  </text>
+</g>
+<!-- Node: n2-start -->
+<g id="n2-start-group">
+  <circle cx="540.0" cy="1125.0" r="45.0" fill="#dcfce7" stroke="#22c55e" stroke-width="2" />
+  <text x="540.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#166534">Start</text>
+</g>
+<!-- Node: n2-akun -->
+<g id="n2-akun-group">
+  <rect x="640" y="1100" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="725.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="725.0" dy="-7">Halaman Akun</tspan>
+    <tspan x="725.0" dy="14">Mitra1000s</tspan>
+  </text>
+</g>
+<!-- Node: n2-click -->
+<g id="n2-click-group">
+  <rect x="860" y="1100" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="945.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="945.0" dy="-7">Klik &quot;Ubah PIN</tspan>
+    <tspan x="945.0" dy="14">Mitra1000s&quot;</tspan>
+  </text>
+</g>
+<!-- Node: n2-old-pin -->
+<g id="n2-old-pin-group">
+  <rect x="1080" y="1100" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="1165.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="1165.0" dy="-7">Masukkan PIN Lama</tspan>
+    <tspan x="1165.0" dy="14">(6-digit)</tspan>
+  </text>
+</g>
+<!-- Node: n2-valid-old -->
+<g id="n2-valid-old-group">
+  <polygon points="1355.0,1047.2182540694798 1432.7817459305202,1125.0 1355.0,1202.7817459305202 1277.2182540694798,1125.0" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />
+  <text x="1355.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#9a3412">
+    <tspan x="1355.0" dy="-7">Validasi</tspan>
+    <tspan x="1355.0" dy="14">PIN Lama?</tspan>
+  </text>
+</g>
+<!-- Node: n2-old-error -->
+<g id="n2-old-error-group">
+  <rect x="1080" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1165.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1165.0" dy="-7">Tampilkan Error &amp;amp;</tspan>
+    <tspan x="1165.0" dy="14">Sisa Percobaan</tspan>
+  </text>
+</g>
+<!-- Node: n2-old-block -->
+<g id="n2-old-block-group">
+  <rect x="1300" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1385.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1385.0" dy="-7">Blokir Status PIN</tspan>
+    <tspan x="1385.0" dy="14">(Blocked)</tspan>
+  </text>
+</g>
+<!-- Node: n2-otp-screen -->
+<g id="n2-otp-screen-group">
+  <rect x="1520" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1605.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1605.0" dy="-7">Auto-Redirect ke</tspan>
+    <tspan x="1605.0" dy="14">Halaman OTP</tspan>
+  </text>
+</g>
+<!-- Node: n2-input1 -->
+<g id="n2-input1-group">
+  <rect x="1550" y="1100" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="1635.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="1635.0" dy="-7">Masukkan PIN Baru</tspan>
+    <tspan x="1635.0" dy="14">(6-digit)</tspan>
+  </text>
+</g>
+<!-- Node: n2-valid-format -->
+<g id="n2-valid-format-group">
+  <polygon points="1835.0,1047.2182540694798 1912.7817459305202,1125.0 1835.0,1202.7817459305202 1757.2182540694798,1125.0" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />
+  <text x="1835.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#9a3412">
+    <tspan x="1835.0" dy="-7">Validasi</tspan>
+    <tspan x="1835.0" dy="14">Format PIN?</tspan>
+  </text>
+</g>
+<!-- Node: n2-error-format -->
+<g id="n2-error-format-group">
+  <rect x="1780" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="1865.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="1865.0" dy="-7">Tampilkan Error Format</tspan>
+    <tspan x="1865.0" dy="14">&amp;amp; Reset Input</tspan>
+  </text>
+</g>
+<!-- Node: n2-input2 -->
+<g id="n2-input2-group">
+  <rect x="2000" y="1100" width="170" height="50" rx="12" fill="#f3e8ff" stroke="#d8b4fe" stroke-width="2" />
+  <text x="2085.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#6b21a8">
+    <tspan x="2085.0" dy="-7">Masukkan PIN Konfirmasi</tspan>
+    <tspan x="2085.0" dy="14">(Re-input)</tspan>
+  </text>
+</g>
+<!-- Node: n2-match -->
+<g id="n2-match-group">
+  <polygon points="2275.0,1047.2182540694798 2352.78174593052,1125.0 2275.0,1202.7817459305202 2197.21825406948,1125.0" fill="#ffedd5" stroke="#fdba74" stroke-width="2" />
+  <text x="2275.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#9a3412">
+    <tspan x="2275.0" dy="-7">Validasi</tspan>
+    <tspan x="2275.0" dy="14">Kecocokan?</tspan>
+  </text>
+</g>
+<!-- Node: n2-error-match -->
+<g id="n2-error-match-group">
+  <rect x="2220" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2305.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2305.0" dy="-7">Tampilkan Error Toast &amp;amp;</tspan>
+    <tspan x="2305.0" dy="14">Getarkan Kolom (Shake)</tspan>
+  </text>
+</g>
+<!-- Node: n2-clear-match -->
+<g id="n2-clear-match-group">
+  <rect x="2000" y="1300" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2085.0" y="1325.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2085.0" dy="-7">Hapus Input &amp;amp; Reset</tspan>
+    <tspan x="2085.0" dy="14">Temporer (1.5s)</tspan>
+  </text>
+</g>
+<!-- Node: n2-save -->
+<g id="n2-save-group">
+  <rect x="2450" y="1100" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2535.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2535.0" dy="-7">Hash PIN Baru &amp;amp;</tspan>
+    <tspan x="2535.0" dy="14">Update ke DB</tspan>
+  </text>
+</g>
+<!-- Node: n2-success -->
+<g id="n2-success-group">
+  <rect x="2670" y="1100" width="170" height="50" rx="12" fill="#f1f5f9" stroke="#cbd5e1" stroke-width="2" />
+  <text x="2755.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#334155">
+    <tspan x="2755.0" dy="-7">Tampilkan Layar</tspan>
+    <tspan x="2755.0" dy="14">PIN Berhasil Diubah</tspan>
+  </text>
+</g>
+<!-- Node: n2-end -->
+<g id="n2-end-group">
+  <circle cx="2960.0" cy="1125.0" r="70.0" fill="#fee2e2" stroke="#ef4444" stroke-width="2" />
+  <text x="2960.0" y="1125.0" text-anchor="middle" dominant-baseline="middle" fill="#991b1b">
+    <tspan x="2960.0" dy="-7">PIN Baru Aktif &amp;amp;</tspan>
+    <tspan x="2960.0" dy="14">Kembali ke Akun</tspan>
+  </text>
+</g>
+</svg>

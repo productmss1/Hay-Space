@@ -1,0 +1,2442 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sCanWin - Dashboard Monitoring Pencairan E-Wallet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    /* RESET & BASE STYLES */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #eee;
+      color: #404040;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* LAYOUT CONTAINER */
+    .app-container {
+      position: relative;
+      width: 100vw;
+      min-height: 100vh;
+      background: #eee;
+    }
+
+    /* TOP BAR (FIGMA SPEC: bg #2DC3E8, height 58px) */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58px;
+      background: #2DC3E8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hamburger-icon {
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-badge {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .user-profile-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: white;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #eee;
+      color: #1E3A8A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .top-icons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 18px;
+    }
+
+    /* SUB-HEADER / PAGE TITLE BAR (FIGMA SPEC: bg white, height 48px, top 58px) */
+    .sub-header {
+      position: fixed;
+      top: 58px;
+      left: 250px;
+      right: 0;
+      height: 48px;
+      background: #ffffff;
+      border-bottom: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 90;
+    }
+
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #404040;
+      letter-spacing: -0.1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-title .breadcrumb {
+      color: #969494;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .sub-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #666;
+    }
+
+    .action-icon-btn {
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .action-icon-btn:hover {
+      background: #f0f0f0;
+    }
+
+    /* SIDEBAR (FIGMA SPEC NODE 1:2346: width 250px, bg white, shadow 4px 0 8px rgba(0,0,0,0.1)) */
+    .sidebar {
+      position: fixed;
+      top: 58px;
+      left: 0;
+      width: 250px;
+      height: calc(100vh - 58px);
+      background: #ffffff;
+      box-shadow: 4px 0px 8px 0px rgba(0, 0, 0, 0.08);
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      padding-top: 12px;
+      user-select: none;
+    }
+
+    .sidebar-menu-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      color: #969494;
+      cursor: pointer;
+      border-bottom: 1px solid #EDEDED;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .menu-header-row:hover {
+      background: #F9FAFB;
+      color: #414143;
+    }
+
+    .menu-header-row.active {
+      color: #414143;
+      font-weight: 500;
+    }
+
+    .menu-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu-header-icon {
+      font-size: 16px;
+      color: #969494;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-header-title {
+      font-size: 14px;
+      text-transform: capitalize;
+    }
+
+    .menu-header-chevron {
+      font-size: 14px;
+      color: #969494;
+      transition: transform 0.2s;
+    }
+
+    /* SUBMENU TIMELINE TREE (FIGMA NODE 1:2347) */
+    .sidebar-tree-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px 14px 20px;
+      position: relative;
+      background: #FAFAFA;
+      border-bottom: 1px solid #EDEDED;
+    }
+
+    /* VERTICAL TIMELINE LINE & DOTS */
+    .tree-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding-top: 6px;
+    }
+
+    .tree-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #9E9E9E;
+      transition: background 0.2s, box-shadow 0.2s;
+      z-index: 2;
+    }
+
+    .tree-dot.active {
+      background: #4181EF;
+      box-shadow: 0 0 0 3px rgba(65, 129, 239, 0.2);
+    }
+
+    .tree-line {
+      width: 1px;
+      height: 24px;
+      background: #E4E4E4;
+      margin: 3px 0;
+    }
+
+    .tree-submenus {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .tree-tab-item {
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      color: #9E9E9E;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: color 0.2s;
+      padding: 2px 0;
+    }
+
+    .tree-tab-item:hover {
+      color: #414143;
+    }
+
+    .tree-tab-item.active {
+      color: #414143;
+      font-weight: 600;
+    }
+
+    .badge-count {
+      background: #DC2626;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    .badge-count.pending {
+      background: #D97706;
+      color: white;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 700;
+      padding: 0;
+      line-height: 1;
+    }
+
+    /* MAIN PAGE CONTENT TABS (RIWAYAT PENCAIRAN VS PENCAIRAN PENDING) */
+    .page-tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #E5E7EB;
+      margin-bottom: 16px;
+      background: #FFFFFF;
+      padding: 6px 16px 0 16px;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .page-tab-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6B7280;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .page-tab-item:hover {
+      color: #1F2937;
+    }
+
+    .page-tab-item.active {
+      color: #2563EB;
+      font-weight: 600;
+      border-bottom-color: #2563EB;
+      background: rgba(37, 99, 235, 0.05);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .page-tab-badge {
+      background: #D97706;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    /* MAIN CONTENT AREA (Positioned offset sidebar & headers) */
+    .main-content {
+      margin-top: 118px;
+      /* 58px top bar + 48px sub-header + 12px gap */
+      margin-left: 264px;
+      margin-right: 20px;
+      padding-bottom: 40px;
+    }
+
+    /* METRIC SUMMARY CARDS (GRID 4 COLUMNS) */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e4e4e4;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #4181EF;
+    }
+
+    .metric-card.success::before {
+      background: #16A34A;
+    }
+
+    .metric-card.pending::before {
+      background: #D97706;
+    }
+
+    .metric-card.rejected::before {
+      background: #DC2626;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      color: #737373;
+      text-transform: uppercase;
+      font-weight: 600;
+      letter-spacing: 0.3px;
+    }
+
+    .metric-value {
+      font-size: 22px;
+      font-weight: 700;
+      color: #1F2937;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    .metric-subtext {
+      font-size: 12px;
+      color: #6B7280;
+    }
+
+    .badge-date-filter {
+      font-size: 11px;
+      font-weight: 500;
+      color: #2563EB;
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      padding: 2px 6px;
+      border-radius: 4px;
+      white-space: nowrap;
+    }
+
+    /* DATE PICKER POPOVER & RANGE CONTROL */
+    .date-picker-wrapper {
+      position: relative;
+      display: inline-block;
+    }
+
+    .date-picker-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 12px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      background: #FFFFFF;
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      color: #374151;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .date-picker-btn:hover {
+      border-color: #2563EB;
+      background: #F9FAFB;
+    }
+
+    .date-popover {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      z-index: 150;
+      background: #FFFFFF;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+      display: none;
+      width: 440px;
+      overflow: hidden;
+      animation: fadeInDown 0.2s ease;
+    }
+
+    .date-popover.show {
+      display: flex;
+    }
+
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .date-popover-left {
+      width: 160px;
+      background: #F9FAFB;
+      border-right: 1px solid #E5E7EB;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .date-preset-btn {
+      padding: 8px 10px;
+      border-radius: 6px;
+      border: none;
+      background: transparent;
+      text-align: left;
+      font-family: 'Inter', sans-serif;
+      font-size: 12px;
+      color: #4B5563;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .date-preset-btn:hover {
+      background: #E5E7EB;
+      color: #111827;
+    }
+
+    .date-preset-btn.active {
+      background: #EFF6FF;
+      color: #2563EB;
+      font-weight: 600;
+    }
+
+    .date-popover-right {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .date-range-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .date-field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .date-field-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #6B7280;
+      text-transform: uppercase;
+    }
+
+    .date-input-custom {
+      padding: 7px 9px;
+      border: 1px solid #D1D5DB;
+      border-radius: 6px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      color: #1F2937;
+    }
+
+    .date-popover-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .btn-date-cancel {
+      padding: 6px 12px;
+      border-radius: 4px;
+      border: 1px solid #D1D5DB;
+      background: #FFFFFF;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-date-apply {
+      padding: 6px 14px;
+      border-radius: 4px;
+      border: none;
+      background: #2563EB;
+      color: white;
+      font-weight: 600;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .btn-date-apply:hover {
+      background: #1D4ED8;
+    }
+
+    /* SECURITY ALERT BANNER */
+    .security-banner {
+      background: #EFF6FF;
+      border: 1px solid #93C5FD;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      color: #1E40AF;
+    }
+
+    .security-banner-icon {
+      font-size: 18px;
+      margin-top: 1px;
+    }
+
+    .security-banner-text {
+      font-size: 13px;
+      line-height: 1.4;
+    }
+
+    .security-banner-text strong {
+      font-weight: 600;
+    }
+
+    /* CONTAINER CARD FOR TABLE & CONTROLS (FIGMA SPEC: bg white, p 16px, rounded 8px) */
+    .content-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 18px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      border: 1px solid #dedede;
+    }
+
+    /* CONTROL & FILTER BAR */
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .filter-group-left {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+    }
+
+    .search-box {
+      position: relative;
+      min-width: 280px;
+      flex: 1;
+      max-width: 380px;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 38px;
+      padding: 0 14px 0 36px;
+      border: 1px solid #e4e4e4;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #414143;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .search-input:focus {
+      border-color: #4181EF;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #969494;
+      font-size: 14px;
+    }
+
+    .filter-select {
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #e4e4e4;
+      border-radius: 4px;
+      font-size: 13px;
+      color: #404040;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .filter-select:focus {
+      border-color: #4181EF;
+    }
+
+    .filter-group-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .btn-export {
+      height: 38px;
+      padding: 0 14px;
+      border: 1px solid #ededed;
+      background: #ffffff;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      color: #0a0a0a;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s;
+    }
+
+    .btn-export:hover {
+      background: #f5f5f5;
+    }
+
+    .btn-refresh {
+      height: 38px;
+      padding: 0 12px;
+      border: 1px solid #4181EF;
+      background: #EEF4FF;
+      color: #4181EF;
+      border-radius: 4px;
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-refresh:hover {
+      background: #DCE8FF;
+    }
+
+    /* TABLE TITLE BADGE (FIGMA SPEC NODE 1:2377) */
+    .table-header-title-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
+
+    .table-title-badge {
+      background: #FFFFFF;
+      border: 1px solid #EDEDED;
+      padding: 8px 12px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #0A0A0A;
+      letter-spacing: -0.154px;
+    }
+
+    /* DATA TABLE STYLING (FIGMA SPEC NODE 1:2376 & 1:2400) */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid #DFE0EB;
+      border-radius: 4px;
+      background: #FFFFFF;
+    }
+
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Roboto', sans-serif;
+      font-size: 12px;
+      text-align: left;
+    }
+
+    .data-table th {
+      background-color: #F5F5F5;
+      color: #404040;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 500;
+      /* Roboto Medium per Figma 1:2415 */
+      font-size: 12px;
+      letter-spacing: -0.072px;
+      line-height: 20px;
+      padding: 14px 10px;
+      border-bottom: 2px solid #4181EF;
+      /* Figma accent blue line */
+      border-right: 1px solid #DFE0EB;
+      white-space: nowrap;
+    }
+
+    .data-table th:last-child {
+      border-right: none;
+    }
+
+    .data-table td {
+      height: 56px;
+      /* Figma cell height 56px per 1:2416 */
+      background-color: #FFFFFF;
+      color: #404040;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 400;
+      /* Roboto Regular per Figma */
+      font-size: 12px;
+      letter-spacing: -0.072px;
+      line-height: 20px;
+      padding: 12px 10px;
+      border-bottom: 1px solid #DFE0EB;
+      border-right: 1px solid #DFE0EB;
+      vertical-align: middle;
+    }
+
+    .data-table td:last-child {
+      border-right: none;
+    }
+
+    .data-table tbody tr:hover {
+      background-color: #F9FAFB;
+    }
+
+    /* TABLE CELL SPECIFICS */
+    .font-mono {
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 600;
+    }
+
+    .text-clickable {
+      color: #2563EB;
+      cursor: pointer;
+    }
+
+    .text-clickable:hover {
+      text-decoration: underline;
+    }
+
+    .ewallet-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+    }
+
+    .ewallet-icon {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+    }
+
+    .bg-ovo {
+      background: #4C2A86;
+    }
+
+    .bg-dana {
+      background: #108EE9;
+    }
+
+    .bg-gopay {
+      background: #00AED6;
+    }
+
+    /* STATUS BADGES (FIGMA LABELS) */
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+
+    .badge-sukses {
+      background-color: #E6F4EA;
+      color: #137333;
+      border-color: #A8DADC;
+    }
+
+    .badge-pending {
+      background-color: #FFF9F2;
+      color: #734011;
+      border-color: #EECEB0;
+    }
+
+    .badge-ditolak {
+      background-color: #FCE8E6;
+      color: #C5221F;
+      border-color: #F5C6CB;
+    }
+
+    .badge-timeout {
+      background-color: #F3E8FF;
+      color: #6B21A8;
+      border-color: #DDD6FE;
+    }
+
+    .tag-new-number {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      background: #FEF3C7;
+      color: #B45309;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 600;
+      margin-top: 2px;
+    }
+
+    /* ACTION BUTTONS */
+    .action-group {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-action-approve {
+      background: #16A34A;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-action-approve:hover {
+      background: #15803D;
+    }
+
+    .btn-action-reject {
+      background: #DC2626;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.2s;
+    }
+
+    .btn-action-reject:hover {
+      background: #B91C1C;
+    }
+
+    .btn-action-detail {
+      background: #f0f0f0;
+      color: #404040;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 500;
+      transition: background 0.2s;
+    }
+
+    .btn-action-detail:hover {
+      background: #e0e0e0;
+    }
+
+    /* PAGINATION FOOTER */
+    .pagination-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 14px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .pagination-controls {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .page-btn {
+      width: 28px;
+      height: 28px;
+      border: 1px solid #dedede;
+      background: white;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .page-btn.active {
+      background: #4181EF;
+      color: white;
+      border-color: #4181EF;
+      font-weight: 600;
+    }
+
+    /* MODAL OVERLAY & BOX */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-box {
+      background: white;
+      border-radius: 8px;
+      width: 100%;
+      max-width: 520px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      transform: translateY(-10px);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-overlay.show .modal-box {
+      transform: translateY(0);
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-body {
+      padding: 20px;
+      font-size: 13px;
+      color: #333;
+    }
+
+    .summary-table-box {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 6px;
+      padding: 14px;
+      margin: 14px 0;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      border-bottom: 1px dashed #e5e7eb;
+    }
+
+    .summary-row:last-child {
+      border-bottom: none;
+    }
+
+    .summary-label {
+      color: #6B7280;
+    }
+
+    .summary-value {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      background: #F9FAFB;
+      border-top: 1px solid #eee;
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn-modal-cancel {
+      padding: 8px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      background: white;
+      font-size: 13px;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .btn-modal-cancel:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-modal-confirm-approve {
+      padding: 8px 18px;
+      border-radius: 4px;
+      background: #16A34A;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-modal-confirm-approve:hover {
+      background: #15803D;
+    }
+
+    .btn-modal-confirm-reject {
+      padding: 8px 18px;
+      border-radius: 4px;
+      background: #DC2626;
+      color: white;
+      font-size: 13px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-modal-confirm-reject:hover {
+      background: #B91C1C;
+    }
+
+    /* DRAWER DETAIL SLIDE-OVER */
+    .drawer-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 180;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .drawer-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .drawer-panel {
+      position: fixed;
+      top: 0;
+      right: -450px;
+      width: 450px;
+      height: 100vh;
+      background: white;
+      box-shadow: -4px 0 15px rgba(0, 0, 0, 0.15);
+      z-index: 190;
+      transition: right 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-overlay.show .drawer-panel {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 18px 20px;
+      border-bottom: 1px solid #eee;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .drawer-body {
+      padding: 20px;
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .drawer-section-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #6B7280;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+      padding-bottom: 4px;
+      border-bottom: 1px solid #f3f4f6;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      top: 70px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast-msg {
+      background: #10B981;
+      color: white;
+      padding: 12px 18px;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideInRight 0.3s forwards;
+    }
+
+    @keyframes slideInRight {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="app-container">
+
+    <!-- TOP BAR (FIGMA SPEC NODES 1:2345, 1:2362, 1:2372, 1:2367, 1:2368, 1:2370, 1:2371) -->
+    <header class="top-header" data-node-id="1:2345">
+      <div class="brand-section">
+        <!-- Node 1:2372: icon/hamburger-line -->
+        <button type="button" class="header-icon-btn" title="Menu Toggle" data-node-id="1:2372"
+          style="background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12H21M3 6H21M3 18H21" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round"
+              stroke-linejoin="round" />
+          </svg>
+        </button>
+
+        <!-- Node 1:2362: logo-1000s-with-stroke-(FIXX) 1 -->
+        <div class="logo-container" data-node-id="1:2362">
+          <img src="http://localhost:3845/assets/d05aec72e562ef630dc4b84dfe8e7cad32a0fd52.png" alt="Logo 1000S"
+            style="height: 32px; width: auto;"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';" />
+          <div style="display: none; align-items: center; gap: 6px;">
+            <span style="font-weight: 700; font-size: 18px; color: #FFFFFF;">sCanWin</span>
+            <span class="logo-badge">1000s</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="user-profile-section">
+        <!-- Node 1:2367 & Node 1:2368: icon/user-filled & Nama Anda -->
+        <div class="user-info" data-node-id="1:2368">
+          <div class="user-avatar" data-node-id="1:2367"
+            style="width: 32px; height: 32px; border-radius: 50%; background: rgba(255, 255, 255, 0.2); display: flex; align-items: center; justify-content: center;">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 12C14.21 12 16 10.21 16 8C16 5.79 14.21 4 12 4C9.79 4 8 5.79 8 8C8 10.21 9.79 12 12 12ZM12 14C9.33 14 4 15.34 4 18V20H20V18C20 15.34 14.67 14 12 14Z" />
+            </svg>
+          </div>
+          <span style="font-family: 'Roboto', sans-serif; font-size: 14px; color: #FFFFFF; font-weight: 400;"
+            data-node-id="1:2368">Nama Anda</span>
+        </div>
+
+        <div class="top-icons">
+          <!-- Node 1:2370: icon/notif-filled -->
+          <button type="button" class="header-icon-btn" title="Notifikasi" data-node-id="1:2370"
+            style="background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M12 22C13.1 22 14 21.1 14 20H10C10 21.1 10.89 22 12 22ZM18 16V11C18 7.93 16.36 5.36 13.5 4.68V4C13.5 3.17 12.83 2.5 12 2.5C11.17 2.5 10.5 3.17 10.5 4V4.68C7.63 5.36 6 7.92 6 11V16L4 18V19H20V18L18 16Z" />
+            </svg>
+          </button>
+
+          <!-- Node 1:2371: icon/setting-filled -->
+          <button type="button" class="header-icon-btn" title="Pengaturan" data-node-id="1:2371"
+            style="background: none; border: none; padding: 0; cursor: pointer; display: flex; align-items: center;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M19.43 12.98C19.47 12.66 19.5 12.34 19.5 12C19.5 11.66 19.47 11.34 19.43 11.02L21.54 9.37C21.73 9.22 21.78 8.95 21.66 8.73L19.66 5.27C19.54 5.05 19.27 4.96 19.05 5.05L16.56 6.05C16.04 5.66 15.47 5.32 14.87 5.07L14.49 2.42C14.45 2.18 14.25 2 14 2H10C9.75 2 9.55 2.18 9.51 2.42L9.13 5.07C8.53 5.32 7.96 5.66 7.44 6.05L4.95 5.05C4.73 4.96 4.46 5.05 4.34 5.27L2.34 8.73C2.21 8.95 2.27 9.22 2.46 9.37L4.57 11.02C4.53 11.34 4.5 11.67 4.5 12C4.5 12.33 4.53 12.66 4.57 12.98L2.46 14.63C2.27 14.78 2.21 15.05 2.34 15.27L4.34 18.73C4.46 18.95 4.73 19.03 4.95 18.95L7.44 17.94C7.96 18.34 8.53 18.67 9.13 18.93L9.51 21.58C9.55 21.82 9.75 22 10 22H14C14.25 22 14.45 21.82 14.49 21.58L14.87 18.93C15.47 18.67 16.04 18.34 16.56 17.94L19.05 18.95C19.27 19.03 19.54 18.95 19.66 18.73L21.66 15.27C21.78 15.05 21.73 14.78 21.54 14.63L19.43 12.98ZM12 15.5C10.07 15.5 8.5 13.93 8.5 12C8.5 10.07 10.07 8.5 12 8.5C13.93 8.5 15.5 10.07 15.5 12C15.5 13.93 13.93 15.5 12 15.5Z" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- SUB-HEADER (FIGMA SPEC: bg white, height 48px, top 58px) -->
+    <div class="sub-header">
+      <div class="page-title">
+        <span>MONITORING PENCAIRAN E-WALLET</span>
+      </div>
+      <div class="sub-header-actions">
+        <button class="action-icon-btn" title="Fullscreen" onclick="alert('Toggle Maximize Screen')">⛶</button>
+        <button class="action-icon-btn" title="Refresh Data" onclick="refreshData()">🔄</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR (MANAJEMEN SCANWIN -> MONITORING PENCAIRAN SALDO) -->
+    <aside class="sidebar">
+      <div class="sidebar-menu-item">
+        <!-- Parent Header: Manajemen Scanwin -->
+        <div class="menu-header-row active">
+          <div class="menu-header-left">
+            <span class="menu-header-icon" style="font-size: 20px;">🏪</span>
+            <span class="menu-header-title" style="color: #1F2937; font-weight: 700; font-size: 14px;">Manajemen
+              Scanwin</span>
+          </div>
+          <span class="menu-header-chevron"
+            style="color: #4B5563; font-size: 16px; font-weight: bold; transform: rotate(90deg);">›</span>
+        </div>
+
+        <!-- Submenu Item Single: Monitoring Pencairan Saldo -->
+        <div class="sidebar-tree-container">
+          <div class="tree-connector">
+            <div class="tree-dot active" id="dot-logs"></div>
+          </div>
+
+          <div class="tree-submenus">
+            <div class="tree-tab-item active" id="tab-logs-btn">
+              <span style="font-weight: 600; color: #1F2937;">Monitoring Pencairan Saldo</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- TOAST NOTIFICATION CONTAINER -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+
+      <!-- METRIC CARDS SUMMARY (4 COLUMNS DENGAN TAMPILAN TANGGAL DI BAWAH NOMINAL) -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-title">Total Volume Penarikan</span>
+          <span class="metric-value">Rp 124.500.000</span>
+          <span class="metric-subtext" id="subtext-volume">Akumulasi pengajuan 29 Jul 2026 s/d 29 Jul 2026</span>
+        </div>
+        <div class="metric-card success">
+          <span class="metric-title">Pencairan Sukses</span>
+          <span class="metric-value" id="stat-sukses-count">142</span>
+          <span class="metric-subtext" id="subtext-sukses">Berhasil disalurkan via Espay 29 Jul 2026 s/d 29 Jul
+            2026</span>
+        </div>
+        <div class="metric-card pending">
+          <span class="metric-title">Pending Audit (Kondisi B)</span>
+          <span class="metric-value" id="stat-pending-count">12</span>
+          <span class="metric-subtext" id="subtext-pending">Perlu peninjauan manual 29 Jul 2026 s/d 29 Jul 2026</span>
+        </div>
+        <div class="metric-card rejected">
+          <span class="metric-title">Ditolak / Refund</span>
+          <span class="metric-value" id="stat-ditolak-count">8</span>
+          <span class="metric-subtext" id="subtext-ditolak">Dana dikembalikan ke saldo 29 Jul 2026 s/d 29 Jul
+            2026</span>
+        </div>
+      </div>
+
+      <!-- PAGE CONTENT NAVIGATION TABS (MONITORING PENCAIRAN SALDO VS PENCAIRAN PENDING) -->
+      <div class="page-tab-bar">
+        <div class="page-tab-item active" id="page-tab-logs" onclick="switchTab('logs')">
+          <span>📋 Monitoring Pencairan Saldo</span>
+        </div>
+        <div class="page-tab-item" id="page-tab-pending" onclick="switchTab('pending')">
+          <span>⏳ Persetujuan Tertunda</span>
+          <span class="page-tab-badge" id="page-tab-badge-counter">4</span>
+        </div>
+      </div>
+
+      <!-- SECURITY BANNER (Shows on Pending Audit Tab) -->
+      <div class="security-banner" id="security-banner" style="display: none;">
+        <span class="security-banner-icon">⚠️</span>
+        <div class="security-banner-text">
+          <strong>PANDUAN KEAMANAN AUDIT AUDITOR FINANCE (FDE DETECTIONS):</strong><br>
+          Antrean ini berisi transaksi penarikan e-wallet pelanggan yang ditangguhkan oleh <strong>Fraud Detection Engine (FDE)</strong> karena menggunakan <strong>nomor HP baru</strong> atau terdeteksi <strong>terhubung ke akun pelanggan sCanWin lain</strong>.
+          Harap lakukan verifikasi identitas pemilik utama e-wallet pada detail transaksi sebelum menekan tombol <strong>Approve</strong>.
+        </div>
+      </div>
+
+      <!-- CONTENT CARD FOR TABLE & CONTROLS (FIGMA SPEC NODE 1:2376) -->
+      <div class="content-card">
+
+        <!-- FILTER & CONTROL BAR -->
+        <div class="filter-bar">
+          <div class="filter-group-left">
+            <div class="search-box">
+              <span class="search-icon">🔍</span>
+              <input type="text" id="search-input" class="search-input"
+                placeholder="Cari ID Transaksi, ID Pelanggan, Nama Pelanggan, No HP..." oninput="filterTable()">
+            </div>
+
+            <select id="status-filter" class="filter-select" onchange="filterTable()">
+              <option value="ALL">Semua Status</option>
+              <option value="Pending Audit">Pending Audit</option>
+              <option value="Sukses">Sukses</option>
+              <option value="Ditolak">Ditolak</option>
+              <option value="Timeout Callback">Timeout Callback</option>
+            </select>
+
+            <!-- INTERACTIVE DATE RANGE PICKER COMPONENT -->
+            <div class="date-picker-wrapper">
+              <button type="button" class="date-picker-btn" id="date-picker-btn"
+                onclick="toggleDatePickerPopover(event)">
+                <span>📅</span>
+                <span id="date-picker-label">Hari Ini (29 Jul 2026)</span>
+                <span style="font-size: 10px; color: #6B7280;">▾</span>
+              </button>
+
+              <!-- POPOVER DUAL-LAYOUT (PRESETS LEFT, MANUAL RANGE RIGHT) -->
+              <div class="date-popover" id="date-popover" onclick="event.stopPropagation()">
+                <!-- LAYOUT KIRI: PRESET PILIHAN CEPAT -->
+                <div class="date-popover-left">
+                  <div
+                    style="font-size: 10px; font-weight: 700; color: #9CA3AF; padding: 4px 6px; text-transform: uppercase;">
+                    Pilihan Cepat</div>
+                  <button type="button" class="date-preset-btn active" id="preset-today"
+                    onclick="selectDatePreset('today')">Hari Ini</button>
+                  <button type="button" class="date-preset-btn" id="preset-7days" onclick="selectDatePreset('7days')">7
+                    Hari Terakhir</button>
+                  <button type="button" class="date-preset-btn" id="preset-30days"
+                    onclick="selectDatePreset('30days')">30 Hari Terakhir</button>
+                  <button type="button" class="date-preset-btn" id="preset-90days"
+                    onclick="selectDatePreset('90days')">90 Hari Terakhir</button>
+                  <button type="button" class="date-preset-btn" id="preset-custom"
+                    onclick="selectDatePreset('custom')">Custom Range</button>
+                </div>
+
+                <!-- LAYOUT KANAN: PILIH MANUALLY TANGGAL START & END -->
+                <div class="date-popover-right">
+                  <div style="font-size: 12px; font-weight: 600; color: #1F2937;">Filter Tanggal Manual</div>
+
+                  <div class="date-range-inputs">
+                    <div class="date-field-group">
+                      <label for="start-date-input">Tanggal Mulai (Start Date)</label>
+                      <input type="date" id="start-date-input" class="date-input-custom" value="2026-07-29"
+                        onchange="onManualDateChange()">
+                    </div>
+                    <div class="date-field-group">
+                      <label for="end-date-input">Tanggal Selesai (End Date)</label>
+                      <input type="date" id="end-date-input" class="date-input-custom" value="2026-07-29"
+                        onchange="onManualDateChange()">
+                    </div>
+                  </div>
+
+                  <div class="date-popover-actions">
+                    <button type="button" class="btn-date-cancel" onclick="closeDatePickerPopover()">Batal</button>
+                    <button type="button" class="btn-date-apply" onclick="applyCustomDateRange()">Terapkan
+                      Filter</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="filter-group-right">
+            <button class="btn-export" onclick="exportData()">
+              <span>📥</span>
+              <span>Export CSV</span>
+            </button>
+            <button class="btn-refresh" onclick="refreshData()">
+              <span>🔄</span>
+              <span>Refresh</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- DATA TABLE (FIGMA SPEC MATCH: Header bg #f5f5f5, bottom-border 2px #4181ef) -->
+        <div class="table-responsive">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th style="width: 50px; text-align: center;">No</th>
+                <th>ID Transaksi</th>
+                <th>ID Pelanggan</th>
+                <th>Nama Pelanggan</th>
+                <th>Tipe E-Wallet</th>
+                <th>No. HP E-Wallet</th>
+                <th style="text-align: right;">Nominal Penarikan</th>
+                <th style="text-align: right;">Biaya Admin</th>
+                <th>Status Penarikan</th>
+                <th>Waktu Pengajuan</th>
+                <th style="text-align: center;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="table-body">
+              <!-- ROWS DYNAMICALLY POPULATED VIA JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- PAGINATION FOOTER -->
+        <div class="pagination-bar">
+          <span id="pagination-info">Showing 1-10 of 162 items</span>
+          <div class="pagination-controls">
+            <button class="page-btn">&lt;</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">4</button>
+            <button class="page-btn">&gt;</button>
+          </div>
+        </div>
+
+      </div><!-- /content-card -->
+
+    </main>
+  </div>
+
+  <!-- MODAL APPROVE (SCREEN 3) -->
+  <div class="modal-overlay" id="modal-approve">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3>🟢 Konfirmasi Persetujuan Penarikan</h3>
+        <button onclick="closeModal('modal-approve')" style="font-size: 18px; color: #999;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Apakah Anda yakin ingin <strong>MENYETUJUI</strong> transaksi penarikan e-wallet ini?</p>
+
+        <div class="summary-table-box">
+          <div class="summary-row">
+            <span class="summary-label">ID Transaksi</span>
+            <span class="summary-value font-mono" id="approve-modal-trxid">TRX-992101</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Nama Pelanggan</span>
+            <span class="summary-value" id="approve-modal-toko">Budi Santoso (USR-10821)</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Target E-Wallet</span>
+            <span class="summary-value" id="approve-modal-ewallet">OVO - 081234567890</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Nominal Transfer (Net)</span>
+            <span class="summary-value" id="approve-modal-nominal">Rp 500.000</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Biaya Admin</span>
+            <span class="summary-value">Rp 1.650</span>
+          </div>
+        </div>
+
+        <div
+          style="background: #FFFBEB; border: 1px solid #FCD34D; padding: 10px; border-radius: 6px; font-size: 12px; color: #92400E; margin-bottom: 12px;">
+          ℹ️ <strong>Informasi Gateway:</strong> Menyetujui transaksi ini akan secara otomatis memicu pemindahan dana
+          via <strong>Espay Payment Gateway</strong> ke e-wallet pelanggan.
+        </div>
+
+        <!-- CHECKBOX OPIS PENETAPAN NOMOR E-WALLET UTAMA -->
+        <div style="background: #F3F4F6; border: 1px solid #E5E7EB; border-radius: 6px; padding: 12px;">
+          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer; font-size: 12px; font-weight: 600; color: #1F2937;">
+            <input type="checkbox" id="chk-set-primary-ewallet" checked style="margin-top: 2px;">
+            <span>Jadikan <span id="approve-modal-ewallet-provider" style="color: #2563EB;">OVO</span> (<span id="approve-modal-new-hp-label" class="font-mono">081234567890</span>) ini sebagai nomor E-Wallet utama pelanggan</span>
+          </label>
+          <div style="margin-top: 6px; font-size: 11px; color: #4B5563; margin-left: 22px; line-height: 1.4;">
+            ℹ️ Sistem sCanWin hanya mengizinkan <strong>1 nomor E-Wallet utama per pelanggan</strong>. Menyetujui dengan opsi ini tercentang akan memperbarui & menggantikan E-Wallet registered existing (<span id="approve-modal-existing-provider" style="font-weight: 600;">OVO</span> - <span id="approve-modal-existing-hp" class="font-mono">0812-9900-1122</span>) dengan E-Wallet utama baru ini (<span id="approve-modal-new-provider-text" style="font-weight: 600;">GoPay</span> - <span id="approve-modal-new-hp" class="font-mono">081234567890</span>).
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeModal('modal-approve')">Batal</button>
+        <button class="btn-modal-confirm-approve" id="btn-execute-approve" onclick="executeApprove()">
+          <span>✔️</span>
+          <span>Setujui & Transfer</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL REJECT (SCREEN 4) -->
+  <div class="modal-overlay" id="modal-reject">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 style="color: #DC2626;">🔴 Konfirmasi Penolakan Penarikan</h3>
+        <button onclick="closeModal('modal-reject')" style="font-size: 18px; color: #999;">✕</button>
+      </div>
+      <div class="modal-body">
+        <p>Anda akan <strong>MENOLAK</strong> pengajuan penarikan dana ini. Dana beserta biaya admin akan dikembalikan
+          100% ke saldo active sCanWin milik pelanggan.</p>
+
+        <div class="summary-table-box" style="background: #FEF2F2; border-color: #FCA5A5;">
+          <div class="summary-row">
+            <span class="summary-label">ID Transaksi</span>
+            <span class="summary-value font-mono" id="reject-modal-trxid">TRX-992101</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Nominal Penarikan</span>
+            <span class="summary-value" id="reject-modal-nominal">Rp 500.000</span>
+          </div>
+          <div class="summary-row">
+            <span class="summary-label">Pengembalian Biaya Admin</span>
+            <span class="summary-value">Rp 1.650</span>
+          </div>
+          <div class="summary-row"
+            style="font-weight: 700; color: #16A34A; border-top: 1px solid #FCA5A5; padding-top: 6px;">
+            <span>Total Refund Ke Saldo Pelanggan</span>
+            <span id="reject-modal-totalrefund">Rp 501.650</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Alasan Penolakan Audit
+            (Wajib):</label>
+          <select id="reject-reason-select" class="filter-select" style="width: 100%;" onchange="toggleRejectCatatan()">
+            <option value="Nomor HP E-Wallet Tidak Terdaftar / Tidak Aktif">Nomor HP E-Wallet Tidak Terdaftar / Tidak
+              Aktif</option>
+            <option value="Ketidaksesuaian Data Pelanggan dengan Dokumen Identitas">Ketidaksesuaian Data Pelanggan
+              dengan Dokumen Identitas</option>
+            <option value="Indikasi Aktivitas Transaksi Mencurigakan (Fraud Risk)">Indikasi Aktivitas Transaksi
+              Mencurigakan (Fraud Risk)</option>
+            <option value="Lainnya">Lainnya (Tulis Catatan)</option>
+          </select>
+        </div>
+
+        <div id="reject-catatan-wrapper" style="display: none;">
+          <label style="display: block; font-weight: 600; margin-bottom: 4px; font-size: 12px;">Catatan Penjelasan
+            Audit:</label>
+          <textarea id="reject-catatan-txt" rows="2"
+            style="width: 100%; border: 1px solid #ccc; border-radius: 4px; padding: 8px; font-size: 12px;"
+            placeholder="Tuliskan detail catatan..."></textarea>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button class="btn-modal-cancel" onclick="closeModal('modal-reject')">Batal</button>
+        <button class="btn-modal-confirm-reject" onclick="executeReject()">
+          <span>❌</span>
+          <span>Ya, Tolak & Refund Saldo</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- DRAWER DETAIL AUDIT (SCREEN 5) -->
+  <div class="drawer-overlay" id="drawer-detail" onclick="closeDrawer(event)">
+    <div class="drawer-panel" onclick="event.stopPropagation()">
+      <div class="drawer-header">
+        <div>
+          <h3 style="font-size: 16px; font-weight: 600;">Detail Transaksi Audit</h3>
+          <span class="font-mono text-clickable" id="drawer-trxid" style="font-size: 13px;">TRX-992101</span>
+        </div>
+        <button onclick="closeDrawer()" style="font-size: 20px; color: #888;">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <!-- Section 1 -->
+        <div>
+          <div class="drawer-section-title">👤 Identitas Pelanggan Scanwin</div>
+          <div style="font-size: 13px; display: flex; flex-direction: column; gap: 6px;">
+            <div><strong>ID Pelanggan:</strong> <span id="drawer-merchant-id">USR-10821</span></div>
+            <div><strong>Nama Pelanggan:</strong> <span id="drawer-toko-name">Budi Santoso</span></div>
+            <div><strong>No. HP Terdaftar App:</strong> <span id="drawer-owner">0812-9900-1122</span></div>
+            <div><strong>Status Akun:</strong> <span id="drawer-kontrak-hp"
+                class="status-badge badge-sukses">Terverifikasi</span></div>
+          </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div>
+          <div class="drawer-section-title">💳 Rincian Rekening E-Wallet Tujuan</div>
+          <div style="font-size: 13px; display: flex; flex-direction: column; gap: 6px;">
+            <div><strong>Provider:</strong> <span id="drawer-ewallet-type">OVO</span></div>
+            <div><strong>No. HP E-Wallet Tujuan:</strong> <span class="font-mono"
+                id="drawer-ewallet-hp">081234567890</span></div>
+            <div><strong>Status Penarikan Saldo:</strong> <span id="drawer-status-badge"
+                class="status-badge badge-pending">Pending Audit</span></div>
+            <div><strong>Nominal Penarikan:</strong> <span id="drawer-nominal">Rp 500.000</span></div>
+            <div><strong>Biaya Admin:</strong> <span>Rp 1.650</span></div>
+          </div>
+
+          <!-- DETEKSI FDE & INDIKASI E-WALLET AKUN LAIN -->
+          <div id="drawer-fde-alert-box" style="margin-top: 10px;">
+            <!-- INJECTED VIA JS: DETAIL AKUN PEMILIK E-WALLET UTAMA -->
+          </div>
+        </div>
+
+        <!-- Section 3 (Log Audit & Timeline) -->
+        <div>
+          <div class="drawer-section-title">📜 Log Audit & Timeline</div>
+          <div style="font-size: 12px; color: #4B5563; display: flex; flex-direction: column; gap: 8px;"
+            id="drawer-timeline">
+            <div>• 29/07/2026 14:20:12 - Ditangguhkan oleh Fraud Detection Engine (Nomor E-Wallet Baru)</div>
+            <div>• 29/07/2026 14:20:11 - Transaksi diajukan pelanggan via App sCanWin</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 16px; border-top: 1px solid #eee; display: flex; gap: 10px;" id="drawer-footer-actions">
+        <button class="btn-action-reject" style="flex: 1; justify-content: center; padding: 10px;"
+          onclick="openRejectFromDrawer()">
+          ❌ Reject & Refund
+        </button>
+        <button class="btn-action-approve" style="flex: 1; justify-content: center; padding: 10px;"
+          onclick="openApproveFromDrawer()">
+          ✔️ Approve & Transfer
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // INITIAL MOCK DATA (PELANGGAN SCANWIN)
+    // INITIAL MOCK DATA (PELANGGAN SCANWIN - FDE CASE DETECTIONS)
+    const initialData = [
+      {
+        id: 'TRX-992101',
+        merchantId: 'USR-10821',
+        toko: 'Budi Santoso',
+        ewallet: 'OVO',
+        ewalletClass: 'bg-ovo',
+        hp: '081234567890',
+        fdeReason: 'NEW_NUMBER',
+        fdeReasonLabel: '⚠️ Nomor Baru',
+        linkedAccount: null,
+        nominal: 500000,
+        admin: 1650,
+        status: 'Pending Audit',
+        time: '29 Jul 2026, 14:20'
+      },
+      {
+        id: 'TRX-992100',
+        merchantId: 'USR-10543',
+        toko: 'Ahmad Hidayat',
+        ewallet: 'DANA',
+        ewalletClass: 'bg-dana',
+        hp: '085711223344',
+        fdeReason: null,
+        fdeReasonLabel: null,
+        linkedAccount: null,
+        nominal: 250000,
+        admin: 1650,
+        status: 'Sukses',
+        time: '29 Jul 2026, 14:15'
+      },
+      {
+        id: 'TRX-992099',
+        merchantId: 'USR-10112',
+        toko: 'Siti Rahmawati',
+        ewallet: 'GoPay',
+        ewalletClass: 'bg-gopay',
+        hp: '081988776655',
+        fdeReason: null,
+        fdeReasonLabel: null,
+        linkedAccount: null,
+        nominal: 1000000,
+        admin: 1650,
+        status: 'Ditolak',
+        time: '29 Jul 2026, 13:50'
+      },
+      {
+        id: 'TRX-992098',
+        merchantId: 'USR-10992',
+        toko: 'Dewi Lestari',
+        ewallet: 'DANA',
+        ewalletClass: 'bg-dana',
+        hp: '081988776655',
+        fdeReason: 'CROSS_ACCOUNT',
+        fdeReasonLabel: '⚠️ Terhubung Akun Lain',
+        linkedAccount: {
+          merchantId: 'USR-10112',
+          toko: 'Siti Rahmawati',
+          hp: '0819-8877-6655',
+          relation: 'E-Wallet Utama Terdaftar di Akun USR-10112 (Siti Rahmawati)'
+        },
+        nominal: 1250000,
+        admin: 1650,
+        status: 'Pending Audit',
+        time: '29 Jul 2026, 13:42'
+      },
+      {
+        id: 'TRX-992097',
+        merchantId: 'USR-10441',
+        toko: 'Rahmat Hidayat',
+        ewallet: 'OVO',
+        ewalletClass: 'bg-ovo',
+        hp: '081211223344',
+        fdeReason: 'NEW_NUMBER',
+        fdeReasonLabel: '⚠️ Nomor Baru',
+        linkedAccount: null,
+        nominal: 350000,
+        admin: 1650,
+        status: 'Pending Audit',
+        time: '29 Jul 2026, 13:30'
+      },
+      {
+        id: 'TRX-992096',
+        merchantId: 'USR-10229',
+        toko: 'Eko Prasetyo',
+        ewallet: 'GoPay',
+        ewalletClass: 'bg-gopay',
+        hp: '085677889900',
+        fdeReason: null,
+        fdeReasonLabel: null,
+        linkedAccount: null,
+        nominal: 600000,
+        admin: 1650,
+        status: 'Sukses',
+        time: '29 Jul 2026, 13:10'
+      },
+      {
+        id: 'TRX-992095',
+        merchantId: 'USR-10665',
+        toko: 'Nurtjahja',
+        ewallet: 'OVO',
+        ewalletClass: 'bg-ovo',
+        hp: '085711223344',
+        fdeReason: 'CROSS_ACCOUNT',
+        fdeReasonLabel: '⚠️ Terhubung Akun Lain',
+        linkedAccount: {
+          merchantId: 'USR-10543',
+          toko: 'Ahmad Hidayat',
+          hp: '0857-1122-3344',
+          relation: 'E-Wallet Utama Terdaftar di Akun USR-10543 (Ahmad Hidayat)'
+        },
+        nominal: 750000,
+        admin: 1650,
+        status: 'Pending Audit',
+        time: '29 Jul 2026, 12:55'
+      }
+    ];
+
+    let currentTab = 'logs'; // 'logs' or 'pending'
+    let activeTrxId = null;
+
+    // FORMAT CURRENCY
+    function formatRp(num) {
+      return 'Rp ' + num.toLocaleString('id-ID');
+    }
+
+    // RENDER TABLE DATA
+    function renderTable() {
+      const tbody = document.getElementById('table-body');
+      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const statusVal = document.getElementById('status-filter').value;
+
+      let filtered = initialData.filter(item => {
+        // Tab filter: 'logs' tab displays completed/processed logs only (NO Pending Audit items)
+        if (currentTab === 'logs' && item.status === 'Pending Audit') return false;
+
+        // Tab filter: 'pending' tab displays ONLY Pending Audit items
+        if (currentTab === 'pending' && item.status !== 'Pending Audit') return false;
+
+        // Status dropdown filter
+        if (statusVal !== 'ALL' && item.status !== statusVal) return false;
+
+        // Search input filter
+        if (searchVal) {
+          const matchesSearch = item.id.toLowerCase().includes(searchVal) ||
+            item.merchantId.toLowerCase().includes(searchVal) ||
+            item.toko.toLowerCase().includes(searchVal) ||
+            item.hp.includes(searchVal);
+          if (!matchesSearch) return false;
+        }
+        return true;
+      });
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 24px; color: #999;">Tidak ada data transaksi yang sesuai filter.</td></tr>`;
+        document.getElementById('pagination-info').innerText = 'Showing 0 items';
+        return;
+      }
+
+      filtered.forEach((item, index) => {
+        let badgeClass = 'badge-pending';
+        if (item.status === 'Sukses') badgeClass = 'badge-sukses';
+        else if (item.status === 'Ditolak') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Timeout Callback') badgeClass = 'badge-timeout';
+
+        // Action Buttons: NO icons on buttons (Item 1)
+        let actionHtml = '';
+        if (currentTab === 'pending' && item.status === 'Pending Audit') {
+          actionHtml = `
+          <div class="action-group">
+            <button class="btn-action-approve" onclick="openApproveModal('${item.id}')">Approve</button>
+            <button class="btn-action-reject" onclick="openRejectModal('${item.id}')">Reject</button>
+            <button class="btn-action-detail" onclick="openDrawer('${item.id}')">Detail</button>
+          </div>
+        `;
+        } else {
+          actionHtml = `
+          <div class="action-group">
+            <button class="btn-action-detail" onclick="openDrawer('${item.id}')">Detail</button>
+          </div>
+        `;
+        }
+
+        let fdeBadgeHtml = '';
+        if (item.fdeReason === 'CROSS_ACCOUNT') {
+          fdeBadgeHtml = `<div class="tag-new-number" style="background: #FFFBEB; color: #B45309; border-color: #FCD34D;">⚠️ Terhubung Akun Lain (${item.linkedAccount ? item.linkedAccount.merchantId : ''})</div>`;
+        } else if (item.fdeReason === 'NEW_NUMBER') {
+          fdeBadgeHtml = `<div class="tag-new-number">⚠️ Nomor Baru</div>`;
+        }
+
+        const row = document.createElement('tr');
+        row.innerHTML = `
+        <td style="text-align: center; font-weight: 500;">${index + 1}</td>
+        <td class="font-mono text-clickable" onclick="openDrawer('${item.id}')">${item.id}</td>
+        <td class="font-mono" style="color: #666;">${item.merchantId}</td>
+        <td><strong>${item.toko}</strong></td>
+        <td>${item.ewallet}</td>
+        <td>
+          <div class="font-mono">${item.hp}</div>
+          ${fdeBadgeHtml}
+        </td>
+        <td style="text-align: right; font-weight: 600;">${formatRp(item.nominal)}</td>
+        <td style="text-align: right; color: #666;">${formatRp(item.admin)}</td>
+        <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+        <td style="font-size: 11px; color: #666;">${item.time}</td>
+        <td style="text-align: center;">${actionHtml}</td>
+      `;
+        tbody.appendChild(row);
+      });
+
+      document.getElementById('pagination-info').innerText = `Showing 1-${filtered.length} of ${filtered.length} items`;
+      updateCounterBadges();
+    }
+
+    // SWITCH TAB LOGS VS PENDING
+    function switchTab(tab) {
+      currentTab = tab;
+
+      // Page content tabs active state
+      if (document.getElementById('page-tab-logs')) {
+        document.getElementById('page-tab-logs').classList.toggle('active', tab === 'logs');
+      }
+      if (document.getElementById('page-tab-pending')) {
+        document.getElementById('page-tab-pending').classList.toggle('active', tab === 'pending');
+      }
+
+      // Sidebar tree tabs active state
+      if (document.getElementById('tab-logs-btn')) {
+        document.getElementById('tab-logs-btn').classList.toggle('active', tab === 'logs');
+      }
+      if (document.getElementById('tab-pending-btn')) {
+        document.getElementById('tab-pending-btn').classList.toggle('active', tab === 'pending');
+      }
+
+      // Toggle timeline dot active class
+      if (document.getElementById('dot-logs')) {
+        document.getElementById('dot-logs').classList.toggle('active', tab === 'logs');
+      }
+      if (document.getElementById('dot-pending')) {
+        document.getElementById('dot-pending').classList.toggle('active', tab === 'pending');
+      }
+
+      // Update table title badge text
+      const titleText = document.getElementById('table-title-text');
+      if (titleText) {
+        titleText.innerText = (tab === 'pending') ? 'Antrean Persetujuan Tertunda' : 'Monitoring Pencairan Saldo';
+      }
+
+      // Security banner visibility
+      document.getElementById('security-banner').style.display = (tab === 'pending') ? 'flex' : 'none';
+
+      if (tab === 'pending') {
+        document.getElementById('status-filter').value = 'Pending Audit';
+      } else {
+        document.getElementById('status-filter').value = 'ALL';
+      }
+      renderTable();
+    }
+
+    // FILTER TRIGGER
+    function filterTable() {
+      renderTable();
+    }
+
+    let selectedPreset = 'today';
+    let startDateVal = '2026-07-29';
+    let endDateVal = '2026-07-29';
+    let dateRangeText = '29 Jul 2026 s/d 29 Jul 2026';
+    let datePickerLabelText = 'Hari Ini (29 Jul 2026)';
+
+    function formatDateIndo(dateStr) {
+      if (!dateStr) return '';
+      const parts = dateStr.split('-');
+      if (parts.length !== 3) return dateStr;
+      const year = parts[0];
+      const monthIndex = parseInt(parts[1], 10) - 1;
+      const day = parseInt(parts[2], 10);
+      const months = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Agu', 'Sep', 'Okt', 'Nov', 'Des'];
+      return `${day} ${months[monthIndex] || ''} ${year}`;
+    }
+
+    function toggleDatePickerPopover(e) {
+      if (e) e.stopPropagation();
+      const popover = document.getElementById('date-popover');
+      if (popover) popover.classList.toggle('show');
+    }
+
+    function closeDatePickerPopover() {
+      const popover = document.getElementById('date-popover');
+      if (popover) popover.classList.remove('show');
+    }
+
+    // Close popover when clicking outside
+    document.addEventListener('click', function (e) {
+      const wrapper = document.querySelector('.date-picker-wrapper');
+      if (wrapper && !wrapper.contains(e.target)) {
+        closeDatePickerPopover();
+      }
+    });
+
+    function selectDatePreset(preset) {
+      selectedPreset = preset;
+
+      const presetBtns = document.querySelectorAll('.date-preset-btn');
+      presetBtns.forEach(btn => btn.classList.remove('active'));
+
+      const activeBtn = document.getElementById(`preset-${preset}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const startInput = document.getElementById('start-date-input');
+      const endInput = document.getElementById('end-date-input');
+
+      if (preset === 'today') {
+        startDateVal = '2026-07-29';
+        endDateVal = '2026-07-29';
+        datePickerLabelText = 'Hari Ini (29 Jul 2026)';
+        dateRangeText = '29 Jul 2026 s/d 29 Jul 2026';
+      } else if (preset === '7days') {
+        startDateVal = '2026-07-22';
+        endDateVal = '2026-07-29';
+        datePickerLabelText = '7 Hari Terakhir';
+        dateRangeText = '22 Jul 2026 s/d 29 Jul 2026';
+      } else if (preset === '30days') {
+        startDateVal = '2026-06-29';
+        endDateVal = '2026-07-29';
+        datePickerLabelText = '30 Hari Terakhir';
+        dateRangeText = '29 Jun 2026 s/d 29 Jul 2026';
+      } else if (preset === '90days') {
+        startDateVal = '2026-04-29';
+        endDateVal = '2026-07-29';
+        datePickerLabelText = '90 Hari Terakhir';
+        dateRangeText = '29 Apr 2026 s/d 29 Jul 2026';
+      } else if (preset === 'custom') {
+        if (startInput && endInput) {
+          startDateVal = startInput.value;
+          endDateVal = endInput.value;
+          const fmtStart = formatDateIndo(startDateVal);
+          const fmtEnd = formatDateIndo(endDateVal);
+          datePickerLabelText = `${fmtStart} - ${fmtEnd}`;
+          dateRangeText = `${fmtStart} s/d ${fmtEnd}`;
+        }
+      }
+
+      if (startInput && endInput && preset !== 'custom') {
+        startInput.value = startDateVal;
+        endInput.value = endDateVal;
+      }
+
+      applyDateFilterLabel();
+      closeDatePickerPopover();
+      filterTable();
+    }
+
+    function onManualDateChange() {
+      selectedPreset = 'custom';
+      const presetBtns = document.querySelectorAll('.date-preset-btn');
+      presetBtns.forEach(btn => btn.classList.remove('active'));
+      const customBtn = document.getElementById('preset-custom');
+      if (customBtn) customBtn.classList.add('active');
+    }
+
+    function applyCustomDateRange() {
+      const startInput = document.getElementById('start-date-input');
+      const endInput = document.getElementById('end-date-input');
+
+      if (startInput && endInput) {
+        startDateVal = startInput.value;
+        endDateVal = endInput.value;
+
+        const fmtStart = formatDateIndo(startDateVal);
+        const fmtEnd = formatDateIndo(endDateVal);
+        datePickerLabelText = `${fmtStart} - ${fmtEnd}`;
+        dateRangeText = `${fmtStart} s/d ${fmtEnd}`;
+      }
+
+      applyDateFilterLabel();
+      closeDatePickerPopover();
+      filterTable();
+    }
+
+    function applyDateFilterLabel() {
+      const label = document.getElementById('date-picker-label');
+      if (label) label.innerText = datePickerLabelText;
+
+      if (document.getElementById('subtext-volume')) {
+        document.getElementById('subtext-volume').innerText = `Akumulasi pengajuan ${dateRangeText}`;
+      }
+      if (document.getElementById('subtext-sukses')) {
+        document.getElementById('subtext-sukses').innerText = `Berhasil disalurkan via Espay ${dateRangeText}`;
+      }
+      if (document.getElementById('subtext-pending')) {
+        document.getElementById('subtext-pending').innerText = `Perlu peninjauan manual ${dateRangeText}`;
+      }
+      if (document.getElementById('subtext-ditolak')) {
+        document.getElementById('subtext-ditolak').innerText = `Dana dikembalikan ke saldo ${dateRangeText}`;
+      }
+    }
+
+    // UPDATE COUNTERS & METRIC CARD DATES
+    function updateCounterBadges() {
+      const pendingCount = initialData.filter(i => i.status === 'Pending Audit').length;
+      const suksesCount = initialData.filter(i => i.status === 'Sukses').length;
+      const ditolakCount = initialData.filter(i => i.status === 'Ditolak').length;
+
+      applyDateFilterLabel();
+
+      if (document.getElementById('pending-badge-counter')) {
+        document.getElementById('pending-badge-counter').innerText = pendingCount;
+      }
+      if (document.getElementById('page-tab-badge-counter')) {
+        document.getElementById('page-tab-badge-counter').innerText = pendingCount;
+      }
+      document.getElementById('stat-pending-count').innerText = pendingCount;
+      document.getElementById('stat-sukses-count').innerText = suksesCount;
+      document.getElementById('stat-ditolak-count').innerText = ditolakCount;
+    }
+
+    // MODAL APPROVE HANDLERS
+    function openApproveModal(trxId) {
+      activeTrxId = trxId;
+      const item = initialData.find(i => i.id === trxId);
+      if (!item) return;
+
+      document.getElementById('approve-modal-trxid').innerText = item.id;
+      document.getElementById('approve-modal-toko').innerText = `${item.toko} (${item.merchantId})`;
+      document.getElementById('approve-modal-ewallet').innerText = `${item.ewallet} - ${item.hp}`;
+      document.getElementById('approve-modal-nominal').innerText = formatRp(item.nominal);
+
+      // Dynamic populate E-Wallet provider & numbers in Checkbox Section
+      const existingProvider = item.linkedAccount ? 'OVO' : 'OVO';
+      const existingHp = item.linkedAccount ? item.linkedAccount.hp : '0812-9900-1122';
+
+      if (document.getElementById('approve-modal-ewallet-provider')) {
+        document.getElementById('approve-modal-ewallet-provider').innerText = item.ewallet;
+      }
+      if (document.getElementById('approve-modal-new-hp-label')) {
+        document.getElementById('approve-modal-new-hp-label').innerText = item.hp;
+      }
+      if (document.getElementById('approve-modal-existing-provider')) {
+        document.getElementById('approve-modal-existing-provider').innerText = existingProvider;
+      }
+      if (document.getElementById('approve-modal-existing-hp')) {
+        document.getElementById('approve-modal-existing-hp').innerText = existingHp;
+      }
+      if (document.getElementById('approve-modal-new-provider-text')) {
+        document.getElementById('approve-modal-new-provider-text').innerText = item.ewallet;
+      }
+      if (document.getElementById('approve-modal-new-hp')) {
+        document.getElementById('approve-modal-new-hp').innerText = item.hp;
+      }
+
+      // Default checkbox state to checked for new number or cross account
+      const chkSetPrimary = document.getElementById('chk-set-primary-ewallet');
+      if (chkSetPrimary) chkSetPrimary.checked = true;
+
+      document.getElementById('modal-approve').classList.add('show');
+    }
+
+    function executeApprove() {
+      const chkSetPrimary = document.getElementById('chk-set-primary-ewallet');
+      const isSetPrimary = chkSetPrimary ? chkSetPrimary.checked : false;
+
+      const btn = document.getElementById('btn-execute-approve');
+      if (btn) {
+        btn.innerText = 'Memproses Transfer...';
+        btn.disabled = true;
+      }
+
+      setTimeout(() => {
+        if (btn) {
+          btn.innerText = 'Setujui & Transfer';
+          btn.disabled = false;
+        }
+        closeModal('modal-approve');
+
+        const item = initialData.find(i => i.id === activeTrxId);
+        if (item) {
+          item.status = 'Sukses';
+          if (isSetPrimary) {
+            item.fdeReason = null;
+            item.fdeReasonLabel = null;
+            showToast(`✅ Persetujuan Berhasil! Transaksi ${activeTrxId} disetujui & nomor ${item.ewallet} (${item.hp}) telah dijadikan nomor E-Wallet utama pelanggan ${item.toko}.`);
+          } else {
+            showToast(`✅ Persetujuan Berhasil! Transaksi ${activeTrxId} telah disetujui & diproses via Espay.`);
+          }
+        }
+        renderTable();
+      }, 500);
+    }
+
+    // MODAL REJECT HANDLERS
+    function openRejectModal(trxId) {
+      activeTrxId = trxId;
+      const item = initialData.find(i => i.id === trxId);
+      if (!item) return;
+
+      document.getElementById('reject-modal-trxid').innerText = item.id;
+      document.getElementById('reject-modal-nominal').innerText = formatRp(item.nominal);
+      document.getElementById('reject-modal-totalrefund').innerText = formatRp(item.nominal + item.admin);
+
+      document.getElementById('modal-reject').classList.add('show');
+    }
+
+    function toggleRejectCatatan() {
+      const val = document.getElementById('reject-reason-select').value;
+      document.getElementById('reject-catatan-wrapper').style.display = (val === 'Lainnya') ? 'block' : 'none';
+    }
+
+    function executeReject() {
+      const item = initialData.find(i => i.id === activeTrxId);
+      if (item) {
+        item.status = 'Ditolak';
+        closeModal('modal-reject');
+        showToast(`🔴 Penolakan Berhasil! Dana ${formatRp(item.nominal + item.admin)} telah dikembalikan ke Saldo Pelanggan ${item.toko}.`, '#DC2626');
+        renderTable();
+      }
+    }
+
+    // DRAWER HANDLERS
+    function openDrawer(trxId) {
+      activeTrxId = trxId;
+      const item = initialData.find(i => i.id === trxId);
+      if (!item) return;
+
+      document.getElementById('drawer-trxid').innerText = item.id;
+      document.getElementById('drawer-merchant-id').innerText = item.merchantId;
+      document.getElementById('drawer-toko-name').innerText = item.toko;
+      document.getElementById('drawer-ewallet-type').innerText = item.ewallet;
+      document.getElementById('drawer-ewallet-hp').innerText = item.hp;
+      document.getElementById('drawer-nominal').innerText = formatRp(item.nominal);
+
+      // Status Penarikan Saldo inline with Table Status Badges
+      const statusBadge = document.getElementById('drawer-status-badge');
+      if (statusBadge) {
+        statusBadge.innerText = item.status;
+        let badgeClass = 'badge-pending';
+        if (item.status === 'Sukses') badgeClass = 'badge-sukses';
+        else if (item.status === 'Ditolak') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Timeout Callback') badgeClass = 'badge-timeout';
+        statusBadge.className = `status-badge ${badgeClass}`;
+      }
+
+      // Inject FDE Alert Callout Box (Deteksi Nomor Baru vs Terhubung Akun Lain)
+      const fdeAlertBox = document.getElementById('drawer-fde-alert-box');
+      if (fdeAlertBox) {
+        if (item.fdeReason === 'CROSS_ACCOUNT' && item.linkedAccount) {
+          fdeAlertBox.innerHTML = `
+            <div style="background: #FFFBEB; border: 1px solid #FCD34D; border-radius: 6px; padding: 12px; font-size: 12px;">
+              <div style="font-weight: 700; color: #B45309; margin-bottom: 6px; display: flex; align-items: center; gap: 6px;">
+                <span>⚠️ INDIKASI FDE: E-Wallet Terhubung ke Akun Pelanggan Lain</span>
+              </div>
+              <div style="color: #92400E; display: flex; flex-direction: column; gap: 4px;">
+                <div><strong>Nama Pemilik E-Wallet Utama:</strong> <span>${item.linkedAccount.toko}</span></div>
+                <div><strong>ID Pelanggan Pemilik:</strong> <span class="font-mono" style="font-weight: 600;">${item.linkedAccount.merchantId}</span></div>
+                <div><strong>No. HP Pelanggan Pemilik:</strong> <span class="font-mono" style="font-weight: 600;">${item.linkedAccount.hp}</span></div>
+                <div style="margin-top: 4px; font-style: italic; color: #78350F; background: #FEF3C7; padding: 4px 8px; border-radius: 4px;">
+                  📌 ${item.linkedAccount.relation}
+                </div>
+              </div>
+            </div>
+          `;
+        } else if (item.fdeReason === 'NEW_NUMBER') {
+          fdeAlertBox.innerHTML = `
+            <div style="background: #EFF6FF; border: 1px solid #93C5FD; border-radius: 6px; padding: 10px 12px; font-size: 12px;">
+              <div style="font-weight: 700; color: #1D4ED8; margin-bottom: 2px;">
+                ⚠️ ALASAN DETEKSI FDE: Nomor E-Wallet Baru
+              </div>
+              <div style="color: #1E40AF;">
+                Nomor HP e-wallet ini belum pernah terdaftar di riwayat transaksi pelanggan sCanWin sebelumnya.
+              </div>
+            </div>
+          `;
+        } else {
+          fdeAlertBox.innerHTML = '';
+        }
+      }
+
+      // Reverse Log Audit order (Newest Event on TOP)
+      const timelineBox = document.getElementById('drawer-timeline');
+      if (timelineBox) {
+        let fdeLogText = 'Ditangguhkan oleh Fraud Detection Engine (Nomor E-Wallet Baru)';
+        if (item.fdeReason === 'CROSS_ACCOUNT' && item.linkedAccount) {
+          fdeLogText = `Ditangguhkan oleh Fraud Detection Engine (E-Wallet Terhubung ke Akun ${item.linkedAccount.merchantId} - ${item.linkedAccount.toko})`;
+        }
+
+        if (item.status === 'Pending Audit') {
+          timelineBox.innerHTML = `
+            <div>• ${item.time} - ${fdeLogText}</div>
+            <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
+          `;
+        } else if (item.status === 'Sukses') {
+          timelineBox.innerHTML = `
+            <div>• ${item.time} - Disetujui Auditor & Dana Berhasil Disalurkan ke E-Wallet</div>
+            <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
+          `;
+        } else if (item.status === 'Ditolak') {
+          timelineBox.innerHTML = `
+            <div>• ${item.time} - Ditolak Auditor Finance & Dana Direfund 100% ke Saldo</div>
+            <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
+          `;
+        } else {
+          timelineBox.innerHTML = `
+            <div>• ${item.time} - Status Callback Timeout via Gateway Espay</div>
+            <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
+          `;
+        }
+      }
+
+      const footer = document.getElementById('drawer-footer-actions');
+      footer.style.display = (item.status === 'Pending Audit') ? 'flex' : 'none';
+
+      document.getElementById('drawer-detail').classList.add('show');
+    }
+
+    function closeDrawer(e) {
+      if (!e || e.target.id === 'drawer-detail' || e.target.tagName === 'BUTTON') {
+        document.getElementById('drawer-detail').classList.remove('show');
+      }
+    }
+
+    function openApproveFromDrawer() {
+      closeDrawer();
+      openApproveModal(activeTrxId);
+    }
+
+    function openRejectFromDrawer() {
+      closeDrawer();
+      openRejectModal(activeTrxId);
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('show');
+    }
+
+    // TOAST UTILITY
+    function showToast(msg, bg = '#10B981') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast-msg';
+      toast.style.background = bg;
+      toast.innerHTML = `<span>${msg}</span>`;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+
+    function exportData() {
+      showToast('📥 Mengunduh file laporan penarikan CSV...');
+    }
+
+    function refreshData() {
+      showToast('🔄 Data logs transaksi berhasil diperbarui.');
+      renderTable();
+    }
+
+    // INIT ON LOAD
+    window.onload = function () {
+      renderTable();
+    };
+  </script>
+
+</body>
+
+</html>
