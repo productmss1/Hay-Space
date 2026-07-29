@@ -37,7 +37,7 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            min-width: 11800px;
+            min-width: 17500px;
             min-height: 5400px;
         }
 
@@ -301,6 +301,21 @@
                     <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
                         <input type="checkbox" class="chk-flow" value="sec12" checked onchange="onFlowCheckboxChange()"> 💳 12. Customer Validasi Pencairan E-Wallet (PRD 12)
                     </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #4f46e5; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #eef2ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #c7d2fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13a" checked onchange="onFlowCheckboxChange()"> 📊 13a. Admin: List Transaksi &amp; KPI Cards (PRD 13a)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13b" checked onchange="onFlowCheckboxChange()"> ⏳ 13b. Admin: Antrean Pending Audit &amp; Badges (PRD 13b)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #059669; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13c" checked onchange="onFlowCheckboxChange()"> 🟢 13c. Admin: Proses Approve &amp; E-Wallet Utama (PRD 13c)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #dc2626; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13d" checked onchange="onFlowCheckboxChange()"> 🔴 13d. Admin: Proses Reject &amp; 100% Refund (PRD 13d)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13e" checked onchange="onFlowCheckboxChange()"> 📄 13e. Admin: Detail Audit Drawer &amp; FDE Box (PRD 13e)
+                    </label>
                 </div>
             </div>
 
@@ -417,6 +432,37 @@
                 <!-- SUB-SECTION: Validasi Pencairan E-Wallet & FDE Customer (PRD 12) -->
                 <div class="figma-section" data-sec-id="sec12" style="left: 5850px; top: 3180px; width: 5250px; height: 800px;">
                     <span class="section-label" style="background:#0284c7;">Validasi Pencairan E-Wallet &amp; FDE Customer (PRD 12)</span>
+                </div>
+
+                <!-- ================= OUTER SECTION 3: ADMIN POV ================= -->
+                <div class="figma-section" data-sec-id="outer-admin" style="left: 11300px; top: 150px; width: 5600px; height: 3880px; border: 3px dashed #4f46e5; background: rgba(238, 242, 255, 0.25);">
+                    <span class="section-label" style="background:#4f46e5; font-size:13px; padding:6px 16px;">ADMIN POV</span>
+                </div>
+
+                <!-- SUB-SECTION GROUP: Monitoring Pencairan Saldo Pelanggan (PRD 13 / Prototype Dashboard) -->
+                <!-- SUB-SECTION 13a: Modul 1: List Transaksi & Monitoring KPI -->
+                <div class="figma-section" data-sec-id="sec13a" style="left: 11350px; top: 200px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#4f46e5;">Monitoring Pencairan Saldo: Modul 1 (List Transaksi &amp; Metric KPI Cards - PRD 13a)</span>
+                </div>
+
+                <!-- SUB-SECTION 13b: Modul 2: Antrean Persetujuan Pending -->
+                <div class="figma-section" data-sec-id="sec13b" style="left: 11350px; top: 880px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#d97706;">Monitoring Pencairan Saldo: Modul 2 (Antrean Pending Audit &amp; FDE Risk Badges - PRD 13b)</span>
+                </div>
+
+                <!-- SUB-SECTION 13c: Modul 3: Proses Persetujuan Penarikan (Approve Flow & Modal) -->
+                <div class="figma-section" data-sec-id="sec13c" style="left: 11350px; top: 1560px; width: 5450px; height: 700px;">
+                    <span class="section-label" style="background:#059669;">Monitoring Pencairan Saldo: Modul 3 (Proses Persetujuan Approve &amp; Set E-Wallet Utama - PRD 13c)</span>
+                </div>
+
+                <!-- SUB-SECTION 13d: Modul 4: Proses Penolakan Penarikan (Reject Flow & Modal) -->
+                <div class="figma-section" data-sec-id="sec13d" style="left: 11350px; top: 2360px; width: 5450px; height: 750px;">
+                    <span class="section-label" style="background:#dc2626;">Monitoring Pencairan Saldo: Modul 4 (Proses Penolakan Reject &amp; 100% Refund - PRD 13d)</span>
+                </div>
+
+                <!-- SUB-SECTION 13e: Modul 5: Detail Audit Drawer (360 Detail & FDE Cross-Account Box) -->
+                <div class="figma-section" data-sec-id="sec13e" style="left: 11350px; top: 3180px; width: 5450px; height: 800px;">
+                    <span class="section-label" style="background:#0284c7;">Monitoring Pencairan Saldo: Modul 5 (Detail Audit Drawer &amp; Cross-Account Alert Box - PRD 13e)</span>
                 </div>
             </div>
 
@@ -706,7 +752,96 @@
                 { id: 'c12-disburse', type: 'n-purple', text: 'Hit Espay API<br>Disbursement Direct', x: 8460, y: 3320 },
                 { id: 'c12-success-screen', type: 'n-end', text: 'Screen Penarikan<br>Berhasil Langsung!', x: 8700, y: 3275 },
                 { id: 'c12-pending-audit', type: 'n-gray', text: 'Flag Risk Kondisi A/B<br>& Tangguhkan Transfer', x: 8460, y: 3520 },
-                { id: 'c12-pending-screen', type: 'n-end', text: 'Screen Penarikan<br>Sedang Diproses (1x24h)', x: 8700, y: 3475 }
+                { id: 'c12-pending-screen', type: 'n-end', text: 'Screen Penarikan<br>Sedang Diproses (1x24h)', x: 8700, y: 3475 },
+
+                // SECTION 13a: Admin List Transaksi & Monitoring KPI (PRD 13a - Y: 420-550)
+                { id: 'a1-start', type: 'n-start', text: 'Start', x: 11395, y: 420 },
+                { id: 'a1-open-portal', type: 'n-gray', text: 'Finance Admin Buka<br>Portal Backoffice', x: 11540, y: 440 },
+                { id: 'a1-nav-menu', type: 'n-purple', text: 'Klik Menu "Manajemen Scanwin"<br>-&gt; "Monitoring Pencairan"', x: 11760, y: 440 },
+                { id: 'a1-load-dashboard', type: 'n-gray', text: 'Load Data Dashboard<br>&amp; Summary KPI Cards', x: 11980, y: 440 },
+                { id: 'a1-show-kpi', type: 'n-gray', text: 'Tampilkan 4 Metric Cards:<br>Total Vol, Sukses, Pending, Ditolak', x: 12200, y: 440 },
+                { id: 'a1-subtext-date', type: 'n-gray', text: 'Render Subtext Tanggal:<br>"Akumulasi 29 Jun s/d 29 Jul"', x: 12420, y: 440 },
+                { id: 'a1-dec-action', type: 'n-decision', text: '<span>Pilih Aksi<br>Filter Bar?</span>', x: 12670, y: 410 },
+                { id: 'a1-click-datepicker', type: 'n-purple', text: 'Klik Date Range Picker<br>(Popover Dual Layout)', x: 12920, y: 310 },
+                { id: 'a1-dec-preset-manual', type: 'n-decision', text: '<span>Pilih Mode<br>Tanggal?</span>', x: 13160, y: 280 },
+                { id: 'a1-preset-left', type: 'n-purple', text: 'Pilih Preset Kiri:<br>7/30/90 Hari / Hari Ini', x: 13410, y: 220 },
+                { id: 'a1-manual-right', type: 'n-purple', text: 'Pilih Input Kanan:<br>Start &amp; End Date Manual', x: 13410, y: 340 },
+                { id: 'a1-apply-filter', type: 'n-purple', text: 'Klik Button<br>"Terapkan Filter"', x: 13650, y: 280 },
+                { id: 'a1-refetch-kpi', type: 'n-gray', text: 'Refetch Data &amp; Update<br>Subtext Tanggal Eksplisit', x: 13870, y: 280 },
+                { id: 'a1-end-filter', type: 'n-end', text: 'Tabel &amp; KPI<br>Ter-update', x: 14080, y: 235 },
+                { id: 'a1-search-input', type: 'n-purple', text: 'Input Keywords / Status<br>(ID TRX, USR, HP, Nama)', x: 12920, y: 550 },
+                { id: 'a1-filter-table', type: 'n-gray', text: 'Filter Row Tabel Real-time<br>&amp; Badges FDE Indicator', x: 13140, y: 550 },
+                { id: 'a1-end-search', type: 'n-end', text: 'Tabel Log<br>Ter-filter', x: 13360, y: 505 },
+
+                // SECTION 13b: Admin Antrean Pending Audit & Risk Badges (PRD 13b - Y: 1100-1250)
+                { id: 'b1-start', type: 'n-start', text: 'Start', x: 11395, y: 1100 },
+                { id: 'b1-tab-pending', type: 'n-purple', text: 'Klik Tab Page:<br>"Persetujuan Tertunda"', x: 11540, y: 1120 },
+                { id: 'b1-filter-pending', type: 'n-gray', text: 'Filter Antrean Table:<br>status === \'Pending Audit\'', x: 11760, y: 1120 },
+                { id: 'b1-show-banner', type: 'n-gray', text: 'Tampilkan Banner Alert:<br>Audit Security Guidance FDE', x: 11980, y: 1120 },
+                { id: 'b1-dec-risk-type', type: 'n-decision', text: '<span>Pemicu Risiko<br>FDE Risk?</span>', x: 12230, y: 1090 },
+                { id: 'b1-badge-new', type: 'n-gray', text: 'Render Badge FDE:<br>⚠️ Nomor E-Wallet Baru', x: 12480, y: 1000 },
+                { id: 'b1-action-row1', type: 'n-purple', text: 'Auditor Tinjau Baris<br>&amp; Akses Action Button', x: 12700, y: 1000 },
+                { id: 'b1-badge-cross', type: 'n-gray', text: 'Render Badge FDE:<br>⚠️ Terhubung Akun Lain (USR-x)', x: 12480, y: 1240 },
+                { id: 'b1-action-row2', type: 'n-purple', text: 'Auditor Tinjau Baris<br>&amp; Akses Action Button', x: 12700, y: 1240 },
+                { id: 'b1-dec-audit-btn', type: 'n-decision', text: '<span>Pilih Action<br>Decision?</span>', x: 12950, y: 1090 },
+                { id: 'b1-btn-approve', type: 'n-purple', text: 'Klik Button: "Approve"<br>-&gt; Picu Modal Approve', x: 13200, y: 990 },
+                { id: 'b1-btn-reject', type: 'n-purple', text: 'Klik Button: "Reject"<br>-&gt; Picu Modal Reject', x: 13200, y: 1120 },
+                { id: 'b1-btn-detail', type: 'n-purple', text: 'Klik Button: "Detail"<br>-&gt; Picu Detail Drawer', x: 13200, y: 1250 },
+                { id: 'b1-end-queue', type: 'n-end', text: 'Antrean Audit<br>Siap Dieksekusi', x: 13440, y: 1075 },
+
+                // SECTION 13c: Admin Proses Persetujuan Approve (PRD 13c - Y: 1800-1920)
+                { id: 'c3-start', type: 'n-start', text: 'Start', x: 11395, y: 1800 },
+                { id: 'c3-click-approve', type: 'n-purple', text: 'Klik Button "Approve"<br>pada Baris / Drawer', x: 11540, y: 1820 },
+                { id: 'c3-open-modal', type: 'n-gray', text: 'Buka Pop-up Modal:<br>Konfirmasi Persetujuan', x: 11760, y: 1820 },
+                { id: 'c3-render-summary', type: 'n-gray', text: 'Render Summary Box:<br>TRX ID, Target, Nominal, Admin', x: 11980, y: 1820 },
+                { id: 'c3-render-chk', type: 'n-gray', text: 'Render Checkbox &amp; Text:<br>Jadikan E-Wallet Utama Baru', x: 12200, y: 1820 },
+                { id: 'c3-dec-chk-state', type: 'n-decision', text: '<span>Opsi Primary<br>E-Wallet?</span>', x: 12450, y: 1790 },
+                { id: 'c3-chk-checked', type: 'n-purple', text: 'State: Checked (Centang)<br>Ganti E-Wallet Existing', x: 12700, y: 1720 },
+                { id: 'c3-chk-unchecked', type: 'n-purple', text: 'State: Unchecked<br>Transfer Tanpa Update Master', x: 12700, y: 1920 },
+                { id: 'c3-click-submit', type: 'n-purple', text: 'Auditor Klik Button:<br>"Setujui &amp; Transfer"', x: 12940, y: 1820 },
+                { id: 'c3-loading', type: 'n-gray', text: 'Loading State UI:<br>"Memproses Transfer Espay..."', x: 13160, y: 1820 },
+                { id: 'c3-backend-exec', type: 'n-gray', text: 'Backend Hit Espay<br>Disbursement API', x: 13380, y: 1820 },
+                { id: 'c3-dec-espay', type: 'n-decision', text: '<span>Respon Espay<br>Gateway?</span>', x: 13630, y: 1790 },
+                { id: 'c3-update-db-success', type: 'n-gray', text: 'Update Status DB -&gt; Sukses<br>&amp; Set Primary E-Wallet DB', x: 13880, y: 1720 },
+                { id: 'c3-toast-success', type: 'n-gray', text: 'Tutup Modal &amp; Toast:<br>✅ Persetujuan Berhasil!', x: 14100, y: 1720 },
+                { id: 'c3-end-success', type: 'n-end', text: 'Pencairan Sukses<br>&amp; DB Ter-update', x: 14320, y: 1675 },
+                { id: 'c3-update-db-timeout', type: 'n-gray', text: 'Set Status DB -&gt;<br>Approved_Pending_Callback', x: 13880, y: 1920 },
+                { id: 'c3-toast-timeout', type: 'n-gray', text: 'Tutup Modal &amp; Toast:<br>⚠️ Espay Timeout! Cek Status', x: 14100, y: 1920 },
+                { id: 'c3-end-timeout', type: 'n-end', text: 'Approved Pending<br>Callback', x: 14320, y: 1875 },
+
+                // SECTION 13d: Admin Proses Penolakan Reject (PRD 13d - Y: 2600-2720)
+                { id: 'd4-start', type: 'n-start', text: 'Start', x: 11395, y: 2600 },
+                { id: 'd4-click-reject', type: 'n-purple', text: 'Klik Button "Reject"<br>pada Baris / Drawer', x: 11540, y: 2620 },
+                { id: 'd4-open-modal', type: 'n-gray', text: 'Buka Pop-up Modal:<br>Konfirmasi Penolakan', x: 11760, y: 2620 },
+                { id: 'd4-render-refund-calc', type: 'n-gray', text: 'Render Refund Card:<br>100% (Nominal + Admin 1.650)', x: 11980, y: 2620 },
+                { id: 'd4-select-reason', type: 'n-purple', text: 'Pilih Mandatory Reason:<br>No Unregistered / Fraud / Lainnya', x: 12200, y: 2620 },
+                { id: 'd4-dec-reason-type', type: 'n-decision', text: '<span>Alasan Penolakan<br>Audit?</span>', x: 12450, y: 2590 },
+                { id: 'd4-reason-baku', type: 'n-gray', text: 'Alasan Baku:<br>Data Invalid / Cross-Account', x: 12700, y: 2520 },
+                { id: 'd4-reason-lainnya', type: 'n-purple', text: 'Alasan Lainnya:<br>Input Textarea Catatan (Max 250c)', x: 12700, y: 2720 },
+                { id: 'd4-click-submit', type: 'n-purple', text: 'Auditor Klik Button:<br>"Ya, Tolak &amp; Refund Saldo"', x: 12940, y: 2620 },
+                { id: 'd4-backend-rollback', type: 'n-gray', text: 'Backend Start Transaction:<br>Rollback 100% Saldo Pelanggan', x: 13160, y: 2620 },
+                { id: 'd4-update-db-reject', type: 'n-gray', text: 'Set Status DB -&gt; Ditolak<br>&amp; Simpan Audit Reason Log', x: 13380, y: 2620 },
+                { id: 'd4-notify-app', type: 'n-gray', text: 'Kirim Socket Sinyal ke App:<br>Riwayat -&gt; Ditolak (Refund)', x: 13600, y: 2620 },
+                { id: 'd4-toast-reject', type: 'n-gray', text: 'Tutup Modal &amp; Toast Red:<br>🔴 Penolakan Berhasil! Refund 100%', x: 13820, y: 2620 },
+                { id: 'd4-end-reject', type: 'n-end', text: 'Penolakan Berhasil<br>&amp; Saldo Refund 100%', x: 14040, y: 2575 },
+
+                // SECTION 13e: Admin Detail Audit Drawer (PRD 13e - Y: 3460-3580)
+                { id: 'e5-start', type: 'n-start', text: 'Start', x: 11395, y: 3460 },
+                { id: 'e5-click-detail', type: 'n-purple', text: 'Klik ID TRX Monospace<br>/ Button "Detail"', x: 11540, y: 3480 },
+                { id: 'e5-open-drawer', type: 'n-gray', text: 'Buka Slide-over Drawer:<br>#drawer-detail (From Right)', x: 11760, y: 3480 },
+                { id: 'e5-render-sec1', type: 'n-gray', text: 'Render Section 1:<br>Identitas Pelanggan USR-x', x: 11980, y: 3480 },
+                { id: 'e5-render-sec2', type: 'n-gray', text: 'Render Section 2:<br>Rincian E-Wallet &amp; Status Badge', x: 12200, y: 3480 },
+                { id: 'e5-dec-fde-alert', type: 'n-decision', text: '<span>Kasus Indikasi<br>FDE Risk?</span>', x: 12450, y: 3450 },
+                { id: 'e5-box-cross', type: 'n-gray', text: 'Render Callout Box Gold:<br>Data Pemilik Utama E-Wallet', x: 12700, y: 3360 },
+                { id: 'e5-cross-info', type: 'n-gray', text: 'Detail Pemilik: Nama, USR ID,<br>No HP Pemilik &amp; Relation Note', x: 12920, y: 3360 },
+                { id: 'e5-box-new', type: 'n-gray', text: 'Render Callout Box Blue / Standard:<br>Nomor E-Wallet Baru', x: 12700, y: 3600 },
+                { id: 'e5-render-sec3', type: 'n-gray', text: 'Render Section 3:<br>Log Audit &amp; Timeline Descending', x: 13160, y: 3480 },
+                { id: 'e5-descending-timeline', type: 'n-gray', text: 'Urutan Kronologi Descending:<br>(Peristiwa Terbaru di Paling Atas)', x: 13380, y: 3480 },
+                { id: 'e5-dec-status-footer', type: 'n-decision', text: '<span>Status Transaksi<br>== Pending Audit?</span>', x: 13630, y: 3450 },
+                { id: 'e5-sticky-footer', type: 'n-purple', text: 'Render Sticky Action Footer:<br>Tombol [Reject] &amp; [Approve]', x: 13880, y: 3380 },
+                { id: 'e5-hide-footer', type: 'n-gray', text: 'Sembunyikan Footer<br>(Status Sukses / Ditolak)', x: 13880, y: 3580 },
+                { id: 'e5-click-action-drawer', type: 'n-purple', text: 'Auditor Klik Action<br>pada Sticky Footer', x: 14100, y: 3380 },
+                { id: 'e5-end-drawer', type: 'n-end', text: 'Drawer Audit<br>Finished / Action Pushed', x: 14320, y: 3335 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -989,7 +1124,99 @@
                 { from: 'c12-fde-eval', to: 'c12-disburse', f: 'top', t: 'left', label: 'Happy Path', lClass: 'label-yes' },
                 { from: 'c12-disburse', to: 'c12-success-screen', f: 'right', t: 'left' },
                 { from: 'c12-fde-eval', to: 'c12-pending-audit', f: 'bottom', t: 'left', label: 'Kondisi A / B', lClass: 'label-no' },
-                { from: 'c12-pending-audit', to: 'c12-pending-screen', f: 'right', t: 'left' }
+                { from: 'c12-pending-audit', to: 'c12-pending-screen', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 13a (Admin List Transaksi & KPI - PRD 13a)
+                { from: 'a1-start', to: 'a1-open-portal', f: 'right', t: 'left' },
+                { from: 'a1-open-portal', to: 'a1-nav-menu', f: 'right', t: 'left' },
+                { from: 'a1-nav-menu', to: 'a1-load-dashboard', f: 'right', t: 'left' },
+                { from: 'a1-load-dashboard', to: 'a1-show-kpi', f: 'right', t: 'left' },
+                { from: 'a1-show-kpi', to: 'a1-subtext-date', f: 'right', t: 'left' },
+                { from: 'a1-subtext-date', to: 'a1-dec-action', f: 'right', t: 'left' },
+                { from: 'a1-dec-action', to: 'a1-click-datepicker', f: 'top', t: 'left', label: 'Filter Tanggal', lClass: 'label-yes' },
+                { from: 'a1-click-datepicker', to: 'a1-dec-preset-manual', f: 'right', t: 'left' },
+                { from: 'a1-dec-preset-manual', to: 'a1-preset-left', f: 'top', t: 'left', label: 'Presets Cepat', lClass: 'label-yes' },
+                { from: 'a1-dec-preset-manual', to: 'a1-manual-right', f: 'bottom', t: 'left', label: 'Manual Date', lClass: 'label-no' },
+                { from: 'a1-preset-left', to: 'a1-apply-filter', f: 'right', t: 'top' },
+                { from: 'a1-manual-right', to: 'a1-apply-filter', f: 'right', t: 'bottom' },
+                { from: 'a1-apply-filter', to: 'a1-refetch-kpi', f: 'right', t: 'left' },
+                { from: 'a1-refetch-kpi', to: 'a1-end-filter', f: 'right', t: 'left' },
+                { from: 'a1-dec-action', to: 'a1-search-input', f: 'bottom', t: 'left', label: 'Search / Status', lClass: 'label-no' },
+                { from: 'a1-search-input', to: 'a1-filter-table', f: 'right', t: 'left' },
+                { from: 'a1-filter-table', to: 'a1-end-search', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 13b (Admin Antrean Pending Audit - PRD 13b)
+                { from: 'b1-start', to: 'b1-tab-pending', f: 'right', t: 'left' },
+                { from: 'b1-tab-pending', to: 'b1-filter-pending', f: 'right', t: 'left' },
+                { from: 'b1-filter-pending', to: 'b1-show-banner', f: 'right', t: 'left' },
+                { from: 'b1-show-banner', to: 'b1-dec-risk-type', f: 'right', t: 'left' },
+                { from: 'b1-dec-risk-type', to: 'b1-badge-new', f: 'top', t: 'left', label: 'Nomor Baru', lClass: 'label-yes' },
+                { from: 'b1-badge-new', to: 'b1-action-row1', f: 'right', t: 'left' },
+                { from: 'b1-action-row1', to: 'b1-dec-audit-btn', f: 'right', t: 'top' },
+                { from: 'b1-dec-risk-type', to: 'b1-badge-cross', f: 'bottom', t: 'left', label: 'Cross-Account', lClass: 'label-no' },
+                { from: 'b1-badge-cross', to: 'b1-action-row2', f: 'right', t: 'left' },
+                { from: 'b1-action-row2', to: 'b1-dec-audit-btn', f: 'right', t: 'bottom' },
+                { from: 'b1-dec-audit-btn', to: 'b1-btn-approve', f: 'top', t: 'left', label: 'Approve', lClass: 'label-yes' },
+                { from: 'b1-dec-audit-btn', to: 'b1-btn-reject', f: 'right', t: 'left', label: 'Reject', lClass: 'label-no' },
+                { from: 'b1-dec-audit-btn', to: 'b1-btn-detail', f: 'bottom', t: 'left', label: 'Detail', lClass: 'label-yes' },
+                { from: 'b1-btn-approve', to: 'b1-end-queue', f: 'right', t: 'top' },
+                { from: 'b1-btn-reject', to: 'b1-end-queue', f: 'right', t: 'left' },
+                { from: 'b1-btn-detail', to: 'b1-end-queue', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 13c (Admin Proses Approve - PRD 13c)
+                { from: 'c3-start', to: 'c3-click-approve', f: 'right', t: 'left' },
+                { from: 'c3-click-approve', to: 'c3-open-modal', f: 'right', t: 'left' },
+                { from: 'c3-open-modal', to: 'c3-render-summary', f: 'right', t: 'left' },
+                { from: 'c3-render-summary', to: 'c3-render-chk', f: 'right', t: 'left' },
+                { from: 'c3-render-chk', to: 'c3-dec-chk-state', f: 'right', t: 'left' },
+                { from: 'c3-dec-chk-state', to: 'c3-chk-checked', f: 'top', t: 'left', label: 'Centang (Set Primary)', lClass: 'label-yes' },
+                { from: 'c3-dec-chk-state', to: 'c3-chk-unchecked', f: 'bottom', t: 'left', label: 'Unchecked', lClass: 'label-no' },
+                { from: 'c3-chk-checked', to: 'c3-click-submit', f: 'right', t: 'top' },
+                { from: 'c3-chk-unchecked', to: 'c3-click-submit', f: 'right', t: 'bottom' },
+                { from: 'c3-click-submit', to: 'c3-loading', f: 'right', t: 'left' },
+                { from: 'c3-loading', to: 'c3-backend-exec', f: 'right', t: 'left' },
+                { from: 'c3-backend-exec', to: 'c3-dec-espay', f: 'right', t: 'left' },
+                { from: 'c3-dec-espay', to: 'c3-update-db-success', f: 'top', t: 'left', label: '200 OK (Sukses)', lClass: 'label-yes' },
+                { from: 'c3-update-db-success', to: 'c3-toast-success', f: 'right', t: 'left' },
+                { from: 'c3-toast-success', to: 'c3-end-success', f: 'right', t: 'left' },
+                { from: 'c3-dec-espay', to: 'c3-update-db-timeout', f: 'bottom', t: 'left', label: 'Timeout', lClass: 'label-no' },
+                { from: 'c3-update-db-timeout', to: 'c3-toast-timeout', f: 'right', t: 'left' },
+                { from: 'c3-toast-timeout', to: 'c3-end-timeout', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 13d (Admin Proses Reject - PRD 13d)
+                { from: 'd4-start', to: 'd4-click-reject', f: 'right', t: 'left' },
+                { from: 'd4-click-reject', to: 'd4-open-modal', f: 'right', t: 'left' },
+                { from: 'd4-open-modal', to: 'd4-render-refund-calc', f: 'right', t: 'left' },
+                { from: 'd4-render-refund-calc', to: 'd4-select-reason', f: 'right', t: 'left' },
+                { from: 'd4-select-reason', to: 'd4-dec-reason-type', f: 'right', t: 'left' },
+                { from: 'd4-dec-reason-type', to: 'd4-reason-baku', f: 'top', t: 'left', label: 'Alasan Baku', lClass: 'label-yes' },
+                { from: 'd4-dec-reason-type', to: 'd4-reason-lainnya', f: 'bottom', t: 'left', label: 'Alasan Lainnya', lClass: 'label-no' },
+                { from: 'd4-reason-baku', to: 'd4-click-submit', f: 'right', t: 'top' },
+                { from: 'd4-reason-lainnya', to: 'd4-click-submit', f: 'right', t: 'bottom' },
+                { from: 'd4-click-submit', to: 'd4-backend-rollback', f: 'right', t: 'left' },
+                { from: 'd4-backend-rollback', to: 'd4-update-db-reject', f: 'right', t: 'left' },
+                { from: 'd4-update-db-reject', to: 'd4-notify-app', f: 'right', t: 'left' },
+                { from: 'd4-notify-app', to: 'd4-toast-reject', f: 'right', t: 'left' },
+                { from: 'd4-toast-reject', to: 'd4-end-reject', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 13e (Admin Detail Audit Drawer - PRD 13e)
+                { from: 'e5-start', to: 'e5-click-detail', f: 'right', t: 'left' },
+                { from: 'e5-click-detail', to: 'e5-open-drawer', f: 'right', t: 'left' },
+                { from: 'e5-open-drawer', to: 'e5-render-sec1', f: 'right', t: 'left' },
+                { from: 'e5-render-sec1', to: 'e5-render-sec2', f: 'right', t: 'left' },
+                { from: 'e5-render-sec2', to: 'e5-dec-fde-alert', f: 'right', t: 'left' },
+                { from: 'e5-dec-fde-alert', to: 'e5-box-cross', f: 'top', t: 'left', label: 'Cross-Account', lClass: 'label-no' },
+                { from: 'e5-box-cross', to: 'e5-cross-info', f: 'right', t: 'left' },
+                { from: 'e5-cross-info', to: 'e5-render-sec3', f: 'right', t: 'left' },
+                { from: 'e5-dec-fde-alert', to: 'e5-box-new', f: 'bottom', t: 'left', label: 'Nomor Baru', lClass: 'label-yes' },
+                { from: 'e5-box-new', to: 'e5-render-sec3', f: 'right', t: 'left' },
+                { from: 'e5-render-sec3', to: 'e5-descending-timeline', f: 'right', t: 'left' },
+                { from: 'e5-descending-timeline', to: 'e5-dec-status-footer', f: 'right', t: 'left' },
+                { from: 'e5-dec-status-footer', to: 'e5-sticky-footer', f: 'top', t: 'left', label: 'Pending Audit', lClass: 'label-yes' },
+                { from: 'e5-sticky-footer', to: 'e5-click-action-drawer', f: 'right', t: 'left' },
+                { from: 'e5-click-action-drawer', to: 'e5-end-drawer', f: 'right', t: 'left' },
+                { from: 'e5-dec-status-footer', to: 'e5-hide-footer', f: 'bottom', t: 'left', label: 'Sukses / Ditolak', lClass: 'label-no' },
+                { from: 'e5-hide-footer', to: 'e5-end-drawer', f: 'right', t: 'bottom' }
             ]
         };
 
@@ -1334,6 +1561,11 @@
             if (nodeId.startsWith('c9-') && selectedKeys.includes('sec9')) return true;
             if (nodeId.startsWith('c10-') && selectedKeys.includes('sec10')) return true;
             if (nodeId.startsWith('c12-') && selectedKeys.includes('sec12')) return true;
+            if (nodeId.startsWith('a1-') && selectedKeys.includes('sec13a')) return true;
+            if (nodeId.startsWith('b1-') && selectedKeys.includes('sec13b')) return true;
+            if (nodeId.startsWith('c3-') && selectedKeys.includes('sec13c')) return true;
+            if (nodeId.startsWith('d4-') && selectedKeys.includes('sec13d')) return true;
+            if (nodeId.startsWith('e5-') && selectedKeys.includes('sec13e')) return true;
             return false;
         }
 
@@ -1360,7 +1592,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -1369,6 +1601,7 @@
             const hasMerchant = selectedKeys.some(k => ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].includes(k));
             if (hasMerchant) activeSecIds.add('outer-merchant');
             if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12')) activeSecIds.add('outer-customer');
+            if (selectedKeys.includes('sec13a') || selectedKeys.includes('sec13b') || selectedKeys.includes('sec13c') || selectedKeys.includes('sec13d') || selectedKeys.includes('sec13e')) activeSecIds.add('outer-admin');
 
             const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
                 const id = sec.getAttribute('data-sec-id');
