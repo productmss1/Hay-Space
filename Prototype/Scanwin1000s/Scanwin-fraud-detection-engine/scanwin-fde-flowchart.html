@@ -37,7 +37,7 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            min-width: 17500px;
+            min-width: 23500px;
             min-height: 5400px;
         }
 
@@ -314,7 +314,22 @@
                         <input type="checkbox" class="chk-flow" value="sec13d" checked onchange="onFlowCheckboxChange()"> 🔴 13d. Admin: Proses Reject &amp; 100% Refund (PRD 13d)
                     </label>
                     <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13e" checked onchange="onFlowCheckboxChange()"> 📄 13e. Admin: Detail Audit Drawer &amp; FDE Box (PRD 13e)
+                        <input type="checkbox" class="chk-flow" value="sec13e" checked onchange="onFlowCheckboxChange()"> 📄 13e. Admin E-Wallet: Detail Audit Drawer (PRD 13e)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #6d28d9; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8b4fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7a_vch" checked onchange="onFlowCheckboxChange()"> 📊 7a. Admin Voucher: List Tab Riwayat &amp; KPI Cards (PRD 7a)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7b_vch" checked onchange="onFlowCheckboxChange()"> ⏳ 7b. Admin Voucher: Antrean Tab Pending FDE (PRD 7b)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7c_vch" checked onchange="onFlowCheckboxChange()"> 📄 7c. Admin Voucher: Detail Audit Drawer &amp; 4 Parameter FDE (PRD 7c)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7d_vch" checked onchange="onFlowCheckboxChange()"> 🟢 7d. Admin Voucher: Proses Approve (Direct &amp; QR - PRD 7d)
+                    </label>
+                    <label style="font-size: 11px; font-weight: 700; color: #b91c1c; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7e_vch" checked onchange="onFlowCheckboxChange()"> 🔴 7e. Admin Voucher: Proses Tolak &amp; Refund Kuota (PRD 7e)
                     </label>
                 </div>
             </div>
@@ -463,6 +478,36 @@
                 <!-- SUB-SECTION 13e: Modul 5: Detail Audit Drawer (360 Detail & FDE Cross-Account Box) -->
                 <div class="figma-section" data-sec-id="sec13e" style="left: 11350px; top: 3180px; width: 5450px; height: 800px;">
                     <span class="section-label" style="background:#0284c7;">Monitoring Pencairan Saldo: Modul 5 (Detail Audit Drawer &amp; Cross-Account Alert Box - PRD 13e)</span>
+                </div>
+
+                <!-- ================= OUTER SECTION 4: ADMIN POV — MONITORING PEMBERIAN VOUCHER ================= -->
+                <div class="figma-section" data-sec-id="outer-admin-vch" style="left: 17100px; top: 150px; width: 5600px; height: 3880px; border: 3px dashed #7c3aed; background: rgba(245, 243, 255, 0.25);">
+                    <span class="section-label" style="background:#7c3aed; font-size:13px; padding:6px 16px;">ADMIN POV — MONITORING PEMBERIAN VOUCHER SCANWIN (PRD 7)</span>
+                </div>
+
+                <!-- SUB-SECTION 7a: Modul 1: List Tab Riwayat & Summary KPI Cards (PRD 7a) -->
+                <div class="figma-section" data-sec-id="sec7a_vch" style="left: 17150px; top: 200px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#4f46e5;">Monitoring Pemberian Voucher: Modul 1 (List Tab Riwayat &amp; Metric KPI Cards - PRD 7a)</span>
+                </div>
+
+                <!-- SUB-SECTION 7b: Modul 2: List Tab Pending Audit (PRD 7b) -->
+                <div class="figma-section" data-sec-id="sec7b_vch" style="left: 17150px; top: 880px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#d97706;">Monitoring Pemberian Voucher: Modul 2 (Antrean Pending Audit &amp; FDE Badges - PRD 7b)</span>
+                </div>
+
+                <!-- SUB-SECTION 7c: Modul 3: Detail Audit Drawer & 4 Parameter FDE (PRD 7c) -->
+                <div class="figma-section" data-sec-id="sec7c_vch" style="left: 17150px; top: 1560px; width: 5450px; height: 700px;">
+                    <span class="section-label" style="background:#0284c7;">Monitoring Pemberian Voucher: Modul 3 (Detail Audit Drawer &amp; Breakdown 4 Parameter - PRD 7c)</span>
+                </div>
+
+                <!-- SUB-SECTION 7d: Modul 4: Proses Approve (Direct Scan & QR Bulk - PRD 7d) -->
+                <div class="figma-section" data-sec-id="sec7d_vch" style="left: 17150px; top: 2360px; width: 5450px; height: 750px;">
+                    <span class="section-label" style="background:#059669;">Monitoring Pemberian Voucher: Modul 4 (Proses Approve: Direct Scan &amp; Shareable QR Bulk - PRD 7d)</span>
+                </div>
+
+                <!-- SUB-SECTION 7e: Modul 5: Proses Tolak (Reject Modal, Quota Refund, & Push Notif - PRD 7e) -->
+                <div class="figma-section" data-sec-id="sec7e_vch" style="left: 17150px; top: 3180px; width: 5450px; height: 800px;">
+                    <span class="section-label" style="background:#dc2626;">Monitoring Pemberian Voucher: Modul 5 (Proses Tolak: Reject Modal, Refund Kuota, &amp; Push Notif - PRD 7e)</span>
                 </div>
             </div>
 
@@ -832,16 +877,80 @@
                 { id: 'e5-render-sec1', type: 'n-gray', text: 'Render Section 1:<br>Identitas Pelanggan USR-x', x: 11980, y: 3480 },
                 { id: 'e5-render-sec2', type: 'n-gray', text: 'Render Section 2:<br>Rincian E-Wallet &amp; Status Badge', x: 12200, y: 3480 },
                 { id: 'e5-dec-fde-alert', type: 'n-decision', text: '<span>Kasus Indikasi<br>FDE Risk?</span>', x: 12450, y: 3450 },
-                { id: 'e5-box-cross', type: 'n-gray', text: 'Render Callout Box Gold:<br>Data Pemilik Utama E-Wallet', x: 12700, y: 3360 },
-                { id: 'e5-cross-info', type: 'n-gray', text: 'Detail Pemilik: Nama, USR ID,<br>No HP Pemilik &amp; Relation Note', x: 12920, y: 3360 },
-                { id: 'e5-box-new', type: 'n-gray', text: 'Render Callout Box Blue / Standard:<br>Nomor E-Wallet Baru', x: 12700, y: 3600 },
-                { id: 'e5-render-sec3', type: 'n-gray', text: 'Render Section 3:<br>Log Audit &amp; Timeline Descending', x: 13160, y: 3480 },
-                { id: 'e5-descending-timeline', type: 'n-gray', text: 'Urutan Kronologi Descending:<br>(Peristiwa Terbaru di Paling Atas)', x: 13380, y: 3480 },
-                { id: 'e5-dec-status-footer', type: 'n-decision', text: '<span>Status Transaksi<br>== Pending Audit?</span>', x: 13630, y: 3450 },
-                { id: 'e5-sticky-footer', type: 'n-purple', text: 'Render Sticky Action Footer:<br>Tombol [Reject] &amp; [Approve]', x: 13880, y: 3380 },
-                { id: 'e5-hide-footer', type: 'n-gray', text: 'Sembunyikan Footer<br>(Status Sukses / Ditolak)', x: 13880, y: 3580 },
-                { id: 'e5-click-action-drawer', type: 'n-purple', text: 'Auditor Klik Action<br>pada Sticky Footer', x: 14100, y: 3380 },
-                { id: 'e5-end-drawer', type: 'n-end', text: 'Drawer Audit<br>Finished / Action Pushed', x: 14320, y: 3335 }
+                { id: 'e5-box-cross', type: 'n-gray', text: 'Render Callout Box Gold:<br>Data Pemilik Utama E-Wallet', x: 12720, y: 3360 },
+                { id: 'e5-cross-info', type: 'n-gray', text: 'Detail Pemilik: Nama, USR ID,<br>No HP Pemilik &amp; Relation Note', x: 12940, y: 3360 },
+                { id: 'e5-box-new', type: 'n-gray', text: 'Render Callout Box Blue / Standard:<br>Nomor E-Wallet Baru', x: 12720, y: 3600 },
+                { id: 'e5-render-sec3', type: 'n-gray', text: 'Render Section 3:<br>Log Audit &amp; Timeline Descending', x: 13180, y: 3480 },
+                { id: 'e5-descending-timeline', type: 'n-gray', text: 'Urutan Kronologi Descending:<br>(Peristiwa Terbaru di Paling Atas)', x: 13400, y: 3480 },
+                { id: 'e5-dec-status-footer', type: 'n-decision', text: '<span>Status Transaksi<br>== Pending Audit?</span>', x: 13650, y: 3450 },
+                { id: 'e5-sticky-footer', type: 'n-purple', text: 'Render Sticky Action Footer:<br>Tombol [Reject] &amp; [Approve]', x: 13930, y: 3380 },
+                { id: 'e5-hide-footer', type: 'n-gray', text: 'Sembunyikan Footer<br>(Status Sukses / Ditolak)', x: 13930, y: 3580 },
+                { id: 'e5-click-action-drawer', type: 'n-purple', text: 'Auditor Klik Action<br>pada Sticky Footer', x: 14150, y: 3380 },
+                { id: 'e5-end-drawer', type: 'n-end', text: 'Drawer Audit<br>Finished / Action Pushed', x: 14370, y: 3335 },
+
+                // ================= SECTION 7a (Admin Pemberian Voucher: List Tab Riwayat & Metric KPI Cards - PRD 7a) =================
+                { id: 'va1-start', type: 'n-start', text: 'Start', x: 17200, y: 390 },
+                { id: 'va1-access', type: 'n-gray', text: 'Akses Portal Backoffice<br>Monitoring Voucher', x: 17390, y: 410 },
+                { id: 'va1-load', type: 'n-gray', text: 'Backend Fetch KPI<br>&amp; Log Riwayat Transaksi', x: 17630, y: 410 },
+                { id: 'va1-kpi', type: 'n-purple', text: 'Render 4 Metric KPI Cards<br>(Dynamic Date Subtext)', x: 17870, y: 410 },
+                { id: 'va1-filter', type: 'n-purple', text: 'Filter Tanggal / Search /<br>Dropdown Tipe Voucher', x: 18110, y: 410 },
+                { id: 'va1-date-dec', type: 'n-decision', text: '<span>Tanggal Mulai<br>&lt;= Selesai?</span>', x: 18360, y: 380 },
+                { id: 'va1-date-err', type: 'n-gray', text: 'Notifikasi Validasi Error<br>&amp; Batalkan Filter', x: 18360, y: 600 },
+                { id: 'va1-render-table', type: 'n-gray', text: 'Update Data Tabel<br>&amp; KPI (8 Kolom)', x: 18590, y: 410 },
+                { id: 'va1-tab-log', type: 'n-gray', text: 'Tampilan Log Riwayat<br>(Used, Rejected, Expired)', x: 18840, y: 410 },
+                { id: 'va1-end', type: 'n-end', text: 'Monitoring Riwayat<br>Voucher Selesai', x: 19080, y: 370 },
+
+                // ================= SECTION 7b (Admin Pemberian Voucher: Antrean Pending Audit - PRD 7b) =================
+                { id: 'vb2-start', type: 'n-start', text: 'Start', x: 17200, y: 1080 },
+                { id: 'vb2-click-tab', type: 'n-purple', text: 'Mengklik Tab "Voucher Pending"', x: 17390, y: 1100 },
+                { id: 'vb2-autohide', type: 'n-gray', text: 'Auto-Hide Dropdown<br>Filter Status Transaksi', x: 17630, y: 1100 },
+                { id: 'vb2-fetch', type: 'n-gray', text: 'Backend Fetch Transaksi<br>Pending (Status = PENDING)', x: 17870, y: 1100 },
+                { id: 'vb2-count', type: 'n-purple', text: 'Hitung &amp; Render Count Badge<br>[Voucher Pending N]', x: 18110, y: 1100 },
+                { id: 'vb2-render-table', type: 'n-gray', text: 'Render Tabel Pending &amp;<br>Tombol Aksi Audit (3 Opsi)', x: 18350, y: 1100 },
+                { id: 'vb2-empty-dec', type: 'n-decision', text: '<span>Antrean Pending<br>Kosong?</span>', x: 18610, y: 1070 },
+                { id: 'vb2-empty-msg', type: 'n-gray', text: 'Tampilkan Pemberitahuan<br>Antrean Pending Kosong', x: 18610, y: 1300 },
+                { id: 'vb2-action-choose', type: 'n-purple', text: 'Pilih Tombol Audit:<br>Approve / Reject / Detail', x: 18850, y: 1100 },
+                { id: 'vb2-end', type: 'n-end', text: 'Antrean Pending<br>Siap Diaudit', x: 19090, y: 1060 },
+
+                // ================= SECTION 7c (Admin Pemberian Voucher: Detail Audit Drawer & 4 Parameter FDE - PRD 7c) =================
+                { id: 'vc3-start', type: 'n-start', text: 'Start', x: 17200, y: 1770 },
+                { id: 'vc3-click-detail', type: 'n-purple', text: 'Klik TRX ID / Tombol Detail', x: 17390, y: 1790 },
+                { id: 'vc3-open-drawer', type: 'n-gray', text: 'Buka Slide-over Panel<br>#auditDrawer', x: 17630, y: 1790 },
+                { id: 'vc3-calc-score', type: 'n-gray', text: 'Hitung Skor FDE (GPS 20,<br>IP 20, Device 30, Rate 30)', x: 17870, y: 1790 },
+                { id: 'vc3-story-box', type: 'n-purple', text: 'Render Storytelling Box<br>&amp; Risk Badge', x: 18110, y: 1790 },
+                { id: 'vc3-render-params', type: 'n-gray', text: 'Render 4 Parameter Cards<br>(Bahasa Operasional Awam)', x: 18340, y: 1790 },
+                { id: 'vc3-render-timeline', type: 'n-purple', text: 'Render Linimasa Log<br>Descending (System &amp; Reject Notes)', x: 18580, y: 1790 },
+                { id: 'vc3-status-dec', type: 'n-decision', text: '<span>Status Transaksi<br>== PENDING?</span>', x: 18840, y: 1760 },
+                { id: 'vc3-show-footer', type: 'n-purple', text: 'Tampilkan Sticky Footer<br>Tombol Approve &amp; Reject', x: 19090, y: 1760 },
+                { id: 'vc3-hide-footer', type: 'n-gray', text: 'Sembunyikan Footer Aksi<br>(Tampilan View-only)', x: 18840, y: 1960 },
+                { id: 'vc3-end', type: 'n-end', text: 'Detail Audit Drawer<br>Tersaji Lengkap', x: 19320, y: 1720 },
+
+                // ================= SECTION 7d (Admin Pemberian Voucher: Proses Approve - PRD 7d) =================
+                { id: 'vd4-start', type: 'n-start', text: 'Start', x: 17200, y: 2570 },
+                { id: 'vd4-click-approve', type: 'n-purple', text: 'Klik Tombol "Approve"<br>di Tabel / Drawer', x: 17390, y: 2590 },
+                { id: 'vd4-lock-dec', type: 'n-decision', text: '<span>Optimistic Lock<br>Sudah Diproses?</span>', x: 17650, y: 2560 },
+                { id: 'vd4-lock-err', type: 'n-gray', text: 'Toast Warning: Transaksi<br>Telah Diproses Admin Lain', x: 17650, y: 2800 },
+                { id: 'vd4-open-modal', type: 'n-gray', text: 'Buka Modal #modalApprove<br>&amp; Rincian Transaksi', x: 17900, y: 2590 },
+                { id: 'vd4-confirm-click', type: 'n-purple', text: 'Centang Konfirmasi &amp;<br>Klik "Setujui &amp; Proses"', x: 18140, y: 2590 },
+                { id: 'vd4-flow-dec', type: 'n-decision', text: '<span>Tipe Voucher<br>== Direct Scan?</span>', x: 18400, y: 2560 },
+                { id: 'vd4-direct-flow', type: 'n-gray', text: 'Flow 1: Status \'Used\', Payout<br>Komisi Toko &amp; Saldo Customer', x: 18640, y: 2480 },
+                { id: 'vd4-share-flow', type: 'n-gray', text: 'Flow 2: Generate Bulk QR 24h<br>&amp; Aktifkan Tombol Kirim WA', x: 18640, y: 2700 },
+                { id: 'vd4-toast-success', type: 'n-purple', text: 'Render Toast Sukses<br>&amp; Update Data Tabel', x: 18910, y: 2590 },
+                { id: 'vd4-end', type: 'n-end', text: 'Voucher Approved<br>&amp; Payout Released', x: 19150, y: 2545 },
+
+                // ================= SECTION 7e (Admin Pemberian Voucher: Proses Tolak & Push Notif - PRD 7e) =================
+                { id: 've5-start', type: 'n-start', text: 'Start', x: 17200, y: 3400 },
+                { id: 've5-click-reject', type: 'n-purple', text: 'Klik Tombol "Reject"<br>di Tabel / Drawer', x: 17390, y: 3420 },
+                { id: 've5-open-modal', type: 'n-gray', text: 'Buka Modal #modalReject &amp;<br>Kotak Rincian Transaksi', x: 17630, y: 3420 },
+                { id: 've5-input-form', type: 'n-purple', text: 'Wajib Pilih Alasan Dropdown<br>&amp; Input Catatan Auditor', x: 17880, y: 3420 },
+                { id: 've5-reason-dec', type: 'n-decision', text: '<span>Alasan Penolakan<br>Sudah Dipilih?</span>', x: 18140, y: 3390 },
+                { id: 've5-reason-err', type: 'n-gray', text: 'Alert Error: Alasan<br>Penolakan Mandatory', x: 18140, y: 3630 },
+                { id: 've5-backend-exec', type: 'n-gray', text: 'Backend Update Status \'REJECTED\'<br>&amp; Batalkan Komisi/Hadiah', x: 18400, y: 3420 },
+                { id: 've5-victim-dec', type: 'n-decision', text: '<span>Toko Fisik Korban<br>Pasif Fraud?</span>', x: 18670, y: 3390 },
+                { id: 've5-push-notif', type: 'n-purple', text: 'Kirim Push Notifikasi<br>Aplikasi Pelanggan &amp; Toko', x: 18910, y: 3300 },
+                { id: 've5-refund-quota', type: 'n-gray', text: 'Auto-Refund 1 Unit Kuota<br>Voucher ke Saldo Toko', x: 18910, y: 3510 },
+                { id: 've5-admin-toast', type: 'n-purple', text: 'Render Toast Feedback Admin<br>(Header &amp; Detail Notif)', x: 19160, y: 3420 },
+                { id: 've5-end', type: 'n-end', text: 'Voucher Rejected<br>&amp; Quota Refunded', x: 19390, y: 3375 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -1216,7 +1325,72 @@
                 { from: 'e5-sticky-footer', to: 'e5-click-action-drawer', f: 'right', t: 'left' },
                 { from: 'e5-click-action-drawer', to: 'e5-end-drawer', f: 'right', t: 'left' },
                 { from: 'e5-dec-status-footer', to: 'e5-hide-footer', f: 'bottom', t: 'left', label: 'Sukses / Ditolak', lClass: 'label-no' },
-                { from: 'e5-hide-footer', to: 'e5-end-drawer', f: 'right', t: 'bottom' }
+                { from: 'e5-hide-footer', to: 'e5-end-drawer', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 7a (Admin Pemberian Voucher List Tab Riwayat - PRD 7a)
+                { from: 'va1-start', to: 'va1-access', f: 'right', t: 'left' },
+                { from: 'va1-access', to: 'va1-load', f: 'right', t: 'left' },
+                { from: 'va1-load', to: 'va1-kpi', f: 'right', t: 'left' },
+                { from: 'va1-kpi', to: 'va1-filter', f: 'right', t: 'left' },
+                { from: 'va1-filter', to: 'va1-date-dec', f: 'right', t: 'left' },
+                { from: 'va1-date-dec', to: 'va1-render-table', f: 'right', t: 'left', label: 'Ya', lClass: 'label-yes' },
+                { from: 'va1-date-dec', to: 'va1-date-err', f: 'bottom', t: 'top', label: 'Tidak', lClass: 'label-no' },
+                { from: 'va1-date-err', to: 'va1-filter', f: 'left', t: 'bottom' },
+                { from: 'va1-render-table', to: 'va1-tab-log', f: 'right', t: 'left' },
+                { from: 'va1-tab-log', to: 'va1-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 7b (Admin Pemberian Voucher List Tab Pending - PRD 7b)
+                { from: 'vb2-start', to: 'vb2-click-tab', f: 'right', t: 'left' },
+                { from: 'vb2-click-tab', to: 'vb2-autohide', f: 'right', t: 'left' },
+                { from: 'vb2-autohide', to: 'vb2-fetch', f: 'right', t: 'left' },
+                { from: 'vb2-fetch', to: 'vb2-count', f: 'right', t: 'left' },
+                { from: 'vb2-count', to: 'vb2-render-table', f: 'right', t: 'left' },
+                { from: 'vb2-render-table', to: 'vb2-empty-dec', f: 'right', t: 'left' },
+                { from: 'vb2-empty-dec', to: 'vb2-action-choose', f: 'right', t: 'left', label: 'Ada Data', lClass: 'label-yes' },
+                { from: 'vb2-empty-dec', to: 'vb2-empty-msg', f: 'bottom', t: 'top', label: 'Kosong', lClass: 'label-no' },
+                { from: 'vb2-action-choose', to: 'vb2-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 7c (Admin Pemberian Voucher Detail Audit Drawer - PRD 7c)
+                { from: 'vc3-start', to: 'vc3-click-detail', f: 'right', t: 'left' },
+                { from: 'vc3-click-detail', to: 'vc3-open-drawer', f: 'right', t: 'left' },
+                { from: 'vc3-open-drawer', to: 'vc3-calc-score', f: 'right', t: 'left' },
+                { from: 'vc3-calc-score', to: 'vc3-story-box', f: 'right', t: 'left' },
+                { from: 'vc3-story-box', to: 'vc3-render-params', f: 'right', t: 'left' },
+                { from: 'vc3-render-params', to: 'vc3-render-timeline', f: 'right', t: 'left' },
+                { from: 'vc3-render-timeline', to: 'vc3-status-dec', f: 'right', t: 'left' },
+                { from: 'vc3-status-dec', to: 'vc3-show-footer', f: 'right', t: 'left', label: 'Pending Audit', lClass: 'label-yes' },
+                { from: 'vc3-status-dec', to: 'vc3-hide-footer', f: 'bottom', t: 'top', label: 'Selesai', lClass: 'label-no' },
+                { from: 'vc3-show-footer', to: 'vc3-end', f: 'right', t: 'left' },
+                { from: 'vc3-hide-footer', to: 'vc3-end', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 7d (Admin Pemberian Voucher Proses Approve - PRD 7d)
+                { from: 'vd4-start', to: 'vd4-click-approve', f: 'right', t: 'left' },
+                { from: 'vd4-click-approve', to: 'vd4-lock-dec', f: 'right', t: 'left' },
+                { from: 'vd4-lock-dec', to: 'vd4-open-modal', f: 'right', t: 'left', label: 'Belum', lClass: 'label-yes' },
+                { from: 'vd4-lock-dec', to: 'vd4-lock-err', f: 'bottom', t: 'top', label: 'Sudah', lClass: 'label-no' },
+                { from: 'vd4-lock-err', to: 'vd4-lock-dec', f: 'left', t: 'bottom' },
+                { from: 'vd4-open-modal', to: 'vd4-confirm-click', f: 'right', t: 'left' },
+                { from: 'vd4-confirm-click', to: 'vd4-flow-dec', f: 'right', t: 'left' },
+                { from: 'vd4-flow-dec', to: 'vd4-direct-flow', f: 'top', t: 'left', label: 'Direct Scan', lClass: 'label-yes' },
+                { from: 'vd4-flow-dec', to: 'vd4-share-flow', f: 'bottom', t: 'left', label: 'Shareable QR', lClass: 'label-no' },
+                { from: 'vd4-direct-flow', to: 'vd4-toast-success', f: 'right', t: 'top' },
+                { from: 'vd4-share-flow', to: 'vd4-toast-success', f: 'right', t: 'bottom' },
+                { from: 'vd4-toast-success', to: 'vd4-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 7e (Admin Pemberian Voucher Proses Tolak - PRD 7e)
+                { from: 've5-start', to: 've5-click-reject', f: 'right', t: 'left' },
+                { from: 've5-click-reject', to: 've5-open-modal', f: 'right', t: 'left' },
+                { from: 've5-open-modal', to: 've5-input-form', f: 'right', t: 'left' },
+                { from: 've5-input-form', to: 've5-reason-dec', f: 'right', t: 'left' },
+                { from: 've5-reason-dec', to: 've5-backend-exec', f: 'right', t: 'left', label: 'Ya', lClass: 'label-yes' },
+                { from: 've5-reason-dec', to: 've5-reason-err', f: 'bottom', t: 'top', label: 'Belum', lClass: 'label-no' },
+                { from: 've5-reason-err', to: 've5-input-form', f: 'left', t: 'bottom' },
+                { from: 've5-backend-exec', to: 've5-victim-dec', f: 'right', t: 'left' },
+                { from: 've5-victim-dec', to: 've5-push-notif', f: 'top', t: 'left', label: 'Pelaku Fraud', lClass: 'label-no' },
+                { from: 've5-victim-dec', to: 've5-refund-quota', f: 'bottom', t: 'left', label: 'Korban Pasif', lClass: 'label-yes' },
+                { from: 've5-refund-quota', to: 've5-admin-toast', f: 'right', t: 'bottom' },
+                { from: 've5-push-notif', to: 've5-admin-toast', f: 'right', t: 'top' },
+                { from: 've5-admin-toast', to: 've5-end', f: 'right', t: 'left' }
             ]
         };
 
@@ -1284,6 +1458,10 @@
         }
 
         function updateConnections() {
+            if (svgLayer) {
+                svgLayer.setAttribute('width', '23500');
+                svgLayer.setAttribute('height', '5400');
+            }
             while (svgLayer.firstChild) {
                 if (svgLayer.firstChild.tagName === 'defs') {
                     if (svgLayer.children.length === 1) break;
@@ -1566,6 +1744,11 @@
             if (nodeId.startsWith('c3-') && selectedKeys.includes('sec13c')) return true;
             if (nodeId.startsWith('d4-') && selectedKeys.includes('sec13d')) return true;
             if (nodeId.startsWith('e5-') && selectedKeys.includes('sec13e')) return true;
+            if (nodeId.startsWith('va1-') && selectedKeys.includes('sec7a_vch')) return true;
+            if (nodeId.startsWith('vb2-') && selectedKeys.includes('sec7b_vch')) return true;
+            if (nodeId.startsWith('vc3-') && selectedKeys.includes('sec7c_vch')) return true;
+            if (nodeId.startsWith('vd4-') && selectedKeys.includes('sec7d_vch')) return true;
+            if (nodeId.startsWith('ve5-') && selectedKeys.includes('sec7e_vch')) return true;
             return false;
         }
 
@@ -1592,7 +1775,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e', 'sec7a_vch', 'sec7b_vch', 'sec7c_vch', 'sec7d_vch', 'sec7e_vch'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -1602,6 +1785,7 @@
             if (hasMerchant) activeSecIds.add('outer-merchant');
             if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12')) activeSecIds.add('outer-customer');
             if (selectedKeys.includes('sec13a') || selectedKeys.includes('sec13b') || selectedKeys.includes('sec13c') || selectedKeys.includes('sec13d') || selectedKeys.includes('sec13e')) activeSecIds.add('outer-admin');
+            if (selectedKeys.includes('sec7a_vch') || selectedKeys.includes('sec7b_vch') || selectedKeys.includes('sec7c_vch') || selectedKeys.includes('sec7d_vch') || selectedKeys.includes('sec7e_vch')) activeSecIds.add('outer-admin-vch');
 
             const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
                 const id = sec.getAttribute('data-sec-id');

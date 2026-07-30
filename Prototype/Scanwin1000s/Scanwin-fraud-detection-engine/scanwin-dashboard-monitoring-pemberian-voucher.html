@@ -1,0 +1,1955 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>sCanWin - Dashboard Monitoring Pemberian Voucher</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Roboto:wght@400;500;700&family=Roboto+Mono:wght@500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* RESET & BASE STYLES */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: #eee;
+      color: #404040;
+      font-size: 14px;
+      line-height: 1.5;
+      overflow-x: hidden;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    button {
+      cursor: pointer;
+      font-family: inherit;
+      border: none;
+      background: none;
+    }
+
+    input,
+    select,
+    textarea {
+      font-family: inherit;
+      font-size: inherit;
+    }
+
+    /* LAYOUT CONTAINER */
+    .app-container {
+      position: relative;
+      width: 100vw;
+      min-height: 100vh;
+      background: #eee;
+    }
+
+    /* TOP BAR */
+    .top-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 58px;
+      background: #2DC3E8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 100;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .brand-section {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .hamburger-icon {
+      color: white;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: white;
+      font-weight: 700;
+      font-size: 18px;
+      letter-spacing: -0.5px;
+    }
+
+    .logo-badge {
+      background: rgba(255, 255, 255, 0.25);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .user-profile-section {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      color: white;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #eee;
+      color: #1E3A8A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .top-icons {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 18px;
+    }
+
+    /* SUB-HEADER / BREADCRUMB */
+    .sub-header {
+      position: fixed;
+      top: 58px;
+      left: 250px;
+      right: 0;
+      height: 48px;
+      background: #ffffff;
+      border-bottom: 1px solid #e4e4e4;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      z-index: 90;
+    }
+
+    .page-title {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+      font-size: 15px;
+      color: #404040;
+      letter-spacing: -0.1px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .page-title .breadcrumb {
+      color: #969494;
+      font-size: 13px;
+      font-weight: 400;
+    }
+
+    .sub-header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #666;
+    }
+
+    .action-icon-btn {
+      padding: 6px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+
+    .action-icon-btn:hover {
+      background: #f0f0f0;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      position: fixed;
+      top: 58px;
+      left: 0;
+      width: 250px;
+      height: calc(100vh - 58px);
+      background: #ffffff;
+      box-shadow: 4px 0px 8px 0px rgba(0, 0, 0, 0.08);
+      z-index: 95;
+      display: flex;
+      flex-direction: column;
+      padding-top: 12px;
+      user-select: none;
+    }
+
+    .sidebar-menu-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .menu-header-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 14px;
+      color: #969494;
+      cursor: pointer;
+      border-bottom: 1px solid #EDEDED;
+      transition: color 0.2s, background 0.2s;
+    }
+
+    .menu-header-row:hover {
+      background: #F9FAFB;
+      color: #414143;
+    }
+
+    .menu-header-row.active {
+      color: #414143;
+      font-weight: 500;
+    }
+
+    .menu-header-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .menu-header-icon {
+      font-size: 16px;
+      color: #969494;
+      display: flex;
+      align-items: center;
+    }
+
+    .menu-header-title {
+      font-size: 14px;
+      text-transform: capitalize;
+    }
+
+    /* SUBMENU TIMELINE TREE */
+    .sidebar-tree-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 16px 14px 20px;
+      position: relative;
+      background: #FAFAFA;
+      border-bottom: 1px solid #EDEDED;
+    }
+
+    .tree-connector {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      padding-top: 6px;
+    }
+
+    .tree-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #9E9E9E;
+      transition: background 0.2s, box-shadow 0.2s;
+      z-index: 2;
+    }
+
+    .tree-dot.active {
+      background: #4181EF;
+      box-shadow: 0 0 0 3px rgba(65, 129, 239, 0.2);
+    }
+
+    .tree-line {
+      width: 1px;
+      height: 24px;
+      background: #E4E4E4;
+      margin: 3px 0;
+    }
+
+    .tree-submenus {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      flex: 1;
+    }
+
+    .tree-tab-item {
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: #9E9E9E;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: color 0.2s;
+      padding: 2px 0;
+    }
+
+    .tree-tab-item:hover {
+      color: #414143;
+    }
+
+    .tree-tab-item.active {
+      color: #414143;
+      font-weight: 600;
+    }
+
+    .badge-count.pending {
+      background: #D97706;
+      color: white;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 0;
+      line-height: 1;
+    }
+
+    /* MAIN CONTENT AREA */
+    .main-content {
+      margin-top: 118px;
+      margin-left: 264px;
+      margin-right: 20px;
+      padding-bottom: 40px;
+    }
+
+    /* METRIC SUMMARY CARDS */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .metric-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e4e4e4;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: #4181EF;
+    }
+
+    .metric-card.success::before {
+      background: #16A34A;
+    }
+
+    .metric-card.pending::before {
+      background: #D97706;
+    }
+
+    .metric-card.rejected::before {
+      background: #DC2626;
+    }
+
+    .metric-title {
+      font-size: 12px;
+      font-weight: 500;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .metric-value {
+      font-size: 20px;
+      font-weight: 700;
+      color: #111827;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    /* MAIN PAGE CONTENT TABS */
+    .page-tab-bar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #E5E7EB;
+      margin-bottom: 16px;
+      background: #FFFFFF;
+      padding: 6px 16px 0 16px;
+      border-radius: 8px 8px 0 0;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
+    }
+
+    .page-tab-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 18px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #6B7280;
+      cursor: pointer;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+
+    .page-tab-item:hover {
+      color: #1F2937;
+    }
+
+    .page-tab-item.active {
+      color: #2563EB;
+      font-weight: 600;
+      border-bottom-color: #2563EB;
+      background: rgba(37, 99, 235, 0.05);
+      border-radius: 6px 6px 0 0;
+    }
+
+    .page-tab-badge {
+      background: #D97706;
+      color: white;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 10px;
+    }
+
+    /* FILTER BAR */
+    .filter-card {
+      background: #ffffff;
+      border-radius: 8px;
+      padding: 16px 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e4e4e4;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .filter-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      min-width: 260px;
+    }
+
+    .search-box input {
+      width: 100%;
+      padding: 9px 12px 9px 36px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .search-box input:focus {
+      border-color: #2DC3E8;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #999;
+    }
+
+    .filter-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      outline: none;
+      background: white;
+      color: #404040;
+    }
+
+    /* DATE PICKER POPOVER */
+    .date-picker-trigger {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      background: white;
+      cursor: pointer;
+      font-size: 13px;
+      color: #404040;
+    }
+
+    .date-picker-popover {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      margin-top: 6px;
+      background: white;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+      display: none;
+      z-index: 200;
+      width: 520px;
+      padding: 16px;
+    }
+
+    .date-picker-popover.active {
+      display: block;
+    }
+
+    .date-popover-dual {
+      display: grid;
+      grid-template-columns: 180px 1fr;
+      gap: 16px;
+    }
+
+    .preset-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      border-right: 1px solid #eee;
+      padding-right: 12px;
+    }
+
+    .preset-btn {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 4px;
+      font-size: 12px;
+      color: #555;
+      transition: background 0.15s;
+    }
+
+    .preset-btn:hover {
+      background: #f0fdf4;
+      color: #166534;
+    }
+
+    .preset-btn.active {
+      background: #2563EB;
+      color: white;
+      font-weight: 600;
+    }
+
+    .manual-date-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .date-input-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .date-input-group label {
+      font-size: 11px;
+      font-weight: 600;
+      color: #666;
+    }
+
+    .date-input-group input {
+      padding: 6px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+
+    /* DATA TABLE CARD & HORIZONTAL SCROLL CONTAINER */
+    .table-card {
+      background: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+      border: 1px solid #e4e4e4;
+      overflow: hidden;
+    }
+
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .data-table {
+      width: 100%;
+      min-width: 1300px;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .data-table th {
+      background: #F9FAFB;
+      color: #4B5563;
+      font-weight: 600;
+      padding: 12px 16px;
+      border-bottom: 2px solid #E5E7EB;
+      white-space: nowrap;
+    }
+
+    .data-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #F3F4F6;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+
+    .data-table tbody tr:hover {
+      background: #F9FAFB;
+    }
+
+    /* BADGES & TAGS */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 600;
+      line-height: 1;
+      white-space: nowrap;
+    }
+
+    .badge-used {
+      background: #DCFCE7;
+      color: #15803D;
+      border: 1px solid #BBF7D0;
+    }
+
+    .badge-pending-fde {
+      background: #FEF3C7;
+      color: #B45309;
+      border: 1px solid #FDE68A;
+    }
+
+    .badge-rejected {
+      background: #FEE2E2;
+      color: #B91C1C;
+      border: 1px solid #FECACA;
+    }
+
+    .badge-expired {
+      background: #F3F4F6;
+      color: #4B5563;
+      border: 1px solid #E5E7EB;
+    }
+
+    .badge-flow-direct {
+      background: #EFF6FF;
+      color: #1D4ED8;
+      border: 1px solid #BFDBFE;
+    }
+
+    .badge-flow-shareable {
+      background: #FAF5FF;
+      color: #7E22CE;
+      border: 1px solid #E9D5FF;
+    }
+
+    .fde-alert-tag {
+      font-size: 11px;
+      color: #D97706;
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+
+    .mono-id {
+      font-family: 'Roboto Mono', monospace;
+      font-weight: 600;
+      color: #1F2937;
+      cursor: pointer;
+    }
+
+    .mono-id:hover {
+      color: #2563EB;
+      text-decoration: underline;
+    }
+
+    /* ACTION BUTTONS IN TABLE (NO ICONS) */
+    .btn-action-group {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      white-space: nowrap;
+    }
+
+    .btn-approve {
+      background: #16A34A;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-approve:hover {
+      background: #15803D;
+    }
+
+    .btn-reject {
+      background: #DC2626;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .btn-reject:hover {
+      background: #B91C1C;
+    }
+
+    .btn-detail {
+      background: #F3F4F6;
+      color: #374151;
+      border: 1px solid #D1D5DB;
+      padding: 6px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .btn-detail:hover {
+      background: #E5E7EB;
+    }
+
+    /* MODAL OVERLAY & BOX */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 300;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(2px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-card {
+      background: white;
+      border-radius: 12px;
+      width: 520px;
+      max-width: 90vw;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      animation: modalSlide 0.2s ease-out;
+    }
+
+    @keyframes modalSlide {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .modal-header {
+      padding: 16px 20px;
+      border-bottom: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F9FAFB;
+    }
+
+    .modal-header h3 {
+      font-size: 16px;
+      font-weight: 700;
+      color: #111827;
+    }
+
+    .modal-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-footer {
+      padding: 14px 20px;
+      background: #F9FAFB;
+      border-top: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    /* SLIDE-OVER DRAWER (USER-FRIENDLY RE-DESIGN) */
+    .drawer-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 250;
+      display: none;
+    }
+
+    .drawer-overlay.active {
+      display: block;
+    }
+
+    .drawer-container {
+      position: fixed;
+      top: 0;
+      right: -640px;
+      width: 640px;
+      height: 100vh;
+      background: white;
+      z-index: 260;
+      box-shadow: -5px 0 25px rgba(0, 0, 0, 0.15);
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .drawer-container.active {
+      right: 0;
+    }
+
+    .drawer-header {
+      padding: 20px 24px;
+      border-bottom: 1px solid #E5E7EB;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F9FAFB;
+    }
+
+    .drawer-content {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .drawer-section {
+      background: #F9FAFB;
+      border: 1px solid #E5E7EB;
+      border-radius: 8px;
+      padding: 16px;
+    }
+
+    .drawer-section-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #374151;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      font-size: 13px;
+    }
+
+    .info-label {
+      color: #6B7280;
+      font-size: 11px;
+    }
+
+    .info-val {
+      font-weight: 600;
+      color: #111827;
+    }
+
+    .drawer-footer {
+      padding: 16px 24px;
+      border-top: 1px solid #E5E7EB;
+      background: #F9FAFB;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 12px;
+    }
+
+    /* TIMELINE LOG */
+    .timeline-list {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      padding-left: 16px;
+    }
+
+    .timeline-list::before {
+      content: '';
+      position: absolute;
+      left: 5px;
+      top: 6px;
+      bottom: 6px;
+      width: 2px;
+      background: #E5E7EB;
+    }
+
+    .timeline-item {
+      position: relative;
+      font-size: 12px;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -16px;
+      top: 4px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #2563EB;
+    }
+
+    .timeline-time {
+      font-size: 11px;
+      color: #9CA3AF;
+    }
+
+    .timeline-desc {
+      font-weight: 600;
+      color: #374151;
+    }
+
+    /* TOAST NOTIFICATION */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 400;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .toast {
+      background: #111827;
+      color: white;
+      padding: 12px 20px;
+      border-radius: 8px;
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+      font-size: 13px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: toastIn 0.3s ease-out;
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateX(0);
+        opacity: 1;
+      }
+    }
+
+    .toast.success {
+      border-left: 4px solid #16A34A;
+    }
+
+    .toast.rejected {
+      border-left: 4px solid #DC2626;
+    }
+
+    .toast.warning {
+      border-left: 4px solid #D97706;
+    }
+  </style>
+  <script src="sidebar.js"></script>
+</head>
+
+<body>
+  <div class="app-container">
+
+    <!-- TOP HEADER BAR -->
+    <header class="top-header">
+      <div class="brand-section">
+        <i class="fa-solid fa-bars hamburger-icon"></i>
+        <div class="logo-container">
+          <i class="fa-solid fa-ticket-simple" style="color: #ffffff;"></i>
+          <span>sCanWin Backoffice</span>
+          <span class="logo-badge">VOUCHER MONITORING</span>
+        </div>
+      </div>
+      <div class="user-profile-section">
+        <div class="user-info">
+          <div class="user-avatar">A</div>
+          <span>Admin Security (Backoffice)</span>
+        </div>
+        <div class="top-icons">
+          <i class="fa-regular fa-bell"></i>
+          <i class="fa-solid fa-gear"></i>
+        </div>
+      </div>
+    </header>
+
+    <!-- SUB-HEADER BREADCRUMB -->
+    <div class="sub-header">
+      <div class="page-title">
+        <span class="breadcrumb">Manajemen Scanwin /</span>
+        <span>Monitoring Pemberian Voucher sCanWin</span>
+      </div>
+      <div class="sub-header-actions">
+        <button class="action-icon-btn" onclick="fetchVoucherData()" title="Refresh Data">
+          <i class="fa-solid fa-rotate-right"></i>
+        </button>
+        <button class="action-icon-btn" onclick="toggleConflictDemo()" title="Simulasi Optimistic Lock Conflict">
+          <i class="fa-solid fa-bolt-lightning" id="conflictBtnIcon" style="color: #666;"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- MAIN SIDEBAR TREE CONTAINER -->
+    <aside class="sidebar">
+      <div class="sidebar-menu-item">
+        <div class="menu-header-row active">
+          <div class="menu-header-left">
+            <span class="menu-header-icon" style="font-size: 18px;"><i class="fa-solid fa-store"></i></span>
+            <span class="menu-header-title">Manajemen Scanwin</span>
+          </div>
+          <i class="fa-solid fa-chevron-down menu-header-chevron"></i>
+        </div>
+        <div class="sidebar-tree-container">
+          <div class="tree-connector">
+            <div class="tree-dot active"></div>
+            <div class="tree-line"></div>
+            <div class="tree-dot"></div>
+          </div>
+          <div class="tree-submenus">
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="tree-tab-item active" style="text-decoration: none; color: inherit;">
+              <span>Riwayat Redeem Voucher</span>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="tree-tab-item" style="text-decoration: none; color: inherit;">
+              <span>Riwayat Pencairan Saldo</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT PAGE -->
+    <main class="main-content">
+
+      <!-- 1. SUMMARY KPI METRIC CARDS (TOP OF MAIN CONTENT) -->
+      <section class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-title">Total Peredaran Voucher</span>
+          <span class="metric-value" id="kpiTotalVol">14.850 Vch</span>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;" id="kpiTotalNominal">Nominal: Rp 148.500.000</div>
+          <div style="font-size: 10px; color: #2563eb; font-weight: 500; margin-top: 4px;">
+            <i class="fa-regular fa-calendar" style="margin-right: 3px;"></i>
+            <span class="kpi-date-val">29 Jun 2026 - 29 Jul 2026</span>
+          </div>
+        </div>
+
+        <div class="metric-card success">
+          <span class="metric-title">Voucher Sukses Terpakai (Used)</span>
+          <span class="metric-value" id="kpiSuccessVol">13.200 Vch</span>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;" id="kpiSuccessNominal">Nominal: Rp 132.000.000
+          </div>
+          <div style="font-size: 10px; color: #16a34a; font-weight: 500; margin-top: 4px;">
+            <i class="fa-regular fa-calendar" style="margin-right: 3px;"></i>
+            <span class="kpi-date-val">29 Jun 2026 - 29 Jul 2026</span>
+          </div>
+        </div>
+
+        <div class="metric-card pending">
+          <span class="metric-title">Voucher Pending Audit</span>
+          <span class="metric-value" id="kpiPendingVol">3 Vch</span>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;">Tertahan Fraud Engine (Audit)</div>
+          <div style="font-size: 10px; color: #d97706; font-weight: 500; margin-top: 4px;">
+            <i class="fa-regular fa-calendar" style="margin-right: 3px;"></i>
+            <span class="kpi-date-val">29 Jun 2026 - 29 Jul 2026</span>
+          </div>
+        </div>
+
+        <div class="metric-card rejected">
+          <span class="metric-title">Voucher Ditolak / Expired</span>
+          <span class="metric-value" id="kpiRejectVol">1.608 Vch</span>
+          <div style="font-size: 11px; color: #666; margin-top: 2px;" id="kpiRejectNominal">Nominal: Rp 16.080.000</div>
+          <div style="font-size: 10px; color: #dc2626; font-weight: 500; margin-top: 4px;">
+            <i class="fa-regular fa-calendar" style="margin-right: 3px;"></i>
+            <span class="kpi-date-val">29 Jun 2026 - 29 Jul 2026</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 2. MAIN PAGE CONTENT TABS (PLACED BELOW CARD SUMMARY) -->
+      <div class="page-tab-bar">
+        <div class="page-tab-item active" id="tabItemRiwayat" onclick="switchMainTab('riwayat')">
+          <i class="fa-solid fa-clock-rotate-left"></i>
+          <span>Riwayat Redeem Voucher</span>
+        </div>
+        <div class="page-tab-item" id="tabItemPending" onclick="switchMainTab('pending')">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Voucher Pending</span>
+          <span class="page-tab-badge" id="tabBadgeCount">3</span>
+        </div>
+      </div>
+
+      <!-- 3. FILTER CARD & SEARCH BAR -->
+      <section class="filter-card">
+        <div class="filter-row">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="searchInput" placeholder="Cari ID TRX, Nama Toko, ID Merchant, Customer..."
+              onkeyup="filterTable()">
+          </div>
+          <div class="filter-controls">
+            <!-- STATUS FILTER (Hanya aktif di Tab Riwayat) -->
+            <select class="filter-select" id="statusFilter" onchange="filterTable()">
+              <option value="ALL">Semua Status (Sukses &amp; Ditolak)</option>
+              <option value="USED">Used (Sukses)</option>
+              <option value="REJECTED">Ditolak 🔴</option>
+              <option value="EXPIRED">Expired 🕒</option>
+            </select>
+
+            <!-- TIPE VOUCHER FILTER -->
+            <select class="filter-select" id="flowTypeFilter" onchange="filterTable()">
+              <option value="ALL">Semua Tipe Voucher</option>
+              <option value="DIRECT">Direct Scan</option>
+              <option value="SHAREABLE">Shareable QR</option>
+            </select>
+
+            <!-- DATE RANGE POPOVER TRIGGER -->
+            <div style="position: relative;">
+              <button class="date-picker-trigger" onclick="toggleDatePickerPopover()">
+                <i class="fa-regular fa-calendar-days"></i>
+                <span id="dateRangeLabel">29 Jun 2026 - 29 Jul 2026</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 11px; color: #888;"></i>
+              </button>
+
+              <!-- DUAL LAYOUT POPOVER -->
+              <div class="date-picker-popover" id="datePickerPopover">
+                <div class="date-popover-dual">
+                  <div class="preset-list">
+                    <button class="preset-btn" onclick="applyPresetDate('today')">Hari Ini</button>
+                    <button class="preset-btn" onclick="applyPresetDate('7days')">7 Hari Terakhir</button>
+                    <button class="preset-btn active" onclick="applyPresetDate('30days')">30 Hari Terakhir</button>
+                    <button class="preset-btn" onclick="applyPresetDate('month')">Bulan Ini</button>
+                  </div>
+                  <div class="manual-date-inputs">
+                    <div class="date-input-group">
+                      <label>Tanggal Mulai (Start Date)</label>
+                      <input type="date" id="startDateInput" value="2026-06-29">
+                    </div>
+                    <div class="date-input-group">
+                      <label>Tanggal Selesai (End Date)</label>
+                      <input type="date" id="endDateInput" value="2026-07-29">
+                    </div>
+                    <button class="btn-approve" style="margin-top: 8px; justify-content: center; background: #2563EB;"
+                      onclick="applyCustomDate()">Terapkan Filter Tanggal</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. DATA TABLE CARD (WITH HORIZONTAL SCROLL) -->
+      <section class="table-card">
+        <div class="table-responsive">
+          <table class="data-table" id="voucherTable">
+            <thead>
+              <tr>
+                <th><input type="checkbox" id="selectAllChk" onclick="toggleSelectAllRows(this)"></th>
+                <th>ID Transaksi</th>
+                <th>Nama Toko / ID Merchant</th>
+                <th>Pelanggan / Customer</th>
+                <th>Tipe Voucher</th>
+                <th>Nominal</th>
+                <th>Status Voucher</th>
+                <th>Waktu Pindai</th>
+                <th style="text-align: center; min-width: 180px;">Aksi Audit</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- DYNAMIC ROWS LOADED VIA JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+  <!-- MODAL AUDIT APPROVE -->
+  <div class="modal-overlay" id="modalApprove">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-circle-check" style="color: #16A34A;"></i> Konfirmasi Persetujuan Voucher</h3>
+        <button onclick="closeModal('modalApprove')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+        <div style="background: #F3F4F6; padding: 14px; border-radius: 8px; font-size: 13px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: #6B7280;">ID Transaksi:</span>
+            <span class="mono-id" id="approveTrxId">TRX-VCH-99201</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+            <span style="color: #6B7280;">Toko &amp; Merchant:</span>
+            <span style="font-weight: 600;" id="approveMerchant">Toko Berkah (MTR-88102)</span>
+          </div>
+          <div style="display: flex; justify-content: space-between;">
+            <span style="color: #6B7280;">Nominal Voucher:</span>
+            <span style="font-weight: 700; color: #16A34A;" id="approveNominal">Rp 10.000</span>
+          </div>
+        </div>
+
+        <div id="approveFlowBoxDirect"
+          style="background: #EFF6FF; border: 1px solid #BFDBFE; padding: 14px; border-radius: 8px; display: none;">
+          <div style="font-weight: 700; color: #1D4ED8; margin-bottom: 4px;">
+            Direct Scan
+          </div>
+          <p style="font-size: 12px; color: #1E40AF; line-height: 1.4;">
+            Menyetujui transaksi ini akan mengubah status voucher menjadi <strong>'Used' (Sukses)</strong>, mencairkan
+            komisi merchant Rp 10.000 ke Saldo Utama, menambah saldo hadiah customer, dan memperbarui riwayat di kedua
+            HP menjadi Sukses.
+          </p>
+        </div>
+
+        <div id="approveFlowBoxShareable"
+          style="background: #FAF5FF; border: 1px solid #E9D5FF; padding: 14px; border-radius: 8px; display: none;">
+          <div style="font-weight: 700; color: #7E22CE; margin-bottom: 4px;">
+            Shareable QR
+          </div>
+          <p style="font-size: 12px; color: #6B21A8; line-height: 1.4;">
+            Menyetujui transaksi ini akan me-generate <strong>QR Code Bulk baru</strong> dengan status 'Pending' (valid
+            24 jam) &amp; mengaktifkan kembali tombol <i>"Kirim QR via WhatsApp"</i> pada halaman riwayat merchant.
+          </p>
+        </div>
+
+        <label style="display: flex; align-items: center; gap: 8px; font-size: 12px; cursor: pointer;">
+          <input type="checkbox" id="chkApproveConfirm" checked>
+          <span>Saya telah menguji keselarasan data &amp; menyetujui transaksi ini secara sah.</span>
+        </label>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-detail" onclick="closeModal('modalApprove')">Batal</button>
+        <button class="btn-approve" onclick="executeApprove()">Setujui &amp; Proses Voucher</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL AUDIT REJECT -->
+  <div class="modal-overlay" id="modalReject">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3><i class="fa-solid fa-circle-xmark" style="color: #DC2626;"></i> Konfirmasi Penolakan Voucher</h3>
+        <button onclick="closeModal('modalReject')"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="modal-body">
+
+        <!-- TRANSACTION SUMMARY BOX TO PREVENT AUDITOR MISTAKES -->
+        <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 12px; font-size: 12px;">
+          <div style="font-weight: 700; color: #1E293B; margin-bottom: 6px; border-bottom: 1px dashed #CBD5E1; padding-bottom: 4px;">
+            <i class="fa-solid fa-receipt" style="color: #DC2626;"></i> Rincian Transaksi yang Akan Ditolak:
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; color: #334155;">
+            <div><strong>ID Transaksi:</strong> <span class="mono-id" id="rejectTrxId">TRX-VCH-99201</span></div>
+            <div><strong>Nominal Voucher:</strong> <span style="font-weight: 700; color: #DC2626;" id="rejectNominal">Rp 10.000</span></div>
+            <div style="grid-column: span 2;"><strong>Toko (Merchant):</strong> <span id="rejectMerchant">Mitra Jaya Abadi (MTR-88102)</span></div>
+            <div style="grid-column: span 2;"><strong>Pelanggan (Customer):</strong> <span id="rejectCustomer">Rudi Hermawan (0812-3456-7890)</span></div>
+          </div>
+        </div>
+
+        <div style="background: #FEE2E2; border: 1px solid #FECACA; padding: 12px; border-radius: 8px;">
+          <p style="font-size: 12px; color: #991B1B; line-height: 1.4;">
+            <i class="fa-solid fa-triangle-exclamation"></i> <strong>Efek Penolakan:</strong> Komisi merchant akan
+            dibatalkan, hadiah customer dibatalkan (jika terbukti akun palsu), dan kuota voucher dikembalikan ke toko
+            jika toko adalah korban pasif. Status riwayat di HP merchant diupdate ke <strong>'Ditolak'</strong>.
+          </p>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="font-size: 12px; font-weight: 600; color: #374151;">Wajib Pilih Alasan Penolakan Audit:</label>
+          <select class="filter-select" id="rejectReasonSelect">
+            <option value="">-- Pilih Alasan Penolakan Audit --</option>
+            <option value="GPS">⚠️ Anomali GPS: Jarak Merchant &amp; Customer &gt; 15 KM</option>
+            <option value="DEVICE">⚠️ IP / Device Collision Fraud: Device ID / IP Kembar</option>
+            <option value="ABUSIVE">⚠️ Abusive Customer Account: Indikasi Akun Fake / Bot</option>
+            <option value="VICTIM">⚠️ Toko Korban Pasif: Batalkan Transaksi &amp; Kembalikan Kuota</option>
+            <option value="OTHER">Lainnya (Input Catatan Manual)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; flex-direction: column; gap: 6px;">
+          <label style="font-size: 12px; font-weight: 600; color: #374151;">Catatan Tambahan Auditor (Opsional):</label>
+          <textarea id="rejectNoteInput" rows="3" placeholder="Masukkan catatan hasil analisis FDE..."
+            style="width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 6px;"></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-detail" onclick="closeModal('modalReject')">Batal</button>
+        <button class="btn-reject" onclick="executeReject()">Ya, Tolak &amp; Batalkan Voucher</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SLIDE-OVER DRAWER (360 AUDIT VIEW & USER-FRIENDLY FRAUD BREAKDOWN) -->
+  <div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+  <div class="drawer-container" id="auditDrawer">
+    <div class="drawer-header">
+      <div>
+        <div style="font-size: 11px; color: #6B7280; font-weight: 600; text-transform: uppercase;">DETAIL AUDIT
+          TRANSAKSI VOUCHER</div>
+        <div style="font-size: 18px; font-weight: 700;" id="drawerTrxId">TRX-VCH-99201</div>
+      </div>
+      <button onclick="closeDrawer()"><i class="fa-solid fa-xmark" style="font-size: 20px;"></i></button>
+    </div>
+    <div class="drawer-content">
+
+      <!-- SECTION 1: TOKO & CUSTOMER IDENTITIES -->
+      <div class="drawer-section">
+        <div class="drawer-section-title"><i class="fa-solid fa-store"></i> Identitas Toko &amp; Customer</div>
+        <div class="info-grid">
+          <div>
+            <div class="info-label">Nama Toko &amp; ID</div>
+            <div class="info-val" id="drawerToko">Mitra Jaya Abadi (MTR-88102)</div>
+          </div>
+          <div>
+            <div class="info-label">Nama Customer</div>
+            <div class="info-val" id="drawerCustomer">Rudi Hermawan (0812-3456-7890)</div>
+          </div>
+          <div>
+            <div class="info-label">Tipe Voucher</div>
+            <div class="info-val" id="drawerFlow">Direct Scan</div>
+          </div>
+          <div>
+            <div class="info-label">Nominal Voucher</div>
+            <div class="info-val" id="drawerNominal">Rp 10.000</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: USER-FRIENDLY FDE FRAUD ANOMALY ANALYZER BOX -->
+      <div class="drawer-section" style="background: #FFFBEB; border: 1px solid #FDE68A; padding: 18px;">
+        <div class="drawer-section-title"
+          style="color: #B45309; font-size: 14px; margin-bottom: 14px; display: flex; align-items: center; justify-content: space-between;">
+          <span><i class="fa-solid fa-shield-halved"></i> Analisis Indikasi Kecurangan (FDE)</span>
+          <span class="badge" id="drawerRiskBadge"
+            style="background: #FEE2E2; color: #DC2626; border: 1px solid #FECACA; font-size: 12px; padding: 4px 10px;">Skor
+            Risiko: 88/100 (TINGGI)</span>
+        </div>
+
+        <!-- STORYTELLING SUMMARY BOX (NARASI KEJADIAN AWAM) -->
+        <div
+          style="background: #FEF3C7; border: 1px solid #FCD34D; border-left: 5px solid #D97706; padding: 14px; border-radius: 8px; margin-bottom: 16px;">
+          <div style="font-size: 11px; font-weight: 700; color: #B45309; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px;">
+            📖 Ringkasan Kejadian (Narasi Fraud)
+          </div>
+          <p style="font-size: 13px; color: #78350F; line-height: 1.5; margin: 0;" id="drawerStorySummary">
+            ⚠️ Transaksi ini ditangguhkan karena pembeli terdeteksi berada 18.4 km di luar lokasi toko dan menggunakan HP yang pernah dipakai oleh akun lain. Direkomendasikan untuk menolak (Reject) transaksi ini.
+          </p>
+        </div>
+
+        <!-- 4 PARAMETER CARDS IN PRAKTIK BAHASA INDONESIA AWAM -->
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+
+          <!-- PARAM 1: LOKASI PEMBELI & TOKO -->
+          <div style="background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; color: #374151; font-size: 13px;"><i class="fa-solid fa-location-dot"
+                  style="color: #DC2626; margin-right: 4px;"></i> 1. Lokasi Pembeli &amp; Toko</span>
+              <span
+                style="font-size: 11px; font-weight: 700; color: #DC2626; background: #FEE2E2; padding: 2px 8px; border-radius: 4px;"
+                id="drawerGpsVal">18.4 KM (Terlalu Jauh)</span>
+            </div>
+            <p style="font-size: 12px; color: #4B5563; line-height: 1.4;" id="drawerGpsDesc">
+              Pembeli berada 18.4 km di luar lokasi terdaftar toko fisik Mitra Jaya Abadi (Batas wajar maks. 100 meter). Terindikasi memakai aplikasi lokasi palsu (Fake GPS).
+            </p>
+          </div>
+
+          <!-- PARAM 2: KONEKSI INTERNET -->
+          <div style="background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; color: #374151; font-size: 13px;"><i class="fa-solid fa-network-wired"
+                  style="color: #D97706; margin-right: 4px;"></i> 2. Koneksi Jaringan Internet</span>
+              <span
+                style="font-size: 11px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 2px 8px; border-radius: 4px;"
+                id="drawerIpVal">Wi-Fi Bersama Toko</span>
+            </div>
+            <p style="font-size: 12px; color: #4B5563; line-height: 1.4;" id="drawerIpDesc">
+              HP pembeli dan HP toko terhubung ke jaringan internet Wi-Fi toko yang sama persis saat transaksi klaim terjadi.
+            </p>
+          </div>
+
+          <!-- PARAM 3: PENGGUNAAN HP/PERANGKAT -->
+          <div style="background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; color: #374151; font-size: 13px;"><i class="fa-solid fa-mobile-screen"
+                  style="color: #2563EB; margin-right: 4px;"></i> 3. Penggunaan HP / Perangkat</span>
+              <span
+                style="font-size: 11px; font-weight: 700; color: #2563EB; background: #EFF6FF; padding: 2px 8px; border-radius: 4px;"
+                id="drawerDeviceVal">1 HP Dipakai 3 Akun</span>
+            </div>
+            <p style="font-size: 12px; color: #4B5563; line-height: 1.4;" id="drawerDeviceDesc">
+              Perangkat HP ini terdeteksi pernah digunakan oleh 3 akun pembeli berbeda untuk mengklaim voucher dari toko ini dalam 30 hari terakhir.
+            </p>
+          </div>
+
+          <!-- PARAM 4: KECEPATAN TRANSAKSI -->
+          <div style="background: white; border: 1px solid #E5E7EB; border-radius: 8px; padding: 12px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <span style="font-weight: 700; color: #374151; font-size: 13px;"><i class="fa-solid fa-gauge-high"
+                  style="color: #7C3AED; margin-right: 4px;"></i> 4. Kecepatan &amp; Frekuensi Transaksi</span>
+              <span
+                style="font-size: 11px; font-weight: 700; color: #7C3AED; background: #FAF5FF; padding: 2px 8px; border-radius: 4px;"
+                id="drawerRateVal">Terindikasi Lonjakan Transaksi</span>
+            </div>
+            <p style="font-size: 12px; color: #4B5563; line-height: 1.4;" id="drawerRateDesc">
+              Terjadi lonjakan klaim 15 voucher dengan nominal Rp 1.000.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- SECTION 3: TIMELINE LOG -->
+      <div class="drawer-section">
+        <div class="drawer-section-title"><i class="fa-solid fa-timeline"></i> Timeline Kronologi (Descending)</div>
+        <div class="timeline-list">
+          <div class="timeline-item">
+            <div class="timeline-time">29 Jul 2026, 14:32:05</div>
+            <div class="timeline-desc">FDE Engine menangguhkan transaksi (Flagged Pending Audit)</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">29 Jul 2026, 14:32:04</div>
+            <div class="timeline-desc">Customer me-scan QR Code &amp; menginput PIN</div>
+          </div>
+          <div class="timeline-item">
+            <div class="timeline-time">29 Jul 2026, 14:31:58</div>
+            <div class="timeline-desc">Merchant menggenerasi Voucher di aplikasi Mitra1000s</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="drawer-footer" id="drawerActionFooter">
+      <button class="btn-reject" id="drawerBtnReject">Tolak Voucher</button>
+      <button class="btn-approve" id="drawerBtnApprove">Setujui Voucher</button>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JAVASCRIPT LOGIC -->
+  <script>
+    // DATA DUMMY VOUCHER PEREDARAN WITH STANDARDIZED FDE POINT 4 (2 COMBINATIONS: NORMAL VS LONJAKAN)
+    let voucherData = [
+      {
+        id: 'TRX-VCH-99201', merchant: 'Mitra Jaya Abadi', merchantId: 'MTR-88102', customer: 'Rudi Hermawan', phone: '0812-3456-7890', flow: 'DIRECT', nominal: 10000, status: 'PENDING', anomaly: '⚠️ Jarak Pembeli 18.4 km & HP Kembar', date: '2026-07-29 14:32:05',
+        riskScore: '88/100 (SANGAT TINGGI)',
+        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Pembeli terdeteksi berada 18.4 km di luar lokasi toko fisik dan menggunakan HP yang terhubung dengan 3 akun pembeli berbeda di 2 toko mitra. Direkomendasikan untuk <strong>MENOLAK (REJECT)</strong> transaksi ini.',
+        gpsBadge: '18.4 KM (Terlalu Jauh)', gpsDetail: 'Lokasi HP pembeli saat melakukan klaim berada sejauh 18.4 km dari toko fisik Mitra Jaya Abadi (Batas wajar maks. 100 meter). Terindikasi memakai aplikasi lokasi palsu (Fake GPS).',
+        ipBadge: 'Wi-Fi Bersama Toko', ipDetail: 'HP pembeli dan HP toko terhubung ke jaringan internet Wi-Fi toko yang sama persis saat transaksi klaim terjadi.',
+        deviceBadge: '1 HP Dipakai 3 Akun di 2 Toko',
+        deviceDetail: 'Perangkat HP ini (<code>DEV-IOS-9901</code>) terdeteksi digunakan oleh <strong>3 akun pembeli berbeda</strong> lintas <strong>2 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Rudi Hermawan (0812-3456-7890) — <em>Transaksi ini</em></li><li>Andi Saputra (0857-1122-3344)</li><li>Budi Santoso (0813-8899-0011)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Mitra Jaya Abadi (MTR-88102)<br>2. Toko Sembako Makmur (MTR-55201)</div></div>',
+        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 15 voucher dengan nominal Rp 1.000.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-99202', merchant: 'Toko Sembako Makmur', merchantId: 'MTR-55201', customer: 'Siti Aminah', phone: '0857-1122-3344', flow: 'SHAREABLE', nominal: 10000, status: 'PENDING', anomaly: '⚠️ Koneksi Internet Serentak', date: '2026-07-29 14:28:10',
+        riskScore: '74/100 (TINGGI)',
+        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Terjadi klaim voucher secara bersamaan dari koneksi Wi-Fi toko yang sama oleh 2 akun berbeda dalam rentang 5 detik. Disarankan untuk menolak transaksi ini.',
+        gpsBadge: '1.2 KM (Melebihi 100m)', gpsDetail: 'Lokasi HP pembeli berada 1.2 km dari toko (Melebihi batas wajar radius toko 100 meter).',
+        ipBadge: 'Koneksi Internet Sama', ipDetail: 'Klaim dilakukan secara bersamaan dari koneksi internet/Wi-Fi toko yang sama dalam waktu hanya 5 detik.',
+        deviceBadge: 'HP Android Baru (1 Akun, 1 Toko)',
+        deviceDetail: 'Perangkat HP Android 14 (<code>DEV-AND-4402</code>) terdaftar sebagai perangkat baru milik Siti Aminah (0857-1122-3344) di Toko Sembako Makmur.',
+        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 8 voucher dengan nominal Rp 500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-99203', merchant: 'Warung Bu Endang', merchantId: 'MTR-33901', customer: 'Agus Setiawan', phone: '0813-8899-0011', flow: 'DIRECT', nominal: 10000, status: 'PENDING', anomaly: '⚠️ 1 HP Dipakai 4 Akun di 3 Toko', date: '2026-07-29 14:15:22',
+        riskScore: '82/100 (TINGGI)',
+        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Perangkat HP ini terdeteksi pernah digunakan oleh 4 akun pembeli berbeda di 3 toko mitra. Direkomendasikan untuk <strong>MENOLAK (REJECT)</strong>.',
+        gpsBadge: '0.8 KM (Melebihi 100m)', gpsDetail: 'Lokasi pembeli berada 0.8 km di luar radius wajar toko 100 meter.',
+        ipBadge: 'Jaringan Seluler Normal', ipDetail: 'Koneksi internet menggunakan paket data seluler normal.',
+        deviceBadge: '1 HP Dipakai 4 Akun di 3 Toko',
+        deviceDetail: 'Perangkat HP ini (<code>DEV-IOS-9901</code>) terdeteksi digunakan oleh <strong>4 akun pembeli berbeda</strong> lintas <strong>3 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Agus Setiawan (0813-8899-0011) — <em>Transaksi ini</em></li><li>Rudi Hermawan (0812-3456-7890)</li><li>Andi Saputra (0857-1122-3344)</li><li>Siti Aminah (0857-9988-7766)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Warung Bu Endang (MTR-33901)<br>2. Mitra Jaya Abadi (MTR-88102)<br>3. Toko Sembako Makmur (MTR-55201)</div></div>',
+        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 12 voucher dengan nominal Rp 800.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-88105', merchant: 'Toko Barokah', merchantId: 'MTR-12003', customer: 'Dewi Lestari', phone: '0812-9900-1122', flow: 'DIRECT', nominal: 10000, status: 'USED', anomaly: '✅ Pembelian Wajar & Aman', date: '2026-07-29 13:50:00',
+        riskScore: '12/100 (AMAN)',
+        storySummary: '✅ <strong>Transaksi Sah & Aman:</strong> Pembeli belanja langsung di toko fisik dengan jarak presisi 50 meter (di bawah 100m), menggunakan HP pribadi, dan frekuensi wajar. Transaksi telah diverifikasi sukses.',
+        gpsBadge: '50 Meter (Area Toko)', gpsDetail: 'Pembeli berada 50 meter di area toko fisik saat scan QR voucher (Valid di bawah 100 meter).',
+        ipBadge: 'Internet Seluler Normal', ipDetail: 'Koneksi internet seluler pribadi pembeli.',
+        deviceBadge: 'HP Pribadi (1 Akun, 1 Toko)', deviceDetail: 'Perangkat HP terverifikasi milik 1 pelanggan resmi (Dewi Lestari - 0812-9900-1122) di Toko Barokah.',
+        rateBadge: 'Frekuensi Transaksi Normal', rateDetail: 'Kecepatan & frekuensi klaim wajar (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-88106', merchant: 'Kelontong Rejeki', merchantId: 'MTR-12009', customer: 'Hendra Gunawan', phone: '0819-2233-4455', flow: 'SHAREABLE', nominal: 10000, status: 'USED', anomaly: '✅ Pembelian Wajar & Aman', date: '2026-07-29 11:20:00',
+        riskScore: '15/100 (AMAN)',
+        storySummary: '✅ <strong>Transaksi Sah & Aman:</strong> Pelanggan mengklaim voucher Shareable QR resmi dari toko. Data lokasi (80m) dan perangkat terverifikasi valid.',
+        gpsBadge: '80 Meter (Area Toko)', gpsDetail: 'Lokasi pembeli terverifikasi valid 80 meter di sekitar toko (Valid di bawah 100 meter).',
+        ipBadge: 'Internet Seluler Normal', ipDetail: 'Koneksi internet seluler pribadi.',
+        deviceBadge: 'HP Utama Pelanggan (1 Akun)', deviceDetail: 'Perangkat HP pribadi terverifikasi milik Hendra Gunawan (0819-2233-4455).',
+        rateBadge: 'Frekuensi Transaksi Normal', rateDetail: 'Kecepatan & frekuensi klaim wajar (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-77402', merchant: 'Mitra Sentosa', merchantId: 'MTR-44109', customer: 'Eko Prasetyo', phone: '0815-6677-8899', flow: 'SHAREABLE', nominal: 10000, status: 'REJECTED', anomaly: '🔴 Lokasi Manipulasi & HP Terhubung 5 Akun', date: '2026-07-29 12:10:45',
+        riskScore: '95/100 (BAHAYA / BOT)',
+        storySummary: '🔴 <strong>Transaksi Ditolak:</strong> Pembeli menggunakan aplikasi lokasi palsu dari jarak 25.1 km dan terdeteksi bertransaksi dari HP yang terhubung dengan 5 akun pembeli di 4 toko mitra.',
+        gpsBadge: '25.1 KM (Lokasi Palsu)', gpsDetail: 'Jarak lokasi terdeteksi 25.1 km di luar toko menggunakan aplikasi Fake GPS.',
+        ipBadge: 'Jaringan VPN / Samaran', ipDetail: 'Koneksi internet menggunakan VPN samaran luar negeri.',
+        deviceBadge: '1 HP Dipakai 5 Akun di 4 Toko',
+        deviceDetail: 'Perangkat HP ini (<code>DEV-AND-8890</code>) terdeteksi digunakan oleh <strong>5 akun pembeli berbeda</strong> lintas <strong>4 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Eko Prasetyo (0815-6677-8899) — <em>Transaksi ini</em></li><li>Akun #102 (0815-1111-2222)</li><li>Akun #103 (0815-3333-4444)</li><li>Akun #104 (0815-5555-6666)</li><li>Akun #105 (0815-7777-8888)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Mitra Sentosa (MTR-44109)<br>2. Toko Barokah (MTR-12003)<br>3. Kelontong Rejeki (MTR-12009)<br>4. Toko Subur Gemilang (MTR-44115)</div></div>',
+        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 25 voucher dengan nominal Rp 2.500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-77403', merchant: 'Toko Subur Gemilang', merchantId: 'MTR-44115', customer: 'Bambang Tri', phone: '0852-3344-5566', flow: 'DIRECT', nominal: 10000, status: 'REJECTED', anomaly: '🔴 Pelanggaran Batas Jarak', date: '2026-07-28 16:40:00',
+        riskScore: '90/100 (BAHAYA)',
+        storySummary: '🔴 <strong>Transaksi Ditolak:</strong> Pembeli terbukti berada sejauh 30 km dari toko saat transaksi dilakukan. Komisi telah dibatalkan.',
+        gpsBadge: '30.0 KM (Di Luar Radius)', gpsDetail: 'Jarak lokasi pembeli melampaui batas maksimal 100 meter.',
+        ipBadge: 'Internet Samaran', ipDetail: 'Koneksi terindikasi proxy.',
+        deviceBadge: '1 HP Dipakai 2 Akun di 2 Toko',
+        deviceDetail: 'Perangkat HP ini terdeteksi pernah dipakai oleh 2 akun pembeli (Bambang Tri &amp; Eko Prasetyo) di Toko Subur Gemilang &amp; Mitra Sentosa dalam 30 hari terakhir.',
+        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 18 voucher dengan nominal Rp 1.500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+      },
+      {
+        id: 'TRX-VCH-66109', merchant: 'Toko Kelontong Bang Jago', merchantId: 'MTR-99012', customer: 'Budi Santoso', phone: '0812-7788-9900', flow: 'DIRECT', nominal: 10000, status: 'EXPIRED', anomaly: '🕒 Hangus (Expired 24 Jam)', date: '2026-07-28 10:00:00',
+        riskScore: '50/100 (KEDALUWARSA)',
+        storySummary: '🕒 <strong>Voucher Kedaluwarsa:</strong> Voucher tidak diklaim atau digunakan oleh pembeli dalam batas waktu 24 jam sehingga otomatis hangus.',
+        gpsBadge: 'N/A', gpsDetail: 'Voucher hangus otomatis setelah 24 jam.',
+        ipBadge: 'N/A', ipDetail: 'N/A',
+        deviceBadge: 'N/A', deviceDetail: 'N/A',
+        rateBadge: 'N/A', rateDetail: 'Voucher kedaluwarsa (tidak ada aktivitas transaksi).'
+      }
+    ];
+
+    let currentActiveTab = 'riwayat';
+    let selectedTrx = null;
+    let isConflictDemoActive = false;
+    let currentSelectedDateLabel = '29 Jun 2026 - 29 Jul 2026';
+
+    // INIT PAGE
+    window.onload = () => {
+      renderTable();
+      updateKpis(currentSelectedDateLabel);
+    };
+
+    // SWITCH MAIN TAB
+    function switchMainTab(tabKey) {
+      currentActiveTab = tabKey;
+      if (document.getElementById('treeTabRiwayat')) document.getElementById('treeTabRiwayat').classList.toggle('active', tabKey === 'riwayat');
+      if (document.getElementById('treeTabPending')) document.getElementById('treeTabPending').classList.toggle('active', tabKey === 'pending');
+      if (document.getElementById('treeDotRiwayat')) document.getElementById('treeDotRiwayat').classList.toggle('active', tabKey === 'riwayat');
+      if (document.getElementById('treeDotPending')) document.getElementById('treeDotPending').classList.toggle('active', tabKey === 'pending');
+      if (document.getElementById('tabItemRiwayat')) document.getElementById('tabItemRiwayat').classList.toggle('active', tabKey === 'riwayat');
+      if (document.getElementById('tabItemPending')) document.getElementById('tabItemPending').classList.toggle('active', tabKey === 'pending');
+
+      const statusSelect = document.getElementById('statusFilter');
+      if (tabKey === 'pending') {
+        statusSelect.style.display = 'none';
+      } else {
+        statusSelect.style.display = 'inline-block';
+        statusSelect.value = 'ALL';
+      }
+
+      renderTable();
+    }
+
+    // RENDER TABLE
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      const searchVal = document.getElementById('searchInput').value.toLowerCase();
+      const statusVal = document.getElementById('statusFilter').value;
+      const flowVal = document.getElementById('flowTypeFilter').value;
+
+      let filtered = voucherData.filter(item => {
+        if (currentActiveTab === 'riwayat') {
+          if (item.status === 'PENDING') return false;
+          if (statusVal !== 'ALL' && item.status !== statusVal) return false;
+        } else if (currentActiveTab === 'pending') {
+          if (item.status !== 'PENDING') return false;
+        }
+
+        if (flowVal !== 'ALL' && item.flow !== flowVal) return false;
+
+        if (searchVal) {
+          const matchId = item.id.toLowerCase().includes(searchVal);
+          const matchMerchant = item.merchant.toLowerCase().includes(searchVal) || item.merchantId.toLowerCase().includes(searchVal);
+          const matchCustomer = item.customer.toLowerCase().includes(searchVal) || item.phone.includes(searchVal);
+          if (!matchId && !matchMerchant && !matchCustomer) return false;
+        }
+
+        return true;
+      });
+
+      tbody.innerHTML = '';
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #888;">Tidak ada data voucher yang sesuai kriteria.</td></tr>`;
+        return;
+      }
+
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+
+        let statusBadge = '';
+        if (item.status === 'USED') statusBadge = `<span class="badge badge-used">Used (Sukses)</span>`;
+        else if (item.status === 'PENDING') statusBadge = `<span class="badge badge-pending-fde">Pending Audit</span>`;
+        else if (item.status === 'REJECTED') statusBadge = `<span class="badge badge-rejected">Ditolak</span>`;
+        else if (item.status === 'EXPIRED') statusBadge = `<span class="badge badge-expired">Expired</span>`;
+
+        let flowBadge = item.flow === 'DIRECT'
+          ? `<span class="badge badge-flow-direct">Direct Scan</span>`
+          : `<span class="badge badge-flow-shareable">Shareable QR</span>`;
+
+        let actionsHtml = '';
+        if (item.status === 'PENDING') {
+          actionsHtml = `
+            <div class="btn-action-group">
+              <button class="btn-approve" onclick="openApproveModal('${item.id}')">Approve</button>
+              <button class="btn-reject" onclick="openRejectModal('${item.id}')">Reject</button>
+              <button class="btn-detail" onclick="openDrawer('${item.id}')">Detail</button>
+            </div>
+          `;
+        } else {
+          actionsHtml = `
+            <div class="btn-action-group">
+              <button class="btn-detail" onclick="openDrawer('${item.id}')">Detail</button>
+            </div>
+          `;
+        }
+
+        tr.innerHTML = `
+          <td><span class="mono-id" onclick="openDrawer('${item.id}')">${item.id}</span></td>
+          <td>
+            <div style="font-weight: 600;">${item.merchant}</div>
+            <div style="font-size: 11px; color: #888;">${item.merchantId}</div>
+          </td>
+          <td>
+            <div>${item.customer}</div>
+            <div style="font-size: 11px; color: #888;">${item.phone}</div>
+          </td>
+          <td>${flowBadge}</td>
+          <td style="font-weight: 700; color: #16A34A;">Rp ${item.nominal.toLocaleString('id-ID')}</td>
+          <td>${statusBadge}</td>
+          <td style="font-size: 12px; color: #666;">${item.date}</td>
+          <td style="text-align: center;">${actionsHtml}</td>
+        `;
+
+        tbody.appendChild(tr);
+      });
+    }
+
+    // FILTER HANDLERS
+    function filterTable() {
+      renderTable();
+    }
+
+    function updateKpis(dateLabelStr = '29 Jun 2026 - 29 Jul 2026') {
+      currentSelectedDateLabel = dateLabelStr;
+      const pendingCount = voucherData.filter(d => d.status === 'PENDING').length;
+      if (document.getElementById('treeBadgeCount')) document.getElementById('treeBadgeCount').innerText = pendingCount;
+      if (document.getElementById('tabBadgeCount')) document.getElementById('tabBadgeCount').innerText = pendingCount;
+
+      const dateValElements = document.querySelectorAll('.kpi-date-val');
+      dateValElements.forEach(el => {
+        el.innerText = dateLabelStr;
+      });
+
+      if (dateLabelStr.includes('Hari Ini')) {
+        document.getElementById('kpiTotalVol').innerText = '12 Vch';
+        document.getElementById('kpiTotalNominal').innerText = 'Nominal: Rp 120.000';
+        document.getElementById('kpiSuccessVol').innerText = '8 Vch';
+        document.getElementById('kpiSuccessNominal').innerText = 'Nominal: Rp 80.000';
+        document.getElementById('kpiPendingVol').innerText = '3 Vch';
+        document.getElementById('kpiRejectVol').innerText = '1 Vch';
+        document.getElementById('kpiRejectNominal').innerText = 'Nominal: Rp 10.000';
+      } else if (dateLabelStr.includes('7 Hari')) {
+        document.getElementById('kpiTotalVol').innerText = '3.450 Vch';
+        document.getElementById('kpiTotalNominal').innerText = 'Nominal: Rp 34.500.000';
+        document.getElementById('kpiSuccessVol').innerText = '3.100 Vch';
+        document.getElementById('kpiSuccessNominal').innerText = 'Nominal: Rp 31.000.000';
+        document.getElementById('kpiPendingVol').innerText = '12 Vch';
+        document.getElementById('kpiRejectVol').innerText = '338 Vch';
+        document.getElementById('kpiRejectNominal').innerText = 'Nominal: Rp 3.380.000';
+      } else {
+        document.getElementById('kpiTotalVol').innerText = '14.850 Vch';
+        document.getElementById('kpiTotalNominal').innerText = 'Nominal: Rp 148.500.000';
+        document.getElementById('kpiSuccessVol').innerText = '13.200 Vch';
+        document.getElementById('kpiSuccessNominal').innerText = 'Nominal: Rp 132.000.000';
+        document.getElementById('kpiPendingVol').innerText = `${pendingCount} Vch`;
+        document.getElementById('kpiRejectVol').innerText = '1.608 Vch';
+        document.getElementById('kpiRejectNominal').innerText = 'Nominal: Rp 16.080.000';
+      }
+    }
+
+    function toggleDatePickerPopover() {
+      document.getElementById('datePickerPopover').classList.toggle('active');
+    }
+
+    function applyPresetDate(presetKey) {
+      let label = '29 Jun 2026 - 29 Jul 2026';
+      if (presetKey === 'today') label = '29 Jul 2026 (Hari Ini)';
+      else if (presetKey === '7days') label = '22 Jul 2026 - 29 Jul 2026 (7 Hari)';
+      else if (presetKey === '30days') label = '29 Jun 2026 - 29 Jul 2026 (30 Hari)';
+      else if (presetKey === 'month') label = '01 Jul 2026 - 31 Jul 2026 (Bulan Ini)';
+
+      document.getElementById('dateRangeLabel').innerText = label;
+      document.getElementById('datePickerPopover').classList.remove('active');
+
+      updateKpis(label);
+      renderTable();
+      showToast('🗓️ Filter tanggal & data summary berhasil diperbarui!', 'success');
+    }
+
+    function applyCustomDate() {
+      const start = document.getElementById('startDateInput').value;
+      const end = document.getElementById('endDateInput').value;
+      const label = `${start} s/d ${end}`;
+      document.getElementById('dateRangeLabel').innerText = label;
+      document.getElementById('datePickerPopover').classList.remove('active');
+
+      updateKpis(label);
+      renderTable();
+      showToast('🗓️ Filter tanggal custom diterapkan!', 'success');
+    }
+
+    function openApproveModal(id) {
+      if (isConflictDemoActive) {
+        showToast('⚠️ Gagal Audit: Transaksi ini telah diproses sebelumnya oleh Admin lain! (Optimistic Locking Applied)', 'warning');
+        return;
+      }
+
+      selectedTrx = voucherData.find(v => v.id === id);
+      if (!selectedTrx) return;
+
+      document.getElementById('approveTrxId').innerText = selectedTrx.id;
+      document.getElementById('approveMerchant').innerText = `${selectedTrx.merchant} (${selectedTrx.merchantId})`;
+      document.getElementById('approveNominal').innerText = `Rp ${selectedTrx.nominal.toLocaleString('id-ID')}`;
+
+      if (selectedTrx.flow === 'DIRECT') {
+        document.getElementById('approveFlowBoxDirect').style.display = 'block';
+        document.getElementById('approveFlowBoxShareable').style.display = 'none';
+      } else {
+        document.getElementById('approveFlowBoxDirect').style.display = 'none';
+        document.getElementById('approveFlowBoxShareable').style.display = 'block';
+      }
+
+      document.getElementById('modalApprove').classList.add('active');
+    }
+
+    function executeApprove() {
+      if (!selectedTrx) return;
+
+      selectedTrx.status = 'USED';
+      selectedTrx.anomaly = '✅ Approved by Admin';
+
+      closeModal('modalApprove');
+      renderTable();
+      updateKpis(currentSelectedDateLabel);
+
+      if (selectedTrx.flow === 'DIRECT') {
+        showToast(`✅ Approval Direct Scan Sukses: Komisi Merchant Rp 10.000 & Hadiah Customer Cair!`, 'success');
+      } else {
+        showToast(`✅ Approval Shareable QR Sukses: QR Code Bulk Baru (Pending 24h) Berhasil Di-generate!`, 'success');
+      }
+    }
+
+    function openRejectModal(id) {
+      if (isConflictDemoActive) {
+        showToast('⚠️ Gagal Audit: Transaksi ini telah diproses sebelumnya oleh Admin lain! (Optimistic Locking Applied)', 'warning');
+        return;
+      }
+
+      selectedTrx = voucherData.find(v => v.id === id);
+      if (!selectedTrx) return;
+
+      document.getElementById('rejectTrxId').innerText = selectedTrx.id;
+      document.getElementById('rejectMerchant').innerText = `${selectedTrx.merchant} (${selectedTrx.merchantId})`;
+      document.getElementById('rejectCustomer').innerText = `${selectedTrx.customer} (${selectedTrx.phone})`;
+      document.getElementById('rejectNominal').innerText = `Rp ${selectedTrx.nominal.toLocaleString('id-ID')}`;
+
+      document.getElementById('rejectReasonSelect').value = '';
+      document.getElementById('rejectNoteInput').value = '';
+      document.getElementById('modalReject').classList.add('active');
+    }
+
+    function executeReject() {
+      const reason = document.getElementById('rejectReasonSelect').value;
+      if (!reason) {
+        alert('Wajib memilih alasan penolakan audit!');
+        return;
+      }
+
+      if (!selectedTrx) return;
+
+      selectedTrx.status = 'REJECTED';
+      selectedTrx.anomaly = '🔴 Ditolak FDE Audit';
+
+      closeModal('modalReject');
+      renderTable();
+      updateKpis(currentSelectedDateLabel);
+
+      showToast(`🔴 Penolakan Sukses: Komisi Dibatalkan & Kuota Voucher Dikembalikan ke Toko!`, 'rejected');
+    }
+
+    function closeModal(modalId) {
+      document.getElementById(modalId).classList.remove('active');
+    }
+
+    // OPEN DRAWER WITH USER-FRIENDLY FDE BREAKDOWN
+    function openDrawer(id) {
+      selectedTrx = voucherData.find(v => v.id === id);
+      if (!selectedTrx) return;
+
+      document.getElementById('drawerTrxId').innerText = selectedTrx.id;
+      document.getElementById('drawerToko').innerText = `${selectedTrx.merchant} (${selectedTrx.merchantId})`;
+      document.getElementById('drawerCustomer').innerText = `${selectedTrx.customer} (${selectedTrx.phone})`;
+      document.getElementById('drawerFlow').innerText = selectedTrx.flow === 'DIRECT' ? 'Direct Scan' : 'Shareable QR';
+      document.getElementById('drawerNominal').innerText = `Rp ${selectedTrx.nominal.toLocaleString('id-ID')}`;
+
+      // User-friendly FDE populate
+      document.getElementById('drawerRiskBadge').innerText = `Skor Risiko: ${selectedTrx.riskScore || '88/100 (TINGGI)'}`;
+      document.getElementById('drawerStorySummary').innerHTML = selectedTrx.storySummary || '⚠️ Transaksi ini ditangguhkan karena terdeteksi anomali.';
+
+      document.getElementById('drawerGpsVal').innerText = selectedTrx.gpsBadge;
+      document.getElementById('drawerGpsDesc').innerText = selectedTrx.gpsDetail;
+
+      document.getElementById('drawerIpVal').innerText = selectedTrx.ipBadge;
+      document.getElementById('drawerIpDesc').innerText = selectedTrx.ipDetail;
+
+      document.getElementById('drawerDeviceVal').innerText = selectedTrx.deviceBadge;
+      document.getElementById('drawerDeviceDesc').innerHTML = selectedTrx.deviceDetail;
+
+      document.getElementById('drawerRateVal').innerText = selectedTrx.rateBadge;
+      document.getElementById('drawerRateDesc').innerText = selectedTrx.rateDetail;
+
+      const footer = document.getElementById('drawerActionFooter');
+      if (selectedTrx.status === 'PENDING') {
+        footer.style.display = 'flex';
+        document.getElementById('drawerBtnApprove').onclick = () => { closeDrawer(); openApproveModal(selectedTrx.id); };
+        document.getElementById('drawerBtnReject').onclick = () => { closeDrawer(); openRejectModal(selectedTrx.id); };
+      } else {
+        footer.style.display = 'none';
+      }
+
+      document.getElementById('drawerOverlay').classList.add('active');
+      document.getElementById('auditDrawer').classList.add('active');
+    }
+
+    function closeDrawer() {
+      document.getElementById('drawerOverlay').classList.remove('active');
+      document.getElementById('auditDrawer').classList.remove('active');
+    }
+
+    function toggleConflictDemo() {
+      isConflictDemoActive = !isConflictDemoActive;
+      const icon = document.getElementById('conflictBtnIcon');
+      if (isConflictDemoActive) {
+        icon.style.color = '#DC2626';
+        showToast('⚡ Mode Simulasi Optimistic Lock AKTIF! Setiap aksi audit akan memicu pesan konflik admin lain.', 'warning');
+      } else {
+        icon.style.color = '#666';
+        showToast('⚡ Mode Simulasi Optimistic Lock NON-AKTIF.', 'success');
+      }
+    }
+
+    function fetchVoucherData() {
+      renderTable();
+      updateKpis(currentSelectedDateLabel);
+      showToast('🔄 Log peredaran voucher berhasil di-refresh!', 'success');
+    }
+
+    function toggleSelectAllRows(masterChk) {
+      const chks = document.querySelectorAll('#tableBody input[type="checkbox"]');
+      chks.forEach(c => c.checked = masterChk.checked);
+    }
+
+    function showToast(msg, type = 'success') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.innerHTML = msg;
+
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.remove();
+      }, 4000);
+    }
+  </script>
+</body>
+
+</html>

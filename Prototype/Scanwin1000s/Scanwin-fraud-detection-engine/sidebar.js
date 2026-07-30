@@ -142,7 +142,8 @@
     else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
     else if (path.includes('klaim-mandiri') || path.includes('klaim')) activeKey = 'klaim';
     else if (path.includes('validasi-pencairan-ewallet')) activeKey = 'validasi-ewallet';
-    else if (path.includes('monitoring-penarikan-ewallet') || path.includes('dashboard-monitoring')) activeKey = 'monitoring-ewallet';
+    else if (path.includes('monitoring-penarikan-ewallet')) activeKey = 'monitoring-ewallet';
+    else if (path.includes('monitoring-pemberian-voucher') || path.includes('pemberian-voucher')) activeKey = 'monitoring-voucher';
     else if (path.includes('flowchart')) activeKey = 'flowchart';
 
     const isHub = (activeKey === 'hub');
@@ -204,6 +205,10 @@
         <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-ewallet' ? 'active' : ''}" style="${activeKey === 'monitoring-ewallet' ? '' : 'color: #c7d2fe;'}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
           <span>10. Monitoring Pencairan (Admin) ↗</span>
+        </a>
+        <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-voucher' ? 'active' : ''}" style="${activeKey === 'monitoring-voucher' ? '' : 'color: #c7d2fe;'}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
+          <span>11. Monitoring Voucher (Admin) ↗</span>
         </a>
       </div>
 
