@@ -1367,7 +1367,7 @@
       </div>
     </div>
 
-    <!-- SIDEBAR (MANAJEMEN SCANWIN -> MONITORING PENCAIRAN SALDO) -->
+    <!-- SIDEBAR (MANAJEMEN SCANWIN -> RIWAYAT REDEEM VOUCHER & RIWAYAT PENCAIRAN SALDO) -->
     <aside class="sidebar">
       <div class="sidebar-menu-item">
         <!-- Parent Header: Manajemen Scanwin -->
@@ -1381,16 +1381,21 @@
             style="color: #4B5563; font-size: 16px; font-weight: bold; transform: rotate(90deg);">›</span>
         </div>
 
-        <!-- Submenu Item Single: Monitoring Pencairan Saldo -->
+        <!-- Submenu Items: Riwayat Redeem Voucher & Riwayat Pencairan Saldo -->
         <div class="sidebar-tree-container">
           <div class="tree-connector">
+            <div class="tree-dot" id="dot-voucher"></div>
+            <div class="tree-line"></div>
             <div class="tree-dot active" id="dot-logs"></div>
           </div>
 
           <div class="tree-submenus">
-            <div class="tree-tab-item active" id="tab-logs-btn">
-              <span style="font-weight: 600; color: #1F2937;">Monitoring Pencairan Saldo</span>
-            </div>
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="tree-tab-item" style="text-decoration: none; color: inherit;">
+              <span>Riwayat Redeem Voucher</span>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="tree-tab-item active" style="text-decoration: none; color: inherit;">
+              <span style="font-weight: 600; color: #1F2937;">Riwayat Pencairan Saldo</span>
+            </a>
           </div>
         </div>
       </div>
