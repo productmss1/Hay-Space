@@ -152,7 +152,10 @@
             padding: 0;
             border-radius: 10px;
         }
-        .n-decision:hover { transform: rotate(45deg) scale(1.05); }
+
+        .n-decision:hover {
+            transform: rotate(45deg) scale(1.05);
+        }
 
         .n-decision span {
             transform: rotate(-45deg);
@@ -192,8 +195,16 @@
             z-index: 25;
             border: 1px solid #e2e8f0;
         }
-        .label-yes { color: #059669; border-color: #10b981; }
-        .label-no { color: #dc2626; border-color: #ef4444; }
+
+        .label-yes {
+            color: #059669;
+            border-color: #10b981;
+        }
+
+        .label-no {
+            color: #dc2626;
+            border-color: #ef4444;
+        }
 
         /* UI Controls */
         .controls {
@@ -243,13 +254,19 @@
 <body>
 
     <!-- SVG Export Helper Modal -->
-    <div id="svgCopyModal" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); z-index: 999; justify-content: center; align-items: center;">
-        <div style="background: white; border-radius: 20px; width: 560px; max-width: 90%; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 16px;">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
-                <div style="font-weight: 800; font-size: 16px; color: #0f172a; display: flex; align-items: center; gap: 8px;">
+    <div id="svgCopyModal"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15, 23, 42, 0.75); backdrop-filter: blur(4px); z-index: 999; justify-content: center; align-items: center;">
+        <div
+            style="background: white; border-radius: 20px; width: 560px; max-width: 90%; padding: 24px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); display: flex; flex-direction: column; gap: 16px;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px;">
+                <div
+                    style="font-weight: 800; font-size: 16px; color: #0f172a; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-file-code" style="color: #4f46e5;"></i> Export Flowchart SVG ke Figma
                 </div>
-                <button onclick="closeSvgModal()" style="background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer;"><i class="fas fa-times"></i></button>
+                <button onclick="closeSvgModal()"
+                    style="background: none; border: none; font-size: 18px; color: #64748b; cursor: pointer;"><i
+                        class="fas fa-times"></i></button>
             </div>
 
             <p style="font-size: 12.5px; color: #475569; line-height: 1.5; margin: 0;">
@@ -257,101 +274,186 @@
             </p>
 
             <!-- Flow Checkbox Selector Container -->
-            <div style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
-                <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px;">
-                    <div style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
-                        <i class="fas fa-list-check" style="color: #4f46e5;"></i> Centang Flow Flowchart yang Ingin Di-export:
+            <div
+                style="background: #f1f5f9; border: 1px solid #cbd5e1; border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 8px;">
+                <div
+                    style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #cbd5e1; padding-bottom: 6px;">
+                    <div
+                        style="font-size: 12px; font-weight: 800; color: #0f172a; display: flex; align-items: center; gap: 6px;">
+                        <i class="fas fa-list-check" style="color: #4f46e5;"></i> Centang Flow Flowchart yang Ingin
+                        Di-export:
                     </div>
-                    <label style="font-size: 11px; font-weight: 700; color: #4f46e5; cursor: pointer; display: flex; align-items: center; gap: 4px;">
-                        <input type="checkbox" id="chkSelectAll" checked onchange="toggleSelectAllFlows(this.checked)"> Pilih Semua
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #4f46e5; cursor: pointer; display: flex; align-items: center; gap: 4px;">
+                        <input type="checkbox" id="chkSelectAll" checked onchange="toggleSelectAllFlows(this.checked)">
+                        Pilih Semua
                     </label>
                 </div>
 
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-height: 140px; overflow-y: auto; padding-right: 4px;">
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec1" checked onchange="onFlowCheckboxChange()"> 🟣 1. Register PIN
+                <div
+                    style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; max-height: 140px; overflow-y: auto; padding-right: 4px;">
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec1" checked onchange="onFlowCheckboxChange()">
+                        🟣 1. Register PIN
                     </label>
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec2" checked onchange="onFlowCheckboxChange()"> 💗 2. Ubah PIN
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec2" checked onchange="onFlowCheckboxChange()">
+                        💗 2. Ubah PIN
                     </label>
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec3" checked onchange="onFlowCheckboxChange()"> 🟠 3. Reset PIN (OTP WA)
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec3" checked onchange="onFlowCheckboxChange()">
+                        🟠 3. Reset PIN (OTP WA)
                     </label>
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec4" checked onchange="onFlowCheckboxChange()"> 🟢 4. Barrier Redirection (PRD 4)
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec4" checked onchange="onFlowCheckboxChange()">
+                        🟢 4. Barrier Redirection (PRD 4)
                     </label>
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec5" checked onchange="onFlowCheckboxChange()"> 🔵 5. Direct Scan QR Customer
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec5" checked onchange="onFlowCheckboxChange()">
+                        🔵 5. Direct Scan QR Customer
                     </label>
-                    <label style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec6" checked onchange="onFlowCheckboxChange()"> 💚 6. Bulk QR &amp; FDE Audit (PRD 6)
+                    <label
+                        style="font-size: 11px; font-weight: 600; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec6" checked onchange="onFlowCheckboxChange()">
+                        💚 6. Bulk QR &amp; FDE Audit (PRD 6)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #0369a1; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7" checked onchange="onFlowCheckboxChange()"> 🔷 7. Customer Klaim Mandiri &amp; Validasi FDE (PRD 11)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0369a1; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7" checked onchange="onFlowCheckboxChange()">
+                        🔷 7. Customer Klaim Mandiri &amp; Validasi FDE (PRD 11)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec8" checked onchange="onFlowCheckboxChange()"> 🔑 8. Customer Registrasi PIN (PRD 8)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec8" checked onchange="onFlowCheckboxChange()">
+                        🔑 8. Customer Registrasi PIN (PRD 8)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
-                        <input type="checkbox" class="chk-flow" value="sec9" checked onchange="onFlowCheckboxChange()"> ⚙️ 9. Customer Ubah PIN Aktif (PRD 9)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0;">
+                        <input type="checkbox" class="chk-flow" value="sec9" checked onchange="onFlowCheckboxChange()">
+                        ⚙️ 9. Customer Ubah PIN Aktif (PRD 9)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec10" checked onchange="onFlowCheckboxChange()"> 🛡️ 10. Customer Reset PIN Terblokir (PRD 10)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #334155; display: flex; align-items: center; gap: 6px; cursor: pointer; background: white; padding: 5px 8px; border-radius: 6px; border: 1px solid #e2e8f0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec10" checked onchange="onFlowCheckboxChange()">
+                        🛡️ 10. Customer Reset PIN Terblokir (PRD 10)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec12" checked onchange="onFlowCheckboxChange()"> 💳 12. Customer Validasi Pencairan E-Wallet (PRD 12)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec12a" checked
+                            onchange="onFlowCheckboxChange()">
+                        💳 12a. Akses List E-Wallet (PRD 14)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #4f46e5; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #eef2ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #c7d2fe; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13a" checked onchange="onFlowCheckboxChange()"> 📊 13a. Admin: List Transaksi &amp; KPI Cards (PRD 13a)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec12b" checked
+                            onchange="onFlowCheckboxChange()">
+                        ➕ 12b. Register E-Wallet Baru (PRD 15)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13b" checked onchange="onFlowCheckboxChange()"> ⏳ 13b. Admin: Antrean Pending Audit &amp; Badges (PRD 13b)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec12c" checked
+                            onchange="onFlowCheckboxChange()">
+                        ✏️ 12c. Ubah E-Wallet (PRD 16)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #059669; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13c" checked onchange="onFlowCheckboxChange()"> 🟢 13c. Admin: Proses Approve &amp; E-Wallet Utama (PRD 13c)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec12d" checked
+                            onchange="onFlowCheckboxChange()">
+                        🗑️ 12d. Delete E-Wallet (PRD 17)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #dc2626; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13d" checked onchange="onFlowCheckboxChange()"> 🔴 13d. Admin: Proses Reject &amp; 100% Refund (PRD 13d)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #4f46e5; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #eef2ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #c7d2fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13a" checked
+                            onchange="onFlowCheckboxChange()"> 📊 13a. Admin: List Transaksi &amp; KPI Cards (PRD 13a)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec13e" checked onchange="onFlowCheckboxChange()"> 📄 13e. Admin E-Wallet: Detail Audit Drawer (PRD 13e)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #d97706; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13b" checked
+                            onchange="onFlowCheckboxChange()"> ⏳ 13b. Admin: Antrean Pending Audit &amp; Badges (PRD
+                        13b)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #6d28d9; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8b4fe; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7a_vch" checked onchange="onFlowCheckboxChange()"> 📊 7a. Admin Voucher: List Tab Riwayat &amp; KPI Cards (PRD 7a)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #059669; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13c" checked
+                            onchange="onFlowCheckboxChange()"> 🟢 13c. Admin: Proses Approve &amp; E-Wallet Utama (PRD
+                        13c)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7b_vch" checked onchange="onFlowCheckboxChange()"> ⏳ 7b. Admin Voucher: Antrean Tab Pending FDE (PRD 7b)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #dc2626; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13d" checked
+                            onchange="onFlowCheckboxChange()"> 🔴 13d. Admin: Proses Reject &amp; 100% Refund (PRD 13d)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7c_vch" checked onchange="onFlowCheckboxChange()"> 📄 7c. Admin Voucher: Detail Audit Drawer &amp; 4 Parameter FDE (PRD 7c)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec13e" checked
+                            onchange="onFlowCheckboxChange()"> 📄 13e. Admin E-Wallet: Detail Audit Drawer (PRD 13e)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7d_vch" checked onchange="onFlowCheckboxChange()"> 🟢 7d. Admin Voucher: Proses Approve (Direct &amp; QR - PRD 7d)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #6d28d9; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8b4fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7a_vch" checked
+                            onchange="onFlowCheckboxChange()"> 📊 7a. Admin Voucher: List Tab Riwayat &amp; KPI Cards
+                        (PRD 7a)
                     </label>
-                    <label style="font-size: 11px; font-weight: 700; color: #b91c1c; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
-                        <input type="checkbox" class="chk-flow" value="sec7e_vch" checked onchange="onFlowCheckboxChange()"> 🔴 7e. Admin Voucher: Proses Tolak &amp; Refund Kuota (PRD 7e)
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #b45309; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fffbeb; padding: 6px 8px; border-radius: 6px; border: 1px solid #fde68a; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7b_vch" checked
+                            onchange="onFlowCheckboxChange()"> ⏳ 7b. Admin Voucher: Antrean Tab Pending FDE (PRD 7b)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7c_vch" checked
+                            onchange="onFlowCheckboxChange()"> 📄 7c. Admin Voucher: Detail Audit Drawer &amp; 4
+                        Parameter FDE (PRD 7c)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7d_vch" checked
+                            onchange="onFlowCheckboxChange()"> 🟢 7d. Admin Voucher: Proses Approve (Direct &amp; QR -
+                        PRD 7d)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #b91c1c; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #fef2f2; padding: 6px 8px; border-radius: 6px; border: 1px solid #fecaca; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec7e_vch" checked
+                            onchange="onFlowCheckboxChange()"> 🔴 7e. Admin Voucher: Proses Tolak &amp; Refund Kuota
+                        (PRD 7e)
                     </label>
                 </div>
             </div>
 
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-                <div style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
-                    <span style="background: #10b981; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">1</span> 
+            <div
+                style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div
+                    style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                    <span
+                        style="background: #10b981; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">1</span>
                     Download File .SVG (Rekomendasi 100% Berhasil di Figma):
                 </div>
-                <button onclick="downloadSVG()" style="background: #10b981; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <button onclick="downloadSVG()"
+                    style="background: #10b981; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class="fas fa-download"></i> Download File .SVG (Selected Flows)
                 </button>
-                <span style="font-size: 11px; color: #64748b; text-align: center;">Setelah di-download, tinggal <strong>Drag & Drop (Seret & Lepas)</strong> file .svg dari folder Download langsung ke canvas Figma.</span>
+                <span style="font-size: 11px; color: #64748b; text-align: center;">Setelah di-download, tinggal
+                    <strong>Drag & Drop (Seret & Lepas)</strong> file .svg dari folder Download langsung ke canvas
+                    Figma.</span>
             </div>
 
-            <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
-                <div style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
-                    <span style="background: #4f46e5; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">2</span> 
+            <div
+                style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 8px;">
+                <div
+                    style="font-size: 12px; font-weight: 700; color: #1e293b; display: flex; align-items: center; gap: 6px;">
+                    <span
+                        style="background: #4f46e5; color: white; border-radius: 50%; width: 20px; height: 20px; display: inline-flex; align-items: center; justify-content: center; font-size: 11px;">2</span>
                     Atau Salin Kode RAW SVG dari Kolom Teks Berikut:
                 </div>
-                <textarea id="rawSvgTextArea" style="width: 100%; height: 90px; font-family: monospace; font-size: 10.5px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; resize: none; background: #ffffff; color: #334155;"></textarea>
-                <button onclick="copyRawAreaText()" style="background: #4f46e5; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                <textarea id="rawSvgTextArea"
+                    style="width: 100%; height: 90px; font-family: monospace; font-size: 10.5px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 8px; resize: none; background: #ffffff; color: #334155;"></textarea>
+                <button onclick="copyRawAreaText()"
+                    style="background: #4f46e5; color: white; border: none; border-radius: 10px; padding: 10px 16px; font-weight: 700; font-size: 12.5px; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px;">
                     <i class="fas fa-copy"></i> Select &amp; Copy Raw SVG Code
                 </button>
             </div>
@@ -359,8 +461,10 @@
     </div>
 
     <div class="controls">
-        <button class="btn-ctrl" onclick="openSvgModal()" title="Buka Pop-up Export &amp; Salin SVG Flowchart untuk Figma"><i class="fas fa-file-code"></i></button>
-        <button class="btn-ctrl" onclick="downloadSVG()" title="Download File .SVG (Seret &amp; Drop ke Figma)"><i class="fas fa-download"></i></button>
+        <button class="btn-ctrl" onclick="openSvgModal()"
+            title="Buka Pop-up Export &amp; Salin SVG Flowchart untuk Figma"><i class="fas fa-file-code"></i></button>
+        <button class="btn-ctrl" onclick="downloadSVG()" title="Download File .SVG (Seret &amp; Drop ke Figma)"><i
+                class="fas fa-download"></i></button>
         <button class="btn-ctrl" onclick="zoomView(1.2)" title="Zoom In"><i class="fas fa-search-plus"></i></button>
         <button class="btn-ctrl" onclick="zoomView(0.8)" title="Zoom Out"><i class="fas fa-search-minus"></i></button>
         <button class="btn-ctrl" onclick="resetZoom()" title="Reset View"><i class="fas fa-expand"></i></button>
@@ -390,130 +494,216 @@
             <!-- Figma-style sections wrapper inside canvas to scale together -->
             <div id="sections-container">
                 <!-- ================= OUTER SECTION 1: MERCHANT SIDE ================= -->
-                <div class="figma-section" data-sec-id="outer-merchant" style="left: 400px; top: 150px; width: 5350px; height: 3680px; border: 3px dashed #64748b; background: rgba(241, 245, 249, 0.25);">
-                    <span class="section-label" style="background:#0f172a; font-size:13px; padding:6px 16px;">MERCHANT SIDE</span>
+                <div class="figma-section" data-sec-id="outer-merchant"
+                    style="left: 400px; top: 150px; width: 5350px; height: 6050px; border: 3px dashed #64748b; background: rgba(241, 245, 249, 0.25);">
+                    <span class="section-label" style="background:#0f172a; font-size:13px; padding:6px 16px;">MERCHANT
+                        SIDE</span>
                 </div>
 
                 <!-- SECTION 1 -->
-                <div class="figma-section" data-sec-id="sec1" style="left: 450px; top: 200px; width: 2850px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec1"
+                    style="left: 450px; top: 200px; width: 2850px; height: 500px;">
                     <span class="section-label" style="background:#8b5cf6;">Register PIN Mitra1000s</span>
                 </div>
                 <!-- SECTION 2 -->
-                <div class="figma-section" data-sec-id="sec2" style="left: 450px; top: 760px; width: 3080px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec2"
+                    style="left: 450px; top: 760px; width: 3080px; height: 500px;">
                     <span class="section-label" style="background:#ec4899;">Ubah PIN Mitra1000s</span>
                 </div>
                 <!-- SECTION 3 -->
-                <div class="figma-section" data-sec-id="sec3" style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
+                <div class="figma-section" data-sec-id="sec3"
+                    style="left: 450px; top: 1340px; width: 3300px; height: 500px;">
                     <span class="section-label" style="background:#f59e0b;">Reset PIN Terblokir (OTP WA)</span>
                 </div>
                 <!-- SECTION 4 -->
-                <div class="figma-section" data-sec-id="sec4" style="left: 450px; top: 1920px; width: 3300px; height: 540px;">
-                    <span class="section-label" style="background:#10b981;">Pencegahan Akses Menu (Redirection Barrier - PRD 4)</span>
+                <div class="figma-section" data-sec-id="sec4"
+                    style="left: 450px; top: 1920px; width: 3300px; height: 540px;">
+                    <span class="section-label" style="background:#10b981;">Pencegahan Akses Menu (Redirection Barrier -
+                        PRD 4)</span>
                 </div>
                 <!-- SECTION 5 -->
-                <div class="figma-section" data-sec-id="sec5" style="left: 450px; top: 2520px; width: 4620px; height: 600px;">
+                <div class="figma-section" data-sec-id="sec5"
+                    style="left: 450px; top: 2520px; width: 4620px; height: 600px;">
                     <span class="section-label" style="background:#0b57d0;">Direct Scan QR Customer (Flow 1)</span>
                 </div>
                 <!-- SECTION 6 -->
-                <div class="figma-section" data-sec-id="sec6" style="left: 450px; top: 3180px; width: 5250px; height: 600px;">
-                    <span class="section-label" style="background:#25d366;">Shareable Bulk QR &amp; Audit FDE Engine (Flow 2 - PRD 6)</span>
+                <div class="figma-section" data-sec-id="sec6"
+                    style="left: 450px; top: 3180px; width: 5250px; height: 600px;">
+                    <span class="section-label" style="background:#25d366;">Shareable Bulk QR &amp; Audit FDE Engine
+                        (Flow 2 - PRD 6)</span>
                 </div>
 
                 <!-- ================= OUTER SECTION 2: CUSTOMER SIDE ================= -->
-                <div class="figma-section" data-sec-id="outer-customer" style="left: 5800px; top: 150px; width: 5350px; height: 3880px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
-                    <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">CUSTOMER SIDE</span>
+                <div class="figma-section" data-sec-id="outer-customer"
+                    style="left: 5800px; top: 150px; width: 5350px; height: 6050px; border: 3px dashed #0284c7; background: rgba(224, 242, 254, 0.25);">
+                    <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">CUSTOMER
+                        SIDE</span>
                 </div>
 
                 <!-- SUB-SECTION: customer-klaim-mandiri (PRD 11) -->
-                <div class="figma-section" data-sec-id="sec7" style="left: 5850px; top: 200px; width: 5250px; height: 600px;">
-                    <span class="section-label" style="background:#2563eb;">customer-klaim-mandiri (Klaim Mandiri &amp; Validasi FDE Akhir - PRD 11)</span>
+                <div class="figma-section" data-sec-id="sec7"
+                    style="left: 5850px; top: 200px; width: 5250px; height: 600px;">
+                    <span class="section-label" style="background:#2563eb;">customer-klaim-mandiri (Klaim Mandiri &amp;
+                        Validasi FDE Akhir - PRD 11)</span>
                 </div>
 
                 <!-- SUB-SECTION: Registrasi PIN Baru Customer (PRD 8) -->
-                <div class="figma-section" data-sec-id="sec8" style="left: 5850px; top: 880px; width: 5250px; height: 600px;">
+                <div class="figma-section" data-sec-id="sec8"
+                    style="left: 5850px; top: 880px; width: 5250px; height: 600px;">
                     <span class="section-label" style="background:#9333ea;">Registrasi PIN Baru Customer (PRD 8)</span>
                 </div>
 
                 <!-- SUB-SECTION: Ubah PIN Aktif Customer (PRD 9) -->
-                <div class="figma-section" data-sec-id="sec9" style="left: 5850px; top: 1560px; width: 5250px; height: 700px;">
+                <div class="figma-section" data-sec-id="sec9"
+                    style="left: 5850px; top: 1560px; width: 5250px; height: 700px;">
                     <span class="section-label" style="background:#db2777;">Ubah PIN Aktif Customer (PRD 9)</span>
                 </div>
 
                 <!-- SUB-SECTION: Reset PIN Terblokir Customer (PRD 10) -->
-                <div class="figma-section" data-sec-id="sec10" style="left: 5850px; top: 2360px; width: 5250px; height: 750px;">
+                <div class="figma-section" data-sec-id="sec10"
+                    style="left: 5850px; top: 2360px; width: 5250px; height: 750px;">
                     <span class="section-label" style="background:#4b5563;">Reset PIN Terblokir Customer (PRD 10)</span>
                 </div>
 
-                <!-- SUB-SECTION: Validasi Pencairan E-Wallet & FDE Customer (PRD 12) -->
-                <div class="figma-section" data-sec-id="sec12" style="left: 5850px; top: 3180px; width: 5250px; height: 800px;">
-                    <span class="section-label" style="background:#0284c7;">Validasi Pencairan E-Wallet &amp; FDE Customer (PRD 12)</span>
+                <!-- ================= SECTION UTAMA: KELOLA E-WALLET ================= -->
+                <!-- SUB-SECTION 12a: Akses List E-Wallet (PRD 14) -->
+                <div class="figma-section" data-sec-id="sec12a"
+                    style="left: 5850px; top: 3180px; width: 5250px; height: 600px;">
+                    <span class="section-label" style="background:#0284c7;">12a. Akses List E-Wallet (PRD 14)</span>
+                </div>
+
+                <!-- SUB-SECTION 12b: Register E-Wallet Baru (PRD 15) -->
+                <div class="figma-section" data-sec-id="sec12b"
+                    style="left: 5850px; top: 3840px; width: 5250px; height: 750px;">
+                    <span class="section-label" style="background:#0284c7;">12b. Register E-Wallet Baru (PRD 15)</span>
+                    <div class="fde-legend-card" data-sec-id="sec12b"
+                        style="position: absolute; left: 1650px; top: 12px; background: #ffffff; border: 1.5px solid #0284c7; border-radius: 8px; padding: 6px 12px; font-size: 11px; color: #1e293b; box-shadow: 0 2px 6px rgba(0,0,0,0.06); line-height: 1.5;">
+                        <strong style="color: #0284c7; display: block; margin-bottom: 2px;">ℹ️ Kriteria 3 Kondisi FDE
+                            Engine:</strong>
+                        <span style="color: #dc2626; font-weight: 700;">• Kondisi 1 (Aktif Akun Lain):</span> No. HP
+                        sudah AKTIF atau dalam verifikasi admin di akun customer LAIN &rarr; Direct Error Pop-Up
+                        Toast<br>
+                        <span style="color: #d97706; font-weight: 700;">• Kondisi 2 (Review Admin):</span> No. HP butuh
+                        verifikasi/review Admin karena pernah di digunakan akun lain &rarr; Status 'Proses
+                        Verifikasi'<br>
+                        <span style="color: #16a34a; font-weight: 700;">• Kondisi 3 (No. HP Clean):</span> No. HP 100%
+                        baru &amp; belum terdaftar &rarr; Direct Active (Langsung Aktif)
+                    </div>
+                </div>
+
+                <!-- SUB-SECTION 12c: Ubah E-Wallet (PRD 16) -->
+                <div class="figma-section" data-sec-id="sec12c"
+                    style="left: 5850px; top: 4650px; width: 5250px; height: 750px;">
+                    <span class="section-label" style="background:#0284c7;">12c. Ubah E-Wallet (PRD 16)</span>
+                    <div class="fde-legend-card" data-sec-id="sec12c"
+                        style="position: absolute; left: 1650px; top: 12px; background: #ffffff; border: 1.5px solid #0284c7; border-radius: 8px; padding: 6px 12px; font-size: 11px; color: #1e293b; box-shadow: 0 2px 6px rgba(0,0,0,0.06); line-height: 1.5;">
+                        <strong style="color: #0284c7; display: block; margin-bottom: 2px;">ℹ️ Kriteria 3 Kondisi FDE
+                            Engine:</strong>
+                        <span style="color: #dc2626; font-weight: 700;">• Kondisi 1 (Aktif Akun Lain):</span> No. HP
+                        sudah AKTIF di akun customer LAIN &rarr; Direct Error Pop-Up Toast<br>
+                        <span style="color: #d97706; font-weight: 700;">• Kondisi 2 (Review Admin):</span> No. HP butuh
+                        verifikasi/review Admin &rarr; Status 'Proses Verifikasi' (No. Lama Tetap Aktif)<br>
+                        <span style="color: #16a34a; font-weight: 700;">• Kondisi 3 (No. HP Clean):</span> No. HP 100%
+                        baru &amp; belum terdaftar &rarr; Direct Active (Langsung Menggantikan)
+                    </div>
+                </div>
+
+                <!-- SUB-SECTION 12d: Delete E-Wallet (PRD 17) -->
+                <div class="figma-section" data-sec-id="sec12d"
+                    style="left: 5850px; top: 5460px; width: 5250px; height: 500px;">
+                    <span class="section-label" style="background:#0284c7;">12d. Delete E-Wallet (PRD 17)</span>
                 </div>
 
                 <!-- ================= OUTER SECTION 3: ADMIN POV ================= -->
-                <div class="figma-section" data-sec-id="outer-admin" style="left: 11300px; top: 150px; width: 5600px; height: 3880px; border: 3px dashed #4f46e5; background: rgba(238, 242, 255, 0.25);">
-                    <span class="section-label" style="background:#4f46e5; font-size:13px; padding:6px 16px;">ADMIN POV</span>
+                <div class="figma-section" data-sec-id="outer-admin"
+                    style="left: 11300px; top: 150px; width: 5600px; height: 6050px; border: 3px dashed #4f46e5; background: rgba(238, 242, 255, 0.25);">
+                    <span class="section-label" style="background:#4f46e5; font-size:13px; padding:6px 16px;">ADMIN
+                        POV</span>
                 </div>
 
                 <!-- SUB-SECTION GROUP: Monitoring Pencairan Saldo Pelanggan (PRD 13 / Prototype Dashboard) -->
                 <!-- SUB-SECTION 13a: Modul 1: List Transaksi & Monitoring KPI -->
-                <div class="figma-section" data-sec-id="sec13a" style="left: 11350px; top: 200px; width: 5450px; height: 600px;">
-                    <span class="section-label" style="background:#4f46e5;">Monitoring Pencairan Saldo: Modul 1 (List Transaksi &amp; Metric KPI Cards - PRD 13a)</span>
+                <div class="figma-section" data-sec-id="sec13a"
+                    style="left: 11350px; top: 200px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#4f46e5;">Monitoring Pencairan Saldo: Modul 1 (List
+                        Transaksi &amp; Metric KPI Cards - PRD 13a)</span>
                 </div>
 
                 <!-- SUB-SECTION 13b: Modul 2: Antrean Persetujuan Pending -->
-                <div class="figma-section" data-sec-id="sec13b" style="left: 11350px; top: 880px; width: 5450px; height: 600px;">
-                    <span class="section-label" style="background:#d97706;">Monitoring Pencairan Saldo: Modul 2 (Antrean Pending Audit &amp; FDE Risk Badges - PRD 13b)</span>
+                <div class="figma-section" data-sec-id="sec13b"
+                    style="left: 11350px; top: 880px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#d97706;">Monitoring Pencairan Saldo: Modul 2 (Antrean
+                        Pending Audit &amp; FDE Risk Badges - PRD 13b)</span>
                 </div>
 
                 <!-- SUB-SECTION 13c: Modul 3: Proses Persetujuan Penarikan (Approve Flow & Modal) -->
-                <div class="figma-section" data-sec-id="sec13c" style="left: 11350px; top: 1560px; width: 5450px; height: 700px;">
-                    <span class="section-label" style="background:#059669;">Monitoring Pencairan Saldo: Modul 3 (Proses Persetujuan Approve &amp; Set E-Wallet Utama - PRD 13c)</span>
+                <div class="figma-section" data-sec-id="sec13c"
+                    style="left: 11350px; top: 1560px; width: 5450px; height: 700px;">
+                    <span class="section-label" style="background:#059669;">Monitoring Pencairan Saldo: Modul 3 (Proses
+                        Persetujuan Approve &amp; Set E-Wallet Utama - PRD 13c)</span>
                 </div>
 
                 <!-- SUB-SECTION 13d: Modul 4: Proses Penolakan Penarikan (Reject Flow & Modal) -->
-                <div class="figma-section" data-sec-id="sec13d" style="left: 11350px; top: 2360px; width: 5450px; height: 750px;">
-                    <span class="section-label" style="background:#dc2626;">Monitoring Pencairan Saldo: Modul 4 (Proses Penolakan Reject &amp; 100% Refund - PRD 13d)</span>
+                <div class="figma-section" data-sec-id="sec13d"
+                    style="left: 11350px; top: 2360px; width: 5450px; height: 750px;">
+                    <span class="section-label" style="background:#dc2626;">Monitoring Pencairan Saldo: Modul 4 (Proses
+                        Penolakan Reject &amp; 100% Refund - PRD 13d)</span>
                 </div>
 
                 <!-- SUB-SECTION 13e: Modul 5: Detail Audit Drawer (360 Detail & FDE Cross-Account Box) -->
-                <div class="figma-section" data-sec-id="sec13e" style="left: 11350px; top: 3180px; width: 5450px; height: 800px;">
-                    <span class="section-label" style="background:#0284c7;">Monitoring Pencairan Saldo: Modul 5 (Detail Audit Drawer &amp; Cross-Account Alert Box - PRD 13e)</span>
+                <div class="figma-section" data-sec-id="sec13e"
+                    style="left: 11350px; top: 3180px; width: 5450px; height: 800px;">
+                    <span class="section-label" style="background:#0284c7;">Monitoring Pencairan Saldo: Modul 5 (Detail
+                        Audit Drawer &amp; Cross-Account Alert Box - PRD 13e)</span>
                 </div>
 
                 <!-- ================= OUTER SECTION 4: ADMIN POV — MONITORING PEMBERIAN VOUCHER ================= -->
-                <div class="figma-section" data-sec-id="outer-admin-vch" style="left: 17100px; top: 150px; width: 5600px; height: 3880px; border: 3px dashed #7c3aed; background: rgba(245, 243, 255, 0.25);">
-                    <span class="section-label" style="background:#7c3aed; font-size:13px; padding:6px 16px;">ADMIN POV — MONITORING PEMBERIAN VOUCHER SCANWIN (PRD 7)</span>
+                <div class="figma-section" data-sec-id="outer-admin-vch"
+                    style="left: 17100px; top: 150px; width: 5600px; height: 6050px; border: 3px dashed #7c3aed; background: rgba(245, 243, 255, 0.25);">
+                    <span class="section-label" style="background:#7c3aed; font-size:13px; padding:6px 16px;">ADMIN POV
+                        — MONITORING PEMBERIAN VOUCHER SCANWIN (PRD 7)</span>
                 </div>
 
                 <!-- SUB-SECTION 7a: Modul 1: List Tab Riwayat & Summary KPI Cards (PRD 7a) -->
-                <div class="figma-section" data-sec-id="sec7a_vch" style="left: 17150px; top: 200px; width: 5450px; height: 600px;">
-                    <span class="section-label" style="background:#4f46e5;">Monitoring Pemberian Voucher: Modul 1 (List Tab Riwayat &amp; Metric KPI Cards - PRD 7a)</span>
+                <div class="figma-section" data-sec-id="sec7a_vch"
+                    style="left: 17150px; top: 200px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#4f46e5;">Monitoring Pemberian Voucher: Modul 1 (List
+                        Tab Riwayat &amp; Metric KPI Cards - PRD 7a)</span>
                 </div>
 
                 <!-- SUB-SECTION 7b: Modul 2: List Tab Pending Audit (PRD 7b) -->
-                <div class="figma-section" data-sec-id="sec7b_vch" style="left: 17150px; top: 880px; width: 5450px; height: 600px;">
-                    <span class="section-label" style="background:#d97706;">Monitoring Pemberian Voucher: Modul 2 (Antrean Pending Audit &amp; FDE Badges - PRD 7b)</span>
+                <div class="figma-section" data-sec-id="sec7b_vch"
+                    style="left: 17150px; top: 880px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#d97706;">Monitoring Pemberian Voucher: Modul 2
+                        (Antrean Pending Audit &amp; FDE Badges - PRD 7b)</span>
                 </div>
 
                 <!-- SUB-SECTION 7c: Modul 3: Detail Audit Drawer & 4 Parameter FDE (PRD 7c) -->
-                <div class="figma-section" data-sec-id="sec7c_vch" style="left: 17150px; top: 1560px; width: 5450px; height: 700px;">
-                    <span class="section-label" style="background:#0284c7;">Monitoring Pemberian Voucher: Modul 3 (Detail Audit Drawer &amp; Breakdown 4 Parameter - PRD 7c)</span>
+                <div class="figma-section" data-sec-id="sec7c_vch"
+                    style="left: 17150px; top: 1560px; width: 5450px; height: 700px;">
+                    <span class="section-label" style="background:#0284c7;">Monitoring Pemberian Voucher: Modul 3
+                        (Detail Audit Drawer &amp; Breakdown 4 Parameter - PRD 7c)</span>
                 </div>
 
                 <!-- SUB-SECTION 7d: Modul 4: Proses Approve (Direct Scan & QR Bulk - PRD 7d) -->
-                <div class="figma-section" data-sec-id="sec7d_vch" style="left: 17150px; top: 2360px; width: 5450px; height: 750px;">
-                    <span class="section-label" style="background:#059669;">Monitoring Pemberian Voucher: Modul 4 (Proses Approve: Direct Scan &amp; Shareable QR Bulk - PRD 7d)</span>
+                <div class="figma-section" data-sec-id="sec7d_vch"
+                    style="left: 17150px; top: 2360px; width: 5450px; height: 750px;">
+                    <span class="section-label" style="background:#059669;">Monitoring Pemberian Voucher: Modul 4
+                        (Proses Approve: Direct Scan &amp; Shareable QR Bulk - PRD 7d)</span>
                 </div>
 
                 <!-- SUB-SECTION 7e: Modul 5: Proses Tolak (Reject Modal, Quota Refund, & Push Notif - PRD 7e) -->
-                <div class="figma-section" data-sec-id="sec7e_vch" style="left: 17150px; top: 3180px; width: 5450px; height: 800px;">
-                    <span class="section-label" style="background:#dc2626;">Monitoring Pemberian Voucher: Modul 5 (Proses Tolak: Reject Modal, Refund Kuota, &amp; Push Notif - PRD 7e)</span>
+                <div class="figma-section" data-sec-id="sec7e_vch"
+                    style="left: 17150px; top: 3180px; width: 5450px; height: 800px;">
+                    <span class="section-label" style="background:#dc2626;">Monitoring Pemberian Voucher: Modul 5
+                        (Proses Tolak: Reject Modal, Refund Kuota, &amp; Push Notif - PRD 7e)</span>
                 </div>
             </div>
 
             <svg class="svg-layer" id="svg-layer">
                 <defs>
-                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6" orient="auto">
+                    <marker id="arrow" viewBox="0 -5 10 10" refX="8" refY="0" markerWidth="6" markerHeight="6"
+                        orient="auto">
                         <path d="M 0 -5 L 10 0 L 0 5 Z" fill="#94a3b8" />
                     </marker>
                 </defs>
@@ -777,27 +967,62 @@
                 { id: 'c10-success', type: 'n-gray', text: 'Tampilkan Layar<br>PIN Sukses Dipulihkan', x: 9640, y: 2620 },
                 { id: 'c10-end', type: 'n-end', text: 'End (Kembali ke<br>Halaman Akun)', x: 9860, y: 2575 },
 
-                // SECTION 12: Customer Validasi Pencairan E-Wallet & FDE (PRD 12)
-                { id: 'c12-start', type: 'n-start', text: 'Start', x: 5895, y: 3400 },
-                { id: 'c12-saldo', type: 'n-gray', text: 'Customer Buka<br>Halaman Saldo', x: 6040, y: 3420 },
-                { id: 'c12-click-tarik', type: 'n-purple', text: 'Customer Klik<br>"Tarik Saldo"', x: 6260, y: 3420 },
-                { id: 'c12-check-pin', type: 'n-decision', text: '<span>Cek Status PIN<br>Customer?</span>', x: 6510, y: 3390 },
-                { id: 'c12-pin-unreg', type: 'n-gray', text: 'Screen Info:<br>"PIN Belum Dibuat"', x: 6480, y: 3620 },
-                { id: 'c12-btn-unreg', type: 'n-pink', text: 'Tombol "Buat PIN Baru"<br>(Disabled / Non-aktif)', x: 6700, y: 3620 },
-                { id: 'c12-pin-blocked', type: 'n-gray', text: 'Screen Info:<br>"PIN Terblokir"', x: 6480, y: 3820 },
-                { id: 'c12-btn-blocked', type: 'n-pink', text: 'Tombol "Reset PIN"<br>(Disabled / Non-aktif)', x: 6700, y: 3820 },
-                { id: 'c12-select-ewallet', type: 'n-purple', text: 'Pilih E-Wallet Tujuan<br>(OVO, Gopay, Shopee, DANA)', x: 6760, y: 3420 },
-                { id: 'c12-form-nominal', type: 'n-gray', text: 'Input Nominal Tarik<br>& No. HP E-Wallet', x: 6980, y: 3420 },
-                { id: 'c12-click-submit', type: 'n-purple', text: 'Customer Klik<br>"Tarik Saldo" (Submit)', x: 7200, y: 3420 },
-                { id: 'c12-modal-pin', type: 'n-gray', text: 'Tampilkan Bottom Sheet<br>Input 6-Digit PIN', x: 7420, y: 3420 },
-                { id: 'c12-input-pin', type: 'n-purple', text: 'Customer Masukkan<br>6-Digit PIN sCanWin', x: 7640, y: 3420 },
-                { id: 'c12-valid-pin', type: 'n-decision', text: '<span>Validasi PIN<br>(Hash & Lock)?</span>', x: 7890, y: 3390 },
-                { id: 'c12-err-pin', type: 'n-gray', text: 'Error Toast PIN Salah<br>& Sisa Percobaan', x: 7860, y: 3620 },
-                { id: 'c12-fde-eval', type: 'n-decision', text: '<span>Evaluasi Risiko<br>FDE Engine?</span>', x: 8200, y: 3390 },
-                { id: 'c12-disburse', type: 'n-purple', text: 'Hit Espay API<br>Disbursement Direct', x: 8460, y: 3320 },
-                { id: 'c12-success-screen', type: 'n-end', text: 'Screen Penarikan<br>Berhasil Langsung!', x: 8700, y: 3275 },
-                { id: 'c12-pending-audit', type: 'n-gray', text: 'Flag Risk Kondisi A/B<br>& Tangguhkan Transfer', x: 8460, y: 3520 },
-                { id: 'c12-pending-screen', type: 'n-end', text: 'Screen Penarikan<br>Sedang Diproses (1x24h)', x: 8700, y: 3475 },
+                // ================= SECTION UTAMA: KELOLA E-WALLET =================
+                // --- SUB-SECTION 12a: Akses List E-Wallet (PRD 14) ---
+                { id: 'c12a-start', type: 'n-start', text: 'Start', x: 5895, y: 3400 },
+                { id: 'c12a-home', type: 'n-gray', text: 'Customer Buka App<br>Beranda / Homepage', x: 6040, y: 3420 },
+                { id: 'c12a-profile', type: 'n-purple', text: 'Klik Icon Profile /<br>Halaman "Akun Saya"', x: 6260, y: 3420 },
+                { id: 'c12a-click-ewallet', type: 'n-purple', text: 'Klik Menu Action Row:<br>"Kelola E-Wallet"', x: 6480, y: 3420 },
+                { id: 'c12a-screen-list', type: 'n-gray', text: 'Tampilkan Screen List E-Wallet:<br>Aktif | Verifikasi | Ditolak | Belum Ada<br>(Maks 1 No. HP, Masked)', x: 6700, y: 3420 },
+                { id: 'c12a-dec-action', type: 'n-decision', text: '<span>Pilih Aksi Kelola<br>E-Wallet?</span>', x: 6950, y: 3390 },
+                { id: 'c12a-nav-add', type: 'n-purple', text: 'Klik "Tambah E-Wallet Baru"<br>(Navigasi Flow 12b)', x: 7250, y: 3300 },
+                { id: 'c12a-end-add', type: 'n-end', text: 'Lanjut Flow 12b<br>(Register E-Wallet)', x: 7490, y: 3255 },
+                { id: 'c12a-nav-edit', type: 'n-purple', text: 'Klik Tombol "Ubah"<br>(Navigasi Flow 12c)', x: 7250, y: 3420 },
+                { id: 'c12a-end-edit', type: 'n-end', text: 'Lanjut Flow 12c<br>(Ubah E-Wallet)', x: 7490, y: 3375 },
+                { id: 'c12a-nav-delete', type: 'n-purple', text: 'Klik Tombol "Hapus"<br>(Navigasi Flow 12d)', x: 7250, y: 3540 },
+                { id: 'c12a-end-delete', type: 'n-end', text: 'Lanjut Flow 12d<br>(Delete E-Wallet)', x: 7490, y: 3495 },
+
+                // --- SUB-SECTION 12b: Register E-Wallet Baru (PRD 15) ---
+                { id: 'c12b-start', type: 'n-start', text: 'Start', x: 5895, y: 4060 },
+                { id: 'c12b-click-add', type: 'n-purple', text: 'Customer Klik Button<br>"Tambah E-Wallet Baru"', x: 6040, y: 4080 },
+                { id: 'c12b-bottomsheet-pin', type: 'n-gray', text: 'Bottom Sheet Input<br>6-Digit PIN sCanWin', x: 6260, y: 4080 },
+                { id: 'c12b-input-pin', type: 'n-purple', text: 'Input PIN sCanWin<br>(123456 - Maks 3x)', x: 6480, y: 4080 },
+                { id: 'c12b-valid-pin', type: 'n-decision', text: '<span>Validasi PIN<br>sCanWin?</span>', x: 6730, y: 4050 },
+                { id: 'c12b-err-pin', type: 'n-gray', text: 'Toast Error PIN Salah<br>& Counter Attempt', x: 6600, y: 4280 },
+                { id: 'c12b-pin-blocked', type: 'n-gray', text: 'Status PIN -> Blocked<br>(Redirect Flow Reset PIN)', x: 6860, y: 4280 },
+                { id: 'c12b-popup-form', type: 'n-gray', text: 'Pop-Up Modal Form<br>Registrasi E-Wallet', x: 7080, y: 4080 },
+                { id: 'c12b-input-phone', type: 'n-purple', text: 'Input Nomor HP Baru<br>& Klik "Daftarkan"', x: 7300, y: 4080 },
+                { id: 'c12b-fde-eval', type: 'n-decision', text: '<span>Validasi 3 Kondisi<br>FDE Engine?</span>', x: 7550, y: 4050 },
+                { id: 'c12b-active-direct', type: 'n-purple', text: 'Kondisi 3: Direct Active<br>(No. HP Clean / Baru)', x: 7850, y: 3930 },
+                { id: 'c12b-verif-admin', type: 'n-gray', text: 'Kondisi 2: Status \'Proses Verifikasi\'<br>(Antrean Audit Admin Finance)', x: 7850, y: 4080 },
+                { id: 'c12b-err-kondisi1', type: 'n-gray', text: 'Kondisi 1: Pop-Up Error Toast<br>"Nomor HP Sudah Digunakan Akun Lain"', x: 7850, y: 4280 },
+                { id: 'c12b-end', type: 'n-end', text: 'End (Registrasi<br>E-Wallet Selesai)', x: 8180, y: 4005 },
+
+                // --- SUB-SECTION 12c: Ubah E-Wallet (PRD 16) ---
+                { id: 'c12c-start', type: 'n-start', text: 'Start', x: 5895, y: 4840 },
+                { id: 'c12c-click-edit', type: 'n-purple', text: 'Klik Tombol "Ubah"<br>pada E-Wallet Active', x: 6040, y: 4860 },
+                { id: 'c12c-prereq-check', type: 'n-decision', text: '<span>Cek Pending &amp;<br>Kuota 1x/Bulan?</span>', x: 6290, y: 4830 },
+                { id: 'c12c-err-prereq', type: 'n-gray', text: 'Modal Alert Error:<br>Ada Pending / Kuota Habis', x: 6260, y: 5060 },
+                { id: 'c12c-bottomsheet-pin', type: 'n-gray', text: 'Bottom Sheet Input<br>6-Digit PIN sCanWin', x: 6540, y: 4860 },
+                { id: 'c12c-input-pin', type: 'n-purple', text: 'Input PIN sCanWin<br>(123456 - Maks 3x)', x: 6760, y: 4860 },
+                { id: 'c12c-valid-pin', type: 'n-decision', text: '<span>Validasi PIN<br>sCanWin?</span>', x: 7010, y: 4830 },
+                { id: 'c12c-err-pin', type: 'n-gray', text: 'Toast Error PIN Salah<br>& Counter Attempt', x: 6980, y: 5060 },
+                { id: 'c12c-popup-form', type: 'n-gray', text: 'Pop-Up Modal Ubah<br>(Nomor Lama Masked)', x: 7260, y: 4860 },
+                { id: 'c12c-input-phone', type: 'n-purple', text: 'Input Nomor HP Baru<br>& Klik "Simpan & Ubah"', x: 7480, y: 4860 },
+                { id: 'c12c-fde-eval', type: 'n-decision', text: '<span>Validasi 3 Kondisi<br>FDE Engine?</span>', x: 7730, y: 4830 },
+                { id: 'c12c-active-direct', type: 'n-purple', text: 'Kondisi 3: Direct Active<br>(No. HP Baru Menggantikan)', x: 8030, y: 4710 },
+                { id: 'c12c-verif-admin', type: 'n-gray', text: 'Kondisi 2: Status \'Proses Verifikasi\'<br>(Antrean Audit Admin Finance)', x: 8030, y: 4860 },
+                { id: 'c12c-err-kondisi1', type: 'n-gray', text: 'Kondisi 1: Pop-Up Error Toast<br>"Nomor HP Sudah Digunakan Akun Lain"', x: 8030, y: 5060 },
+                { id: 'c12c-end', type: 'n-end', text: 'End (Perubahan<br>E-Wallet Selesai)', x: 8360, y: 4785 },
+
+                // --- SUB-SECTION 12d: Delete E-Wallet (PRD 17) ---
+                { id: 'c12d-start', type: 'n-start', text: 'Start', x: 5895, y: 5660 },
+                { id: 'c12d-click-delete', type: 'n-purple', text: 'Klik Tombol "Hapus"<br>(Active / Ditolak Admin)', x: 6040, y: 5680 },
+                { id: 'c12d-confirm-modal', type: 'n-gray', text: 'Modal Konfirmasi:<br>"Hapus E-Wallet ini?"', x: 6260, y: 5680 },
+                { id: 'c12d-click-confirm', type: 'n-purple', text: 'Customer Klik<br>"Ya, Hapus"', x: 6480, y: 5680 },
+                { id: 'c12d-backend-delete', type: 'n-gray', text: 'Backend Hapus Record<br>& Reset Kuota Terdaftar', x: 6700, y: 5680 },
+                { id: 'c12d-empty-screen', type: 'n-gray', text: 'Update UI State:<br>Belum Ada E-Wallet', x: 6920, y: 5680 },
+                { id: 'c12d-end', type: 'n-end', text: 'End (E-Wallet<br>Berhasil Dihapus)', x: 7140, y: 5635 },
 
                 // SECTION 13a: Admin List Transaksi & Monitoring KPI (PRD 13a - Y: 420-550)
                 { id: 'a1-start', type: 'n-start', text: 'Start', x: 11395, y: 420 },
@@ -1212,28 +1437,62 @@
                 { from: 'c10-save', to: 'c10-success', f: 'right', t: 'left' },
                 { from: 'c10-success', to: 'c10-end', f: 'right', t: 'left' },
 
-                // CONNECTIONS SECTION 12 (Customer Validasi Pencairan E-Wallet - PRD 12)
-                { from: 'c12-start', to: 'c12-saldo', f: 'right', t: 'left' },
-                { from: 'c12-saldo', to: 'c12-click-tarik', f: 'right', t: 'left' },
-                { from: 'c12-click-tarik', to: 'c12-check-pin', f: 'right', t: 'left' },
-                { from: 'c12-check-pin', to: 'c12-select-ewallet', f: 'right', t: 'left', label: 'PIN Aktif', lClass: 'label-yes' },
-                { from: 'c12-check-pin', to: 'c12-pin-unreg', f: 'bottom', t: 'top', label: 'Belum Set', lClass: 'label-no' },
-                { from: 'c12-pin-unreg', to: 'c12-btn-unreg', f: 'right', t: 'left' },
-                { from: 'c12-check-pin', to: 'c12-pin-blocked', f: 'bottom', t: 'top', label: 'Terblokir', lClass: 'label-no' },
-                { from: 'c12-pin-blocked', to: 'c12-btn-blocked', f: 'right', t: 'left' },
-                { from: 'c12-select-ewallet', to: 'c12-form-nominal', f: 'right', t: 'left' },
-                { from: 'c12-form-nominal', to: 'c12-click-submit', f: 'right', t: 'left' },
-                { from: 'c12-click-submit', to: 'c12-modal-pin', f: 'right', t: 'left' },
-                { from: 'c12-modal-pin', to: 'c12-input-pin', f: 'right', t: 'left' },
-                { from: 'c12-input-pin', to: 'c12-valid-pin', f: 'right', t: 'left' },
-                { from: 'c12-valid-pin', to: 'c12-fde-eval', f: 'right', t: 'left', label: 'PIN Benar', lClass: 'label-yes' },
-                { from: 'c12-valid-pin', to: 'c12-err-pin', f: 'bottom', t: 'top', label: 'PIN Salah (<3x)', lClass: 'label-no' },
-                { from: 'c12-err-pin', to: 'c12-modal-pin', f: 'left', t: 'bottom', label: 'Re-entry PIN', lClass: 'label-no' },
-                { from: 'c12-valid-pin', to: 'c12-pin-blocked', f: 'bottom', t: 'right', label: 'Salah >= 3x (Terblokir)', lClass: 'label-no' },
-                { from: 'c12-fde-eval', to: 'c12-disburse', f: 'top', t: 'left', label: 'Happy Path', lClass: 'label-yes' },
-                { from: 'c12-disburse', to: 'c12-success-screen', f: 'right', t: 'left' },
-                { from: 'c12-fde-eval', to: 'c12-pending-audit', f: 'bottom', t: 'left', label: 'Kondisi A / B', lClass: 'label-no' },
-                { from: 'c12-pending-audit', to: 'c12-pending-screen', f: 'right', t: 'left' },
+                // ================= CONNECTIONS SECTION UTAMA: KELOLA E-WALLET =================
+                // --- Connections 12a (Akses List E-Wallet - PRD 14) ---
+                { from: 'c12a-start', to: 'c12a-home', f: 'right', t: 'left' },
+                { from: 'c12a-home', to: 'c12a-profile', f: 'right', t: 'left' },
+                { from: 'c12a-profile', to: 'c12a-click-ewallet', f: 'right', t: 'left' },
+                { from: 'c12a-click-ewallet', to: 'c12a-screen-list', f: 'right', t: 'left' },
+                { from: 'c12a-screen-list', to: 'c12a-dec-action', f: 'right', t: 'left' },
+                { from: 'c12a-dec-action', to: 'c12a-nav-add', f: 'top', t: 'left', label: 'Tambah Baru', lClass: 'label-yes' },
+                { from: 'c12a-nav-add', to: 'c12a-end-add', f: 'right', t: 'left' },
+                { from: 'c12a-dec-action', to: 'c12a-nav-edit', f: 'right', t: 'left', label: 'Ubah', lClass: 'label-yes' },
+                { from: 'c12a-nav-edit', to: 'c12a-end-edit', f: 'right', t: 'left' },
+                { from: 'c12a-dec-action', to: 'c12a-nav-delete', f: 'bottom', t: 'left', label: 'Hapus', lClass: 'label-no' },
+                { from: 'c12a-nav-delete', to: 'c12a-end-delete', f: 'right', t: 'left' },
+
+                // --- Connections 12b (Register E-Wallet Baru - PRD 15) ---
+                { from: 'c12b-start', to: 'c12b-click-add', f: 'right', t: 'left' },
+                { from: 'c12b-click-add', to: 'c12b-bottomsheet-pin', f: 'right', t: 'left' },
+                { from: 'c12b-bottomsheet-pin', to: 'c12b-input-pin', f: 'right', t: 'left' },
+                { from: 'c12b-input-pin', to: 'c12b-valid-pin', f: 'right', t: 'left' },
+                { from: 'c12b-valid-pin', to: 'c12b-popup-form', f: 'right', t: 'left', label: 'PIN Benar', lClass: 'label-yes' },
+                { from: 'c12b-valid-pin', to: 'c12b-err-pin', f: 'bottom', t: 'top', label: 'Salah < 3x', lClass: 'label-no' },
+                { from: 'c12b-err-pin', to: 'c12b-bottomsheet-pin', f: 'left', t: 'bottom' },
+                { from: 'c12b-valid-pin', to: 'c12b-pin-blocked', f: 'bottom', t: 'left', label: 'Salah >= 3x', lClass: 'label-no' },
+                { from: 'c12b-popup-form', to: 'c12b-input-phone', f: 'right', t: 'left' },
+                { from: 'c12b-input-phone', to: 'c12b-fde-eval', f: 'right', t: 'left' },
+                { from: 'c12b-fde-eval', to: 'c12b-active-direct', f: 'top', t: 'left', label: 'Kondisi 3 (No. HP Clean)', lClass: 'label-yes' },
+                { from: 'c12b-fde-eval', to: 'c12b-verif-admin', f: 'right', t: 'left', label: 'Kondisi 2 (Review Admin)', lClass: 'label-no' },
+                { from: 'c12b-fde-eval', to: 'c12b-err-kondisi1', f: 'bottom', t: 'left', label: 'Kondisi 1 (Aktif Akun Lain)', lClass: 'label-no' },
+                { from: 'c12b-verif-admin', to: 'c12b-end', f: 'right', t: 'left' },
+                { from: 'c12b-active-direct', to: 'c12b-end', f: 'right', t: 'left' },
+
+                // --- Connections 12c (Ubah E-Wallet - PRD 16) ---
+                { from: 'c12c-start', to: 'c12c-click-edit', f: 'right', t: 'left' },
+                { from: 'c12c-click-edit', to: 'c12c-prereq-check', f: 'right', t: 'left' },
+                { from: 'c12c-prereq-check', to: 'c12c-err-prereq', f: 'bottom', t: 'top', label: 'Ditolak Prasyarat', lClass: 'label-no' },
+                { from: 'c12c-prereq-check', to: 'c12c-bottomsheet-pin', f: 'right', t: 'left', label: 'Lolos Prasyarat', lClass: 'label-yes' },
+                { from: 'c12c-bottomsheet-pin', to: 'c12c-input-pin', f: 'right', t: 'left' },
+                { from: 'c12c-input-pin', to: 'c12c-valid-pin', f: 'right', t: 'left' },
+                { from: 'c12c-valid-pin', to: 'c12c-popup-form', f: 'right', t: 'left', label: 'PIN Benar', lClass: 'label-yes' },
+                { from: 'c12c-valid-pin', to: 'c12c-err-pin', f: 'bottom', t: 'top', label: 'Salah < 3x', lClass: 'label-no' },
+                { from: 'c12c-err-pin', to: 'c12c-bottomsheet-pin', f: 'left', t: 'bottom' },
+                { from: 'c12c-popup-form', to: 'c12c-input-phone', f: 'right', t: 'left' },
+                { from: 'c12c-input-phone', to: 'c12c-fde-eval', f: 'right', t: 'left' },
+                { from: 'c12c-fde-eval', to: 'c12c-active-direct', f: 'top', t: 'left', label: 'Kondisi 3 (No. HP Clean)', lClass: 'label-yes' },
+                { from: 'c12c-fde-eval', to: 'c12c-verif-admin', f: 'right', t: 'left', label: 'Kondisi 2 (Review Admin)', lClass: 'label-no' },
+                { from: 'c12c-fde-eval', to: 'c12c-err-kondisi1', f: 'bottom', t: 'left', label: 'Kondisi 1 (Aktif Akun Lain)', lClass: 'label-no' },
+                { from: 'c12c-verif-admin', to: 'c12c-end', f: 'right', t: 'left' },
+                { from: 'c12c-active-direct', to: 'c12c-end', f: 'right', t: 'left' },
+
+                // --- Connections 12d (Delete E-Wallet - PRD 17) ---
+                { from: 'c12d-start', to: 'c12d-click-delete', f: 'right', t: 'left' },
+                { from: 'c12d-click-delete', to: 'c12d-confirm-modal', f: 'right', t: 'left' },
+                { from: 'c12d-confirm-modal', to: 'c12d-click-confirm', f: 'right', t: 'left' },
+                { from: 'c12d-click-confirm', to: 'c12d-backend-delete', f: 'right', t: 'left' },
+                { from: 'c12d-backend-delete', to: 'c12d-empty-screen', f: 'right', t: 'left' },
+                { from: 'c12d-empty-screen', to: 'c12d-end', f: 'right', t: 'left' },
 
                 // CONNECTIONS SECTION 13a (Admin List Transaksi & KPI - PRD 13a)
                 { from: 'a1-start', to: 'a1-open-portal', f: 'right', t: 'left' },
@@ -1422,7 +1681,7 @@
         function getEdgePoint(el, edge) {
             const isDiamond = el.classList.contains('n-decision');
             const isCircle = el.classList.contains('n-start') || el.classList.contains('n-end');
-            
+
             const x = el.offsetLeft;
             const y = el.offsetTop;
             const w = el.offsetWidth;
@@ -1439,8 +1698,8 @@
                     case 'right': return { x: cx + offset, y: cy };
                 }
             } else if (isCircle) {
-                 const r = w / 2;
-                 switch (edge) {
+                const r = w / 2;
+                switch (edge) {
                     case 'top': return { x: cx, y: cy - r };
                     case 'bottom': return { x: cx, y: cy + r };
                     case 'left': return { x: cx - r, y: cy };
@@ -1483,7 +1742,7 @@
                 let end = getEdgePoint(toEl, conn.t);
 
                 if (conn.f === 'right' && conn.t === 'left') {
-                    if (Math.abs(start.y - end.y) < 15) {
+                    if (Math.abs(start.y - end.y) < 35) {
                         end.y = start.y;
                     }
                 }
@@ -1528,6 +1787,18 @@
                 } else if (conn.from === 'f6-pin-error' && conn.to === 'f6-pin-sheet') {
                     const bottomY = 3670;
                     const destX = 2180 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'c12a-err-pin' && conn.to === 'c12a-modal-pin') {
+                    const bottomY = 3690;
+                    const destX = 7860 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'c12b-err-pin' && conn.to === 'c12b-bottomsheet-pin') {
+                    const bottomY = 4350;
+                    const destX = 6260 + 85;
+                    d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
+                } else if (conn.from === 'c12c-err-pin' && conn.to === 'c12c-bottomsheet-pin') {
+                    const bottomY = 5010;
+                    const destX = 6540 + 85;
                     d = `M ${start.x} ${start.y} L ${start.x} ${bottomY} L ${destX} ${bottomY} L ${destX} ${end.y}`;
                 } else {
                     const isVertical = (conn.f === 'bottom' && conn.t === 'top') || (conn.f === 'top' && conn.t === 'bottom');
@@ -1597,7 +1868,7 @@
                     const label = document.createElement('div');
                     label.className = `connection-label ${conn.lClass || ''}`;
                     label.innerText = conn.label;
-                    
+
                     let labelX, labelY;
                     if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
                         labelX = 1550;
@@ -1634,11 +1905,11 @@
                         labelX = points[midIndex].x;
                         labelY = points[midIndex].y;
                     }
-                    
+
                     if (start.x === end.x && points.length <= 2) {
                         labelX += 65;
                     }
-                    
+
                     label.style.left = `${labelX}px`;
                     label.style.top = `${labelY}px`;
                     area.appendChild(label);
@@ -1738,7 +2009,10 @@
             if (nodeId.startsWith('c8-') && selectedKeys.includes('sec8')) return true;
             if (nodeId.startsWith('c9-') && selectedKeys.includes('sec9')) return true;
             if (nodeId.startsWith('c10-') && selectedKeys.includes('sec10')) return true;
-            if (nodeId.startsWith('c12-') && selectedKeys.includes('sec12')) return true;
+            if (nodeId.startsWith('c12a-') && selectedKeys.includes('sec12a')) return true;
+            if (nodeId.startsWith('c12b-') && selectedKeys.includes('sec12b')) return true;
+            if (nodeId.startsWith('c12c-') && selectedKeys.includes('sec12c')) return true;
+            if (nodeId.startsWith('c12d-') && selectedKeys.includes('sec12d')) return true;
             if (nodeId.startsWith('a1-') && selectedKeys.includes('sec13a')) return true;
             if (nodeId.startsWith('b1-') && selectedKeys.includes('sec13b')) return true;
             if (nodeId.startsWith('c3-') && selectedKeys.includes('sec13c')) return true;
@@ -1757,7 +2031,7 @@
             const allCount = document.querySelectorAll('.chk-flow').length;
             const chkAll = document.getElementById('chkSelectAll');
             if (chkAll) chkAll.checked = (selected.length === allCount);
-            
+
             const svg = generateFullSVG(selected);
             const area = document.getElementById('rawSvgTextArea');
             if (area) area.value = svg;
@@ -1775,7 +2049,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e', 'sec7a_vch', 'sec7b_vch', 'sec7c_vch', 'sec7d_vch', 'sec7e_vch'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12a', 'sec12b', 'sec12c', 'sec12d', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e', 'sec7a_vch', 'sec7b_vch', 'sec7c_vch', 'sec7d_vch', 'sec7e_vch'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -1783,7 +2057,7 @@
             const activeSecIds = new Set(selectedKeys);
             const hasMerchant = selectedKeys.some(k => ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6'].includes(k));
             if (hasMerchant) activeSecIds.add('outer-merchant');
-            if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12')) activeSecIds.add('outer-customer');
+            if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12a') || selectedKeys.includes('sec12b') || selectedKeys.includes('sec12c') || selectedKeys.includes('sec12d')) activeSecIds.add('outer-customer');
             if (selectedKeys.includes('sec13a') || selectedKeys.includes('sec13b') || selectedKeys.includes('sec13c') || selectedKeys.includes('sec13d') || selectedKeys.includes('sec13e')) activeSecIds.add('outer-admin');
             if (selectedKeys.includes('sec7a_vch') || selectedKeys.includes('sec7b_vch') || selectedKeys.includes('sec7c_vch') || selectedKeys.includes('sec7d_vch') || selectedKeys.includes('sec7e_vch')) activeSecIds.add('outer-admin-vch');
 
@@ -1813,7 +2087,7 @@
             });
 
             if (minX === Infinity) { minX = 0; minY = 0; maxX = 1000; maxY = 1000; }
-            
+
             minX = Math.max(0, minX - 60);
             minY = Math.max(0, minY - 60);
             maxX += 60;
@@ -1822,7 +2096,7 @@
             const height = maxY - minY;
 
             let svg = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="${minX} ${minY} ${width} ${height}" width="${width}" height="${height}">`;
-            
+
             svg += `
 <defs>
     <style type="text/css">
@@ -1864,12 +2138,50 @@
                 const labelText = escapeXML(rawText);
                 const labelBgColor = labelSpan ? window.getComputedStyle(labelSpan).backgroundColor : '#8b5cf6';
                 const labelWidth = Math.max(120, rawText.length * 7 + 24);
-                
+
                 svg += `
     <!-- Section -->
     <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="20" ry="20" fill="none" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="5,5" />
     <rect x="${x + 20}" y="${y - 12}" width="${labelWidth}" height="24" rx="8" fill="${labelBgColor}" />
     <text x="${x + 32}" y="${y + 4}" class="sec-label-txt" dominant-baseline="central" font-family="Inter, sans-serif" font-size="11px" font-weight="800" fill="#ffffff">${labelText}</text>`;
+            });
+
+            // Export Legend Cards (FDE 3-Condition Legend Box)
+            const activeLegendCards = Array.from(document.querySelectorAll('.fde-legend-card, [data-sec-id="sec12b"] div, [data-sec-id="sec12c"] div')).filter(card => {
+                const secEl = card.closest('.figma-section');
+                if (!secEl) return false;
+                const secId = secEl.getAttribute('data-sec-id');
+                return secId && (secId === 'sec12b' || secId === 'sec12c') && activeSecIds.has(secId);
+            });
+
+            activeLegendCards.forEach((card) => {
+                const parentSec = card.closest('.figma-section');
+                if (!parentSec) return;
+
+                const x = parentSec.offsetLeft + 1650;
+                const y = parentSec.offsetTop + 12;
+                const w = 780;
+                const h = 85;
+
+                const secId = parentSec.getAttribute('data-sec-id');
+                const isSec12c = secId === 'sec12c';
+
+                svg += `\n    <!-- Legend Card: ${secId} -->`;
+                svg += `\n    <g id="legend-card-${secId}">`;
+                svg += `\n        <rect x="${x}" y="${y}" width="${w}" height="${h}" rx="8" ry="8" fill="#ffffff" stroke="#0284c7" stroke-width="1.5" />`;
+                svg += `\n        <text x="${x + 12}" y="${y + 18}" font-family="Inter, sans-serif" font-size="11px" font-weight="800" fill="#0284c7">ℹ️ Kriteria 3 Kondisi FDE Engine:</text>`;
+
+                if (isSec12c) {
+                    svg += `\n        <text x="${x + 12}" y="${y + 36}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#dc2626">• Kondisi 1 (Aktif Akun Lain): <tspan fill="#1e293b" font-weight="400">No. HP sudah AKTIF di akun customer LAIN → Direct Error Pop-Up Toast</tspan></text>`;
+                    svg += `\n        <text x="${x + 12}" y="${y + 52}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#d97706">• Kondisi 2 (Review Admin): <tspan fill="#1e293b" font-weight="400">No. HP butuh verifikasi/review Admin → Status 'Proses Verifikasi' (No. Lama Tetap Aktif)</tspan></text>`;
+                    svg += `\n        <text x="${x + 12}" y="${y + 68}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#16a34a">• Kondisi 3 (No. HP Clean): <tspan fill="#1e293b" font-weight="400">No. HP 100% baru &amp; belum terdaftar → Direct Active (Langsung Menggantikan)</tspan></text>`;
+                } else {
+                    svg += `\n        <text x="${x + 12}" y="${y + 36}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#dc2626">• Kondisi 1 (Aktif Akun Lain): <tspan fill="#1e293b" font-weight="400">No. HP sudah AKTIF atau dalam verifikasi admin di akun customer LAIN → Direct Error Pop-Up Toast</tspan></text>`;
+                    svg += `\n        <text x="${x + 12}" y="${y + 52}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#d97706">• Kondisi 2 (Review Admin): <tspan fill="#1e293b" font-weight="400">No. HP butuh verifikasi/review Admin karena pernah digunakan akun lain → Status 'Proses Verifikasi'</tspan></text>`;
+                    svg += `\n        <text x="${x + 12}" y="${y + 68}" font-family="Inter, sans-serif" font-size="10px" font-weight="700" fill="#16a34a">• Kondisi 3 (No. HP Clean): <tspan fill="#1e293b" font-weight="400">No. HP 100% baru &amp; belum terdaftar → Direct Active (Langsung Aktif)</tspan></text>`;
+                }
+
+                svg += `\n    </g>`;
             });
 
             const activeConnections = flowData.connections.filter(conn => {
@@ -1881,12 +2193,12 @@
                 if (!pathEl) return;
                 let d = pathEl.getAttribute('d');
                 if (!d) return;
-                
+
                 const dTokens = d.trim().split(/\s+/);
                 if (dTokens.length >= 3) {
                     const lastY = parseFloat(dTokens[dTokens.length - 1]);
                     const lastX = parseFloat(dTokens[dTokens.length - 2]);
-                    
+
                     if (!isNaN(lastX) && !isNaN(lastY)) {
                         if (conn.t === 'left') {
                             d += ` M ${lastX - 10} ${lastY - 6} L ${lastX} ${lastY} L ${lastX - 10} ${lastY + 6}`;
@@ -1899,7 +2211,7 @@
                         }
                     }
                 }
-                
+
                 svg += `\n    <!-- Connection: ${conn.from} -> ${conn.to} -->`;
                 svg += `\n    <g id="conn-${conn.from}-${conn.to}">`;
                 svg += `\n        <path d="${d}" class="conn-path" stroke="#94a3b8" stroke-width="2.5" fill="none" />`;
@@ -1908,14 +2220,14 @@
                     const points = [];
                     for (let i = 0; i < dTokens.length; i++) {
                         if (dTokens[i] === 'M' || dTokens[i] === 'L') {
-                            const px = parseFloat(dTokens[i+1]);
-                            const py = parseFloat(dTokens[i+2]);
+                            const px = parseFloat(dTokens[i + 1]);
+                            const py = parseFloat(dTokens[i + 2]);
                             if (!isNaN(px) && !isNaN(py)) {
                                 points.push({ x: px, y: py });
                             }
                         }
                     }
-                    
+
                     let labelX = 0, labelY = 0;
                     if (conn.from === 'f1-clear-match' && conn.to === 'f1-form1') {
                         labelX = 1550; labelY = 710;
@@ -1945,18 +2257,18 @@
                         labelX = points[midIndex].x;
                         labelY = points[midIndex].y;
                     }
-                    
-                    if (points[0] && points[points.length-1] && points[0].x === points[points.length-1].x && points.length <= 2) {
+
+                    if (points[0] && points[points.length - 1] && points[0].x === points[points.length - 1].x && points.length <= 2) {
                         labelX += 65;
                     }
-                    
+
                     const isYes = conn.lClass === 'label-yes';
                     const strokeColor = isYes ? '#10b981' : '#ef4444';
                     const textColorHex = isYes ? '#059669' : '#dc2626';
                     const textColorClass = isYes ? 'lbl-yes' : 'lbl-no';
                     const rectW = conn.label.length * 6 + 18;
-                    
-                    svg += `\n        <rect x="${labelX - rectW/2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
+
+                    svg += `\n        <rect x="${labelX - rectW / 2}" y="${labelY - 10}" width="${rectW}" height="20" rx="6" fill="#ffffff" stroke="${strokeColor}" stroke-width="1" />`;
                     svg += `\n        <text x="${labelX}" y="${labelY + 1}" text-anchor="middle" dominant-baseline="central" class="conn-lbl-txt ${textColorClass}" font-family="Inter, sans-serif" font-size="10px" font-weight="800" fill="${textColorHex}">${escapeXML(conn.label)}</text>`;
                 }
 
@@ -1966,12 +2278,12 @@
             activeNodeEls.forEach(el => {
                 const x = el.offsetLeft, y = el.offsetTop, w = el.offsetWidth, h = el.offsetHeight;
                 const cx = x + w / 2, cy = y + h / 2;
-                
+
                 const tempDiv = document.createElement('div');
                 tempDiv.innerHTML = el.innerHTML.replace(/<br\s*\/?>/gi, '\n');
                 const rawText = tempDiv.textContent || tempDiv.innerText || '';
                 const textLines = rawText.split('\n').map(t => t.trim()).filter(t => t.length > 0);
-                
+
                 svg += `\n    <!-- Node: ${el.id} -->`;
                 svg += `\n    <g id="${el.id}-group">`;
 
@@ -2052,7 +2364,7 @@
                 try {
                     await navigator.clipboard.writeText(svg);
                     copied = true;
-                } catch (e) {}
+                } catch (e) { }
             }
 
             if (!copied && area) {
@@ -2060,7 +2372,7 @@
                     area.focus();
                     area.select();
                     copied = document.execCommand('copy');
-                } catch (e2) {}
+                } catch (e2) { }
             }
 
             showToast('✨ Kode SVG Vektor Disalin! Buka Figma lalu tekan Cmd+V (atau Ctrl+V).');

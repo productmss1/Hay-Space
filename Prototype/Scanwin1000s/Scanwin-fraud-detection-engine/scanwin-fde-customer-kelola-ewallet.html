@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kelola E-Wallet Customer — ScanWin Fraud Detection Engine Prototype</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-blue: #0b57d0;
+      --primary-blue-light: #e8f0fe;
+      --secondary-blue: #1a73e8;
+      --portal-sidebar-bg: #0f172a;
+      --portal-sidebar-border: #1e293b;
+      --portal-bg: #f8fafc;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-font-smoothing: antialiased;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--portal-bg);
+      min-height: 100vh;
+      overflow: hidden;
+      display: flex;
+    }
+
+    /* ========== DASHBOARD PORTAL WRAPPER ========== */
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Split Dashboard Layout */
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+      animation: fadeInPortal 0.3s ease;
+    }
+
+    @keyframes fadeInPortal {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Center Canvas Area: Mobile Device Preview */
+    .feature-left-canvas {
+      background: #0b0f19;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      overflow-y: auto;
+      position: relative;
+      flex: 1;
+    }
+
+    /* Mobile Device Frame Container (390px) */
+    .mobile-device-frame {
+      width: 390px;
+      height: 780px;
+      background-color: #ffffff;
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      border: 4px solid #1e293b;
+      flex-shrink: 0;
+    }
+
+    /* Homepage Iframe */
+    .homepage-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      background: #ffffff;
+    }
+
+    /* App Screen Overlay (Screen List E-Wallet) */
+    .app-screen-overlay {
+      position: absolute;
+      inset: 0;
+      background: #f8fafc;
+      z-index: 50;
+      display: none;
+      /* Toggled dynamically */
+      flex-direction: column;
+      animation: slideInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes slideInUp {
+      from {
+        transform: translateY(30px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    /* Right Sidebar Column: Interactive Switcher Panel */
+    .feature-right-sidebar {
+      width: 420px;
+      background: #ffffff;
+      border-left: 1px solid #e2e8f0;
+      display: flex;
+      flex-direction: column;
+      padding: 24px;
+      overflow-y: auto;
+      box-shadow: -4px 0 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .sidebar-badge {
+      display: inline-block;
+      background: rgba(11, 87, 208, 0.08);
+      color: var(--primary-blue);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      border: 1px solid rgba(11, 87, 208, 0.2);
+      margin-bottom: 12px;
+      width: fit-content;
+    }
+
+    .sidebar-header-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0f172a;
+      letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-desc {
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    /* Quick Action Nav Buttons in Right Sidebar */
+    .quick-nav-box {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .quick-nav-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: #1d4ed8;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .btn-shortcut {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12.5px;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+
+    .btn-shortcut-primary {
+      background: #016EFF;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(1, 110, 255, 0.25);
+    }
+
+    .btn-shortcut-primary:hover {
+      background: #0056cc;
+    }
+
+    .btn-shortcut-secondary {
+      background: #ffffff;
+      color: #334155;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn-shortcut-secondary:hover {
+      background: #f1f5f9;
+    }
+
+    /* Simulation Control Toolbar Card */
+    .sim-toolbar {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 16px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .sim-toolbar-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .sim-buttons-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sim-btn {
+      background: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #334155;
+      padding: 10px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.02);
+    }
+
+    .sim-btn:hover,
+    .sim-btn.active {
+      background: #016EFF;
+      border-color: #016EFF;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(1, 110, 255, 0.3);
+    }
+
+    .sim-btn .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: #cbd5e1;
+      flex-shrink: 0;
+    }
+
+    .sim-btn.active .dot {
+      background: #ffffff;
+    }
+
+    /* PRD Spec Notes Cards */
+    .spec-card {
+      background: #f8fafc;
+      border-left: 4px solid #016EFF;
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 14px;
+      border-top: 1px solid #e2e8f0;
+      border-right: 1px solid #e2e8f0;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .spec-card h4 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .spec-card p {
+      font-size: 11.5px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    /* iOS Status Bar */
+    .ios-status-bar {
+      width: 100%;
+      height: 44px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #ffffff;
+      position: relative;
+      z-index: 20;
+    }
+
+    .status-time {
+      font-weight: 600;
+      font-size: 14px;
+      color: #0f172a;
+    }
+
+    .status-bar-icons {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #0f172a;
+      font-size: 12px;
+    }
+
+    /* App Header Navbar */
+    .app-navbar {
+      height: 52px;
+      background: #ffffff;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      border-bottom: 1px solid #f1f5f9;
+      position: relative;
+      z-index: 10;
+    }
+
+    .nav-back-btn {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      border: none;
+      background: #f1f5f9;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .nav-back-btn:hover {
+      background: #e2e8f0;
+    }
+
+    .nav-title {
+      flex: 1;
+      text-align: center;
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+      margin-right: 34px;
+    }
+
+    /* Content Area */
+    .app-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+    }
+
+    /* Info Banner */
+    .info-banner {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .info-banner-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 10px;
+      background: #016EFF;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .info-banner-text {
+      font-size: 12px;
+      line-height: 1.45;
+      color: #1e40af;
+      font-weight: 500;
+    }
+
+    .info-banner-text strong {
+      font-weight: 700;
+      color: #1e3a8a;
+    }
+
+    /* Section Title Header */
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .section-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #64748b;
+    }
+
+    .quota-badge {
+      font-size: 11px;
+      font-weight: 600;
+      background: #f1f5f9;
+      color: #475569;
+      padding: 3px 8px;
+      border-radius: 12px;
+    }
+
+    /* E-Wallet Card Styling */
+    .ewallet-card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 1px solid #e2e8f0;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+      transition: all 0.25s ease;
+      position: relative;
+    }
+
+    .ewallet-card:hover {
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .card-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .card-provider-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .provider-icon-wrapper {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #016EFF;
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .phone-number-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0f172a;
+      letter-spacing: 0.3px;
+    }
+
+    .provider-subtext {
+      font-size: 11px;
+      color: #64748b;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    /* Status Badges */
+    .status-pill {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      text-transform: capitalize;
+    }
+
+    .status-pill.active {
+      background: #dcfce7;
+      color: #15803d;
+      border: 1px solid #bbf7d0;
+    }
+
+    .status-pill.verification {
+      background: #ffedd5;
+      color: #c2410c;
+      border: 1px solid #fed7aa;
+    }
+
+    .status-pill.rejected {
+      background: #fee2e2;
+      color: #b91c1c;
+      border: 1px solid #fca5a5;
+    }
+
+    .status-pill .dot-indicator {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+    }
+
+    .status-pill.active .dot-indicator {
+      background: #16a34a;
+    }
+
+    .status-pill.verification .dot-indicator {
+      background: #ea580c;
+    }
+
+    .status-pill.rejected .dot-indicator {
+      background: #dc2626;
+    }
+
+    .card-divider {
+      height: 1px;
+      background: #f1f5f9;
+      margin: 0 -16px;
+    }
+
+    .card-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+
+    .btn-action {
+      padding: 8px 16px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      border: none;
+    }
+
+    .btn-action-change {
+      background: #eff6ff;
+      color: #016EFF;
+      border: 1px solid #bfdbfe;
+    }
+
+    .btn-action-change:hover {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .btn-action-delete {
+      background: #fff1f2;
+      color: #e11d48;
+      border: 1px solid #fecdd3;
+    }
+
+    .btn-action-delete:hover {
+      background: #ffe4e6;
+      color: #be123c;
+    }
+
+    .btn-action-delete-solid {
+      background: #e11d48;
+      color: #ffffff;
+      border: none;
+      width: 100%;
+      justify-content: center;
+      padding: 10px;
+      box-shadow: 0 4px 10px rgba(225, 29, 72, 0.25);
+    }
+
+    .btn-action-delete-solid:hover {
+      background: #be123c;
+    }
+
+    .disabled-note {
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 500;
+      font-style: italic;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* Empty State View */
+    .empty-state-card {
+      background: #ffffff;
+      border-radius: 16px;
+      border: 2px dashed #cbd5e1;
+      padding: 32px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: 12px;
+    }
+
+    .empty-icon-circle {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: #f1f5f9;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .empty-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1e293b;
+    }
+
+    .empty-subtitle {
+      font-size: 12px;
+      color: #64748b;
+      line-height: 1.5;
+      max-width: 260px;
+    }
+
+    /* Bottom CTA Button Area */
+    .bottom-cta-area {
+      padding: 14px 16px;
+      background: #ffffff;
+      border-top: 1px solid #f1f5f9;
+      margin-top: auto;
+    }
+
+    .btn-add-ewallet {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      background: #016EFF;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      box-shadow: 0 4px 14px rgba(1, 110, 255, 0.3);
+      transition: all 0.2s ease;
+    }
+
+    .btn-add-ewallet:hover {
+      background: #0056cc;
+    }
+
+    .btn-add-ewallet.hidden {
+      display: none;
+    }
+
+    .limit-reached-note {
+      text-align: center;
+      font-size: 11px;
+      color: #94a3b8;
+      font-weight: 500;
+      padding: 6px 0;
+    }
+
+    /* Modal Overlay General */
+    .modal-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .modal-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #ffffff;
+      border-radius: 20px;
+      padding: 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      gap: 14px;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+      transform: scale(0.9);
+      transition: transform 0.2s ease;
+    }
+
+    .modal-overlay.show .modal-card {
+      transform: scale(1);
+    }
+
+    .modal-icon-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .modal-icon-circle.danger {
+      background: #ffe4e6;
+      color: #e11d48;
+    }
+
+    .modal-icon-circle.primary {
+      background: #dbeafe;
+      color: #016EFF;
+    }
+
+    .modal-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .modal-body-text {
+      font-size: 12.5px;
+      color: #64748b;
+      line-height: 1.5;
+    }
+
+    .modal-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      margin-top: 6px;
+    }
+
+    .btn-modal {
+      height: 42px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-modal-cancel {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .btn-modal-danger {
+      background: #e11d48;
+      color: #ffffff;
+    }
+
+    /* Toast Alert Message */
+    .toast-msg {
+      position: absolute;
+      top: 60px;
+      left: 16px;
+      right: 16px;
+      background: #0f172a;
+      color: #ffffff;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      z-index: 90;
+      transform: translateY(-20px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .toast-msg.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    /* PIN Bottom Sheet Dialog (PRD #15) */
+    .pin-bottom-sheet-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.65);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .pin-bottom-sheet-overlay.show {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .pin-bottom-sheet-card {
+      background: #ffffff;
+      border-top-left-radius: 28px;
+      border-top-right-radius: 28px;
+      padding: 16px 20px 24px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      box-shadow: 0 -10px 30px rgba(0, 0, 0, 0.25);
+      transform: translateY(100%);
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .pin-bottom-sheet-overlay.show .pin-bottom-sheet-card {
+      transform: translateY(0);
+    }
+
+    .bottom-sheet-handle {
+      width: 38px;
+      height: 5px;
+      border-radius: 3px;
+      background: #cbd5e1;
+      margin-bottom: 16px;
+    }
+
+    .pin-dots-container {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      margin: 10px 0 16px;
+    }
+
+    .pin-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      border: 2px solid #cbd5e1;
+      transition: all 0.2s ease;
+    }
+
+    .pin-dot.filled {
+      background: #016EFF;
+      border-color: #016EFF;
+      transform: scale(1.15);
+    }
+
+    .pin-keypad {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      width: 100%;
+      max-width: 270px;
+      margin-bottom: 12px;
+    }
+
+    .keypad-btn {
+      height: 48px;
+      border-radius: 14px;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .keypad-btn:active {
+      background: #e2e8f0;
+      transform: scale(0.95);
+    }
+
+    .pin-error-text {
+      color: #e11d48;
+      font-size: 11.5px;
+      font-weight: 600;
+      display: none;
+      margin-bottom: 8px;
+    }
+
+    /* Form Registrasi & Ubah E-Wallet Styling (PRD #15 & PRD #16) */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      text-align: left;
+      width: 100%;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 46px;
+      border-radius: 12px;
+      border: 1px solid #cbd5e1;
+      padding: 0 14px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #0f172a;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: #016EFF;
+      box-shadow: 0 0 0 3px rgba(1, 110, 255, 0.15);
+    }
+
+    .fde-condition-box {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .condition-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid #cbd5e1;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #ffffff;
+    }
+
+    .condition-option:hover {
+      background: #f1f5f9;
+    }
+
+    .condition-option.selected {
+      background: #ffffff;
+      border-color: #016EFF;
+      box-shadow: 0 2px 8px rgba(1, 110, 255, 0.15);
+    }
+
+    .condition-radio {
+      margin-top: 2px;
+      accent-color: #016EFF;
+    }
+
+    .condition-title-text {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .condition-desc-text {
+      font-size: 11px;
+      color: #64748b;
+      line-height: 1.35;
+      margin-top: 1px;
+    }
+
+    /* Screen Info PIN Overlay (Unregistered & Blocked) matching scanwin-pin-info-screen.html */
+    .pin-info-overlay-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      text-align: center;
+    }
+
+    .pin-info-icon-circle {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 36px;
+      margin-bottom: 24px;
+    }
+
+    .pin-info-icon-circle.unregistered {
+      background: #eff6ff;
+      color: #016EFF;
+    }
+
+    .pin-info-icon-circle.blocked {
+      background: #ffe4e6;
+      color: #e11d48;
+    }
+
+    .pin-info-title {
+      font-size: 19px;
+      font-weight: 800;
+      color: #0f172a;
+      margin-bottom: 12px;
+      letter-spacing: -0.3px;
+    }
+
+    .pin-info-desc {
+      font-size: 13px;
+      color: #64748b;
+      line-height: 1.6;
+      max-width: 290px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- Master Portal Container -->
+  <div class="portal-container">
+
+    <!-- Left Master Sidebar Container (Rendered automatically by sidebar.js) -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- Main Portal Area -->
+    <div class="portal-main">
+
+      <div class="feature-container">
+
+        <!-- Center Canvas: Device Frame Preview -->
+        <div class="feature-left-canvas">
+
+          <!-- Mobile Device Frame Container (390px) -->
+          <div class="mobile-device-frame">
+
+            <!-- 1. Real Homepage loaded inside iframe (Starting view when clicked from sidebar) -->
+            <iframe id="homepage-frame" class="homepage-iframe" src="scanwin-homepage.html"></iframe>
+
+            <!-- 2. Screen List E-Wallet Overlay View (Appears on clicking Kelola E-Wallet) -->
+            <div id="screen-kelola-ewallet" class="app-screen-overlay">
+
+              <!-- Toast Notification Overlay -->
+              <div class="toast-msg" id="toast">
+                <i class="fas fa-circle-check" style="color: #4ade80; font-size: 16px;"></i>
+                <span id="toast-text">Tindakan berhasil dilakukan</span>
+              </div>
+
+              <!-- Modal Dialog Confirm Delete Overlay -->
+              <div class="modal-overlay" id="confirm-modal">
+                <div class="modal-card">
+                  <div class="modal-icon-circle danger">
+                    <i class="fas fa-trash-can"></i>
+                  </div>
+                  <div class="modal-title">Hapus E-Wallet ini?</div>
+                  <div class="modal-body-text" id="modal-desc">
+                    Apakah Anda yakin ingin menghapus nomor HP e-wallet ini dari daftar terdaftar akun sCanWin Anda?
+                  </div>
+                  <div class="modal-buttons">
+                    <button class="btn-modal btn-modal-cancel" onclick="closeModal()">Batal</button>
+                    <button class="btn-modal btn-modal-danger" onclick="confirmDeleteEwallet()">Ya, Hapus</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Bottom Sheet Verifikasi PIN sCanWin (PRD #15 & PRD #16 - Skenario PIN Active) -->
+              <div class="pin-bottom-sheet-overlay" id="pin-verification-modal">
+                <div class="pin-bottom-sheet-card">
+                  <div class="bottom-sheet-handle"></div>
+                  <div class="modal-icon-circle primary"
+                    style="width: 44px; height: 44px; font-size: 18px; margin-bottom: 4px;">
+                    <i class="fas fa-key"></i>
+                  </div>
+                  <div class="modal-title" style="font-size: 15px;" id="pin-modal-title">Verifikasi PIN sCanWin</div>
+                  <div class="modal-body-text" style="font-size: 11.5px; margin-bottom: 4px;" id="pin-modal-subtitle">
+                    Masukkan 6 digit PIN sCanWin Anda untuk melanjutkan transaksi e-wallet.
+                  </div>
+
+                  <div class="pin-dots-container">
+                    <div class="pin-dot" id="dot-1"></div>
+                    <div class="pin-dot" id="dot-2"></div>
+                    <div class="pin-dot" id="dot-3"></div>
+                    <div class="pin-dot" id="dot-4"></div>
+                    <div class="pin-dot" id="dot-5"></div>
+                    <div class="pin-dot" id="dot-6"></div>
+                  </div>
+
+                  <div class="pin-error-text" id="pin-error-msg">
+                    <i class="fas fa-circle-exclamation"></i> PIN sCanWin yang Anda masukkan salah.
+                  </div>
+
+                  <div class="pin-keypad">
+                    <button class="keypad-btn" onclick="pressKey('1')">1</button>
+                    <button class="keypad-btn" onclick="pressKey('2')">2</button>
+                    <button class="keypad-btn" onclick="pressKey('3')">3</button>
+                    <button class="keypad-btn" onclick="pressKey('4')">4</button>
+                    <button class="keypad-btn" onclick="pressKey('5')">5</button>
+                    <button class="keypad-btn" onclick="pressKey('6')">6</button>
+                    <button class="keypad-btn" onclick="pressKey('7')">7</button>
+                    <button class="keypad-btn" onclick="pressKey('8')">8</button>
+                    <button class="keypad-btn" onclick="pressKey('9')">9</button>
+                    <button class="keypad-btn" style="font-size:12px; color:#e11d48;" onclick="clearPin()">C</button>
+                    <button class="keypad-btn" onclick="pressKey('0')">0</button>
+                    <button class="keypad-btn" style="font-size:14px; color:#64748b;" onclick="backspacePin()"><i
+                        class="fas fa-backspace"></i></button>
+                  </div>
+
+                  <div style="width: 100%;">
+                    <button class="btn-modal btn-modal-cancel" style="width: 100%; height: 38px;"
+                      onclick="closePinModal()">Batal</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pop-Up Modal Registrasi E-Wallet (PRD #15) -->
+              <div class="modal-overlay" id="modal-registrasi-ewallet" style="z-index: 110;">
+                <div class="modal-card" style="padding: 22px 18px;">
+                  <div class="modal-icon-circle primary">
+                    <i class="fas fa-wallet"></i>
+                  </div>
+                  <div class="modal-title">Registrasi E-Wallet Baru</div>
+                  <div class="modal-body-text">
+                    Masukkan nomor HP E-Wallet terdaftar Anda sebagai tujuan pencairan saldo sCanWin.
+                  </div>
+
+                  <div class="form-group" style="margin-top: 6px;">
+                    <label class="form-label">Nomor HP E-Wallet Baru</label>
+                    <input type="tel" class="form-input" id="input-new-phone" placeholder="Contoh: 081234567890"
+                      value="081288991122">
+                  </div>
+
+                  <div class="modal-buttons" style="margin-top: 6px;">
+                    <button class="btn-modal btn-modal-cancel" onclick="closeRegistrasiModal()">Batal</button>
+                    <button class="btn-modal" style="background:#016EFF; color:#ffffff;"
+                      onclick="submitRegistrasiEwallet()">Daftarkan</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Pop-Up Modal Ubah E-Wallet (PRD #16) -->
+              <div class="modal-overlay" id="modal-ubah-ewallet" style="z-index: 115;">
+                <div class="modal-card" style="padding: 22px 18px;">
+                  <div class="modal-icon-circle primary">
+                    <i class="fas fa-pen-to-square"></i>
+                  </div>
+                  <div class="modal-title">Ubah Nomor E-Wallet</div>
+                  <div class="modal-body-text">
+                    Masukkan nomor HP e-wallet baru yang ingin Anda gunakan sebagai tujuan pencairan saldo sCanWin.
+                  </div>
+
+                  <div class="form-group" style="margin-top: 6px;">
+                    <label class="form-label">Nomor HP E-Wallet Aktif Saat Ini</label>
+                    <input type="text" class="form-input" id="input-current-phone" value="0812****5678" readonly
+                      disabled style="background:#f1f5f9; color:#64748b; cursor:not-allowed;">
+                  </div>
+
+                  <div class="form-group" style="margin-top: 4px;">
+                    <label class="form-label">Nomor HP E-Wallet Baru</label>
+                    <input type="tel" class="form-input" id="input-ubah-phone" placeholder="Contoh: 081299887766"
+                      value="081299887766">
+                  </div>
+
+                  <div class="modal-buttons" style="margin-top: 6px;">
+                    <button class="btn-modal btn-modal-cancel" onclick="closeUbahModal()">Batal</button>
+                    <button class="btn-modal" style="background:#016EFF; color:#ffffff;"
+                      onclick="submitUbahEwallet()">Simpan & Ubah</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Dialog Error Kondisi 1 (PRD #15 & #16 - Nomor HP Sedang Aktif/Verifikasi di Akun Lain) -->
+              <div class="modal-overlay" id="modal-error-kondisi1" style="z-index: 120;">
+                <div class="modal-card" style="padding: 24px 18px;">
+                  <div class="modal-icon-circle danger">
+                    <i class="fas fa-circle-xmark"></i>
+                  </div>
+                  <div class="modal-title" style="color: #0f172a; font-size: 15.5px;">Nomor HP Tidak Dapat Didaftarkan
+                  </div>
+                  <div class="modal-body-text" id="modal-error-kondisi1-desc"
+                    style="font-size: 12px; line-height: 1.5; color: #475569;">
+                    Nomor HP <strong>081288991122</strong> saat ini tercatat berstatus aktif atau dalam proses
+                    verifikasi pada akun sCanWin lain. Silakan gunakan nomor HP e-wallet lainnya.
+                  </div>
+                  <div style="width: 100%; margin-top: 6px;">
+                    <button class="btn-modal" style="width: 100%; background: #0f172a; color: #ffffff; height: 42px;"
+                      onclick="closeErrorKondisi1Modal()">Mengerti</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Modal Dialog Prereq Error (PRD #16 - Request Pending & Kuota Bulanan Habis) -->
+              <div class="modal-overlay" id="modal-prereq-error" style="z-index: 125;">
+                <div class="modal-card" style="padding: 24px 18px;">
+                  <div class="modal-icon-circle danger">
+                    <i class="fas fa-hand"></i>
+                  </div>
+                  <div class="modal-title" id="modal-prereq-title" style="color: #0f172a; font-size: 15.5px;">Pengajuan
+                    Tidak Dapat Dilakukan</div>
+                  <div class="modal-body-text" id="modal-prereq-desc"
+                    style="font-size: 12px; line-height: 1.5; color: #475569;">
+                    Anda masih memiliki pengajuan perubahan nomor e-wallet yang sedang dalam proses verifikasi admin.
+                  </div>
+                  <div style="width: 100%; margin-top: 6px;">
+                    <button class="btn-modal" style="width: 100%; background: #0f172a; color: #ffffff; height: 42px;"
+                      onclick="closePrereqModal()">Mengerti</button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Screen Info PIN Overlay (Skenario PIN Unregistered / Blocked per scanwin-pin-info-screen.html) -->
+              <div id="screen-pin-info" class="app-screen-overlay" style="z-index: 85;">
+                <div class="ios-status-bar">
+                  <div class="status-time">9:41</div>
+                  <div class="status-bar-icons">
+                    <i class="fas fa-signal"></i>
+                    <i class="fas fa-wifi"></i>
+                    <i class="fas fa-battery-full"></i>
+                  </div>
+                </div>
+                <div class="app-navbar">
+                  <button class="nav-back-btn" onclick="closePinInfoScreen()">
+                    <i class="fas fa-arrow-left"></i>
+                  </button>
+                  <div class="nav-title" id="pin-info-nav-title">Informasi PIN</div>
+                </div>
+                <div class="pin-info-overlay-content">
+                  <div class="pin-info-icon-circle" id="pin-info-icon-circle">
+                    <i id="pin-info-icon" class="fas fa-shield-alt"></i>
+                  </div>
+                  <h2 class="pin-info-title" id="pin-info-title">PIN sCanWin Belum Dibuat</h2>
+                  <p class="pin-info-desc" id="pin-info-desc">
+                    Untuk keamanan akun & pendaftaran e-wallet, Anda perlu membuat 6-digit PIN sCanWin terlebih dahulu.
+                  </p>
+                </div>
+                <div style="padding: 20px 16px 32px;">
+                  <button class="btn-add-ewallet" id="pin-info-action-btn" onclick="navigateToPinModule()">
+                    Buat PIN Baru
+                  </button>
+                </div>
+              </div>
+
+              <!-- Status Bar -->
+              <div class="ios-status-bar">
+                <div class="status-time">9:41</div>
+                <div class="status-bar-icons">
+                  <i class="fas fa-signal"></i>
+                  <i class="fas fa-wifi"></i>
+                  <i class="fas fa-battery-full"></i>
+                </div>
+              </div>
+
+              <!-- App Header Navbar -->
+              <div class="app-navbar">
+                <button class="nav-back-btn" onclick="hideEwalletScreen()">
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="nav-title">Kelola E-Wallet</div>
+              </div>
+
+              <!-- Main Content -->
+              <div class="app-content" id="app-content">
+
+                <!-- Info Banner Box -->
+                <div class="info-banner">
+                  <div class="info-banner-icon">
+                    <i class="fas fa-wallet"></i>
+                  </div>
+                  <div class="info-banner-text">
+                    Nomor HP e-wallet terdaftar digunakan sebagai <strong>tujuan pencairan saldo sCanWin</strong> secara
+                    langsung. Pastikan nomor HP e-wallet Anda aktif.
+                  </div>
+                </div>
+
+                <!-- Section Title & Quota Badge -->
+                <div class="section-header">
+                  <span class="section-title">E-Wallet Terdaftar</span>
+                  <span class="quota-badge" id="quota-text">1 / 1 Nomor HP</span>
+                </div>
+
+                <!-- Dynamic Cards Container -->
+                <div id="cards-list-container" style="display: flex; flex-direction: column; gap: 12px;">
+
+                  <!-- Card Skenario 1 (Default: Active) -->
+                  <div class="ewallet-card" id="card-active">
+                    <div class="card-top">
+                      <div class="card-provider-info">
+                        <div class="provider-icon-wrapper">
+                          <i class="fas fa-mobile-screen-button"></i>
+                        </div>
+                        <div>
+                          <div class="phone-number-text" id="active-card-phone">
+                            0812****5678
+                          </div>
+                          <div class="provider-subtext">Siap digunakan untuk pencairan saldo</div>
+                        </div>
+                      </div>
+                      <span class="status-pill active">
+                        <span class="dot-indicator"></span> Active
+                      </span>
+                    </div>
+
+                    <div class="card-divider"></div>
+
+                    <div class="card-actions">
+                      <button class="btn-action btn-action-change" onclick="triggerUbahEwallet('0812****5678')">
+                        <i class="fas fa-pen-to-square"></i> Ubah
+                      </button>
+                      <button class="btn-action btn-action-delete" onclick="openDeleteModal('0812****5678', 'active')">
+                        <i class="fas fa-trash-can"></i> Hapus
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Card Skenario 2 (Proses Verifikasi) -->
+                  <div class="ewallet-card" id="card-verification" style="display: none;">
+                    <div class="card-top">
+                      <div class="card-provider-info">
+                        <div class="provider-icon-wrapper"
+                          style="color: #ea580c; background: #fff7ed; border-color: #fed7aa;">
+                          <i class="fas fa-hourglass-half"></i>
+                        </div>
+                        <div>
+                          <div class="phone-number-text" id="verification-card-phone">
+                            0812****9012
+                          </div>
+                          <div class="provider-subtext">Pengajuan dalam proses verifikasi admin</div>
+                        </div>
+                      </div>
+                      <span class="status-pill verification">
+                        <span class="dot-indicator"></span> Proses Verifikasi
+                      </span>
+                    </div>
+
+                    <div class="card-divider"></div>
+
+                    <div class="card-actions" style="justify-content: space-between;">
+                      <div class="disabled-note">
+                        <i class="fas fa-lock" style="font-size: 10px;"></i> Aksi terkunci selama proses verifikasi
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Card Skenario 3 (Ditolak Admin) -->
+                  <div class="ewallet-card" id="card-rejected" style="display: none;">
+                    <div class="card-top">
+                      <div class="card-provider-info">
+                        <div class="provider-icon-wrapper"
+                          style="color: #dc2626; background: #fef2f2; border-color: #fca5a5;">
+                          <i class="fas fa-circle-xmark"></i>
+                        </div>
+                        <div>
+                          <div class="phone-number-text">
+                            0812****3456
+                          </div>
+                          <div class="provider-subtext" style="color: #dc2626;">Pengajuan ditolak oleh Admin sCanWin
+                          </div>
+                        </div>
+                      </div>
+                      <span class="status-pill rejected">
+                        <span class="dot-indicator"></span> Ditolak Admin
+                      </span>
+                    </div>
+
+                    <div class="card-divider"></div>
+
+                    <!-- PRD #14 Requirement: Item Ditolak Admin hanya menampilkan tombol aksi Hapus (Delete) -->
+                    <div class="card-actions">
+                      <button class="btn-action btn-action-delete-solid"
+                        onclick="openDeleteModal('0812****3456', 'rejected')">
+                        <i class="fas fa-trash-can"></i> Hapus Kartu E-Wallet yang Ditolak
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Empty State Container (Skenario 4) -->
+                  <div class="empty-state-card" id="card-empty" style="display: none;">
+                    <div class="empty-icon-circle">
+                      <i class="fas fa-wallet"></i>
+                    </div>
+                    <div class="empty-title">Belum Ada E-Wallet Terdaftar</div>
+                    <div class="empty-subtitle">
+                      Daftarkan nomor HP e-wallet Anda untuk mulai melakukan pencairan saldo sCanWin.
+                    </div>
+                  </div>
+
+                </div>
+
+              </div>
+
+              <!-- Bottom Fixed Action Area -->
+              <div class="bottom-cta-area">
+                <button class="btn-add-ewallet hidden" id="btn-add-ewallet" onclick="triggerTambahEwallet()">
+                  <i class="fas fa-plus"></i> Tambah E-Wallet Baru
+                </button>
+                <div class="limit-reached-note" id="limit-note">
+                  <i class="fas fa-circle-info" style="font-size: 10px; margin-right: 4px;"></i> Kuota maksimal 1
+                  e-wallet terdaftar telah tercapai.
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Right Sidebar: Interactive Simulation Switcher Panel -->
+        <div class="feature-right-sidebar">
+          <span class="sidebar-badge">PRD #14, #15, #16 — KELOLA, REGISTRASI & UBAH E-WALLET</span>
+          <h2 class="sidebar-header-title">Alur Navigasi & Simulation</h2>
+          <p class="sidebar-desc">
+            Uji alur pendaftaran & perubahan nomor e-wallet baru dengan verifikasi PIN 6-digit (Bottom Sheet), batasan
+            prasyarat PRD #16, serta 3 kondisi evaluasi FDE secara interaktif.
+          </p>
+
+          <!-- Quick Navigation Shortcuts Box -->
+          <div class="quick-nav-box">
+            <div class="quick-nav-title">
+              <i class="fas fa-compass"></i> Pintasan Tampilan Simulator
+            </div>
+            <button class="btn-shortcut btn-shortcut-primary" onclick="showEwalletScreen()">
+              <i class="fas fa-wallet"></i> Langsung Buka Screen Kelola E-Wallet
+            </button>
+            <button class="btn-shortcut btn-shortcut-secondary" onclick="hideEwalletScreen()">
+              <i class="fas fa-house"></i> Reset Ke Homepage Interaktif
+            </button>
+          </div>
+
+          <!-- Interactive Switcher Card (PRD #14) -->
+          <div class="sim-toolbar">
+            <div class="sim-toolbar-title">
+              <span><i class="fas fa-sliders mr-1"></i> Pilih Status E-Wallet Saat Ini</span>
+            </div>
+            <div class="sim-buttons-grid">
+              <button class="sim-btn active" id="btn-state-1" onclick="switchState(1)">
+                <span class="dot" style="background:#22c55e;"></span> Skenario 1: Status Active
+              </button>
+              <button class="sim-btn" id="btn-state-2" onclick="switchState(2)">
+                <span class="dot" style="background:#f97316;"></span> Skenario 2: Proses Verifikasi
+              </button>
+              <button class="sim-btn" id="btn-state-3" onclick="switchState(3)">
+                <span class="dot" style="background:#ef4444;"></span> Skenario 3: Ditolak Admin
+              </button>
+              <button class="sim-btn" id="btn-state-4" onclick="switchState(4)">
+                <span class="dot" style="background:#94a3b8;"></span> Skenario 4: Belum Ada E-Wallet
+              </button>
+            </div>
+          </div>
+
+          <!-- PRD #15 PIN State Switcher Control Card -->
+          <div class="sim-toolbar" style="background:#eff6ff; border-color:#bfdbfe;">
+            <div class="sim-toolbar-title" style="color:#1e40af;">
+              <span><i class="fas fa-key mr-1"></i> Pengujian Status PIN Customer</span>
+            </div>
+            <div class="sim-buttons-grid">
+              <button class="sim-btn active" id="btn-pin-active" onclick="setSimPinState('active')">
+                <span class="dot" style="background:#22c55e;"></span> PIN Status: Active (Bottom Sheet PIN)
+              </button>
+              <button class="sim-btn" id="btn-pin-unregistered" onclick="setSimPinState('unregistered')">
+                <span class="dot" style="background:#016EFF;"></span> PIN Status: Unregistered (Screen Buat PIN)
+              </button>
+              <button class="sim-btn" id="btn-pin-blocked" onclick="setSimPinState('blocked')">
+                <span class="dot" style="background:#ef4444;"></span> PIN Status: Blocked (Screen Reset PIN)
+              </button>
+            </div>
+          </div>
+
+          <!-- PRD #16 Prerequisite Switcher Control Card -->
+          <div class="sim-toolbar" style="background:#fefce8; border-color:#fef08a;">
+            <div class="sim-toolbar-title" style="color:#a16207;">
+              <span><i class="fas fa-shield-halved mr-1"></i> Pengujian Prasyarat Ubah E-Wallet</span>
+            </div>
+            <div class="sim-buttons-grid">
+              <button class="sim-btn active" id="btn-prereq-normal" onclick="setPrereqMode('normal')">
+                <span class="dot" style="background:#22c55e;"></span> Prasyarat Normal (Dapat Mengajukan Ubah)
+              </button>
+              <button class="sim-btn" id="btn-prereq-pending" onclick="setPrereqMode('pending')">
+                <span class="dot" style="background:#ea580c;"></span> Ada Request Pending (Ditolak PRD #16)
+              </button>
+              <button class="sim-btn" id="btn-prereq-quota" onclick="setPrereqMode('quota')">
+                <span class="dot" style="background:#ef4444;"></span> Kuota Bulanan Habis 1/1 (Ditolak PRD #16)
+              </button>
+            </div>
+          </div>
+
+          <!-- PRD #15 & #16 FDE 3-Condition Simulation Switcher Card (Form Panel Kanan) -->
+          <div class="sim-toolbar" style="background:#f0fdf4; border-color:#bbf7d0;">
+            <div class="sim-toolbar-title" style="color:#15803d;">
+              <span><i class="fas fa-shield-cat mr-1"></i> Simulasi Evaluasi Validasi 3 Kondisi saat tambah & ubah
+                e-wallet</span>
+            </div>
+
+            <div class="fde-condition-box">
+              <div class="condition-option selected" id="cond-opt-3" onclick="selectCondition(3)">
+                <input type="radio" name="fde-cond" class="condition-radio" id="radio-cond-3" checked>
+                <div>
+                  <div class="condition-title-text" style="color:#15803d;">🟢 Kondisi 3: Clean (Belum Pernah Dipakai)
+                  </div>
+                  <div class="condition-desc-text">Nomor bebas & belum pernah tercatat di sistem. Langsung berstatus
+                    <strong style="color:#15803d;">Active</strong>.
+                  </div>
+                </div>
+              </div>
+
+              <div class="condition-option" id="cond-opt-2" onclick="selectCondition(2)">
+                <input type="radio" name="fde-cond" class="condition-radio" id="radio-cond-2">
+                <div>
+                  <div class="condition-title-text" style="color:#c2410c;">🟠 Kondisi 2: Pernah Digunakan Akun Lain di
+                    Masa Lalu</div>
+                  <div class="condition-desc-text">Pendaftaran/ubah diproses dengan status <strong
+                      style="color:#c2410c;">Proses Verifikasi</strong> oleh Admin Finance. Nomor lama tetap Aktif!
+                  </div>
+                </div>
+              </div>
+
+              <div class="condition-option" id="cond-opt-1" onclick="selectCondition(1)">
+                <input type="radio" name="fde-cond" class="condition-radio" id="radio-cond-1">
+                <div>
+                  <div class="condition-title-text" style="color:#b91c1c;">🔴 Kondisi 1: Sedang Aktif / Verifikasi di
+                    Akun Lain</div>
+                  <div class="condition-desc-text">Sistem menolak perubahan & menampilkan notifikasi kesalahan.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PRD Spec Summaries -->
+          <div class="spec-card" style="border-left-color:#8b5cf6;">
+            <h4><i class="fas fa-arrows-rotate" style="color:#8b5cf6;"></i> Aturan & Batasan Ubah E-Wallet (PRD #16)
+            </h4>
+            <p>Aksi "Ubah" hanya untuk item <strong>Active</strong>. Dibatasi maks 1 request pending & kuota 1x per
+              bulan kalender. Mewajibkan verifikasi PIN 6-digit valid & evaluasi 3 Kondisi FDE.</p>
+          </div>
+
+          <div class="spec-card" style="border-left-color:#016EFF;">
+            <h4><i class="fas fa-shield-cat" style="color:#016EFF;"></i> Verifikasi PIN sCanWin (PRD #15)</h4>
+            <p>Mewajibkan input PIN 6-digit valid (`123456`) pada Bottom Sheet. Kesalahan 3x berturut-turut memblokir
+              PIN (`Blocked`) & mengarahkan ke Reset PIN.</p>
+          </div>
+
+          <div class="spec-card" style="border-left-color:#b91c1c;">
+            <h4><i class="fas fa-ban" style="color:#b91c1c;"></i> Kondisi 1: Sedang Aktif / Verifikasi di Akun Lain</h4>
+            <p>Pengajuan ditolak oleh FDE engine & menampilkan notifikasi kesalahan bahwa nomor sedang digunakan di akun
+              sCanWin lain.</p>
+          </div>
+
+          <div class="spec-card" style="border-left-color:#ea580c;">
+            <h4><i class="fas fa-clock-rotate-left" style="color:#ea580c;"></i> Kondisi 2: Pernah Digunakan di Masa Lalu
+            </h4>
+            <p>Pengajuan terkirim dengan status <strong>Proses Verifikasi</strong> & diteruskan ke antrean Admin
+              Finance. <strong>Nomor lama TETAP AKTIF</strong> untuk pencairan saldo.</p>
+          </div>
+
+          <div class="spec-card" style="border-left-color:#16a34a;">
+            <h4><i class="fas fa-circle-check" style="color:#16a34a;"></i> Kondisi 3: Clean (Nomor Bebas)</h4>
+            <p>Nomor HP baru langsung terdaftar dengan status <strong>Active</strong> menggantikan nomor lama.</p>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Include Centralized Sidebar JS -->
+  <script src="sidebar.js"></script>
+
+  <script>
+    let currentState = 1;
+    let targetCardToDelete = null;
+    let currentPinInput = "";
+    let pinAttemptsCount = 0;
+    let selectedCondition = 3;
+    let currentSimPinState = 'active';
+    let currentPrereqMode = 'normal';
+    let currentFlowContext = 'registrasi'; // 'registrasi' or 'ubah'
+    let activePhoneForUbah = '0812****5678';
+
+    // Listen to iframe postMessage events from inside homepage/account bottom sheet
+    window.addEventListener('message', function (event) {
+      if (event.data === 'openKelolaEWallet' || (event.data && event.data.action === 'openKelolaEWallet')) {
+        showEwalletScreen();
+      }
+    });
+
+    function showEwalletScreen() {
+      document.getElementById('screen-kelola-ewallet').style.display = 'flex';
+      showToast('Memuat Screen List Kelola E-Wallet');
+    }
+
+    function hideEwalletScreen() {
+      document.getElementById('screen-kelola-ewallet').style.display = 'none';
+      const frame = document.getElementById('homepage-frame');
+      if (frame) {
+        frame.src = 'scanwin-homepage.html';
+      }
+    }
+
+    function setSimPinState(pinState) {
+      currentSimPinState = pinState;
+      localStorage.setItem('scanwin_pin_status', pinState);
+
+      document.querySelectorAll('#btn-pin-active, #btn-pin-unregistered, #btn-pin-blocked').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-pin-${pinState}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      showToast(`Status PIN diset ke: ${pinState.toUpperCase()}`);
+    }
+
+    function setPrereqMode(mode) {
+      currentPrereqMode = mode;
+      document.querySelectorAll('#btn-prereq-normal, #btn-prereq-pending, #btn-prereq-quota').forEach(b => b.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-prereq-${mode}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (mode === 'normal') {
+        showToast('Prasyarat Ubah: Normal (Dapat Mengajukan Ubah)');
+      } else if (mode === 'pending') {
+        showToast('Prasyarat Ubah: Simulasi Ada Request Pending');
+      } else if (mode === 'quota') {
+        showToast('Prasyarat Ubah: Simulasi Kuota Bulanan Habis');
+      }
+    }
+
+    function switchState(stateNum) {
+      currentState = stateNum;
+
+      showEwalletScreen();
+
+      document.querySelectorAll('.sim-btn').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = document.getElementById(`btn-state-${stateNum}`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      const cardActive = document.getElementById('card-active');
+      const cardVerification = document.getElementById('card-verification');
+      const cardRejected = document.getElementById('card-rejected');
+      const cardEmpty = document.getElementById('card-empty');
+      const btnAdd = document.getElementById('btn-add-ewallet');
+      const limitNote = document.getElementById('limit-note');
+      const quotaText = document.getElementById('quota-text');
+
+      cardActive.style.display = 'none';
+      cardVerification.style.display = 'none';
+      cardRejected.style.display = 'none';
+      cardEmpty.style.display = 'none';
+
+      if (stateNum === 1) {
+        cardActive.style.display = 'flex';
+        quotaText.innerText = '1 / 1 Nomor HP';
+        btnAdd.classList.add('hidden');
+        limitNote.style.display = 'block';
+        showToast('Skenario 1: Status Active (Ubah & Hapus Aktif)');
+      } else if (stateNum === 2) {
+        cardVerification.style.display = 'flex';
+        quotaText.innerText = '1 / 1 Nomor HP';
+        btnAdd.classList.add('hidden');
+        limitNote.style.display = 'block';
+        showToast('Skenario 2: Status Proses Verifikasi (Aksi Terkunci)');
+      } else if (stateNum === 3) {
+        cardRejected.style.display = 'flex';
+        quotaText.innerText = '0 / 1 Aktif';
+        btnAdd.classList.remove('hidden');
+        limitNote.style.display = 'none';
+        showToast('Skenario 3: Status Ditolak Admin (Hanya Tombol Hapus)');
+      } else if (stateNum === 4) {
+        cardEmpty.style.display = 'flex';
+        quotaText.innerText = '0 / 1 Nomor HP';
+        btnAdd.classList.remove('hidden');
+        limitNote.style.display = 'none';
+        showToast('Skenario 4: Belum Memiliki E-Wallet Terdaftar');
+      }
+    }
+
+    // Dynamic PIN Check on clicking Tambah E-Wallet Baru (PRD #15)
+    function triggerTambahEwallet() {
+      currentFlowContext = 'registrasi';
+      const pinStatus = localStorage.getItem('scanwin_pin_status') || currentSimPinState || 'active';
+
+      if (pinStatus === 'unregistered') {
+        openPinInfoScreen('unregistered');
+      } else if (pinStatus === 'blocked') {
+        openPinInfoScreen('blocked');
+      } else {
+        openPinModal('Registrasi E-Wallet Baru');
+      }
+    }
+
+    // PRD #16 Ubah E-Wallet Trigger Handler
+    function triggerUbahEwallet(phoneNum) {
+      currentFlowContext = 'ubah';
+      activePhoneForUbah = phoneNum;
+
+      // PRD #16 Prerequisite Checks (Pending Request & Monthly Quota)
+      if (currentPrereqMode === 'pending') {
+        openPrereqModal('Pengajuan Dalam Proses Verifikasi', 'Anda masih memiliki pengajuan perubahan nomor e-wallet yang sedang dalam proses verifikasi oleh Admin Finance. Harap tunggu hingga proses selesai.');
+        return;
+      } else if (currentPrereqMode === 'quota') {
+        openPrereqModal('Batas Kuota Bulanan Habis', 'Anda telah menggunakan batas maksimal 1 kali pengajuan perubahan nomor e-wallet pada bulan ini. Kuota akan otomatis di-reset pada tanggal 1 bulan depan.');
+        return;
+      }
+
+      // Check PIN Status
+      const pinStatus = localStorage.getItem('scanwin_pin_status') || currentSimPinState || 'active';
+      if (pinStatus === 'unregistered') {
+        openPinInfoScreen('unregistered');
+      } else if (pinStatus === 'blocked') {
+        openPinInfoScreen('blocked');
+      } else {
+        openPinModal('Ubah Nomor E-Wallet');
+      }
+    }
+
+    function openPrereqModal(title, desc) {
+      document.getElementById('modal-prereq-title').innerText = title;
+      document.getElementById('modal-prereq-desc').innerText = desc;
+      document.getElementById('modal-prereq-error').classList.add('show');
+    }
+
+    function closePrereqModal() {
+      document.getElementById('modal-prereq-error').classList.remove('show');
+    }
+
+    // Screen Info PIN Handlers (unregistered & blocked matching scanwin-pin-info-screen.html)
+    function openPinInfoScreen(type) {
+      const overlay = document.getElementById('screen-pin-info');
+      const iconCircle = document.getElementById('pin-info-icon-circle');
+      const icon = document.getElementById('pin-info-icon');
+      const title = document.getElementById('pin-info-title');
+      const desc = document.getElementById('pin-info-desc');
+      const btn = document.getElementById('pin-info-action-btn');
+      const navTitle = document.getElementById('pin-info-nav-title');
+
+      if (type === 'unregistered') {
+        navTitle.innerText = 'Buat PIN';
+        iconCircle.className = 'pin-info-icon-circle unregistered';
+        icon.className = 'fas fa-shield-alt';
+        title.innerText = 'PIN sCanWin Belum Dibuat';
+        desc.innerText = 'Untuk keamanan akun & transaksi e-wallet, Anda perlu membuat 6-digit PIN sCanWin terlebih dahulu.';
+        btn.innerText = 'Buat PIN Baru';
+        btn.style.background = '#016EFF';
+      } else {
+        navTitle.innerText = 'Reset PIN';
+        iconCircle.className = 'pin-info-icon-circle blocked';
+        icon.className = 'fas fa-user-lock';
+        title.innerText = 'PIN Transaksi Terblokir';
+        desc.innerText = 'PIN sCanWin Anda telah terblokir karena 3 kali berturut-turut salah memasukkan PIN. Silakan lakukan pemulihan via WhatsApp OTP.';
+        btn.innerText = 'Reset PIN Transaksi';
+        btn.style.background = '#e11d48';
+      }
+
+      overlay.style.display = 'flex';
+    }
+
+    function closePinInfoScreen() {
+      document.getElementById('screen-pin-info').style.display = 'none';
+    }
+
+    function navigateToPinModule() {
+      closePinInfoScreen();
+      showToast('Mengarahkan ke Modul Kelola PIN Customer');
+      window.location.href = 'scanwin-fde-customer-registrasi-ubah-reset-pin.html';
+    }
+
+    // Bottom Sheet PIN sCanWin Handlers (PRD #15 & #16)
+    function openPinModal(customTitle) {
+      currentPinInput = "";
+      updatePinDots();
+      if (customTitle) {
+        document.getElementById('pin-modal-title').innerText = customTitle;
+      }
+      document.getElementById('pin-error-msg').style.display = 'none';
+      document.getElementById('pin-verification-modal').classList.add('show');
+    }
+
+    function closePinModal() {
+      document.getElementById('pin-verification-modal').classList.remove('show');
+      currentPinInput = "";
+      updatePinDots();
+    }
+
+    function pressKey(digit) {
+      if (currentPinInput.length < 6) {
+        currentPinInput += digit;
+        updatePinDots();
+        if (currentPinInput.length === 6) {
+          setTimeout(verifyPinInput, 200);
+        }
+      }
+    }
+
+    function clearPin() {
+      currentPinInput = "";
+      updatePinDots();
+      document.getElementById('pin-error-msg').style.display = 'none';
+    }
+
+    function backspacePin() {
+      if (currentPinInput.length > 0) {
+        currentPinInput = currentPinInput.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function updatePinDots() {
+      for (let i = 1; i <= 6; i++) {
+        const dot = document.getElementById(`dot-${i}`);
+        if (i <= currentPinInput.length) {
+          dot.classList.add('filled');
+        } else {
+          dot.classList.remove('filled');
+        }
+      }
+    }
+
+    function verifyPinInput() {
+      if (currentPinInput === '123456' || pinAttemptsCount >= 2) {
+        closePinModal();
+        if (currentFlowContext === 'ubah') {
+          showToast('PIN sCanWin Valid! Membuka Form Ubah E-Wallet');
+          openUbahModal();
+        } else {
+          showToast('PIN sCanWin Valid! Membuka Form Registrasi E-Wallet');
+          openRegistrasiModal();
+        }
+      } else {
+        pinAttemptsCount++;
+        if (pinAttemptsCount >= 3) {
+          closePinModal();
+          setSimPinState('blocked');
+          openPinInfoScreen('blocked');
+          showToast('PIN Terblokir karena 3x salah!');
+        } else {
+          document.getElementById('pin-error-msg').style.display = 'block';
+          showToast('PIN salah! Coba gunakan 123456');
+          setTimeout(() => {
+            clearPin();
+          }, 800);
+        }
+      }
+    }
+
+    // Pop-Up Modal Registrasi Form Handlers (PRD #15)
+    function openRegistrasiModal() {
+      document.getElementById('modal-registrasi-ewallet').classList.add('show');
+    }
+
+    function closeRegistrasiModal() {
+      document.getElementById('modal-registrasi-ewallet').classList.remove('show');
+    }
+
+    // Pop-Up Modal Ubah E-Wallet Handlers (PRD #16)
+    function openUbahModal() {
+      document.getElementById('input-current-phone').value = activePhoneForUbah || '0812****5678';
+      document.getElementById('modal-ubah-ewallet').classList.add('show');
+    }
+
+    function closeUbahModal() {
+      document.getElementById('modal-ubah-ewallet').classList.remove('show');
+    }
+
+    function selectCondition(condNum) {
+      selectedCondition = condNum;
+      document.querySelectorAll('.condition-option').forEach(opt => opt.classList.remove('selected'));
+      document.getElementById(`cond-opt-${condNum}`).classList.add('selected');
+      document.getElementById(`radio-cond-${condNum}`).checked = true;
+    }
+
+    function submitRegistrasiEwallet() {
+      const rawPhone = document.getElementById('input-new-phone').value || '081288991122';
+      const maskedPhone = rawPhone.substring(0, 4) + '****' + rawPhone.substring(rawPhone.length - 4);
+
+      if (selectedCondition === 1) {
+        closeRegistrasiModal();
+        const errDesc = document.getElementById('modal-error-kondisi1-desc');
+        if (errDesc) {
+          errDesc.innerHTML = `Nomor HP <strong>${rawPhone}</strong> saat ini tercatat berstatus aktif atau dalam proses verifikasi pada akun sCanWin lain. Silakan gunakan nomor HP e-wallet lainnya.`;
+        }
+        document.getElementById('modal-error-kondisi1').classList.add('show');
+        showToast('Kondisi 1: Pendaftaran Ditolak FDE Engine');
+      } else if (selectedCondition === 2) {
+        closeRegistrasiModal();
+        const verifPhoneElem = document.getElementById('verification-card-phone');
+        if (verifPhoneElem) verifPhoneElem.innerText = maskedPhone;
+        switchState(2);
+        showToast('Kondisi 2: Pengajuan Terkirim (Proses Verifikasi Admin)');
+      } else if (selectedCondition === 3) {
+        closeRegistrasiModal();
+        const activePhoneElem = document.getElementById('active-card-phone');
+        if (activePhoneElem) activePhoneElem.innerText = maskedPhone;
+        switchState(1);
+        showToast('Kondisi 3: E-Wallet Berhasil Didaftarkan (Active)');
+      }
+    }
+
+    function submitUbahEwallet() {
+      const rawPhone = document.getElementById('input-ubah-phone').value || '081299887766';
+      const maskedPhone = rawPhone.substring(0, 4) + '****' + rawPhone.substring(rawPhone.length - 4);
+
+      if (selectedCondition === 1) {
+        closeUbahModal();
+        const errDesc = document.getElementById('modal-error-kondisi1-desc');
+        if (errDesc) {
+          errDesc.innerHTML = `Nomor HP <strong>${rawPhone}</strong> saat ini tercatat berstatus aktif atau dalam proses verifikasi pada akun sCanWin lain. Silakan gunakan nomor HP e-wallet lainnya.`;
+        }
+        document.getElementById('modal-error-kondisi1').classList.add('show');
+        showToast('Kondisi 1: Perubahan Ditolak FDE Engine');
+      } else if (selectedCondition === 2) {
+        closeUbahModal();
+        const verifPhoneElem = document.getElementById('verification-card-phone');
+        if (verifPhoneElem) verifPhoneElem.innerText = maskedPhone;
+        switchState(2);
+        showToast('Kondisi 2: Pengajuan Ubah Terkirim (Proses Verifikasi Admin)');
+      } else if (selectedCondition === 3) {
+        closeUbahModal();
+        activePhoneForUbah = maskedPhone;
+        const activePhoneElem = document.getElementById('active-card-phone');
+        if (activePhoneElem) activePhoneElem.innerText = maskedPhone;
+        switchState(1);
+        showToast('Kondisi 3: Nomor E-Wallet Berhasil Diperbarui (Active)');
+      }
+    }
+
+    function closeErrorKondisi1Modal() {
+      document.getElementById('modal-error-kondisi1').classList.remove('show');
+    }
+
+    function openDeleteModal(phoneNum, cardType) {
+      targetCardToDelete = cardType;
+      const modalDesc = document.getElementById('modal-desc');
+      if (cardType === 'rejected') {
+        modalDesc.innerHTML = `Apakah Anda yakin ingin menghapus kartu e-wallet <strong>${phoneNum}</strong> yang ditolak ini dari daftar?`;
+      } else {
+        modalDesc.innerHTML = `Apakah Anda yakin ingin menghapus nomor HP e-wallet <strong>${phoneNum}</strong>? Anda harus mendaftarkan nomor baru untuk melakukan penarikan saldo sCanWin.`;
+      }
+      document.getElementById('confirm-modal').classList.add('show');
+    }
+
+    function closeModal() {
+      document.getElementById('confirm-modal').classList.remove('show');
+      targetCardToDelete = null;
+    }
+
+    function confirmDeleteEwallet() {
+      closeModal();
+      showToast('E-Wallet berhasil dihapus dari daftar akun');
+
+      setTimeout(() => {
+        switchState(4);
+      }, 500);
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      const toastText = document.getElementById('toast-text');
+      toastText.innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 2500);
+    }
+  </script>
+</body>
+
+</html>

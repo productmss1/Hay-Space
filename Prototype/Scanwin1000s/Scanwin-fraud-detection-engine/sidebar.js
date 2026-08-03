@@ -142,6 +142,7 @@
     else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
     else if (path.includes('klaim-mandiri') || path.includes('klaim')) activeKey = 'klaim';
     else if (path.includes('validasi-pencairan-ewallet')) activeKey = 'validasi-ewallet';
+    else if (path.includes('kelola-ewallet')) activeKey = 'kelola-ewallet';
     else if (path.includes('monitoring-penarikan-ewallet')) activeKey = 'monitoring-ewallet';
     else if (path.includes('monitoring-pemberian-voucher') || path.includes('pemberian-voucher')) activeKey = 'monitoring-voucher';
     else if (path.includes('flowchart')) activeKey = 'flowchart';
@@ -198,17 +199,21 @@
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 16V12" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/><path d="M12 8H12.01" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
           <span>8. Kelola PIN Customer</span>
         </a>
+        <a href="scanwin-fde-customer-kelola-ewallet.html" class="portal-menu-item ${activeKey === 'kelola-ewallet' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18Z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M3 10H21" stroke="currentColor" stroke-width="2"/><path d="M16 14H16.01" stroke="currentColor" stroke-width="2.5"/></svg>
+          <span>9. Kelola E-Wallet Customer</span>
+        </a>
         <a href="scanwin-fde-validasi-pencairan-ewallet.html" class="portal-menu-item ${activeKey === 'validasi-ewallet' ? 'active' : ''}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          <span>9. Validasi Pencairan E-Wallet</span>
+          <span>10. Validasi Pencairan E-Wallet</span>
         </a>
         <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-ewallet' ? 'active' : ''}" style="${activeKey === 'monitoring-ewallet' ? '' : 'color: #c7d2fe;'}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-          <span>10. Monitoring Pencairan (Admin) ↗</span>
+          <span>11. Monitoring Pencairan (Admin) ↗</span>
         </a>
         <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-voucher' ? 'active' : ''}" style="${activeKey === 'monitoring-voucher' ? '' : 'color: #c7d2fe;'}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-          <span>11. Monitoring Voucher (Admin) ↗</span>
+          <span>12. Monitoring Voucher (Admin) ↗</span>
         </a>
       </div>
 
