@@ -19,9 +19,26 @@
         padding: 28px 20px !important;
         color: #f8fafc !important;
         flex-shrink: 0 !important;
-        min-height: 100vh;
+        height: 100vh !important;
+        max-height: 100vh !important;
+        overflow-y: auto !important;
+        position: sticky !important;
+        top: 0 !important;
         box-sizing: border-box !important;
         z-index: 100;
+      }
+      .portal-sidebar::-webkit-scrollbar {
+        width: 5px;
+      }
+      .portal-sidebar::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      .portal-sidebar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.15);
+        border-radius: 3px;
+      }
+      .portal-sidebar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.3);
       }
       .portal-header {
         margin-bottom: 24px;

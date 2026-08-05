@@ -37,7 +37,7 @@
             display: inline-block;
             white-space: nowrap;
             position: relative;
-            min-width: 23500px;
+            min-width: 29000px;
             min-height: 5400px;
         }
 
@@ -77,14 +77,16 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 15px 20px;
-            width: 170px;
+            padding: 12px 14px;
+            width: 190px;
+            min-height: 75px;
             box-sizing: border-box;
             background: white;
             border: 2px solid #e2e8f0;
             border-radius: 12px;
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-            font-size: 12px;
+            font-size: 11px;
+            line-height: 1.35;
             font-weight: 700;
             color: #1e293b;
             position: absolute;
@@ -92,6 +94,8 @@
             cursor: move;
             user-select: none;
             transition: box-shadow 0.2s, transform 0.2s;
+            word-break: break-word;
+            overflow: hidden;
         }
 
         .node:hover {
@@ -104,6 +108,7 @@
             width: 90px;
             height: 90px;
             min-width: 90px;
+            min-height: 90px;
             border-radius: 50%;
             background: #dcfce7;
             border-color: #22c55e;
@@ -114,6 +119,7 @@
             width: 140px;
             height: 140px;
             min-width: 140px;
+            min-height: 140px;
             border-radius: 50%;
             background: #fee2e2;
             border-color: #ef4444;
@@ -142,15 +148,17 @@
         }
 
         .n-decision {
-            width: 110px;
-            height: 110px;
-            min-width: 110px;
+            width: 115px;
+            height: 115px;
+            min-width: 115px;
+            min-height: 115px;
             transform: rotate(45deg);
             background: #ffedd5;
             border-color: #fdba74;
             color: #9a3412;
             padding: 0;
             border-radius: 10px;
+            overflow: visible;
         }
 
         .n-decision:hover {
@@ -161,8 +169,10 @@
             transform: rotate(-45deg);
             text-align: center;
             display: block;
-            width: 100%;
-            font-size: 11px;
+            width: 125px;
+            margin-left: -5px;
+            font-size: 10.5px;
+            line-height: 1.25;
         }
 
         /* SVG Connections */
@@ -421,6 +431,46 @@
                         <input type="checkbox" class="chk-flow" value="sec7e_vch" checked
                             onchange="onFlowCheckboxChange()"> 🔴 7e. Admin Voucher: Proses Tolak &amp; Refund Kuota
                         (PRD 7e)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14a_cust_main" checked
+                            onchange="onFlowCheckboxChange()"> 👥 14a.1. Main Data Loading &amp; Akses Role RBAC (Tab Data Pelanggan)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #0284c7; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #e0f2fe; padding: 6px 8px; border-radius: 6px; border: 1px solid #7dd3fc; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14a_cust_search" checked
+                            onchange="onFlowCheckboxChange()"> 🔍 14a.2. Search &amp; Filter Status Flow (Tab Data Pelanggan)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #4f46e5; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #eef2ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #c7d2fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14b_cust_main" checked
+                            onchange="onFlowCheckboxChange()"> 👤 14b.1. Header Global, Fraud 30-Hari &amp; Role Status (Tab Informasi)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #4f46e5; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #eef2ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #c7d2fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14b_cust_accordion" checked
+                            onchange="onFlowCheckboxChange()"> 📑 14b.2. Accordion Drill-Down &amp; E-Wallet Audit (Tab Informasi)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #6d28d9; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8b4fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14c_cust_main" checked
+                            onchange="onFlowCheckboxChange()"> 🎟️ 14c.1. Main Data Loading &amp; Akses Role RBAC (Tab Riwayat Klaim)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #6d28d9; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #f3e8ff; padding: 6px 8px; border-radius: 6px; border: 1px solid #d8b4fe; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14c_cust_filter" checked
+                            onchange="onFlowCheckboxChange()"> 📅 14c.2. Date Range Filter, Status Filter &amp; Search (Tab Riwayat Klaim)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14d_cust_main" checked
+                            onchange="onFlowCheckboxChange()"> 💰 14d.1. Main Data Loading &amp; Akses Role RBAC (Tab Riwayat Pencairan)
+                    </label>
+                    <label
+                        style="font-size: 11px; font-weight: 700; color: #047857; display: flex; align-items: center; gap: 6px; cursor: pointer; background: #ecfdf5; padding: 6px 8px; border-radius: 6px; border: 1px solid #a7f3d0; grid-column: span 2;">
+                        <input type="checkbox" class="chk-flow" value="sec14d_cust_filter" checked
+                            onchange="onFlowCheckboxChange()"> ⚡ 14d.2. Validasi Tanggal Espay &amp; Filter E-Wallet (Tab Riwayat Pencairan)
                     </label>
                 </div>
             </div>
@@ -697,6 +747,60 @@
                     style="left: 17150px; top: 3180px; width: 5450px; height: 800px;">
                     <span class="section-label" style="background:#dc2626;">Monitoring Pemberian Voucher: Modul 5
                         (Proses Tolak: Reject Modal, Refund Kuota, &amp; Push Notif - PRD 7e)</span>
+                </div>
+
+                <!-- ================= OUTER SECTION 5: ADMIN - MANAJEMEN DATA PELANGGAN ================= -->
+                <div class="figma-section" data-sec-id="outer-admin-pelanggan"
+                    style="left: 22900px; top: 150px; width: 5600px; height: 4650px; border: 3px dashed #0284c7; background: rgba(240, 249, 255, 0.25);">
+                    <span class="section-label" style="background:#0284c7; font-size:13px; padding:6px 16px;">ADMIN - MANAJEMEN DATA PELANGGAN</span>
+                </div>
+
+                <!-- SUB-SECTION 14a.1: Main Data Loading & Access Flow (Tab Data Pelanggan - PRD 18) -->
+                <div class="figma-section" data-sec-id="sec14a_cust_main"
+                    style="left: 22950px; top: 200px; width: 5450px; height: 500px;">
+                    <span class="section-label" style="background:#0284c7;">14a.1. Main Data Loading &amp; Akses Role RBAC (Tab Data Pelanggan - PRD 18)</span>
+                </div>
+
+                <!-- SUB-SECTION 14a.2: Search & Filter Flow (Tab Data Pelanggan - PRD 18) -->
+                <div class="figma-section" data-sec-id="sec14a_cust_search"
+                    style="left: 22950px; top: 740px; width: 5450px; height: 530px;">
+                    <span class="section-label" style="background:#0369a1;">14a.2. Search &amp; Filter Status Flow (Tab Data Pelanggan - PRD 18)</span>
+                </div>
+
+                <!-- SUB-SECTION 14b.1: Main Data Loading & Access Flow (Tab Informasi - PRD 19) -->
+                <div class="figma-section" data-sec-id="sec14b_cust_main"
+                    style="left: 22950px; top: 1310px; width: 5450px; height: 500px;">
+                    <span class="section-label" style="background:#4f46e5;">14b.1. Header Global, Fraud 30-Hari &amp; Role Status (Tab Informasi - PRD 19)</span>
+                </div>
+
+                <!-- SUB-SECTION 14b.2: Accordion & E-Wallet Audit Flow (Tab Informasi - PRD 19) -->
+                <div class="figma-section" data-sec-id="sec14b_cust_accordion"
+                    style="left: 22950px; top: 1850px; width: 5450px; height: 500px;">
+                    <span class="section-label" style="background:#3730a3;">14b.2. Accordion Drill-Down &amp; E-Wallet Audit (Tab Informasi - PRD 19)</span>
+                </div>
+
+                <!-- SUB-SECTION 14c.1: Main Data Loading & Access Flow (Tab Riwayat Klaim - PRD 20) -->
+                <div class="figma-section" data-sec-id="sec14c_cust_main"
+                    style="left: 22950px; top: 2390px; width: 5450px; height: 500px;">
+                    <span class="section-label" style="background:#7c3aed;">14c.1. Main Data Loading &amp; Akses Role RBAC (Tab Riwayat Klaim - PRD 20)</span>
+                </div>
+
+                <!-- SUB-SECTION 14c.2: Date Range Filter & Search Flow (Tab Riwayat Klaim - PRD 20) -->
+                <div class="figma-section" data-sec-id="sec14c_cust_filter"
+                    style="left: 22950px; top: 2930px; width: 5450px; height: 550px;">
+                    <span class="section-label" style="background:#5b21b6;">14c.2. Date Range Filter, Status Filter &amp; Search (Tab Riwayat Klaim - PRD 20)</span>
+                </div>
+
+                <!-- SUB-SECTION 14d.1: Main Data Loading & Access Flow (Tab Riwayat Pencairan - PRD 21) -->
+                <div class="figma-section" data-sec-id="sec14d_cust_main"
+                    style="left: 22950px; top: 3520px; width: 5450px; height: 500px;">
+                    <span class="section-label" style="background:#059669;">14d.1. Main Data Loading &amp; Akses Role RBAC (Tab Riwayat Pencairan - PRD 21)</span>
+                </div>
+
+                <!-- SUB-SECTION 14d.2: Validasi Tanggal & Filter E-Wallet (Tab Riwayat Pencairan - PRD 21) -->
+                <div class="figma-section" data-sec-id="sec14d_cust_filter"
+                    style="left: 22950px; top: 4060px; width: 5450px; height: 600px;">
+                    <span class="section-label" style="background:#065f46;">14d.2. Validasi Tanggal Espay &amp; Filter E-Wallet (Tab Riwayat Pencairan - PRD 21)</span>
                 </div>
             </div>
 
@@ -1175,7 +1279,92 @@
                 { id: 've5-push-notif', type: 'n-purple', text: 'Kirim Push Notifikasi<br>Aplikasi Pelanggan &amp; Toko', x: 18910, y: 3300 },
                 { id: 've5-refund-quota', type: 'n-gray', text: 'Auto-Refund 1 Unit Kuota<br>Voucher ke Saldo Toko', x: 18910, y: 3510 },
                 { id: 've5-admin-toast', type: 'n-purple', text: 'Render Toast Feedback Admin<br>(Header &amp; Detail Notif)', x: 19160, y: 3420 },
-                { id: 've5-end', type: 'n-end', text: 'Voucher Rejected<br>&amp; Quota Refunded', x: 19390, y: 3375 }
+                { id: 've5-end', type: 'n-end', text: 'Voucher Rejected<br>&amp; Quota Refunded', x: 19390, y: 3375 },
+
+                // ================= SECTION 14a.1: Main Data Loading & Access Flow (Tab Data Pelanggan - PRD 18) =================
+                { id: 'ap1m-start', type: 'n-start', text: 'Start', x: 23045, y: 380 },
+                { id: 'ap1m-page', type: 'n-purple', text: 'Admin Buka Portal<br>Tab "Data Pelanggan"', x: 23190, y: 400 },
+                { id: 'ap1m-role-eval', type: 'n-decision', text: '<span>Evaluasi Role RBAC<br>(Non-Manager vs Manager)?</span>', x: 23430, y: 370 },
+                { id: 'ap1m-pov-nonmanager', type: 'n-gray', text: 'Role Non-Manager (Finance Admin):<br>No HP Masked (0812***)', x: 23680, y: 310 },
+                { id: 'ap1m-pov-manager', type: 'n-purple', text: 'Role Manager sCanWin:<br>No HP Full (081234...)', x: 23680, y: 490 },
+                { id: 'ap1m-render', type: 'n-gray', text: 'Render 3 Metrik Cards &amp;<br>Tabel Data Pelanggan', x: 23930, y: 400 },
+                { id: 'ap1m-end', type: 'n-end', text: 'End', x: 24150, y: 355 },
+
+                // ================= SECTION 14a.2: Search & Filter Flow (Tab Data Pelanggan - PRD 18) =================
+                { id: 'ap1s-start', type: 'n-start', text: 'Start', x: 23045, y: 920 },
+                { id: 'ap1s-action-dec', type: 'n-decision', text: '<span>Pilih Aksi User<br>(Search / Filter)?</span>', x: 23200, y: 890 },
+                { id: 'ap1s-search-input', type: 'n-purple', text: 'Input Keyword Search<br>(Nama / No HP Pelanggan)', x: 23450, y: 830 },
+                { id: 'ap1s-search-backend', type: 'n-gray', text: 'Backend Cross-Check Match<br>*Match HP asli meski masked', x: 23690, y: 830 },
+                { id: 'ap1s-filter-select', type: 'n-gray', text: 'Pilih Dropdown Status:<br>Semua / Aktif / Diblokir', x: 23450, y: 1010 },
+                { id: 'ap1s-update-table', type: 'n-gray', text: 'Update Tampilan Tabel<br>Hasil Filter / Search', x: 23930, y: 920 },
+                { id: 'ap1s-click-detail', type: 'n-purple', text: 'Klik Tombol Action<br>"Lihat Detail" Pelanggan', x: 24170, y: 920 },
+                { id: 'ap1s-end', type: 'n-end', text: 'End', x: 24390, y: 875 },
+
+                // ================= SECTION 14b.1: Main Data Loading & Access Flow (Tab Informasi - PRD 19) =================
+                { id: 'ap2m-start', type: 'n-start', text: 'Start', x: 23045, y: 1510 },
+                { id: 'ap2m-open', type: 'n-purple', text: 'Buka Detail Pelanggan<br>(Header &amp; Tab 1 Informasi)', x: 23190, y: 1530 },
+                { id: 'ap2m-eval-fraud', type: 'n-decision', text: '<span>Evaluasi Fraud 30 Hari<br>(Redeem > Cap / Pending)?</span>', x: 23430, y: 1500 },
+                { id: 'ap2m-tag-fraud', type: 'n-purple', text: 'Flag Header Status:<br>Tag "Terindikasi Fraud"', x: 23680, y: 1440 },
+                { id: 'ap2m-tag-clean', type: 'n-gray', text: 'Header Status Normal:<br>Badge "Clean / Normal"', x: 23680, y: 1600 },
+                { id: 'ap2m-render-header', type: 'n-gray', text: 'Render Header Global<br>&amp; Tab 1 Informasi', x: 23930, y: 1530 },
+                { id: 'ap2m-role-eval', type: 'n-decision', text: '<span>Akses Role User<br>(RBAC)?</span>', x: 24170, y: 1500 },
+                { id: 'ap2m-pov-nonmanager', type: 'n-gray', text: 'POV Non-Manager:<br>View-Only (Tombol Disabled)', x: 24410, y: 1440 },
+                { id: 'ap2m-pov-manager', type: 'n-purple', text: 'POV Manager:<br>Akses Action Blokir / Unblokir', x: 24410, y: 1600 },
+                { id: 'ap2m-act-block', type: 'n-purple', text: 'Manager Klik Tombol<br>"Blokir" / "Buka Blokir"', x: 24650, y: 1600 },
+                { id: 'ap2m-confirm-modal', type: 'n-gray', text: 'Modal Konfirmasi<br>Perubahan Status Akun', x: 24890, y: 1600 },
+                { id: 'ap2m-save-status', type: 'n-gray', text: 'Update Status Akun<br>di Backend Database', x: 25130, y: 1600 },
+                { id: 'ap2m-toast', type: 'n-purple', text: 'Toast Notification:<br>"Status Berhasil Diubah"', x: 25360, y: 1600 },
+                { id: 'ap2m-end', type: 'n-end', text: 'End', x: 25560, y: 1485 },
+
+                // ================= SECTION 14b.2: Accordion & E-Wallet Audit Flow (Tab Informasi - PRD 19) =================
+                { id: 'ap2a-start', type: 'n-start', text: 'Start', x: 23045, y: 2050 },
+                { id: 'ap2a-eval-device', type: 'n-gray', text: 'Analisis Device &amp; E-Wallet:<br>Multi-Account &amp; Shared Check', x: 23190, y: 2070 },
+                { id: 'ap2a-render-accordion', type: 'n-gray', text: 'Render Accordion E-Wallet:<br>Badge Status &amp; Alert Badges', x: 23430, y: 2070 },
+                { id: 'ap2a-click-expand', type: 'n-purple', text: 'User Klik Expand Accordion<br>Nomor HP E-Wallet', x: 23680, y: 2070 },
+                { id: 'ap2a-shared-dec', type: 'n-decision', text: '<span>Nomor E-Wallet<br>Shared (Terikat)?</span>', x: 23920, y: 2040 },
+                { id: 'ap2a-render-timeline', type: 'n-gray', text: 'Render Timeline Log<br>(Timestamp + Nama Eksekutor)', x: 24170, y: 1980 },
+                { id: 'ap2a-render-shared', type: 'n-purple', text: 'Render Timeline Log &amp;<br>Shared E-Wallet Table', x: 24170, y: 2140 },
+                { id: 'ap2a-end', type: 'n-end', text: 'End', x: 24410, y: 2025 },
+
+                // ================= SECTION 14c.1: Main Data Loading & Access Flow (Tab Riwayat Klaim - PRD 20) =================
+                { id: 'ap3m-start', type: 'n-start', text: 'Start', x: 23045, y: 2590 },
+                { id: 'ap3m-tab-click', type: 'n-purple', text: 'Admin Klik Tab<br>"Riwayat Klaim Voucher"', x: 23190, y: 2610 },
+                { id: 'ap3m-role-eval', type: 'n-decision', text: '<span>Evaluasi Role RBAC<br>(Non-Manager vs Manager)?</span>', x: 23430, y: 2580 },
+                { id: 'ap3m-pov-nonmanager', type: 'n-gray', text: 'POV Non-Manager:<br>Nilai Voucher &amp; Jackpot Masked', x: 23680, y: 2520 },
+                { id: 'ap3m-pov-manager', type: 'n-purple', text: 'POV Manager:<br>Nilai Voucher &amp; Jackpot Full', x: 23680, y: 2700 },
+                { id: 'ap3m-render', type: 'n-gray', text: 'Render 5 Summary Cards &amp;<br>Tabel Riwayat Klaim Voucher', x: 23930, y: 2610 },
+                { id: 'ap3m-end', type: 'n-end', text: 'End', x: 24150, y: 2565 },
+
+                // ================= SECTION 14c.2: Date Range Filter, Status Filter & Search Flow (Tab Riwayat Klaim - PRD 20) =================
+                { id: 'ap3s-start', type: 'n-start', text: 'Start', x: 23045, y: 3150 },
+                { id: 'ap3s-action-dec', type: 'n-decision', text: '<span>Filter / Search<br>Voucher ID?</span>', x: 23200, y: 3120 },
+                { id: 'ap3s-filter-date', type: 'n-purple', text: 'Filter Date Range Picker<br>(Start Date - End Date)', x: 23450, y: 3040 },
+                { id: 'ap3s-recalc-kpi', type: 'n-gray', text: 'Hitung Ulang 5 Summary Cards<br>&amp; Filter Data Tabel', x: 23700, y: 3040 },
+                { id: 'ap3s-filter-status', type: 'n-gray', text: 'Filter Dropdown Status:<br>Pending / Sukses / Ditolak', x: 23450, y: 3170 },
+                { id: 'ap3s-search', type: 'n-purple', text: 'Input Keyword Search:<br>(Voucher ID / Toko / Customer)', x: 23450, y: 3300 },
+                { id: 'ap3s-update-table', type: 'n-gray', text: 'Update Tampilan Tabel<br>Riwayat Klaim Voucher', x: 23940, y: 3150 },
+                { id: 'ap3s-end', type: 'n-end', text: 'End', x: 24160, y: 3105 },
+
+                // ================= SECTION 14d.1: Main Data Loading & Access Flow (Tab Riwayat Pencairan - PRD 21) =================
+                { id: 'ap4m-start', type: 'n-start', text: 'Start', x: 23045, y: 3740 },
+                { id: 'ap4m-tab-click', type: 'n-purple', text: 'Admin Klik Tab<br>"Riwayat Pencairan Saldo"', x: 23190, y: 3760 },
+                { id: 'ap4m-role-eval', type: 'n-decision', text: '<span>Evaluasi Role RBAC<br>(Non-Manager vs Manager)?</span>', x: 23430, y: 3730 },
+                { id: 'ap4m-pov-nonmanager', type: 'n-gray', text: 'POV Non-Manager:<br>Nominal &amp; Volume Masked', x: 23680, y: 3670 },
+                { id: 'ap4m-pov-manager', type: 'n-purple', text: 'POV Manager:<br>Nominal &amp; Volume Full', x: 23680, y: 3850 },
+                { id: 'ap4m-render', type: 'n-gray', text: 'Render 2 Summary Cards &amp;<br>Log Tabel Pencairan Saldo', x: 23930, y: 3760 },
+                { id: 'ap4m-end', type: 'n-end', text: 'End', x: 24150, y: 3715 },
+
+                // ================= SECTION 14d.2: Validasi Tanggal Espay & Filter E-Wallet (Tab Riwayat Pencairan - PRD 21) =================
+                { id: 'ap4s-start', type: 'n-start', text: 'Start', x: 23045, y: 4300 },
+                { id: 'ap4s-action-dec', type: 'n-decision', text: '<span>Filter / Search<br>Transaksi Pencairan?</span>', x: 23200, y: 4270 },
+                { id: 'ap4s-filter-date', type: 'n-purple', text: 'Input Filter Tanggal<br>(Preset / Manual Date)', x: 23450, y: 4180 },
+                { id: 'ap4s-date-val', type: 'n-decision', text: '<span>Validasi Tanggal<br>(Start <= End)?</span>', x: 23690, y: 4150 },
+                { id: 'ap4s-date-err', type: 'n-gray', text: 'Alert Error:<br>Tanggal Start > End', x: 23690, y: 4360 },
+                { id: 'ap4s-recalc-kpi', type: 'n-gray', text: 'Kalkulasi Ulang Volume Card<br>&amp; Filter Log Tabel', x: 23930, y: 4180 },
+                { id: 'ap4s-filter-ewallet', type: 'n-gray', text: 'Filter Provider E-Wallet:<br>OVO / GoPay / DANA / ShopeePay', x: 23450, y: 4310 },
+                { id: 'ap4s-search', type: 'n-purple', text: 'Input Keyword Search:<br>(ID Transaksi / User / E-Wallet)', x: 23450, y: 4440 },
+                { id: 'ap4s-update-table', type: 'n-gray', text: 'Update Log Tabel Pencairan<br>&amp; Stempel Waktu Espay', x: 24170, y: 4300 },
+                { id: 'ap4s-end', type: 'n-end', text: 'End', x: 24390, y: 4255 }
             ],
             connections: [
                 // CONNECTIONS SECTION 1
@@ -1649,7 +1838,96 @@
                 { from: 've5-victim-dec', to: 've5-refund-quota', f: 'bottom', t: 'left', label: 'Korban Pasif', lClass: 'label-yes' },
                 { from: 've5-refund-quota', to: 've5-admin-toast', f: 'right', t: 'bottom' },
                 { from: 've5-push-notif', to: 've5-admin-toast', f: 'right', t: 'top' },
-                { from: 've5-admin-toast', to: 've5-end', f: 'right', t: 'left' }
+                { from: 've5-admin-toast', to: 've5-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14a.1: Main Data Loading & Access Flow (Tab Data Pelanggan - PRD 18)
+                { from: 'ap1m-start', to: 'ap1m-page', f: 'right', t: 'left' },
+                { from: 'ap1m-page', to: 'ap1m-role-eval', f: 'right', t: 'left' },
+                { from: 'ap1m-role-eval', to: 'ap1m-pov-nonmanager', f: 'top', t: 'left', label: 'Non-Manager', lClass: 'label-no' },
+                { from: 'ap1m-role-eval', to: 'ap1m-pov-manager', f: 'bottom', t: 'left', label: 'Manager', lClass: 'label-yes' },
+                { from: 'ap1m-pov-nonmanager', to: 'ap1m-render', f: 'right', t: 'top' },
+                { from: 'ap1m-pov-manager', to: 'ap1m-render', f: 'right', t: 'bottom' },
+                { from: 'ap1m-render', to: 'ap1m-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14a.2: Search & Filter Flow (Tab Data Pelanggan - PRD 18)
+                { from: 'ap1s-start', to: 'ap1s-action-dec', f: 'right', t: 'left' },
+                { from: 'ap1s-action-dec', to: 'ap1s-search-input', f: 'top', t: 'left', label: 'Search Keyword', lClass: 'label-yes' },
+                { from: 'ap1s-action-dec', to: 'ap1s-filter-select', f: 'bottom', t: 'left', label: 'Filter Status', lClass: 'label-no' },
+                { from: 'ap1s-search-input', to: 'ap1s-search-backend', f: 'right', t: 'left' },
+                { from: 'ap1s-search-backend', to: 'ap1s-update-table', f: 'right', t: 'top' },
+                { from: 'ap1s-filter-select', to: 'ap1s-update-table', f: 'right', t: 'bottom' },
+                { from: 'ap1s-update-table', to: 'ap1s-click-detail', f: 'right', t: 'left' },
+                { from: 'ap1s-click-detail', to: 'ap1s-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14b.1: Main Data Loading & Access Flow (Tab Informasi - PRD 19)
+                { from: 'ap2m-start', to: 'ap2m-open', f: 'right', t: 'left' },
+                { from: 'ap2m-open', to: 'ap2m-eval-fraud', f: 'right', t: 'left' },
+                { from: 'ap2m-eval-fraud', to: 'ap2m-tag-fraud', f: 'top', t: 'left', label: 'Fraud Flag', lClass: 'label-no' },
+                { from: 'ap2m-eval-fraud', to: 'ap2m-tag-clean', f: 'bottom', t: 'left', label: 'Clean', lClass: 'label-yes' },
+                { from: 'ap2m-tag-fraud', to: 'ap2m-render-header', f: 'right', t: 'top' },
+                { from: 'ap2m-tag-clean', to: 'ap2m-render-header', f: 'right', t: 'bottom' },
+                { from: 'ap2m-render-header', to: 'ap2m-role-eval', f: 'right', t: 'left' },
+                { from: 'ap2m-role-eval', to: 'ap2m-pov-nonmanager', f: 'top', t: 'left', label: 'Non-Manager', lClass: 'label-no' },
+                { from: 'ap2m-role-eval', to: 'ap2m-pov-manager', f: 'bottom', t: 'left', label: 'Manager', lClass: 'label-yes' },
+                { from: 'ap2m-pov-nonmanager', to: 'ap2m-end', f: 'right', t: 'top' },
+                { from: 'ap2m-pov-manager', to: 'ap2m-act-block', f: 'right', t: 'left' },
+                { from: 'ap2m-act-block', to: 'ap2m-confirm-modal', f: 'right', t: 'left' },
+                { from: 'ap2m-confirm-modal', to: 'ap2m-save-status', f: 'right', t: 'left' },
+                { from: 'ap2m-save-status', to: 'ap2m-toast', f: 'right', t: 'left' },
+                { from: 'ap2m-toast', to: 'ap2m-end', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 14b.2: Accordion & E-Wallet Audit Flow (Tab Informasi - PRD 19)
+                { from: 'ap2a-start', to: 'ap2a-eval-device', f: 'right', t: 'left' },
+                { from: 'ap2a-eval-device', to: 'ap2a-render-accordion', f: 'right', t: 'left' },
+                { from: 'ap2a-render-accordion', to: 'ap2a-click-expand', f: 'right', t: 'left' },
+                { from: 'ap2a-click-expand', to: 'ap2a-shared-dec', f: 'right', t: 'left' },
+                { from: 'ap2a-shared-dec', to: 'ap2a-render-timeline', f: 'top', t: 'left', label: 'Unik (Clean)', lClass: 'label-yes' },
+                { from: 'ap2a-shared-dec', to: 'ap2a-render-shared', f: 'bottom', t: 'left', label: 'Terikat (Shared)', lClass: 'label-no' },
+                { from: 'ap2a-render-timeline', to: 'ap2a-end', f: 'right', t: 'top' },
+                { from: 'ap2a-render-shared', to: 'ap2a-end', f: 'right', t: 'bottom' },
+
+                // CONNECTIONS SECTION 14c.1: Main Data Loading & Access Flow (Tab Riwayat Klaim - PRD 20)
+                { from: 'ap3m-start', to: 'ap3m-tab-click', f: 'right', t: 'left' },
+                { from: 'ap3m-tab-click', to: 'ap3m-role-eval', f: 'right', t: 'left' },
+                { from: 'ap3m-role-eval', to: 'ap3m-pov-nonmanager', f: 'top', t: 'left', label: 'Non-Manager', lClass: 'label-no' },
+                { from: 'ap3m-role-eval', to: 'ap3m-pov-manager', f: 'bottom', t: 'left', label: 'Manager', lClass: 'label-yes' },
+                { from: 'ap3m-pov-nonmanager', to: 'ap3m-render', f: 'right', t: 'top' },
+                { from: 'ap3m-pov-manager', to: 'ap3m-render', f: 'right', t: 'bottom' },
+                { from: 'ap3m-render', to: 'ap3m-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14c.2: Date Range Filter, Status Filter & Search Flow (Tab Riwayat Klaim - PRD 20)
+                { from: 'ap3s-start', to: 'ap3s-action-dec', f: 'right', t: 'left' },
+                { from: 'ap3s-action-dec', to: 'ap3s-filter-date', f: 'top', t: 'left', label: 'Date Range', lClass: 'label-yes' },
+                { from: 'ap3s-action-dec', to: 'ap3s-filter-status', f: 'right', t: 'left', label: 'Status Filter', lClass: 'label-yes' },
+                { from: 'ap3s-action-dec', to: 'ap3s-search', f: 'bottom', t: 'left', label: 'Search Keyword', lClass: 'label-yes' },
+                { from: 'ap3s-filter-date', to: 'ap3s-recalc-kpi', f: 'right', t: 'left' },
+                { from: 'ap3s-recalc-kpi', to: 'ap3s-update-table', f: 'right', t: 'top' },
+                { from: 'ap3s-filter-status', to: 'ap3s-update-table', f: 'right', t: 'left' },
+                { from: 'ap3s-search', to: 'ap3s-update-table', f: 'right', t: 'bottom' },
+                { from: 'ap3s-update-table', to: 'ap3s-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14d.1: Main Data Loading & Access Flow (Tab Riwayat Pencairan - PRD 21)
+                { from: 'ap4m-start', to: 'ap4m-tab-click', f: 'right', t: 'left' },
+                { from: 'ap4m-tab-click', to: 'ap4m-role-eval', f: 'right', t: 'left' },
+                { from: 'ap4m-role-eval', to: 'ap4m-pov-nonmanager', f: 'top', t: 'left', label: 'Non-Manager', lClass: 'label-no' },
+                { from: 'ap4m-role-eval', to: 'ap4m-pov-manager', f: 'bottom', t: 'left', label: 'Manager', lClass: 'label-yes' },
+                { from: 'ap4m-pov-nonmanager', to: 'ap4m-render', f: 'right', t: 'top' },
+                { from: 'ap4m-pov-manager', to: 'ap4m-render', f: 'right', t: 'bottom' },
+                { from: 'ap4m-render', to: 'ap4m-end', f: 'right', t: 'left' },
+
+                // CONNECTIONS SECTION 14d.2: Validasi Tanggal Espay & Filter E-Wallet (Tab Riwayat Pencairan - PRD 21)
+                { from: 'ap4s-start', to: 'ap4s-action-dec', f: 'right', t: 'left' },
+                { from: 'ap4s-action-dec', to: 'ap4s-filter-date', f: 'top', t: 'left', label: 'Filter Tanggal', lClass: 'label-yes' },
+                { from: 'ap4s-action-dec', to: 'ap4s-filter-ewallet', f: 'right', t: 'left', label: 'Filter E-Wallet', lClass: 'label-yes' },
+                { from: 'ap4s-action-dec', to: 'ap4s-search', f: 'bottom', t: 'left', label: 'Search Keyword', lClass: 'label-yes' },
+                { from: 'ap4s-filter-date', to: 'ap4s-date-val', f: 'right', t: 'left' },
+                { from: 'ap4s-date-val', to: 'ap4s-recalc-kpi', f: 'right', t: 'left', label: 'Valid (Ya)', lClass: 'label-yes' },
+                { from: 'ap4s-date-val', to: 'ap4s-date-err', f: 'bottom', t: 'top', label: 'Invalid (Tidak)', lClass: 'label-no' },
+                { from: 'ap4s-date-err', to: 'ap4s-filter-date', f: 'left', t: 'bottom' },
+                { from: 'ap4s-recalc-kpi', to: 'ap4s-update-table', f: 'right', t: 'top' },
+                { from: 'ap4s-filter-ewallet', to: 'ap4s-update-table', f: 'right', t: 'left' },
+                { from: 'ap4s-search', to: 'ap4s-update-table', f: 'right', t: 'bottom' },
+                { from: 'ap4s-update-table', to: 'ap4s-end', f: 'right', t: 'left' }
             ]
         };
 
@@ -2023,6 +2301,14 @@
             if (nodeId.startsWith('vc3-') && selectedKeys.includes('sec7c_vch')) return true;
             if (nodeId.startsWith('vd4-') && selectedKeys.includes('sec7d_vch')) return true;
             if (nodeId.startsWith('ve5-') && selectedKeys.includes('sec7e_vch')) return true;
+            if (nodeId.startsWith('ap1m-') && selectedKeys.includes('sec14a_cust_main')) return true;
+            if (nodeId.startsWith('ap1s-') && selectedKeys.includes('sec14a_cust_search')) return true;
+            if (nodeId.startsWith('ap2m-') && selectedKeys.includes('sec14b_cust_main')) return true;
+            if (nodeId.startsWith('ap2a-') && selectedKeys.includes('sec14b_cust_accordion')) return true;
+            if (nodeId.startsWith('ap3m-') && selectedKeys.includes('sec14c_cust_main')) return true;
+            if (nodeId.startsWith('ap3s-') && selectedKeys.includes('sec14c_cust_filter')) return true;
+            if (nodeId.startsWith('ap4m-') && selectedKeys.includes('sec14d_cust_main')) return true;
+            if (nodeId.startsWith('ap4s-') && selectedKeys.includes('sec14d_cust_filter')) return true;
             return false;
         }
 
@@ -2049,7 +2335,7 @@
                 selectedKeys = getSelectedFlowKeys();
             }
             if (selectedKeys.length === 0) {
-                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12a', 'sec12b', 'sec12c', 'sec12d', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e', 'sec7a_vch', 'sec7b_vch', 'sec7c_vch', 'sec7d_vch', 'sec7e_vch'];
+                selectedKeys = ['sec1', 'sec2', 'sec3', 'sec4', 'sec5', 'sec6', 'sec7', 'sec8', 'sec9', 'sec10', 'sec12a', 'sec12b', 'sec12c', 'sec12d', 'sec13a', 'sec13b', 'sec13c', 'sec13d', 'sec13e', 'sec7a_vch', 'sec7b_vch', 'sec7c_vch', 'sec7d_vch', 'sec7e_vch', 'sec14a_cust_main', 'sec14a_cust_search', 'sec14b_cust_main', 'sec14b_cust_accordion', 'sec14c_cust_main', 'sec14c_cust_filter', 'sec14d_cust_main', 'sec14d_cust_filter'];
             }
 
             let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -2060,6 +2346,7 @@
             if (selectedKeys.includes('sec7') || selectedKeys.includes('sec8') || selectedKeys.includes('sec9') || selectedKeys.includes('sec10') || selectedKeys.includes('sec12a') || selectedKeys.includes('sec12b') || selectedKeys.includes('sec12c') || selectedKeys.includes('sec12d')) activeSecIds.add('outer-customer');
             if (selectedKeys.includes('sec13a') || selectedKeys.includes('sec13b') || selectedKeys.includes('sec13c') || selectedKeys.includes('sec13d') || selectedKeys.includes('sec13e')) activeSecIds.add('outer-admin');
             if (selectedKeys.includes('sec7a_vch') || selectedKeys.includes('sec7b_vch') || selectedKeys.includes('sec7c_vch') || selectedKeys.includes('sec7d_vch') || selectedKeys.includes('sec7e_vch')) activeSecIds.add('outer-admin-vch');
+            if (selectedKeys.includes('sec14a_cust_main') || selectedKeys.includes('sec14a_cust_search') || selectedKeys.includes('sec14b_cust_main') || selectedKeys.includes('sec14b_cust_accordion') || selectedKeys.includes('sec14c_cust_main') || selectedKeys.includes('sec14c_cust_filter') || selectedKeys.includes('sec14d_cust_main') || selectedKeys.includes('sec14d_cust_filter')) activeSecIds.add('outer-admin-pelanggan');
 
             const activeSectionEls = Array.from(document.querySelectorAll('.figma-section')).filter(sec => {
                 const id = sec.getAttribute('data-sec-id');

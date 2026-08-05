@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Pelanggan — Tab Riwayat Pencairan Saldo (sCanWin Admin)</title>
+    <!-- Google Fonts Inter & FontAwesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-cyan: #00B4D8;
+            --primary-cyan-hover: #0096B4;
+            --bg-canvas: #F4F6F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            --border-color: #E2E8F0;
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ==================== 1. TOP HEADER BAR ==================== */
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-hamburger {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-simulation-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .sim-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .sim-control select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #FFFFFF;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ==================== 2. LAYOUT CONTAINER & SIDEBAR ==================== */
+        .app-body {
+            margin-top: var(--header-height);
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .nav-category {
+            padding: 10px 20px 4px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: #F8FAFC;
+            color: var(--primary-cyan);
+        }
+
+        .nav-item.active {
+            background-color: #E0F2FE;
+            color: var(--primary-cyan);
+            font-weight: 700;
+            border-right: 3.5px solid var(--primary-cyan);
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--text-light);
+            display: inline-block;
+        }
+
+        .nav-item.active .nav-bullet {
+            background-color: var(--primary-cyan);
+            border-color: var(--primary-cyan);
+        }
+
+        /* ==================== 3. MAIN CONTENT CANVAS ==================== */
+        .main-canvas {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Global Header Profil Pelanggan */
+        .global-customer-header {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px 24px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .profile-main-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .avatar-box {
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #00B4D8 0%, #0077B6 100%);
+            color: #FFFFFF;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 180, 216, 0.3);
+        }
+
+        .profile-details h2 {
+            font-size: 18px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-pill {
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .status-pill.aktif {
+            background-color: #DEF7EC;
+            color: #03543F;
+        }
+
+        .tag-fraud-warning {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+            padding: 3px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .meta-list {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Horizontal 3 Tabs Detail Pelanggan */
+        .detail-tabs {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            border-bottom: 2px solid var(--border-color);
+            margin-top: -4px;
+        }
+
+        .detail-tab-item {
+            padding: 10px 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            text-decoration: none;
+        }
+
+        .detail-tab-item:hover {
+            color: var(--primary-cyan);
+        }
+
+        .detail-tab-item.active {
+            color: var(--primary-cyan);
+            font-weight: 700;
+        }
+
+        .detail-tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-cyan);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* ==================== 4. SEKSI 1: 2 SUMMARY METRIC CARDS (NO SUBTITLE) ==================== */
+        .metrics-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px 24px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-info h4 {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+        }
+
+        .metric-info .value {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 6px;
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 22px;
+            flex-shrink: 0;
+        }
+
+        .metric-icon.teal {
+            background-color: #CCFBF1;
+            color: #0D9488;
+        }
+
+        .metric-icon.blue {
+            background-color: #E0F2FE;
+            color: #0284C7;
+        }
+
+        /* ==================== 5. SEKSI 2: FILTER & CONTROL BAR ==================== */
+        .filter-control-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 16px 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .filter-left-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+        }
+
+        .search-box-wrapper {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+        }
+
+        .search-box-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 9px 14px 9px 38px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        .filter-right-group {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .filter-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .filter-input,
+        .filter-select {
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            background-color: #FFFFFF;
+            color: var(--text-dark);
+            outline: none;
+        }
+
+        /* ==================== 6. SEKSI 3: TABEL LOG PENCAIRAN SALDO (10 KOLOM) ==================== */
+        .table-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .data-table th {
+            background-color: #F8FAFC;
+            color: var(--text-muted);
+            font-weight: 700;
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .combined-title {
+            font-weight: 700;
+            color: var(--text-dark);
+            display: block;
+        }
+
+        .combined-subtext {
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            display: block;
+        }
+
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .status-badge.proses {
+            background-color: #FFF8E1;
+            color: #B78103;
+            border: 1px solid #FFE082;
+        }
+
+        .status-badge.sukses {
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border: 1px solid #90CAF9;
+        }
+
+        .status-badge.gagal {
+            background-color: #FCE8E6;
+            color: #C5221F;
+            border: 1px solid #F8B4B1;
+        }
+
+        .btn-action-detail {
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #FFFFFF;
+            color: #0284C7;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-detail:hover {
+            background-color: #E0F2FE;
+            border-color: #0284C7;
+        }
+
+        /* ==================== 7. SEKSI 4: FOOTER PAGINATION ==================== */
+        .pagination-footer {
+            padding: 14px 20px;
+            background-color: #FFFFFF;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .pagination-controls {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .page-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background-color: #FFFFFF;
+            color: var(--text-dark);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .page-btn:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        .page-btn.active {
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            border-color: var(--primary-cyan);
+        }
+
+        /* Modal Log Viewer */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            width: 520px;
+            max-width: 90%;
+            padding: 24px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+
+        .modal-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-bottom: 14px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        .modal-body {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            font-size: 13px;
+        }
+
+        .log-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px dashed var(--border-color);
+        }
+
+        .log-row label {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .log-row span {
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP HEADER BAR GLOBAL -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="btn-hamburger"><i class="fa-solid fa-bars"></i></button>
+            <a href="#" class="brand-logo">
+                <i class="fa-solid fa-house-chimney" style="color: #FFD166;"></i>
+                <span>Toko Bangunan 1000saudara</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Top Header Simulation Controls -->
+            <div class="header-simulation-group">
+                <div class="sim-control">
+                    <i class="fa-solid fa-user-shield" style="color: #FFD166;"></i>
+                    <span>Role Simulasi:</span>
+                    <select id="rbacSelect" onchange="updateRole(this.value)">
+                        <option value="non-manager">Non-Manager sCanWin (Finance Admin)</option>
+                        <option value="manager">Manager sCanWin (Unmasked Access)</option>
+                    </select>
+                </div>
+
+                <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #FFD166;"></i>
+                    <span>Status Fraud Tag:</span>
+                    <select id="fraudSelect" onchange="updateFraudTag(this.value)">
+                        <option value="active">🔴 Terindikasi Fraud (Aktif)</option>
+                        <option value="normal">🟢 Normal / Clean</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">NA</div>
+                <span style="font-weight: 600; font-size: 13.5px;">Nama Anda</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. LAYOUT CONTAINER & SIDEBAR -->
+    <div class="app-body">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-category">Management sCanWin 1000s</div>
+            <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" class="nav-item active">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span style="font-weight: 700;">Manajemen Pelanggan</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Klaim Voucher</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Tarik Saldo</span>
+                </div>
+            </a>
+        </aside>
+
+        <!-- 3. MAIN CONTENT CANVAS -->
+        <main class="main-canvas">
+
+            <!-- Global Header Profil Pelanggan -->
+            <div class="global-customer-header">
+                <div class="profile-main-info">
+                    <div class="avatar-box">BS</div>
+                    <div class="profile-details">
+                        <h2>
+                            <span>Budi Santoso</span>
+                            <span class="status-pill aktif"><i class="fa-solid fa-circle-check"></i> Aktif</span>
+                            <span id="fraudTagBadge" class="tag-fraud-warning">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Terindikasi Fraud
+                            </span>
+                        </h2>
+                        <div class="meta-list">
+                            <div class="meta-item">
+                                <i class="fa-solid fa-phone" style="color: var(--text-light);"></i>
+                                <span>No. HP: <strong id="custPhoneDisplay"
+                                        style="font-family: monospace;">0812****5678</strong></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fa-solid fa-calendar-day" style="color: var(--text-light);"></i>
+                                <span>Terdaftar: <strong>14 Jan 2024, 10:30 WIB</strong></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fa-solid fa-id-badge" style="color: var(--text-light);"></i>
+                                <span>ID Pelanggan: <strong>CUST-1002938</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horizontal 3 Tabs Detail Pelanggan -->
+            <div class="detail-tabs">
+                <a href="scanwin-admin-detail-pelanggan-tab-informasi.html" class="detail-tab-item">1. Informasi
+                    Pelanggan</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-klaim-voucher.html" class="detail-tab-item">2.
+                    Riwayat Klaim Voucher</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-pencairan-saldo.html"
+                    class="detail-tab-item active">3. Riwayat Pencairan Saldo</a>
+            </div>
+
+            <!-- SEKSI 1: 2 SUMMARY METRIC CARDS (TANPA SUBTITLE) -->
+            <div class="metrics-grid-2">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Total Volume Penarikan</h4>
+                        <div class="value" id="cardTotalVolume">Rp ***</div>
+                    </div>
+                    <div class="metric-icon teal"><i class="fa-solid fa-wallet"></i></div>
+                </div>
+
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Total Transaksi Sukses</h4>
+                        <div class="value" id="cardTotalSukses">18 Transaksi</div>
+                    </div>
+                    <div class="metric-icon blue"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+            </div>
+
+            <!-- SEKSI 2: BARIS KONTROL FILTER & PENCARIAN DATA -->
+            <div class="filter-control-card">
+                <div class="filter-left-group">
+                    <div class="search-box-wrapper">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput" class="search-input" onkeyup="filterData()"
+                            placeholder="Cari ID transaksi, e-wallet, atau nomor HP...">
+                    </div>
+                </div>
+
+                <div class="filter-right-group">
+                    <div class="filter-item">
+                        <label for="startDateInput">Periode:</label>
+                        <input type="date" id="startDateInput" class="filter-input" onchange="filterData()"
+                            value="2024-01-01">
+                        <span>s/d</span>
+                        <input type="date" id="endDateInput" class="filter-input" onchange="filterData()"
+                            value="2024-01-31">
+                    </div>
+
+                    <div class="filter-item">
+                        <label for="ewalletFilterSelect">E-wallet:</label>
+                        <select id="ewalletFilterSelect" class="filter-select" onchange="filterData()">
+                            <option value="all">Semua E-Wallet</option>
+                            <option value="gopay">GoPay</option>
+                            <option value="ovo">OVO</option>
+                            <option value="dana">DANA</option>
+                            <option value="shopeepay">ShopeePay</option>
+                            <option value="linkaja">LinkAja</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEKSI 3: TABEL LOG PENCAIRAN SALDO (9 KOLOM) -->
+            <div class="table-card">
+                <table class="data-table">
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">No.</th>
+                            <th>ID Transaksi</th>
+                            <th>Pelanggan</th>
+                            <th>E-Wallet</th>
+                            <th>Nominal Penarikan</th>
+                            <th>Biaya Admin</th>
+                            <th>Waktu Pengajuan</th>
+                            <th>Waktu Pencairan (Espay)</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="withdrawalTableBody">
+                        <!-- Sample Data Rows -->
+                        <tr data-status="sukses" data-ewallet="gopay">
+                            <td>1</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00891</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-mobile-screen-button"
+                                        style="color: #00B4D8;"></i> GoPay</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">14/01/24 10.00</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">14/01/24 10.05</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                        <tr data-status="sukses" data-ewallet="ovo">
+                            <td>2</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00885</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-wallet" style="color: #7C3AED;"></i>
+                                    OVO</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">12/01/24 14.20</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">12/01/24 14.22</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                        <tr data-status="proses" data-ewallet="dana">
+                            <td>3</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00870</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-credit-card"
+                                        style="color: #10B981;"></i> DANA</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">10/01/24 09.10</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-light);">-</span></td>
+                            <td><span class="status-badge proses"><i class="fa-solid fa-clock"></i> Proses</span></td>
+                        </tr>
+                        <tr data-status="gagal" data-ewallet="shopeepay">
+                            <td>4</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00862</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-bag-shopping"
+                                        style="color: #F97316;"></i> ShopeePay</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">08/01/24 16.45</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">08/01/24 16.48</span></td>
+                            <td><span class="status-badge gagal"><i class="fa-solid fa-circle-xmark"></i> Gagal</span>
+                            </td>
+                        </tr>
+                        <tr data-status="sukses" data-ewallet="gopay">
+                            <td>5</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00850</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-mobile-screen-button"
+                                        style="color: #00B4D8;"></i> GoPay</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">05/01/24 11.30</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">05/01/24 11.32</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                        <tr data-status="sukses" data-ewallet="ovo">
+                            <td>6</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00841</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-wallet" style="color: #7C3AED;"></i>
+                                    OVO</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">03/01/24 13.15</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">03/01/24 13.18</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                        <tr data-status="gagal" data-ewallet="dana">
+                            <td>7</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00830</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-credit-card"
+                                        style="color: #10B981;"></i> DANA</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">02/01/24 15.40</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">02/01/24 15.45</span></td>
+                            <td><span class="status-badge gagal"><i class="fa-solid fa-circle-xmark"></i> Gagal</span>
+                            </td>
+                        </tr>
+                        <tr data-status="sukses" data-ewallet="shopeepay">
+                            <td>8</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00815</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-bag-shopping"
+                                        style="color: #F97316;"></i> ShopeePay</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">01/01/24 08.30</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">01/01/24 08.33</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                        <tr data-status="proses" data-ewallet="gopay">
+                            <td>9</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2024-00801</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-mobile-screen-button"
+                                        style="color: #00B4D8;"></i> GoPay</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">30/12/23 16.10</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-light);">-</span></td>
+                            <td><span class="status-badge proses"><i class="fa-solid fa-clock"></i> Proses</span></td>
+                        </tr>
+                        <tr data-status="sukses" data-ewallet="linkaja">
+                            <td>10</td>
+                            <td style="font-family: monospace; font-weight: 700; color: #0284C7;">TRX-WD-2023-00790</td>
+                            <td>
+                                <span class="combined-title">Budi Santoso</span>
+                                <span class="combined-subtext phone-target" style="font-family: monospace;">CUST-1002938
+                                    • 0812****5678</span>
+                            </td>
+                            <td>
+                                <span class="combined-title"><i class="fa-solid fa-bolt" style="color: #EF4444;"></i>
+                                    LinkAja</span>
+                                <span class="combined-subtext phone-target"
+                                    style="font-family: monospace;">0812****5678</span>
+                            </td>
+                            <td class="val-nominal" style="font-weight: 700; font-family: monospace;">Rp ***</td>
+                            <td class="val-fee"
+                                style="font-weight: 600; font-family: monospace; color: var(--text-muted);">Rp ***</td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">28/12/23 10.00</span></td>
+                            <td><span class="combined-subtext"
+                                    style="font-size: 12.5px; color: var(--text-dark);">28/12/23 10.02</span></td>
+                            <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- SEKSI 4: FOOTER PAGINATION (DEFAULT 10 DATA PER HALAMAN) -->
+                <div class="pagination-footer">
+                    <span id="paginationInfo">Menampilkan 1 - 10 dari 24 transaksi</span>
+                    <div class="pagination-controls">
+                        <button class="page-btn"><i class="fa-solid fa-chevron-left"
+                                style="font-size: 10px;"></i></button>
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <button class="page-btn"><i class="fa-solid fa-chevron-right"
+                                style="font-size: 10px;"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- MODAL LOG VIEWER ESPAY -->
+    <div id="logModal" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3>Audit Log Payment Gateway Espay</h3>
+                <button class="modal-close" onclick="closeLogModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body" id="modalLogContent">
+                <div class="log-row"><label>ID Transaksi:</label> <span id="modalTrxId">-</span></div>
+                <div class="log-row"><label>Espay Reference No:</label> <span>ESP-20249910284</span></div>
+                <div class="log-row"><label>Response Code:</label> <span style="color: #10B981;">00 (Success)</span>
+                </div>
+                <div class="log-row"><label>Payment Gateway:</label> <span>PT Espay Debit Indonesia Utama</span></div>
+                <div class="log-row"><label>Metode Settlement:</label> <span>Real-time E-Wallet Disbursement</span>
+                </div>
+                <div class="log-row"><label>Stempel Waktu Espay:</label> <span>2024-01-14 10:05:12 WIB</span></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT FOR INTERACTIVITY, RBAC MASKING & SEARCH/FILTER -->
+    <script>
+        let currentRole = 'non-manager';
+
+        // Sample Row Values Data for RBAC Role Toggle
+        const sampleRowData = [
+            { nominal: 100000, fee: 1650 },
+            { nominal: 50000, fee: 1650 },
+            { nominal: 250000, fee: 2500 },
+            { nominal: 50000, fee: 1650 },
+            { nominal: 150000, fee: 1650 },
+            { nominal: 200000, fee: 1650 },
+            { nominal: 50000, fee: 1650 },
+            { nominal: 100000, fee: 1650 },
+            { nominal: 300000, fee: 2500 },
+            { nominal: 250000, fee: 2500 }
+        ];
+
+        // Format Currency Helper
+        function formatRupiah(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+
+        // Role Switcher Handler (RBAC Privacy Control)
+        function updateRole(role) {
+            currentRole = role;
+
+            // 1. Header Customer Phone
+            const headerPhone = document.getElementById('custPhoneDisplay');
+            if (headerPhone) {
+                headerPhone.innerText = (role === 'manager') ? "081234567890" : "0812****5678";
+            }
+
+            // 2. Table Customer & E-Wallet Phone Subtexts
+            const phoneTargets = document.querySelectorAll('.phone-target');
+            phoneTargets.forEach(el => {
+                const text = el.innerText;
+                if (text.includes('CUST-1002938')) {
+                    el.innerText = (role === 'manager') ? "CUST-1002938 • 081234567890" : "CUST-1002938 • 0812****5678";
+                } else {
+                    el.innerText = (role === 'manager') ? "081234567890" : "0812****5678";
+                }
+            });
+
+            // 3. Metric Cards Nominal Values
+            const totalVolumeEl = document.getElementById('cardTotalVolume');
+            if (totalVolumeEl) {
+                totalVolumeEl.innerText = (role === 'manager') ? "Rp 1.500.000" : "Rp ***";
+            }
+
+            // 4. Table Withdrawal & Fee Nominal Cells
+            const nominalCells = document.querySelectorAll('.val-nominal');
+            const feeCells = document.querySelectorAll('.val-fee');
+
+            nominalCells.forEach((cell, i) => {
+                if (sampleRowData[i]) {
+                    cell.innerText = (role === 'manager') ? formatRupiah(sampleRowData[i].nominal) : "Rp ***";
+                }
+            });
+
+            feeCells.forEach((cell, i) => {
+                if (sampleRowData[i]) {
+                    cell.innerText = (role === 'manager') ? formatRupiah(sampleRowData[i].fee) : "Rp ***";
+                }
+            });
+        }
+
+        // Fraud Tag Evaluator Toggle Handler
+        function updateFraudTag(status) {
+            const badge = document.getElementById('fraudTagBadge');
+            if (badge) {
+                badge.style.display = (status === 'active') ? 'inline-flex' : 'none';
+            }
+        }
+
+        // Preset Date Quick Selector
+        function applyPresetDate(preset) {
+            const startDate = document.getElementById('startDateInput');
+            const endDate = document.getElementById('endDateInput');
+
+            const today = new Date();
+            const formatDate = (d) => d.toISOString().split('T')[0];
+
+            endDate.value = formatDate(today);
+
+            if (preset === 'today') {
+                startDate.value = formatDate(today);
+            } else if (preset === '7days') {
+                const d7 = new Date();
+                d7.setDate(today.getDate() - 7);
+                startDate.value = formatDate(d7);
+            } else if (preset === '30days') {
+                const d30 = new Date();
+                d30.setDate(today.getDate() - 30);
+                startDate.value = formatDate(d30);
+            } else if (preset === '90days') {
+                const d90 = new Date();
+                d90.setDate(today.getDate() - 90);
+                startDate.value = formatDate(d90);
+            }
+            filterData();
+        }
+
+        // Interactive Filter & Search Handler
+        function filterData() {
+            const searchVal = document.getElementById('searchInput').value.toLowerCase();
+            const providerVal = document.getElementById('ewalletFilterSelect').value;
+            const rows = document.querySelectorAll('#withdrawalTableBody tr');
+
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const rowEwallet = row.getAttribute('data-ewallet');
+                const rowText = row.innerText.toLowerCase();
+
+                const matchesSearch = rowText.includes(searchVal);
+                const matchesProvider = (providerVal === 'all') || (rowEwallet === providerVal);
+
+                if (matchesSearch && matchesProvider) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Update Pagination Text
+            const paginationInfo = document.getElementById('paginationInfo');
+            if (paginationInfo) {
+                paginationInfo.innerText = `Menampilkan 1 - ${visibleCount} dari ${visibleCount} transaksi`;
+            }
+        }
+
+        // Audit Log Modal Viewer
+        function showLogDetail(trxId) {
+            document.getElementById('modalTrxId').innerText = trxId;
+            document.getElementById('logModal').style.display = 'flex';
+        }
+
+        function closeLogModal() {
+            document.getElementById('logModal').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

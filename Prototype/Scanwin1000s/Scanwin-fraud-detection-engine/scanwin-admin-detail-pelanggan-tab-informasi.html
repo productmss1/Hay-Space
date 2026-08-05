@@ -1,0 +1,1250 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Pelanggan - Tab Informasi Pelanggan | sCanWin Admin Portal</title>
+    <!-- Google Fonts Inter & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-cyan: #00B4D8;
+            --primary-cyan-hover: #0096B4;
+            --bg-canvas: #F4F6F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            --border-color: #E2E8F0;
+
+            /* Status Badge Colors */
+            --badge-active-bg: #E6F4EA;
+            --badge-active-text: #137333;
+            --badge-blocked-bg: #FCE8E6;
+            --badge-blocked-text: #C5221F;
+            --badge-warning-bg: #FFF8E1;
+            --badge-warning-text: #B78103;
+
+            /* Buttons */
+            --btn-green: #28A745;
+            --btn-green-hover: #218838;
+            --btn-blue: #09B0E8;
+
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ==================== 1. TOP HEADER BAR ==================== */
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .btn-hamburger {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* Top Header Simulation Controls (Inside Header to not disrupt UI) */
+        .header-simulation-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background-color: rgba(255, 255, 255, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 4px 12px;
+        }
+
+        .sim-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11.5px;
+            font-weight: 500;
+        }
+
+        .sim-control select {
+            background: transparent;
+            border: none;
+            color: #FFFFFF;
+            font-weight: 600;
+            font-size: 11.5px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .sim-control select option {
+            color: var(--text-dark);
+            background: #FFFFFF;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        /* ==================== 2. BREADCRUMB SUB-HEADER ==================== */
+        .sub-header {
+            margin-top: var(--header-height);
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: whitesmoke;
+            padding: 0 24px;
+            position: sticky;
+            top: var(--header-height);
+            z-index: 90;
+        }
+
+        .breadcrumb-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn-back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--primary-cyan);
+            font-weight: 600;
+            font-size: 13px;
+            text-decoration: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn-back-link:hover {
+            background-color: #E0F2FE;
+        }
+
+        .breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .breadcrumb a {
+            color: var(--text-muted);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .breadcrumb a:hover {
+            color: var(--primary-cyan);
+            text-decoration: underline;
+        }
+
+        .breadcrumb span.active {
+            color: var(--text-dark);
+        }
+
+        .window-controls {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* ==================== 3. LAYOUT CONTAINER & SIDEBAR ==================== */
+        .app-body {
+            margin-top: var(--header-height);
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+        }
+
+        .nav-category {
+            padding: 10px 20px 4px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13.5px;
+            cursor: pointer;
+        }
+
+        .nav-item.active {
+            color: var(--text-dark);
+            font-weight: 700;
+            background-color: #F1F5F9;
+            border-right: 3px solid var(--primary-cyan);
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--primary-cyan);
+            display: inline-block;
+        }
+
+        /* ==================== 4. MAIN CONTENT CANVAS ==================== */
+        .main-canvas {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Global Header Profil Pelanggan (Top Banner) */
+        .global-customer-header {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            padding: 20px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .profile-main-info {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+        }
+
+        .avatar-box {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 700;
+            box-shadow: 0 4px 6px -1px rgba(0, 180, 216, 0.2);
+        }
+
+        .profile-details h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .meta-list {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-top: 6px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Fraud Warning Tag 30 Hari */
+        .tag-fraud-warning {
+            background-color: #FCE8E6;
+            color: #C5221F;
+            border: 1px solid #F87171;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            animation: pulse-border 2s infinite;
+        }
+
+        @keyframes pulse-border {
+            0% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4);
+            }
+
+            70% {
+                box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+            }
+        }
+
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pill.aktif {
+            background-color: var(--badge-active-bg);
+            color: var(--badge-active-text);
+        }
+
+        /* Horizontal 3 Tabs Detail Pelanggan */
+        .detail-tabs {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            border-bottom: 2px solid var(--border-color);
+            margin-top: 4px;
+        }
+
+        .detail-tab-item {
+            padding: 12px 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-decoration: none;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .detail-tab-item.active {
+            color: var(--primary-cyan);
+            font-weight: 700;
+        }
+
+        .detail-tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-cyan);
+            border-radius: 3px 3px 0 0;
+        }
+
+        /* Section White Card Container */
+        .section-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .section-title {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        /* Seksi 1: Pelacakan Device ID */
+        .device-info-grid {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 20px;
+            align-items: start;
+        }
+
+        .device-card-box {
+            background-color: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .device-card-box label {
+            font-size: 11.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .device-id-code {
+            font-family: monospace;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            background-color: #FFFFFF;
+            padding: 6px 10px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            display: inline-block;
+        }
+
+        .badge-device-alert {
+            margin-top: 10px;
+            background-color: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FCD34D;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-device-normal {
+            margin-top: 10px;
+            background-color: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
+            padding: 4px 10px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Tabel Mini Akun Terikat dengan Inner Scroll */
+        .table-scroll-wrapper {
+            max-height: 140px;
+            overflow-y: auto;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            background-color: #FFFFFF;
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .mini-table th {
+            position: sticky;
+            top: 0;
+            background-color: #F8FAFC;
+            color: var(--text-muted);
+            font-weight: 600;
+            padding: 10px 14px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            z-index: 2;
+        }
+
+        .mini-table td {
+            padding: 10px 14px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-dark);
+        }
+            color: var(--text-dark);
+        }
+
+        /* Seksi 2: Accordion E-Wallet */
+        .accordion-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .accordion-item {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #FFFFFF;
+            transition: border-color 0.2s;
+        }
+
+        .accordion-item.expanded {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        .accordion-header {
+            padding: 16px 20px;
+            background-color: #F8FAFC;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.2s;
+        }
+
+        .accordion-header:hover {
+            background-color: #F1F5F9;
+        }
+
+        .accordion-header-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .ewallet-icon-badge {
+            width: 38px;
+            height: 38px;
+            border-radius: 8px;
+            background-color: #E0F2FE;
+            color: #0284C7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .ewallet-title-info h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .badge-fraud-alert {
+            background-color: #FCE8E6;
+            color: #C5221F;
+            border: 1px solid #F87171;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .accordion-header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .accordion-content {
+            padding: 24px;
+            display: none;
+            border-top: 1px solid var(--border-color);
+            background-color: #FFFFFF;
+
+            /* Drill-Down Layout Bertingkat Atas-Bawah */
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .accordion-item.expanded .accordion-content {
+            display: flex;
+        }
+
+        /* Timeline Log Kronologis (Descending) */
+        .timeline-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 6px;
+            top: 6px;
+            bottom: 6px;
+            width: 2px;
+            background-color: var(--border-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: -20px;
+            top: 4px;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background-color: #FFFFFF;
+            border: 3px solid var(--primary-cyan);
+        }
+
+        .timeline-header-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .timeline-status-tag {
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text-dark);
+        }
+
+        .timeline-timestamp {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .timeline-executor {
+            font-size: 12.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .timeline-executor strong {
+            color: var(--text-dark);
+        }
+
+        .shared-table-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="btn-hamburger"><i class="fa-solid fa-bars"></i></button>
+            <a href="#" class="brand-logo">
+                <i class="fa-solid fa-house-chimney" style="color: #FFD166;"></i>
+                <span>Toko Bangunan 1000saudara</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Top Header Simulation Controls (Inside Top Header) -->
+            <div class="header-simulation-group">
+                <div class="sim-control">
+                    <i class="fa-solid fa-user-shield" style="color: #FFD166;"></i>
+                    <span>Role Simulasi:</span>
+                    <select id="rbacSelect" onchange="updateRole(this.value)">
+                        <option value="non-manager">Non-Manager sCanWin (Finance Admin)</option>
+                        <option value="manager">Manager sCanWin (Unmasked Access)</option>
+                    </select>
+                </div>
+
+                <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
+                    <i class="fa-solid fa-triangle-exclamation" style="color: #FFD166;"></i>
+                    <span>Status Fraud Tag:</span>
+                    <select id="fraudSelect" onchange="updateFraudTag(this.value)">
+                        <option value="active">🔴 Terindikasi Fraud (Aktif)</option>
+                        <option value="normal">🟢 Normal / Clean</option>
+                    </select>
+                </div>
+
+                <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
+                    <i class="fa-solid fa-mobile-screen-button" style="color: #FFD166;"></i>
+                    <span>Simulasi Device:</span>
+                    <select id="deviceScenarioSelect" onchange="switchDeviceScenario(this.value)">
+                        <option value="multi">⚠️ Multi-Akun (3 Akun)</option>
+                        <option value="single">🟢 Perangkat Tunggal (1 Akun)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar">NA</div>
+                <span style="font-weight: 600; font-size: 13.5px;">Nama Anda</span>
+                <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. LAYOUT CONTAINER & SIDEBAR -->
+    <div class="app-body">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-category">Management sCanWin 1000s</div>
+            <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" class="nav-item active">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span style="font-weight: 700;">Manajemen Pelanggan</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Klaim Voucher</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Tarik Saldo</span>
+                </div>
+            </a>
+        </aside>
+
+        <!-- 3. MAIN CONTENT CANVAS -->
+        <main class="main-canvas">
+
+            <!-- BREADCRUMB SUB-HEADER -->
+            <div class="sub-header">
+                <div class="breadcrumb">
+                    <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html">DATA PELANGGAN</a>
+                    <i class="fa-solid fa-chevron-right" style="font-size: 10px;"></i>
+                    <span class="active">DETAIL PELANGGAN</span>
+                </div>
+                <div class="window-controls">
+                    <i class="fa-solid fa-expand"></i>
+                    <i class="fa-solid fa-rotate-right" onclick="location.reload()"></i>
+                </div>
+            </div>
+
+            <!-- Global Header Profil Pelanggan -->
+            <div class="global-customer-header">
+                <div class="profile-main-info">
+                    <div class="avatar-box">BS</div>
+                    <div class="profile-details">
+                        <h2>
+                            <span>Budi Santoso</span>
+                            <span class="status-pill aktif"><i class="fa-solid fa-circle-check"></i> Aktif</span>
+                            <span id="fraudTagBadge" class="tag-fraud-warning">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Terindikasi Fraud
+                            </span>
+                        </h2>
+                        <div class="meta-list">
+                            <div class="meta-item">
+                                <i class="fa-solid fa-phone" style="color: var(--text-light);"></i>
+                                <span>No. HP: <strong id="custPhoneDisplay"
+                                        style="font-family: monospace;">0812****5678</strong></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fa-solid fa-calendar-day" style="color: var(--text-light);"></i>
+                                <span>Terdaftar: <strong>14 Jan 2024, 10:30 WIB</strong></span>
+                            </div>
+                            <div class="meta-item">
+                                <i class="fa-solid fa-id-badge" style="color: var(--text-light);"></i>
+                                <span>ID Pelanggan: <strong>CUST-1002938</strong></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Horizontal 3 Tabs Detail Pelanggan -->
+            <div class="detail-tabs">
+                <a href="scanwin-admin-detail-pelanggan-tab-informasi.html" class="detail-tab-item active">1. Informasi Pelanggan</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-klaim-voucher.html" class="detail-tab-item">2. Riwayat Klaim Voucher</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-pencairan-saldo.html" class="detail-tab-item">3. Riwayat Pencairan Saldo</a>
+            </div>
+
+            <!-- TAB 1 CONTENT CONTAINER -->
+
+            <!-- SEKSI 1: Pelacakan Device ID & Multi-Account Device -->
+            <div class="section-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-mobile-screen-button" style="color: var(--primary-cyan);"></i>
+                    <span>Perangkat & Multi-Akun</span>
+                </div>
+
+                <div class="device-info-grid">
+                    <!-- Left: Device Card -->
+                    <div class="device-card-box">
+                        <label>Device ID</label>
+                        <div class="device-id-code">DEV-IPHONE14-992384A</div>
+                        <div id="deviceAlertBadge" class="badge-device-alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> Multi-Akun (3)
+                        </div>
+                    </div>
+
+                    <!-- Right: Table Shared Device Accounts with Inner Scroll -->
+                    <div class="table-scroll-wrapper">
+                        <table class="mini-table">
+                            <thead>
+                                <tr>
+                                    <th style="width: 40px;">No.</th>
+                                    <th>Nama Pelanggan</th>
+                                    <th>Nomor HP</th>
+                                    <th>Tanggal Register</th>
+                                    <th>Status Akun</th>
+                                </tr>
+                            </thead>
+                            <tbody id="deviceTableBody">
+                                <tr>
+                                    <td>1</td>
+                                    <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
+                                    <td class="phone-target" style="font-family: monospace;">0812****5678</td>
+                                    <td>14 Jan 2024, 10:30 WIB</td>
+                                    <td><span class="status-pill aktif">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td><strong>Siti Rahmawati</strong></td>
+                                    <td class="phone-target" style="font-family: monospace;">0813****5432</td>
+                                    <td>12 Jan 2024, 14:15 WIB</td>
+                                    <td><span class="status-pill aktif">Aktif</span></td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td><strong>Ahmad Wijaya</strong></td>
+                                    <td class="phone-target" style="font-family: monospace;">0857****3344</td>
+                                    <td>08 Jan 2024, 09:00 WIB</td>
+                                    <td><span class="status-pill diblokir"
+                                            style="background-color:#FCE8E6; color:#C5221F;">Diblokir</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEKSI 2: Accordion Riwayat E-Wallet & Log -->
+            <div class="section-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-wallet" style="color: var(--primary-cyan);"></i>
+                    <span>Riwayat E-Wallet</span>
+                </div>
+
+                <div class="accordion-list">
+
+                    <!-- ACCORDION ITEM 1: SHARED E-WALLET (HAS ALERT BADGE) -->
+                    <div class="accordion-item expanded" id="accItem1">
+                        <!-- Header Accordion -->
+                        <div class="accordion-header" onclick="toggleAccordion('accItem1')">
+                            <div class="accordion-header-left">
+                                <div class="ewallet-title-info">
+                                    <h4>
+                                        <span class="phone-target">0812****5678</span>
+                                        <span class="status-pill aktif">Active</span>
+                                        <span class="badge-fraud-alert">
+                                            🔴 Terikat 2 Akun
+                                        </span>
+                                    </h4>
+                                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                                        Terdaftar: 10 Jan 2024
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-header-right">
+                                <span>Aktivitas Terakhir: <strong>14 Jan 2024, 10:30 WIB</strong></span>
+                                <i class="fa-solid fa-chevron-down acc-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Content Accordion -->
+                        <div class="accordion-content">
+
+                            <!-- BAGIAN ATAS: TIMELINE LOG -->
+                            <div>
+                                <h5
+                                    style="font-size: 13.5px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">
+                                    <i class="fa-solid fa-timeline" style="color: var(--primary-cyan);"></i>
+                                    Riwayat Status E-Wallet
+                                </h5>
+
+                                <div class="timeline-container">
+                                    <!-- Log Event 1 (Terbaru) -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Aktif</span>
+                                            <span class="timeline-timestamp">• 14 Jan 2024, 10:30 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Status e-wallet diaktifkan. Oleh: <strong>Budi Santoso (Pelanggan)</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Log Event 2 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot" style="border-color: #EAB308;"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Disetujui Admin</span>
+                                            <span class="timeline-timestamp">• 12 Jan 2024, 14:15 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Pengajuan disetujui. Oleh: <strong>Siti Admin (Admin Portal)</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Log Event 3 -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot" style="border-color: #F97316;"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Proses Verifikasi</span>
+                                            <span class="timeline-timestamp">• 12 Jan 2024, 14:00 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Terdeteksi nomor terikat akun lain. Oleh: <strong>System Validation
+                                                Engine</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Log Event 4 (Terlama) -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot" style="border-color: #64748B;"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Pendaftaran Baru</span>
+                                            <span class="timeline-timestamp">• 10 Jan 2024, 09:00 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Pendaftaran e-wallet pertama kali. Oleh: <strong>Budi Santoso
+                                                (Pelanggan)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- BAGIAN BAWAH: TABEL TAUTAN AKUN TERIKAT -->
+                            <div style="border-top: 1px dashed var(--border-color); padding-top: 20px;">
+                                <div class="shared-table-title">
+                                    <i class="fa-solid fa-link-slash" style="color: #DC2626;"></i>
+                                    <span>Akun Lain Terhubung Nomor Ini</span>
+                                </div>
+
+                                <table class="mini-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 40px;">No.</th>
+                                            <th>Nama Pelanggan</th>
+                                            <th>Nomor HP</th>
+                                            <th>Nomor HP Terikat</th>
+                                            <th>Tanggal Pendaftaran</th>
+                                            <th>Status E-Wallet</th>
+                                            <th>Status Akun</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1</td>
+                                            <td><strong>Siti Rahmawati</strong></td>
+                                            <td class="phone-target" style="font-family: monospace;">0813****5432</td>
+                                            <td class="phone-target" style="font-family: monospace;">0812****5678</td>
+                                            <td>12 Jan 2024, 14:00 WIB</td>
+                                            <td><span class="status-pill aktif">Active</span></td>
+                                            <td><span class="status-pill aktif">Aktif</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td><strong>Ahmad Wijaya</strong></td>
+                                            <td class="phone-target" style="font-family: monospace;">0857****3344</td>
+                                            <td class="phone-target" style="font-family: monospace;">0812****5678</td>
+                                            <td>08 Jan 2024, 11:20 WIB</td>
+                                            <td><span class="status-pill"
+                                                    style="background-color:#F1F5F9; color:#64748B;">Deleted</span></td>
+                                            <td><span class="status-pill diblokir"
+                                                    style="background-color:#FCE8E6; color:#C5221F;">Diblokir</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- ACCORDION ITEM 2: CLEAN E-WALLET -->
+                    <div class="accordion-item" id="accItem2">
+                        <!-- Header Accordion -->
+                        <div class="accordion-header" onclick="toggleAccordion('accItem2')">
+                            <div class="accordion-header-left">
+                                <div class="ewallet-title-info">
+                                    <h4>
+                                        <span class="phone-target">0857****1234</span>
+                                        <span class="status-pill"
+                                            style="background-color:#F1F5F9; color:#64748B;">Deleted</span>
+                                        <span class="status-pill aktif"
+                                            style="background-color: #DCFCE7; color: #166534;">🟢 Nomor Unik</span>
+                                    </h4>
+                                    <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
+                                        Terdaftar: 01 Jan 2024
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="accordion-header-right">
+                                <span>Aktivitas Terakhir: <strong>05 Jan 2024, 11:20 WIB</strong></span>
+                                <i class="fa-solid fa-chevron-down acc-icon"></i>
+                            </div>
+                        </div>
+
+                        <!-- Content Accordion -->
+                        <div class="accordion-content">
+                            <div>
+                                <h5
+                                    style="font-size: 13.5px; font-weight: 700; color: var(--text-dark); margin-bottom: 12px;">
+                                    <i class="fa-solid fa-timeline" style="color: var(--primary-cyan);"></i>
+                                    Riwayat Status E-Wallet
+                                </h5>
+
+                                <div class="timeline-container">
+                                    <!-- Event 1 (Terbaru) -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot" style="border-color: #EF4444;"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Deleted</span>
+                                            <span class="timeline-timestamp">• 05 Jan 2024, 11:20 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Nomor e-wallet dihapus melalui PIN. Oleh: <strong>Budi Santoso
+                                                (Pelanggan)</strong>
+                                        </div>
+                                    </div>
+
+                                    <!-- Event 2 (Terlama) -->
+                                    <div class="timeline-item">
+                                        <div class="timeline-dot"></div>
+                                        <div class="timeline-header-row">
+                                            <span class="timeline-status-tag">Pendaftaran Baru</span>
+                                            <span class="timeline-timestamp">• 01 Jan 2024, 08:00 WIB</span>
+                                        </div>
+                                        <div class="timeline-executor">
+                                            Pendaftaran e-wallet pertama kali. Oleh: <strong>Budi Santoso
+                                                (Pelanggan)</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- JAVASCRIPT FOR INTERACTIVITY & SIMULATIONS -->
+    <script>
+        let currentRole = 'non-manager';
+
+        // Accordion Toggle Handler
+        function toggleAccordion(id) {
+            const item = document.getElementById(id);
+            if (item) {
+                item.classList.toggle('expanded');
+            }
+        }
+
+        // Role Switcher Handler (Masked vs Full Phone Numbers)
+        function updateRole(role) {
+            currentRole = role;
+            const phoneDisplays = document.querySelectorAll('.phone-target');
+
+            const phoneData = [
+                { full: "081234567890", masked: "0812****5678" },
+                { full: "081398765432", masked: "0813****5432" },
+                { full: "085711223344", masked: "0857****3344" },
+                { full: "081234567890", masked: "0812****5678" },
+                { full: "081398765432", masked: "0813****5432" },
+                { full: "085711223344", masked: "0857****3344" },
+                { full: "085799887766", masked: "0857****1234" }
+            ];
+
+            const headerPhone = document.getElementById('custPhoneDisplay');
+            if (headerPhone) {
+                headerPhone.innerText = (role === 'manager') ? "081234567890" : "0812****5678";
+            }
+
+            phoneDisplays.forEach((el, i) => {
+                if (phoneData[i]) {
+                    el.innerText = (role === 'manager') ? phoneData[i].full : phoneData[i].masked;
+                }
+            });
+        }
+
+        // Fraud Tag Evaluator Toggle Handler
+        function updateFraudTag(status) {
+            const badge = document.getElementById('fraudTagBadge');
+            if (badge) {
+                if (status === 'active') {
+                    badge.style.display = 'inline-flex';
+                } else {
+                    badge.style.display = 'none';
+                }
+            }
+        }
+
+        // Device Scenario Switcher Handler (Single vs Multi-Account)
+        function switchDeviceScenario(scenario) {
+            const badgeEl = document.getElementById('deviceAlertBadge');
+            const tbodyEl = document.getElementById('deviceTableBody');
+            
+            if (scenario === 'single') {
+                if (badgeEl) {
+                    badgeEl.className = 'badge-device-normal';
+                    badgeEl.innerHTML = '<i class="fa-solid fa-circle-check"></i> Perangkat Tunggal (1 Akun)';
+                }
+                if (tbodyEl) {
+                    tbodyEl.innerHTML = `
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
+                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081234567890' : '0812****5678'}</td>
+                            <td>14 Jan 2024, 10:30 WIB</td>
+                            <td><span class="status-pill aktif">Aktif</span></td>
+                        </tr>
+                    `;
+                }
+            } else {
+                if (badgeEl) {
+                    badgeEl.className = 'badge-device-alert';
+                    badgeEl.innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i> Multi-Akun (3)';
+                }
+                if (tbodyEl) {
+                    tbodyEl.innerHTML = `
+                        <tr>
+                            <td>1</td>
+                            <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
+                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081234567890' : '0812****5678'}</td>
+                            <td>14 Jan 2024, 10:30 WIB</td>
+                            <td><span class="status-pill aktif">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>Siti Rahmawati</strong></td>
+                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081398765432' : '0813****5432'}</td>
+                            <td>12 Jan 2024, 14:15 WIB</td>
+                            <td><span class="status-pill aktif">Aktif</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>Ahmad Wijaya</strong></td>
+                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '085711223344' : '0857****3344'}</td>
+                            <td>08 Jan 2024, 09:00 WIB</td>
+                            <td><span class="status-pill diblokir" style="background-color:#FCE8E6; color:#C5221F;">Diblokir</span></td>
+                        </tr>
+                    `;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
