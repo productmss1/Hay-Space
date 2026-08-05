@@ -337,6 +337,8 @@
       margin-left: 264px;
       margin-right: 20px;
       padding-bottom: 40px;
+      min-width: 0;
+      overflow-x: hidden;
     }
 
     /* METRIC SUMMARY CARDS */
@@ -604,92 +606,120 @@
     /* DATA TABLE CARD & HORIZONTAL SCROLL CONTAINER */
     .table-card {
       background: #ffffff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-      border: 1px solid #e4e4e4;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      border: 1px solid #E2E8F0;
       overflow: hidden;
+      width: 100%;
+      max-width: 100%;
+      min-width: 0;
     }
 
     .table-responsive {
       width: 100%;
+      max-width: 100%;
       overflow-x: auto;
       -webkit-overflow-scrolling: touch;
     }
 
     .data-table {
       width: 100%;
-      min-width: 1300px;
+      min-width: 1100px;
       border-collapse: collapse;
       text-align: left;
       font-size: 13px;
     }
 
     .data-table th {
-      background: #F9FAFB;
-      color: #4B5563;
-      font-weight: 600;
+      background-color: #F8FAFC;
+      color: #64748B;
+      font-weight: 700;
       padding: 12px 16px;
-      border-bottom: 2px solid #E5E7EB;
+      text-align: left;
+      border-bottom: 1px solid #E2E8F0;
       white-space: nowrap;
     }
 
     .data-table td {
-      padding: 14px 16px;
-      border-bottom: 1px solid #F3F4F6;
+      padding: 12px 16px;
+      border-bottom: 1px solid #E2E8F0;
+      color: #1E293B;
       vertical-align: middle;
-      white-space: nowrap;
     }
 
     .data-table tbody tr:hover {
-      background: #F9FAFB;
+      background-color: #F8FAFC;
+    }
+
+    .combined-title {
+      font-weight: 700;
+      color: #1E293B;
+      display: block;
+    }
+
+    .combined-subtext {
+      font-size: 11.5px;
+      color: #64748B;
+      margin-top: 2px;
+      display: block;
     }
 
     /* BADGES & TAGS */
-    .badge {
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11.5px;
+      font-weight: 700;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
-      padding: 4px 10px;
-      border-radius: 12px;
-      font-size: 11px;
-      font-weight: 600;
-      line-height: 1;
+      gap: 5px;
       white-space: nowrap;
     }
 
-    .badge-used {
-      background: #DCFCE7;
-      color: #15803D;
-      border: 1px solid #BBF7D0;
+    .status-badge.pending {
+      background-color: #FFF8E1;
+      color: #B78103;
+      border: 1px solid #FFE082;
     }
 
-    .badge-pending-fde {
-      background: #FEF3C7;
-      color: #B45309;
-      border: 1px solid #FDE68A;
+    .status-badge.sukses {
+      background-color: #E3F2FD;
+      color: #1565C0;
+      border: 1px solid #90CAF9;
     }
 
-    .badge-rejected {
-      background: #FEE2E2;
-      color: #B91C1C;
-      border: 1px solid #FECACA;
+    .status-badge.approved {
+      background-color: #E0F2F1;
+      color: #00695C;
+      border: 1px solid #80CBC4;
     }
 
-    .badge-expired {
-      background: #F3F4F6;
-      color: #4B5563;
-      border: 1px solid #E5E7EB;
+    .status-badge.ditolak {
+      background-color: #FCE8E6;
+      color: #C5221F;
+      border: 1px solid #F8B4B1;
     }
 
-    .badge-flow-direct {
-      background: #EFF6FF;
-      color: #1D4ED8;
-      border: 1px solid #BFDBFE;
+    .claim-type-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 600;
+      border-radius: 12px;
+      white-space: nowrap;
     }
 
-    .badge-flow-shareable {
-      background: #FAF5FF;
-      color: #7E22CE;
+    .claim-type-badge.direct {
+      background: #E0F2FE;
+      color: #0369A1;
+      border: 1px solid #BAE6FD;
+    }
+
+    .claim-type-badge.shareable {
+      background: #F3E8FF;
+      color: #6B21A8;
       border: 1px solid #E9D5FF;
     }
 
@@ -704,66 +734,38 @@
     }
 
     .mono-id {
-      font-family: 'Roboto Mono', monospace;
-      font-weight: 600;
-      color: #1F2937;
+      font-family: monospace;
+      font-weight: 700;
+      color: #0284C7;
       cursor: pointer;
     }
 
     .mono-id:hover {
-      color: #2563EB;
+      color: #0369A1;
       text-decoration: underline;
     }
 
-    /* ACTION BUTTONS IN TABLE (NO ICONS) */
-    .btn-action-group {
+    /* ACTION BUTTONS IN TABLE */
+    .btn-detail-action {
       display: inline-flex;
       align-items: center;
-      justify-content: center;
-      gap: 6px;
-      white-space: nowrap;
-    }
-
-    .btn-approve {
-      background: #16A34A;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
+      gap: 5px;
+      padding: 5px 12px;
+      font-size: 11.5px;
       font-weight: 600;
-      transition: background 0.2s;
+      color: #0284C7;
+      background: #F0F9FF;
+      border: 1px solid #BAE6FD;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
     }
 
-    .btn-approve:hover {
-      background: #15803D;
-    }
-
-    .btn-reject {
-      background: #DC2626;
-      color: white;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-      transition: background 0.2s;
-    }
-
-    .btn-reject:hover {
-      background: #B91C1C;
-    }
-
-    .btn-detail {
-      background: #F3F4F6;
-      color: #374151;
-      border: 1px solid #D1D5DB;
-      padding: 6px 12px;
-      border-radius: 4px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .btn-detail:hover {
-      background: #E5E7EB;
+    .btn-detail-action:hover {
+      background: #0284C7;
+      color: #FFFFFF;
+      border-color: #0284C7;
+      box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
     }
 
     /* MODAL OVERLAY & BOX */
@@ -1234,15 +1236,17 @@
           <table class="data-table" id="voucherTable">
             <thead>
               <tr>
-                <th><input type="checkbox" id="selectAllChk" onclick="toggleSelectAllRows(this)"></th>
-                <th>ID Transaksi</th>
-                <th>Nama Toko / ID Merchant</th>
-                <th>Pelanggan / Customer</th>
-                <th>Tipe Voucher</th>
-                <th>Nominal</th>
-                <th>Status Voucher</th>
-                <th>Waktu Pindai</th>
-                <th style="text-align: center; min-width: 180px;">Aksi Audit</th>
+                <th style="width: 40px;"><input type="checkbox" id="selectAllChk" onclick="toggleSelectAllRows(this)"></th>
+                <th>Voucher ID</th>
+                <th>Toko</th>
+                <th>Pelanggan</th>
+                <th>Lokasi/Waktu Terbit</th>
+                <th>Lokasi/Waktu Klaim</th>
+                <th>Tipe Klaim</th>
+                <th>Nilai Voucher</th>
+                <th>Nilai Jackpot</th>
+                <th>Status</th>
+                <th style="text-align: center; min-width: 150px;">Aksi</th>
               </tr>
             </thead>
             <tbody id="tableBody">
@@ -1519,84 +1523,67 @@
 
   <!-- JAVASCRIPT LOGIC -->
   <script>
-    // DATA DUMMY VOUCHER PEREDARAN WITH STANDARDIZED FDE POINT 4 (2 COMBINATIONS: NORMAL VS LONJAKAN)
+    // DATA DUMMY VOUCHER PEREDARAN MATCHING TAB RIWAYAT KLAIM VOUCHER
     let voucherData = [
       {
-        id: 'TRX-VCH-99201', merchant: 'Mitra Jaya Abadi', merchantId: 'MTR-88102', customer: 'Rudi Hermawan', phone: '0812-3456-7890', flow: 'DIRECT', nominal: 10000, status: 'PENDING', anomaly: '⚠️ Jarak Pembeli 18.4 km & HP Kembar', date: '2026-07-29 14:32:05',
-        riskScore: '88/100 (SANGAT TINGGI)',
-        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Pembeli terdeteksi berada 18.4 km di luar lokasi toko fisik dan menggunakan HP yang terhubung dengan 3 akun pembeli berbeda di 2 toko mitra. Direkomendasikan untuk <strong>MENOLAK (REJECT)</strong> transaksi ini.',
-        gpsBadge: '18.4 KM (Terlalu Jauh)', gpsDetail: 'Lokasi HP pembeli saat melakukan klaim berada sejauh 18.4 km dari toko fisik Mitra Jaya Abadi (Batas wajar maks. 100 meter). Terindikasi memakai aplikasi lokasi palsu (Fake GPS).',
-        ipBadge: 'Wi-Fi Bersama Toko', ipDetail: 'HP pembeli dan HP toko terhubung ke jaringan internet Wi-Fi toko yang sama persis saat transaksi klaim terjadi.',
-        deviceBadge: '1 HP Dipakai 3 Akun di 2 Toko',
-        deviceDetail: 'Perangkat HP ini (<code>DEV-IOS-9901</code>) terdeteksi digunakan oleh <strong>3 akun pembeli berbeda</strong> lintas <strong>2 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Rudi Hermawan (0812-3456-7890) — <em>Transaksi ini</em></li><li>Andi Saputra (0857-1122-3344)</li><li>Budi Santoso (0813-8899-0011)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Mitra Jaya Abadi (MTR-88102)<br>2. Toko Sembako Makmur (MTR-55201)</div></div>',
-        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 15 voucher dengan nominal Rp 1.000.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00129', merchant: 'Toko Bangunan Restu Ibu', merchantId: 'TK-10028 • Bengkulu Kota', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 20000, jackpot: 5000, status: 'APPROVED', date: '14/01/24 10.15',
+        issueLoc: '-3.7928, 102.2608', issueTime: '14/01/24 10.00', claimLoc: '-3.7930, 102.2610', claimTime: '14/01/24 10.15',
+        riskScore: '15/100 (AMAN)', storySummary: '✅ <strong>Disetujui Admin:</strong> Klaim voucher Direct Scan sah di toko fisik Restu Ibu.',
+        gpsBadge: 'Area Toko Verified', gpsDetail: 'Lokasi klaim presisi di toko fisik (Radius < 100m).', ipBadge: 'Wi-Fi Toko', ipDetail: 'Koneksi Wi-Fi toko terverifikasi.', deviceBadge: 'HP Pribadi', deviceDetail: 'Perangkat terdaftar resmi.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
       },
       {
-        id: 'TRX-VCH-99202', merchant: 'Toko Sembako Makmur', merchantId: 'MTR-55201', customer: 'Siti Aminah', phone: '0857-1122-3344', flow: 'SHAREABLE', nominal: 10000, status: 'PENDING', anomaly: '⚠️ Koneksi Internet Serentak', date: '2026-07-29 14:28:10',
-        riskScore: '74/100 (TINGGI)',
-        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Terjadi klaim voucher secara bersamaan dari koneksi Wi-Fi toko yang sama oleh 2 akun berbeda dalam rentang 5 detik. Disarankan untuk menolak transaksi ini.',
-        gpsBadge: '1.2 KM (Melebihi 100m)', gpsDetail: 'Lokasi HP pembeli berada 1.2 km dari toko (Melebihi batas wajar radius toko 100 meter).',
-        ipBadge: 'Koneksi Internet Sama', ipDetail: 'Klaim dilakukan secara bersamaan dari koneksi internet/Wi-Fi toko yang sama dalam waktu hanya 5 detik.',
-        deviceBadge: 'HP Android Baru (1 Akun, 1 Toko)',
-        deviceDetail: 'Perangkat HP Android 14 (<code>DEV-AND-4402</code>) terdaftar sebagai perangkat baru milik Siti Aminah (0857-1122-3344) di Toko Sembako Makmur.',
-        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 8 voucher dengan nominal Rp 500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00128', merchant: 'TB Sumber Makmur', merchantId: 'TK-10045 • Argamakmur', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 10000, jackpot: 0, status: 'USED', date: '12/01/24 14.25',
+        issueLoc: '-3.7950, 102.2620', issueTime: '12/01/24 14.20', claimLoc: '-3.7952, 102.2622', claimTime: '12/01/24 14.25',
+        riskScore: '10/100 (AMAN)', storySummary: '✅ <strong>Klaim Sukses:</strong> Transaksi wajar & berhasil terpakai.',
+        gpsBadge: 'Area Toko Verified', gpsDetail: 'Lokasi klaim valid.', ipBadge: 'Seluler Normal', ipDetail: 'Koneksi paket data.', deviceBadge: 'HP Utama', deviceDetail: '1 Akun, 1 Perangkat.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
       },
       {
-        id: 'TRX-VCH-99203', merchant: 'Warung Bu Endang', merchantId: 'MTR-33901', customer: 'Agus Setiawan', phone: '0813-8899-0011', flow: 'DIRECT', nominal: 10000, status: 'PENDING', anomaly: '⚠️ 1 HP Dipakai 4 Akun di 3 Toko', date: '2026-07-29 14:15:22',
-        riskScore: '82/100 (TINGGI)',
-        storySummary: '⚠️ <strong>Transaksi Ditangguhkan:</strong> Perangkat HP ini terdeteksi pernah digunakan oleh 4 akun pembeli berbeda di 3 toko mitra. Direkomendasikan untuk <strong>MENOLAK (REJECT)</strong>.',
-        gpsBadge: '0.8 KM (Melebihi 100m)', gpsDetail: 'Lokasi pembeli berada 0.8 km di luar radius wajar toko 100 meter.',
-        ipBadge: 'Jaringan Seluler Normal', ipDetail: 'Koneksi internet menggunakan paket data seluler normal.',
-        deviceBadge: '1 HP Dipakai 4 Akun di 3 Toko',
-        deviceDetail: 'Perangkat HP ini (<code>DEV-IOS-9901</code>) terdeteksi digunakan oleh <strong>4 akun pembeli berbeda</strong> lintas <strong>3 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Agus Setiawan (0813-8899-0011) — <em>Transaksi ini</em></li><li>Rudi Hermawan (0812-3456-7890)</li><li>Andi Saputra (0857-1122-3344)</li><li>Siti Aminah (0857-9988-7766)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Warung Bu Endang (MTR-33901)<br>2. Mitra Jaya Abadi (MTR-88102)<br>3. Toko Sembako Makmur (MTR-55201)</div></div>',
-        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 12 voucher dengan nominal Rp 800.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00125', merchant: 'Mitra Bangunan Utama', merchantId: 'TK-10088 • Curup', customer: 'Budi Santoso', phone: '0812****5678', flow: 'SHAREABLE', nominal: 50000, jackpot: 10000, status: 'PENDING', date: '10/01/24 09.30',
+        issueLoc: '-3.7910, 102.2590', issueTime: '10/01/24 09.10', claimLoc: '-3.7912, 102.2595', claimTime: '10/01/24 09.30',
+        riskScore: '85/100 (SANGAT TINGGI)', storySummary: '⚠️ <strong>Pending Audit:</strong> Terdeteksi lonjakan nominal klaim Shareable QR melebihi ambang batas wajar.',
+        gpsBadge: '0.8 KM (Melebihi 100m)', gpsDetail: 'Jarak klaim 800m dari toko.', ipBadge: 'Koneksi Bersama', ipDetail: 'Wi-Fi bersama terindikasi.', deviceBadge: '1 HP Dipakai 3 Akun', deviceDetail: 'Terdeteksi 3 akun pada 1 perangkat.', rateBadge: 'Terindikasi Lonjakan', rateDetail: 'Klaim Rp 50.000 + Jackpot 10k.'
       },
       {
-        id: 'TRX-VCH-88105', merchant: 'Toko Barokah', merchantId: 'MTR-12003', customer: 'Dewi Lestari', phone: '0812-9900-1122', flow: 'DIRECT', nominal: 10000, status: 'USED', anomaly: '✅ Pembelian Wajar & Aman', date: '2026-07-29 13:50:00',
-        riskScore: '12/100 (AMAN)',
-        storySummary: '✅ <strong>Transaksi Sah & Aman:</strong> Pembeli belanja langsung di toko fisik dengan jarak presisi 50 meter (di bawah 100m), menggunakan HP pribadi, dan frekuensi wajar. Transaksi telah diverifikasi sukses.',
-        gpsBadge: '50 Meter (Area Toko)', gpsDetail: 'Pembeli berada 50 meter di area toko fisik saat scan QR voucher (Valid di bawah 100 meter).',
-        ipBadge: 'Internet Seluler Normal', ipDetail: 'Koneksi internet seluler pribadi pembeli.',
-        deviceBadge: 'HP Pribadi (1 Akun, 1 Toko)', deviceDetail: 'Perangkat HP terverifikasi milik 1 pelanggan resmi (Dewi Lestari - 0812-9900-1122) di Toko Barokah.',
-        rateBadge: 'Frekuensi Transaksi Normal', rateDetail: 'Kecepatan & frekuensi klaim wajar (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00120', merchant: 'Toko Bangunan Restu Ibu', merchantId: 'TK-10028 • Bengkulu Kota', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 20000, jackpot: 0, status: 'REJECTED', date: '08/01/24 17.00',
+        issueLoc: '-3.7928, 102.2608', issueTime: '08/01/24 16.45', claimLoc: '-3.7930, 102.2610', claimTime: '08/01/24 17.00',
+        riskScore: '92/100 (BAHAYA)', storySummary: '🔴 <strong>Ditolak:</strong> Pelanggaran batas lokasi & indikasi Fake GPS.',
+        gpsBadge: '18.4 KM (Terlalu Jauh)', gpsDetail: 'Lokasi klaim di luar batas wajar toko.', ipBadge: 'Proxy Samaran', ipDetail: 'IP terdeteksi proxy.', deviceBadge: 'Multi-Account', deviceDetail: 'Perangkat terhubung banyak akun.', rateBadge: 'Lonjakan Anomali', rateDetail: 'Banyak klaim simultan.'
       },
       {
-        id: 'TRX-VCH-88106', merchant: 'Kelontong Rejeki', merchantId: 'MTR-12009', customer: 'Hendra Gunawan', phone: '0819-2233-4455', flow: 'SHAREABLE', nominal: 10000, status: 'USED', anomaly: '✅ Pembelian Wajar & Aman', date: '2026-07-29 11:20:00',
-        riskScore: '15/100 (AMAN)',
-        storySummary: '✅ <strong>Transaksi Sah & Aman:</strong> Pelanggan mengklaim voucher Shareable QR resmi dari toko. Data lokasi (80m) dan perangkat terverifikasi valid.',
-        gpsBadge: '80 Meter (Area Toko)', gpsDetail: 'Lokasi pembeli terverifikasi valid 80 meter di sekitar toko (Valid di bawah 100 meter).',
-        ipBadge: 'Internet Seluler Normal', ipDetail: 'Koneksi internet seluler pribadi.',
-        deviceBadge: 'HP Utama Pelanggan (1 Akun)', deviceDetail: 'Perangkat HP pribadi terverifikasi milik Hendra Gunawan (0819-2233-4455).',
-        rateBadge: 'Frekuensi Transaksi Normal', rateDetail: 'Kecepatan & frekuensi klaim wajar (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00118', merchant: 'TB Cahaya Rezeki', merchantId: 'TK-10099 • Manna', customer: 'Budi Santoso', phone: '0812****5678', flow: 'SHAREABLE', nominal: 15000, jackpot: 2500, status: 'USED', date: '05/01/24 11.40',
+        issueLoc: '-3.7980, 102.2700', issueTime: '05/01/24 11.30', claimLoc: '-3.7982, 102.2705', claimTime: '05/01/24 11.40',
+        riskScore: '12/100 (AMAN)', storySummary: '✅ <strong>Klaim Sukses:</strong> Redeem Shareable QR valid.',
+        gpsBadge: '50m Verified', gpsDetail: 'Lokasi klaim valid.', ipBadge: 'Seluler', ipDetail: 'Paket data seluler.', deviceBadge: 'HP Pribadi', deviceDetail: 'Perangkat terverifikasi.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
       },
       {
-        id: 'TRX-VCH-77402', merchant: 'Mitra Sentosa', merchantId: 'MTR-44109', customer: 'Eko Prasetyo', phone: '0815-6677-8899', flow: 'SHAREABLE', nominal: 10000, status: 'REJECTED', anomaly: '🔴 Lokasi Manipulasi & HP Terhubung 5 Akun', date: '2026-07-29 12:10:45',
-        riskScore: '95/100 (BAHAYA / BOT)',
-        storySummary: '🔴 <strong>Transaksi Ditolak:</strong> Pembeli menggunakan aplikasi lokasi palsu dari jarak 25.1 km dan terdeteksi bertransaksi dari HP yang terhubung dengan 5 akun pembeli di 4 toko mitra.',
-        gpsBadge: '25.1 KM (Lokasi Palsu)', gpsDetail: 'Jarak lokasi terdeteksi 25.1 km di luar toko menggunakan aplikasi Fake GPS.',
-        ipBadge: 'Jaringan VPN / Samaran', ipDetail: 'Koneksi internet menggunakan VPN samaran luar negeri.',
-        deviceBadge: '1 HP Dipakai 5 Akun di 4 Toko',
-        deviceDetail: 'Perangkat HP ini (<code>DEV-AND-8890</code>) terdeteksi digunakan oleh <strong>5 akun pembeli berbeda</strong> lintas <strong>4 toko mitra</strong> dalam 30 hari terakhir:<br><div style="margin-top: 6px; padding: 8px 10px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 11px;"><div style="font-weight: 700; color: #1E293B; margin-bottom: 4px;"><i class="fa-solid fa-users" style="color: #2563EB;"></i> Akun Pembeli Terdeteksi pada Perangkat Ini:</div><ul style="margin-left: 16px; color: #334155; line-height: 1.4;"><li>Eko Prasetyo (0815-6677-8899) — <em>Transaksi ini</em></li><li>Akun #102 (0815-1111-2222)</li><li>Akun #103 (0815-3333-4444)</li><li>Akun #104 (0815-5555-6666)</li><li>Akun #105 (0815-7777-8888)</li></ul><div style="font-weight: 700; color: #1E293B; margin-top: 6px; margin-bottom: 2px;"><i class="fa-solid fa-store" style="color: #D97706;"></i> Toko Terkena Dampak Klaim:</div><div style="color: #475569;">1. Mitra Sentosa (MTR-44109)<br>2. Toko Barokah (MTR-12003)<br>3. Kelontong Rejeki (MTR-12009)<br>4. Toko Subur Gemilang (MTR-44115)</div></div>',
-        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 25 voucher dengan nominal Rp 2.500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00112', merchant: 'TB Sumber Makmur', merchantId: 'TK-10045 • Argamakmur', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 25000, jackpot: 5000, status: 'APPROVED', date: '03/01/24 13.30',
+        issueLoc: '-3.7950, 102.2620', issueTime: '03/01/24 13.15', claimLoc: '-3.7952, 102.2622', claimTime: '03/01/24 13.30',
+        riskScore: '18/100 (AMAN)', storySummary: '✅ <strong>Disetujui Admin:</strong> Verifikasi manual sukses oleh admin.',
+        gpsBadge: 'Verified', gpsDetail: 'Lokasi fisik toko valid.', ipBadge: 'Wi-Fi Toko', ipDetail: 'Koneksi Wi-Fi.', deviceBadge: 'HP Utama', deviceDetail: 'Perangkat valid.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
       },
       {
-        id: 'TRX-VCH-77403', merchant: 'Toko Subur Gemilang', merchantId: 'MTR-44115', customer: 'Bambang Tri', phone: '0852-3344-5566', flow: 'DIRECT', nominal: 10000, status: 'REJECTED', anomaly: '🔴 Pelanggaran Batas Jarak', date: '2026-07-28 16:40:00',
-        riskScore: '90/100 (BAHAYA)',
-        storySummary: '🔴 <strong>Transaksi Ditolak:</strong> Pembeli terbukti berada sejauh 30 km dari toko saat transaksi dilakukan. Komisi telah dibatalkan.',
-        gpsBadge: '30.0 KM (Di Luar Radius)', gpsDetail: 'Jarak lokasi pembeli melampaui batas maksimal 100 meter.',
-        ipBadge: 'Internet Samaran', ipDetail: 'Koneksi terindikasi proxy.',
-        deviceBadge: '1 HP Dipakai 2 Akun di 2 Toko',
-        deviceDetail: 'Perangkat HP ini terdeteksi pernah dipakai oleh 2 akun pembeli (Bambang Tri &amp; Eko Prasetyo) di Toko Subur Gemilang &amp; Mitra Sentosa dalam 30 hari terakhir.',
-        rateBadge: 'Terindikasi Lonjakan Transaksi', rateDetail: 'Terjadi lonjakan klaim 18 voucher dengan nominal Rp 1.500.000 dalam kurun 10 menit (Batas wajar adalah 2 voucher dan atau nominal Rp 50.000 dalam 30 menit).'
+        id: 'VCH-2024-00105', merchant: 'Mitra Bangunan Utama', merchantId: 'TK-10088 • Curup', customer: 'Budi Santoso', phone: '0812****5678', flow: 'SHAREABLE', nominal: 20000, jackpot: 0, status: 'REJECTED', date: '02/01/24 16.00',
+        issueLoc: '-3.7910, 102.2590', issueTime: '02/01/24 15.40', claimLoc: '-3.7912, 102.2595', claimTime: '02/01/24 16.00',
+        riskScore: '90/100 (BAHAYA)', storySummary: '🔴 <strong>Ditolak:</strong> Gagal audit verifikasi fraud risk engine.',
+        gpsBadge: 'Beda Kota', gpsDetail: 'Lokasi tidak sesuai.', ipBadge: 'Samaran', ipDetail: 'Proxy.', deviceBadge: 'HP Kembar', deviceDetail: 'Digunakan banyak akun.', rateBadge: 'Anomali', rateDetail: 'Lonjakan klaim.'
       },
       {
-        id: 'TRX-VCH-66109', merchant: 'Toko Kelontong Bang Jago', merchantId: 'MTR-99012', customer: 'Budi Santoso', phone: '0812-7788-9900', flow: 'DIRECT', nominal: 10000, status: 'EXPIRED', anomaly: '🕒 Hangus (Expired 24 Jam)', date: '2026-07-28 10:00:00',
-        riskScore: '50/100 (KEDALUWARSA)',
-        storySummary: '🕒 <strong>Voucher Kedaluwarsa:</strong> Voucher tidak diklaim atau digunakan oleh pembeli dalam batas waktu 24 jam sehingga otomatis hangus.',
-        gpsBadge: 'N/A', gpsDetail: 'Voucher hangus otomatis setelah 24 jam.',
-        ipBadge: 'N/A', ipDetail: 'N/A',
-        deviceBadge: 'N/A', deviceDetail: 'N/A',
-        rateBadge: 'N/A', rateDetail: 'Voucher kedaluwarsa (tidak ada aktivitas transaksi).'
+        id: 'VCH-2024-00099', merchant: 'Toko Bangunan Restu Ibu', merchantId: 'TK-10028 • Bengkulu Kota', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 10000, jackpot: 0, status: 'USED', date: '01/01/24 08.45',
+        issueLoc: '-3.7928, 102.2608', issueTime: '01/01/24 08.30', claimLoc: '-3.7930, 102.2610', claimTime: '01/01/24 08.45',
+        riskScore: '14/100 (AMAN)', storySummary: '✅ <strong>Klaim Sukses:</strong> Direct scan wajar di toko Restu Ibu.',
+        gpsBadge: 'Area Toko', gpsDetail: 'Lokasi presisi.', ipBadge: 'Seluler', ipDetail: 'Paket data.', deviceBadge: 'HP Pribadi', deviceDetail: 'Perangkat valid.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
+      },
+      {
+        id: 'VCH-2024-00094', merchant: 'TB Cahaya Rezeki', merchantId: 'TK-10099 • Manna', customer: 'Budi Santoso', phone: '0812****5678', flow: 'SHAREABLE', nominal: 30000, jackpot: 5000, status: 'PENDING', date: '30/12/23 16.25',
+        issueLoc: '-3.7980, 102.2700', issueTime: '30/12/23 16.10', claimLoc: '-3.7982, 102.2705', claimTime: '30/12/23 16.25',
+        riskScore: '78/100 (TINGGI)', storySummary: '⚠️ <strong>Pending Audit:</strong> Perlu verifikasi manual admin FDE.',
+        gpsBadge: '1.5 KM', gpsDetail: 'Di luar radius 100m.', ipBadge: 'Wi-Fi Toko', ipDetail: 'Koneksi Wi-Fi toko.', deviceBadge: '2 Akun 1 HP', deviceDetail: 'Terdeteksi 2 akun.', rateBadge: 'Sedang', rateDetail: 'Frekuensi mendekati batas.'
+      },
+      {
+        id: 'VCH-2024-00088', merchant: 'TB Sumber Makmur', merchantId: 'TK-10045 • Argamakmur', customer: 'Budi Santoso', phone: '0812****5678', flow: 'DIRECT', nominal: 20000, jackpot: 5000, status: 'APPROVED', date: '28/12/23 10.15',
+        issueLoc: '-3.7950, 102.2620', issueTime: '28/12/23 10.00', claimLoc: '-3.7952, 102.2622', claimTime: '28/12/23 10.15',
+        riskScore: '16/100 (AMAN)', storySummary: '✅ <strong>Disetujui Admin:</strong> Verifikasi sukses.',
+        gpsBadge: 'Verified', gpsDetail: 'Lokasi valid.', ipBadge: 'Seluler', ipDetail: 'Paket data.', deviceBadge: 'HP Utama', deviceDetail: 'Perangkat valid.', rateBadge: 'Wajar', rateDetail: 'Frekuensi wajar.'
       }
     ];
 
@@ -1662,54 +1649,64 @@
       tbody.innerHTML = '';
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 30px; color: #888;">Tidak ada data voucher yang sesuai kriteria.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="11" style="text-align: center; padding: 30px; color: #888;">Tidak ada data voucher yang sesuai kriteria.</td></tr>`;
         return;
       }
 
-      filtered.forEach(item => {
+      filtered.forEach((item, idx) => {
         const tr = document.createElement('tr');
 
         let statusBadge = '';
-        if (item.status === 'USED') statusBadge = `<span class="badge badge-used">Used (Sukses)</span>`;
-        else if (item.status === 'PENDING') statusBadge = `<span class="badge badge-pending-fde">Pending Audit</span>`;
-        else if (item.status === 'REJECTED') statusBadge = `<span class="badge badge-rejected">Ditolak</span>`;
-        else if (item.status === 'EXPIRED') statusBadge = `<span class="badge badge-expired">Expired</span>`;
+        if (item.status === 'USED') statusBadge = `<span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>`;
+        else if (item.status === 'APPROVED') statusBadge = `<span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui Admin</span>`;
+        else if (item.status === 'PENDING') statusBadge = `<span class="status-badge pending"><i class="fa-solid fa-clock"></i> Pending Verifikasi</span>`;
+        else if (item.status === 'REJECTED') statusBadge = `<span class="status-badge ditolak"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`;
+        else if (item.status === 'EXPIRED') statusBadge = `<span class="status-badge ditolak" style="background:#FFF3E0; color:#E65100; border-color:#FFE0B2;"><i class="fa-solid fa-hourglass-end"></i> Expired</span>`;
 
         let flowBadge = item.flow === 'DIRECT'
-          ? `<span class="badge badge-flow-direct">Direct Scan</span>`
-          : `<span class="badge badge-flow-shareable">Shareable QR</span>`;
+          ? `<span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>`
+          : `<span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>`;
 
         let actionsHtml = '';
         if (item.status === 'PENDING') {
           actionsHtml = `
-            <div class="btn-action-group">
-              <button class="btn-approve" onclick="openApproveModal('${item.id}')">Approve</button>
-              <button class="btn-reject" onclick="openRejectModal('${item.id}')">Reject</button>
-              <button class="btn-detail" onclick="openDrawer('${item.id}')">Detail</button>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 6px;">
+              <button class="btn-approve" onclick="openApproveModal('${item.id}')" style="padding: 4px 10px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; background: #16A34A; color: white;">Approve</button>
+              <button class="btn-reject" onclick="openRejectModal('${item.id}')" style="padding: 4px 10px; font-size: 11px; border-radius: 4px; border: none; cursor: pointer; background: #DC2626; color: white;">Reject</button>
+              <button type="button" class="btn-detail-action" onclick="openDrawer('${item.id}')"><i class="fa-solid fa-eye"></i> Detail</button>
             </div>
           `;
         } else {
           actionsHtml = `
-            <div class="btn-action-group">
-              <button class="btn-detail" onclick="openDrawer('${item.id}')">Detail</button>
-            </div>
+            <button type="button" class="btn-detail-action" onclick="openDrawer('${item.id}')"><i class="fa-solid fa-eye"></i> Detail</button>
           `;
         }
 
+        const jackpotVal = item.jackpot ? item.jackpot : (idx % 2 === 0 ? 5000 : 0);
+
         tr.innerHTML = `
-          <td><span class="mono-id" onclick="openDrawer('${item.id}')">${item.id}</span></td>
+          <td><input type="checkbox" class="row-chk"></td>
+          <td style="font-family: monospace; font-weight: 700; color: #0284C7;"><span class="mono-id" onclick="openDrawer('${item.id}')">${item.id}</span></td>
           <td>
-            <div style="font-weight: 600;">${item.merchant}</div>
-            <div style="font-size: 11px; color: #888;">${item.merchantId}</div>
+            <span class="combined-title">${item.merchant}</span>
+            <span class="combined-subtext">${item.merchantId}</span>
           </td>
           <td>
-            <div>${item.customer}</div>
-            <div style="font-size: 11px; color: #888;">${item.phone}</div>
+            <span class="combined-title">${item.customer}</span>
+            <span class="combined-subtext phone-target" style="font-family: monospace;">${item.phone}</span>
+          </td>
+          <td>
+            <span class="combined-title" style="font-size: 12.5px;">${item.issueLoc || '-3.7928, 102.2608'}</span>
+            <span class="combined-subtext">${item.issueTime || item.date}</span>
+          </td>
+          <td>
+            <span class="combined-title" style="font-size: 12.5px;">${item.claimLoc || '-3.7930, 102.2610'}</span>
+            <span class="combined-subtext">${item.claimTime || item.date}</span>
           </td>
           <td>${flowBadge}</td>
-          <td style="font-weight: 700; color: #16A34A;">Rp ${item.nominal.toLocaleString('id-ID')}</td>
+          <td style="font-weight: 700; font-family: monospace;">Rp ${item.nominal.toLocaleString('id-ID')}</td>
+          <td style="font-weight: 700; font-family: monospace;">Rp ${(item.jackpot || 0).toLocaleString('id-ID')}</td>
           <td>${statusBadge}</td>
-          <td style="font-size: 12px; color: #666;">${item.date}</td>
           <td style="text-align: center;">${actionsHtml}</td>
         `;
 

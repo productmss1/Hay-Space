@@ -30,12 +30,14 @@
             font-family: 'Inter', sans-serif;
         }
 
-        body {
+        html, body {
             background-color: var(--bg-canvas);
             color: var(--text-dark);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         /* ==================== 1. TOP HEADER BAR ==================== */
@@ -138,6 +140,8 @@
             margin-top: var(--header-height);
             display: flex;
             flex: 1;
+            overflow-x: hidden;
+            width: 100%;
         }
 
         .sidebar {
@@ -216,6 +220,9 @@
             display: flex;
             flex-direction: column;
             gap: 20px;
+            min-width: 0;
+            overflow-x: hidden;
+            width: calc(100% - var(--sidebar-width));
         }
 
         /* Global Header Profil Pelanggan */
@@ -345,11 +352,18 @@
             display: grid;
             grid-template-columns: repeat(5, 1fr);
             gap: 16px;
+            width: 100%;
         }
 
-        @media (max-width: 1300px) {
+        @media (max-width: 1400px) {
             .metrics-grid-5 {
                 grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .metrics-grid-5 {
+                grid-template-columns: repeat(2, 1fr);
             }
         }
 
@@ -490,17 +504,28 @@
             outline: none;
         }
 
-        /* ==================== 6. SEKSI 3: TABEL DATA RINGKAS (9 KOLOM) ==================== */
+        /* ==================== 6. SEKSI 3: TABEL DATA RINGKAS (11 KOLOM) ==================== */
         .table-card {
             background-color: var(--card-bg);
             border-radius: 10px;
             border: 1px solid var(--border-color);
             overflow: hidden;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+            width: 100%;
+            max-width: 100%;
+            min-width: 0;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         .data-table {
             width: 100%;
+            min-width: 1100px;
             border-collapse: collapse;
             font-size: 13px;
         }
@@ -572,6 +597,113 @@
             background-color: #FCE8E6;
             color: #C5221F;
             border: 1px solid #F8B4B1;
+        }
+
+        /* Tipe Klaim Badges & Action Button */
+        .claim-type-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 12px;
+            white-space: nowrap;
+        }
+
+        .claim-type-badge.direct {
+            background: #E0F2FE;
+            color: #0369A1;
+            border: 1px solid #BAE6FD;
+        }
+
+        .claim-type-badge.shareable {
+            background: #F3E8FF;
+            color: #6B21A8;
+            border: 1px solid #E9D5FF;
+        }
+
+        .btn-detail-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 5px 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #0284C7;
+            background: #F0F9FF;
+            border: 1px solid #BAE6FD;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-detail-action:hover {
+            background: #0284C7;
+            color: #FFFFFF;
+            border-color: #0284C7;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        /* Modal Overlay & Dialog */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.55);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 580px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transform: translateY(20px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .modal-body {
+            padding: 20px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            background: #F8FAFC;
         }
 
         /* ==================== 7. SEKSI 4: FOOTER PAGINATION ==================== */
@@ -806,9 +938,10 @@
                 </div>
             </div>
 
-            <!-- SEKSI 3: TABEL DATA RINGKAS (9 KOLOM) -->
+            <!-- SEKSI 3: TABEL DATA RINGKAS (11 KOLOM) -->
             <div class="table-card">
-                <table class="data-table">
+                <div class="table-wrapper">
+                    <table class="data-table">
                     <thead>
                         <tr>
                             <th style="width: 40px;">No.</th>
@@ -817,9 +950,11 @@
                             <th>Pelanggan</th>
                             <th>Lokasi/Waktu Terbit</th>
                             <th>Lokasi/Waktu Klaim</th>
+                            <th>Tipe Klaim</th>
                             <th>Nilai Voucher</th>
                             <th>Nilai Jackpot</th>
                             <th>Status</th>
+                            <th style="text-align: center;">Aksi</th>
                         </tr>
                     </thead>
                     <tbody id="voucherTableBody">
@@ -844,10 +979,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7930, 102.2610</span>
                                 <span class="combined-subtext">14/01/24 10.15</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui
                                     Admin</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00129', 'Toko Bangunan Restu Ibu (TK-10028)', 'Direct Scan', '20.000', '5.000', 'approved', '14/01/24 10.00', '14/01/24 10.15')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="sukses">
                             <td>2</td>
@@ -869,9 +1012,17 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7952, 102.2622</span>
                                 <span class="combined-subtext">12/01/24 14.25</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00128', 'TB Sumber Makmur (TK-10045)', 'Direct Scan', '10.000', '0', 'sukses', '12/01/24 14.20', '12/01/24 14.25')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
                             </td>
                         </tr>
                         <tr data-status="pending">
@@ -894,10 +1045,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7912, 102.2595</span>
                                 <span class="combined-subtext">10/01/24 09.30</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge pending"><i class="fa-solid fa-clock"></i> Pending
                                     Verifikasi</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00125', 'Mitra Bangunan Utama (TK-10088)', 'Shareable QR', '50.000', '10.000', 'pending', '10/01/24 09.10', '10/01/24 09.30')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="ditolak">
                             <td>4</td>
@@ -919,10 +1078,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7930, 102.2610</span>
                                 <span class="combined-subtext">08/01/24 17.00</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge ditolak"><i class="fa-solid fa-circle-xmark"></i>
                                     Ditolak</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00120', 'Toko Bangunan Restu Ibu (TK-10028)', 'Direct Scan', '20.000', '0', 'ditolak', '08/01/24 16.45', '08/01/24 17.00')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="sukses">
                             <td>5</td>
@@ -944,9 +1111,17 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7982, 102.2705</span>
                                 <span class="combined-subtext">05/01/24 11.40</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00118', 'TB Cahaya Rezeki (TK-10099)', 'Shareable QR', '15.000', '2.500', 'sukses', '05/01/24 11.30', '05/01/24 11.40')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
                             </td>
                         </tr>
                         <tr data-status="approved">
@@ -969,10 +1144,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7952, 102.2622</span>
                                 <span class="combined-subtext">03/01/24 13.30</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui
                                     Admin</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00112', 'TB Sumber Makmur (TK-10045)', 'Direct Scan', '25.000', '5.000', 'approved', '03/01/24 13.15', '03/01/24 13.30')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="ditolak">
                             <td>7</td>
@@ -994,10 +1177,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7912, 102.2595</span>
                                 <span class="combined-subtext">02/01/24 16.00</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge ditolak"><i class="fa-solid fa-circle-xmark"></i>
                                     Ditolak</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00105', 'Mitra Bangunan Utama (TK-10088)', 'Shareable QR', '20.000', '0', 'ditolak', '02/01/24 15.40', '02/01/24 16.00')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="sukses">
                             <td>8</td>
@@ -1019,9 +1210,17 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7930, 102.2610</span>
                                 <span class="combined-subtext">01/01/24 08.45</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>
+                            </td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00099', 'Toko Bangunan Restu Ibu (TK-10028)', 'Direct Scan', '10.000', '0', 'sukses', '01/01/24 08.30', '01/01/24 08.45')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
                             </td>
                         </tr>
                         <tr data-status="pending">
@@ -1044,10 +1243,18 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7982, 102.2705</span>
                                 <span class="combined-subtext">30/12/23 16.25</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge pending"><i class="fa-solid fa-clock"></i> Pending
                                     Verifikasi</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00094', 'TB Cahaya Rezeki (TK-10099)', 'Shareable QR', '30.000', '5.000', 'pending', '30/12/23 16.10', '30/12/23 16.25')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                         <tr data-status="approved">
                             <td>10</td>
@@ -1069,13 +1276,22 @@
                                 <span class="combined-title" style="font-size: 12.5px;">-3.7952, 102.2622</span>
                                 <span class="combined-subtext">28/12/23 10.15</span>
                             </td>
+                            <td>
+                                <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                            </td>
                             <td class="val-voucher" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td class="val-jackpot" style="font-weight: 700; font-family: monospace;">Rp ***</td>
                             <td><span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui
                                     Admin</span></td>
+                            <td style="text-align: center;">
+                                <button type="button" class="btn-detail-action" onclick="openVoucherDetailModal('VCH-2024-00088', 'TB Sumber Makmur (TK-10045)', 'Direct Scan', '20.000', '5.000', 'approved', '28/12/23 10.00', '28/12/23 10.15')">
+                                    <i class="fa-solid fa-eye"></i> Detail
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
+            </div>
 
                 <!-- SEKSI 4: FOOTER PAGINATION (DEFAULT 10 DATA PER HALAMAN) -->
                 <div class="pagination-footer">
@@ -1097,9 +1313,91 @@
         </main>
     </div>
 
+    <!-- MODAL DETAIL AUDIT VOUCHER -->
+    <div class="modal-overlay" id="modalVoucherDetail">
+        <div class="modal-card">
+            <div class="modal-header">
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <div style="width: 36px; height: 36px; border-radius: 8px; background: #E0F2FE; color: #0284C7; display: flex; align-items: center; justify-content: center; font-size: 16px;">
+                        <i class="fa-solid fa-ticket"></i>
+                    </div>
+                    <div>
+                        <h3 id="modalVoucherTitle" style="font-size: 15px; font-weight: 700; color: #1E293B; margin: 0;">Detail Klaim Voucher</h3>
+                        <span style="font-size: 11.5px; color: #64748B;">Rincian Log Audit Terbit & Klaim Voucher Pelanggan</span>
+                    </div>
+                </div>
+                <button type="button" onclick="closeVoucherDetailModal()" style="background: none; border: none; font-size: 18px; color: #94A3B8; cursor: pointer; padding: 4px;"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- Grid Info Rincian Voucher -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 16px; background: #F8FAFC; padding: 14px 16px; border-radius: 8px; border: 1px solid #E2E8F0;">
+                    <div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Kode Voucher ID</div>
+                        <div id="modalVoucherId" style="font-size: 13.5px; font-weight: 700; color: #0284C7; font-family: monospace; margin-top: 2px;">VCH-2024-00129</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Tipe Klaim</div>
+                        <div id="modalTipeKlaimContainer" style="margin-top: 2px;">
+                            <span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Pelanggan</div>
+                        <div id="modalCustomerDisplay" style="font-size: 12.5px; font-weight: 600; color: #1E293B; margin-top: 2px;">Budi Santoso (<span class="phone-target" style="font-family: monospace;">0812****5678</span>)</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Toko Fisik Penerbit</div>
+                        <div id="modalStoreDisplay" style="font-size: 12.5px; font-weight: 600; color: #1E293B; margin-top: 2px;">Toko Bangunan Restu Ibu (TK-10028)</div>
+                    </div>
+                </div>
+
+                <!-- Grid Values & Status -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; margin-bottom: 18px;">
+                    <div style="background: #F0F9FF; border: 1px solid #BAE6FD; padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #0369A1;">Nilai Voucher</div>
+                        <div id="modalValVoucherDisplay" style="font-size: 14px; font-weight: 700; color: #0284C7; font-family: monospace; margin-top: 3px;">Rp ***</div>
+                    </div>
+                    <div style="background: #FCF4FF; border: 1px solid #F5D0FE; padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #86198F;">Nilai Jackpot</div>
+                        <div id="modalValJackpotDisplay" style="font-size: 14px; font-weight: 700; color: #A21CAF; font-family: monospace; margin-top: 3px;">Rp ***</div>
+                    </div>
+                    <div style="background: #F8FAFC; border: 1px solid #E2E8F0; padding: 10px; border-radius: 8px; text-align: center;">
+                        <div style="font-size: 10.5px; font-weight: 700; color: #64748B;">Status</div>
+                        <div id="modalStatusBadgeContainer" style="margin-top: 3px;">
+                            <span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui Admin</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Audit Trail Timestamps -->
+                <div>
+                    <h4 style="font-size: 12.5px; font-weight: 700; color: #1E293B; margin-bottom: 10px;"><i class="fa-solid fa-clock-rotate-left" style="color: #0284C7;"></i> Audit Trail & Timestamps</h4>
+                    <div style="border-left: 2px dashed #CBD5E1; padding-left: 14px; margin-left: 6px; display: flex; flex-direction: column; gap: 10px;">
+                        <div>
+                            <div style="font-size: 11.5px; font-weight: 700; color: #1E293B;">Penerbitan Kuota Voucher oleh Toko</div>
+                            <div id="modalIssuedTimeDisplay" style="font-size: 11px; color: #64748B;">Lokasi: GPS Toko Verified • Waktu: 14/01/24 10.00 WIB</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11.5px; font-weight: 700; color: #1E293B;">Klaim Redeem oleh Pelanggan</div>
+                            <div id="modalClaimedTimeDisplay" style="font-size: 11px; color: #64748B;">Lokasi: GPS Pelanggan Verified • Waktu: 14/01/24 10.15 WIB</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 11.5px; font-weight: 700; color: #0369A1;">Verifikasi Risk Engine & System Approval</div>
+                            <div style="font-size: 11px; color: #64748B;">Validated by sCanWin Fraud Detection Engine (FDE)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn-detail-action" onclick="closeVoucherDetailModal()" style="padding: 7px 18px; font-size: 12px;">Tutup</button>
+            </div>
+        </div>
+    </div>
+
     <!-- JAVASCRIPT FOR INTERACTIVITY, RBAC MASKING & SEARCH/FILTER -->
     <script>
         let currentRole = 'non-manager';
+        let activeModalData = null;
 
         // Sample Row Values Data for RBAC Role Toggle
         const sampleRowData = [
@@ -1118,6 +1416,53 @@
         // Format Currency Helper
         function formatRupiah(amount) {
             return 'Rp ' + amount.toLocaleString('id-ID');
+        }
+
+        // Modal Voucher Detail Handlers
+        function openVoucherDetailModal(voucherId, store, claimType, voucherValRaw, jackpotValRaw, statusKey, timeIssued, timeClaimed) {
+            activeModalData = { voucherId, store, claimType, voucherValRaw, jackpotValRaw, statusKey, timeIssued, timeClaimed };
+
+            document.getElementById('modalVoucherTitle').innerText = `Detail Klaim Voucher: ${voucherId}`;
+            document.getElementById('modalVoucherId').innerText = voucherId;
+            document.getElementById('modalStoreDisplay').innerText = store;
+
+            // Tipe Klaim Badge
+            const typeContainer = document.getElementById('modalTipeKlaimContainer');
+            if (claimType === 'Shareable QR') {
+                typeContainer.innerHTML = `<span class="claim-type-badge shareable"><i class="fa-solid fa-share-nodes"></i> Shareable QR</span>`;
+            } else {
+                typeContainer.innerHTML = `<span class="claim-type-badge direct"><i class="fa-solid fa-qrcode"></i> Direct Scan</span>`;
+            }
+
+            // Customer Phone Masking
+            const custPhone = (currentRole === 'manager') ? "081234567890" : "0812****5678";
+            document.getElementById('modalCustomerDisplay').innerHTML = `Budi Santoso (<span style="font-family: monospace;">${custPhone}</span>)`;
+
+            // Values Masking
+            document.getElementById('modalValVoucherDisplay').innerText = (currentRole === 'manager') ? `Rp ${voucherValRaw}` : "Rp ***";
+            document.getElementById('modalValJackpotDisplay').innerText = (currentRole === 'manager') ? `Rp ${jackpotValRaw}` : "Rp ***";
+
+            // Status Badge
+            const statusContainer = document.getElementById('modalStatusBadgeContainer');
+            if (statusKey === 'approved') {
+                statusContainer.innerHTML = `<span class="status-badge approved"><i class="fa-solid fa-user-check"></i> Disetujui Admin</span>`;
+            } else if (statusKey === 'sukses') {
+                statusContainer.innerHTML = `<span class="status-badge sukses"><i class="fa-solid fa-circle-check"></i> Sukses</span>`;
+            } else if (statusKey === 'pending') {
+                statusContainer.innerHTML = `<span class="status-badge pending"><i class="fa-solid fa-clock"></i> Pending Verifikasi</span>`;
+            } else {
+                statusContainer.innerHTML = `<span class="status-badge ditolak"><i class="fa-solid fa-circle-xmark"></i> Ditolak</span>`;
+            }
+
+            // Timestamps
+            document.getElementById('modalIssuedTimeDisplay').innerText = `Lokasi: GPS Toko Verified • Waktu: ${timeIssued} WIB`;
+            document.getElementById('modalClaimedTimeDisplay').innerText = `Lokasi: GPS Pelanggan Verified • Waktu: ${timeClaimed} WIB`;
+
+            document.getElementById('modalVoucherDetail').classList.add('active');
+        }
+
+        function closeVoucherDetailModal() {
+            document.getElementById('modalVoucherDetail').classList.remove('active');
         }
 
         // Role Switcher Handler (RBAC Privacy Control)
@@ -1162,6 +1507,11 @@
                     cell.innerText = (role === 'manager') ? formatRupiah(sampleRowData[i].jackpot) : "Rp ***";
                 }
             });
+
+            // 5. Update active modal if open
+            if (activeModalData && document.getElementById('modalVoucherDetail').classList.contains('active')) {
+                openVoucherDetailModal(activeModalData.voucherId, activeModalData.store, activeModalData.claimType, activeModalData.voucherValRaw, activeModalData.jackpotValRaw, activeModalData.statusKey, activeModalData.timeIssued, activeModalData.timeClaimed);
+            }
         }
 
         // Fraud Tag Evaluator Toggle Handler
