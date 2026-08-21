@@ -329,6 +329,90 @@
     .numpad-btn:active {
       background: #e2e8f0;
     }
+
+    /* Checklist Modal Item Styles (PRD 12 Story 1) */
+    .checklist-item-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      gap: 10px;
+      transition: all 0.2s;
+    }
+
+    .checklist-item-card:hover {
+      border-color: #CBD5E1;
+      background: #F1F5F9;
+    }
+
+    .checklist-item-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .checklist-item-icon {
+      width: 34px;
+      height: 34px;
+      border-radius: 10px;
+      background: #E2E8F0;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .checklist-item-title {
+      font-size: 13px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .checklist-item-sub {
+      font-size: 11px;
+      color: #64748B;
+      margin-top: 1px;
+    }
+
+    .checklist-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 9px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .checklist-badge.active {
+      background: #ECFDF5;
+      color: #059669;
+      border: 1px solid #A7F3D0;
+    }
+
+    .checklist-badge.unregistered {
+      background: #F1F5F9;
+      color: #64748B;
+      border: 1px solid #CBD5E1;
+    }
+
+    .checklist-badge.pending {
+      background: #FFFBEB;
+      color: #D97706;
+      border: 1px solid #FDE68A;
+    }
+
+    .checklist-badge.blocked {
+      background: #FEF2F2;
+      color: #DC2626;
+      border: 1px solid #FECACA;
+    }
   </style>
 </head>
 
@@ -345,6 +429,64 @@
         <div class="feature-left-canvas">
           <div class="simulator-frame-wrap" id="sim-frame">
             <iframe id="app-simulator" src="scanwin-saldo.html"></iframe>
+
+            <!-- Canvas Overlay for Unified Status & Checklist Modal (PRD 12 Story 1) -->
+            <div class="canvas-modal-overlay" id="unified-checklist-overlay">
+              <div class="canvas-modal-sheet" style="padding-bottom: 24px;">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <h3 style="font-size:16px; font-weight:800; color:#0f172a;">Syarat Penarikan Saldo</h3>
+                  <button onclick="closeChecklistModal()"
+                    style="border:none; background:none; font-size:16px; color:#64748b; cursor:pointer;"><i
+                      class="fas fa-times"></i></button>
+                </div>
+                <p style="font-size:12px; color:#64748b; line-height:1.45;">
+                  Pastikan seluruh data berikut telah lengkap dan aktif untuk dapat melakukan penarikan saldo. Anda dapat melihat dan melengkapi data ini melalui menu <strong>Akun Saya</strong>.
+                </p>
+
+                <div class="checklist-items-group" style="display:flex; flex-direction:column; gap:10px; margin: 6px 0;">
+                  <!-- Item 1: PIN Transaksi -->
+                  <div class="checklist-item-card" id="checklist-item-pin">
+                    <div class="checklist-item-left">
+                      <div class="checklist-item-icon"><i class="fas fa-key"></i></div>
+                      <div>
+                        <div class="checklist-item-title">1. PIN Transaksi (6-Digit)</div>
+                        <div class="checklist-item-sub" id="chk-pin-sub">Untuk otorisasi penarikan dana</div>
+                      </div>
+                    </div>
+                    <span class="checklist-badge active" id="chk-pin-badge">Aktif</span>
+                  </div>
+
+                  <!-- Item 2: NIK KTP -->
+                  <div class="checklist-item-card" id="checklist-item-nik" style="cursor:pointer;" onclick="directToRegistrasiNik()">
+                    <div class="checklist-item-left">
+                      <div class="checklist-item-icon" style="background:#EFF6FF; color:#2563EB;"><i class="fas fa-id-card"></i></div>
+                      <div>
+                        <div class="checklist-item-title">2. NIK KTP &amp; Nama Lengkap</div>
+                        <div class="checklist-item-sub" id="chk-nik-sub">Kebutuhan pelaporan pajak &amp; identitas</div>
+                      </div>
+                    </div>
+                    <span class="checklist-badge unregistered" id="chk-nik-badge">Belum Terdaftar</span>
+                  </div>
+
+                  <!-- Item 3: E-Wallet -->
+                  <div class="checklist-item-card" id="checklist-item-ewallet" style="cursor:pointer;" onclick="directToKelolaEwallet()">
+                    <div class="checklist-item-left">
+                      <div class="checklist-item-icon" style="background:#F0FDF4; color:#16A34A;"><i class="fas fa-wallet"></i></div>
+                      <div>
+                        <div class="checklist-item-title">3. Nomor HP E-Wallet</div>
+                        <div class="checklist-item-sub" id="chk-ewallet-sub">Rekening pencairan saldo</div>
+                      </div>
+                    </div>
+                    <span class="checklist-badge active" id="chk-ewallet-badge">Aktif</span>
+                  </div>
+                </div>
+
+                <button class="submit-btn" onclick="closeChecklistModal()"
+                  style="width:100%; height:46px; border-radius:12px; background:#0b57d0; color:#fff; font-weight:700; border:none; cursor:pointer; font-size:14px; margin-top:4px; box-shadow: 0 4px 12px rgba(11,87,208,0.25);">
+                  <span>OK / Mengerti</span>
+                </button>
+              </div>
+            </div>
 
             <!-- Canvas Overlay for PIN Sheet (restricted inside mobile frame) -->
             <div class="canvas-modal-overlay" id="pin-modal-overlay">
@@ -394,13 +536,17 @@
           <div class="sidebar-header">
             <h2>PRD 12 INTERACTIVE TESTER</h2>
             <h1>Validasi Pencairan E-Wallet</h1>
-            <p>Uji alur verifikasi PIN Customer & validasi FDE (Kondisi A/B) saat penarikan saldo e-wallet.</p>
+            <p>Uji alur evaluasi 3 Prasyarat Akun (PIN, NIK, E-Wallet) & validasi FDE saat penarikan saldo.</p>
           </div>
 
           <!-- Tester Control 1: Customer PIN State -->
           <div class="control-card">
-            <h3><i class="fas fa-user-shield" style="color:#2563eb;"></i> Simulasi Status PIN Customer</h3>
+            <h3><i class="fas fa-user-shield" style="color:#2563eb;"></i> 1. Status PIN Customer</h3>
             <div class="status-pill-group">
+              <label class="status-radio-label">
+                <span>PIN Aktif (Active) - default: 123456</span>
+                <input type="radio" name="pinState" value="active" checked onchange="changePinState('active')">
+              </label>
               <label class="status-radio-label">
                 <span>PIN Belum Set (Unregistered)</span>
                 <input type="radio" name="pinState" value="unregistered" onchange="changePinState('unregistered')">
@@ -409,16 +555,50 @@
                 <span>PIN Terblokir (Blocked)</span>
                 <input type="radio" name="pinState" value="blocked" onchange="changePinState('blocked')">
               </label>
+            </div>
+          </div>
+
+          <!-- Tester Control 2: Customer NIK State (Gating PRD 12 Story 1) -->
+          <div class="control-card">
+            <h3><i class="fas fa-id-card" style="color:#059669;"></i> 2. Status NIK KTP Customer (Pajak)</h3>
+            <div class="status-pill-group">
               <label class="status-radio-label">
-                <span>PIN Aktif (Active) - default: 123456</span>
-                <input type="radio" name="pinState" value="active" checked onchange="changePinState('active')">
+                <span>NIK Aktif (Active)</span>
+                <input type="radio" name="nikState" value="active" checked onchange="changeNikState('active')">
+              </label>
+              <label class="status-radio-label">
+                <span>NIK Belum Terdaftar (Unregistered)</span>
+                <input type="radio" name="nikState" value="unregistered" onchange="changeNikState('unregistered')">
+              </label>
+              <label class="status-radio-label">
+                <span>NIK Sedang Diverifikasi Admin</span>
+                <input type="radio" name="nikState" value="pending" onchange="changeNikState('pending')">
               </label>
             </div>
           </div>
 
-          <!-- Tester Control 2: FDE Risk Simulation -->
+          <!-- Tester Control 3: Customer E-Wallet State -->
           <div class="control-card">
-            <h3><i class="fas fa-shield-virus" style="color:#e11d48;"></i> Simulasi Risiko FDE E-Wallet</h3>
+            <h3><i class="fas fa-wallet" style="color:#d97706;"></i> 3. Status Nomor E-Wallet</h3>
+            <div class="status-pill-group">
+              <label class="status-radio-label">
+                <span>E-Wallet Aktif (Minimal 1 Nomor)</span>
+                <input type="radio" name="ewalletState" value="active" checked onchange="changeEwalletState('active')">
+              </label>
+              <label class="status-radio-label">
+                <span>Belum Ada E-Wallet Terdaftar</span>
+                <input type="radio" name="ewalletState" value="unregistered" onchange="changeEwalletState('unregistered')">
+              </label>
+              <label class="status-radio-label">
+                <span>Nomor E-Wallet Sedang Diverifikasi</span>
+                <input type="radio" name="ewalletState" value="pending" onchange="changeEwalletState('pending')">
+              </label>
+            </div>
+          </div>
+
+          <!-- Tester Control 4: FDE Risk Simulation -->
+          <div class="control-card">
+            <h3><i class="fas fa-shield-virus" style="color:#e11d48;"></i> 4. Simulasi Risiko FDE E-Wallet</h3>
             <div class="status-pill-group">
               <label class="status-radio-label">
                 <span>Happy Path (E-Wallet Historis Aman)</span>
@@ -496,6 +676,8 @@
     let currentInputPin = '';
     let failedPinAttempts = 0;
     let selectedPinState = 'active';
+    let selectedNikState = 'active';
+    let selectedEwalletState = 'active';
     let selectedFdeRisk = 'happy';
 
     const iframe = document.getElementById('app-simulator');
@@ -509,12 +691,22 @@
     function changePinState(state) {
       selectedPinState = state;
       localStorage.setItem('scanwin_pin_status', state);
-      appendLog(`PIN State changed to: ${state.toUpperCase()}`);
+      appendLog(`1. Status PIN diubah ke: ${state.toUpperCase()}`);
+    }
+
+    function changeNikState(state) {
+      selectedNikState = state;
+      appendLog(`2. Status NIK KTP diubah ke: ${state.toUpperCase()}`);
+    }
+
+    function changeEwalletState(state) {
+      selectedEwalletState = state;
+      appendLog(`3. Status E-Wallet diubah ke: ${state.toUpperCase()}`);
     }
 
     function changeFdeRisk(risk) {
       selectedFdeRisk = risk;
-      appendLog(`FDE Risk Mode changed to: ${risk}`);
+      appendLog(`4. Mode Risiko FDE diubah ke: ${risk}`);
     }
 
     function updateStepIndicator(stepNum) {
@@ -523,6 +715,82 @@
         if (i === stepNum) el.classList.add('active');
         else el.classList.remove('active');
       }
+    }
+
+    // CHECKLIST MODAL HANDLERS (PRD 12 STORY 1)
+    function openChecklistModal() {
+      updateChecklistModalBadges();
+      document.getElementById('unified-checklist-overlay').style.display = 'flex';
+      appendLog('[UNIFIED MODAL] Menampilkan Unified Status & Checklist Modal Syarat Penarikan Saldo.');
+    }
+
+    function closeChecklistModal() {
+      document.getElementById('unified-checklist-overlay').style.display = 'none';
+    }
+
+    function updateChecklistModalBadges() {
+      // 1. PIN Badge
+      const pinBadge = document.getElementById('chk-pin-badge');
+      const pinSub = document.getElementById('chk-pin-sub');
+      if (selectedPinState === 'active') {
+        pinBadge.className = 'checklist-badge active';
+        pinBadge.innerHTML = '<i class="fas fa-check"></i> Aktif';
+        pinSub.innerText = 'PIN transaksi 6-digit siap digunakan';
+      } else if (selectedPinState === 'unregistered') {
+        pinBadge.className = 'checklist-badge unregistered';
+        pinBadge.innerHTML = '<i class="fas fa-minus"></i> Belum Dibuat';
+        pinSub.innerText = 'Wajib membuat 6-digit PIN transaksi';
+      } else if (selectedPinState === 'blocked') {
+        pinBadge.className = 'checklist-badge blocked';
+        pinBadge.innerHTML = '<i class="fas fa-lock"></i> Terblokir (Salah 3x)';
+        pinSub.innerText = 'Perlu reset PIN via OTP WhatsApp';
+      }
+
+      // 2. NIK Badge
+      const nikBadge = document.getElementById('chk-nik-badge');
+      const nikSub = document.getElementById('chk-nik-sub');
+      if (selectedNikState === 'active') {
+        nikBadge.className = 'checklist-badge active';
+        nikBadge.innerHTML = '<i class="fas fa-check"></i> Aktif';
+        nikSub.innerText = 'Identitas e-KTP terverifikasi resmi';
+      } else if (selectedNikState === 'unregistered') {
+        nikBadge.className = 'checklist-badge unregistered';
+        nikBadge.innerHTML = '<i class="fas fa-minus"></i> Belum Terdaftar';
+        nikSub.innerText = 'Wajib daftarkan 16-digit NIK e-KTP';
+      } else if (selectedNikState === 'pending') {
+        nikBadge.className = 'checklist-badge pending';
+        nikBadge.innerHTML = '<i class="fas fa-clock"></i> Sedang Diverifikasi Admin';
+        nikSub.innerText = 'Menunggu verifikasi identitas e-KTP';
+      }
+
+      // 3. E-Wallet Badge
+      const ewalletBadge = document.getElementById('chk-ewallet-badge');
+      const ewalletSub = document.getElementById('chk-ewallet-sub');
+      if (selectedEwalletState === 'active') {
+        ewalletBadge.className = 'checklist-badge active';
+        ewalletBadge.innerHTML = '<i class="fas fa-check"></i> Aktif';
+        ewalletSub.innerText = 'Minimal 1 nomor HP e-wallet aktif';
+      } else if (selectedEwalletState === 'unregistered') {
+        ewalletBadge.className = 'checklist-badge unregistered';
+        ewalletBadge.innerHTML = '<i class="fas fa-minus"></i> Belum Terdaftar';
+        ewalletSub.innerText = 'Wajib daftarkan nomor HP e-wallet';
+      } else if (selectedEwalletState === 'pending') {
+        ewalletBadge.className = 'checklist-badge pending';
+        ewalletBadge.innerHTML = '<i class="fas fa-clock"></i> Sedang Diverifikasi Admin';
+        ewalletSub.innerText = 'Nomor e-wallet sedang ditinjau';
+      }
+    }
+
+    function directToRegistrasiNik() {
+      closeChecklistModal();
+      appendLog('[NAVIGATE] Mengarahkan ke Modul Registrasi NIK (scanwin-fde-customer-registrasi-nik.html)...');
+      window.location.href = 'scanwin-fde-customer-registrasi-nik.html';
+    }
+
+    function directToKelolaEwallet() {
+      closeChecklistModal();
+      appendLog('[NAVIGATE] Mengarahkan ke Modul Kelola E-Wallet (scanwin-fde-customer-kelola-ewallet.html)...');
+      window.location.href = 'scanwin-fde-customer-kelola-ewallet.html';
     }
 
     // Helper function untuk attach event listener ke elemen iframe dengan aman
@@ -635,18 +903,20 @@
 
     setInterval(attachIframeInteractions, 300);
 
+    // GATING 3 PRASYARAT AKUN (PRD 12 STORY 1)
     function handleTarikSaldoClick() {
-      appendLog(`Checking PIN Status... (${selectedPinState.toUpperCase()})`);
+      const isPinOk = (selectedPinState === 'active');
+      const isNikOk = (selectedNikState === 'active');
+      const isEwalletOk = (selectedEwalletState === 'active');
 
-      if (selectedPinState === 'unregistered') {
-        appendLog(`[INFO SCREEN] PIN Belum Set. Directing to Create PIN Info Screen...`);
-        iframe.src = 'scanwin-pin-info-screen.html?type=unregistered';
-      } else if (selectedPinState === 'blocked') {
-        appendLog(`[INFO SCREEN] PIN Terblokir. Directing to Reset PIN Info Screen...`);
-        iframe.src = 'scanwin-pin-info-screen.html?type=blocked';
-      } else {
-        appendLog(`[PASS] PIN Active. Opening Select E-Wallet screen...`);
+      appendLog(`[GATE EVALUATION] Mengevaluasi 3 Prasyarat Akun: PIN=${selectedPinState.toUpperCase()}, NIK=${selectedNikState.toUpperCase()}, E-Wallet=${selectedEwalletState.toUpperCase()}...`);
+
+      if (isPinOk && isNikOk && isEwalletOk) {
+        appendLog(`[GATE PASSED] 3 Syarat Lengkap & Aktif! Mengizinkan akses ke Layar Tarik Saldo.`);
         iframe.src = 'scanwin-e-wallet-tarik-saldo.html';
+      } else {
+        appendLog(`[GATE FAILED] Ada syarat yang belum aktif! Membuka Unified Status & Checklist Modal.`);
+        openChecklistModal();
       }
     }
 

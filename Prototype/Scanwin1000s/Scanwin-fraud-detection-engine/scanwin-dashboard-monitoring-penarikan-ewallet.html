@@ -346,56 +346,6 @@
       line-height: 1;
     }
 
-    /* MAIN PAGE CONTENT TABS (RIWAYAT PENCAIRAN VS PENCAIRAN PENDING) */
-    .page-tab-bar {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border-bottom: 2px solid #E5E7EB;
-      margin-bottom: 16px;
-      background: #FFFFFF;
-      padding: 6px 16px 0 16px;
-      border-radius: 8px 8px 0 0;
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.03);
-    }
-
-    .page-tab-item {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 12px 18px;
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      font-weight: 500;
-      color: #6B7280;
-      cursor: pointer;
-      border-bottom: 3px solid transparent;
-      margin-bottom: -2px;
-      transition: all 0.2s ease;
-      user-select: none;
-    }
-
-    .page-tab-item:hover {
-      color: #1F2937;
-    }
-
-    .page-tab-item.active {
-      color: #2563EB;
-      font-weight: 600;
-      border-bottom-color: #2563EB;
-      background: rgba(37, 99, 235, 0.05);
-      border-radius: 6px 6px 0 0;
-    }
-
-    .page-tab-badge {
-      background: #D97706;
-      color: white;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 7px;
-      border-radius: 10px;
-    }
-
     /* MAIN CONTENT AREA (Positioned offset sidebar & headers) */
     .main-content {
       margin-top: 118px;
@@ -1416,46 +1366,23 @@
       <div class="metrics-grid">
         <div class="metric-card">
           <span class="metric-title">Total Volume Penarikan</span>
-          <span class="metric-value">Rp 124.500.000</span>
+          <span class="metric-value" id="stat-total-volume">Rp 4.700.000</span>
           <span class="metric-subtext" id="subtext-volume">Akumulasi pengajuan 29 Jul 2026 s/d 29 Jul 2026</span>
         </div>
         <div class="metric-card success">
           <span class="metric-title">Pencairan Sukses</span>
-          <span class="metric-value" id="stat-sukses-count">142</span>
-          <span class="metric-subtext" id="subtext-sukses">Berhasil disalurkan via Espay 29 Jul 2026 s/d 29 Jul
-            2026</span>
+          <span class="metric-value" id="stat-sukses-count">2</span>
+          <span class="metric-subtext" id="subtext-sukses">Berhasil disalurkan via Espay 29 Jul 2026 s/d 29 Jul 2026</span>
         </div>
         <div class="metric-card pending">
-          <span class="metric-title">Pending Audit (Kondisi B)</span>
-          <span class="metric-value" id="stat-pending-count">12</span>
-          <span class="metric-subtext" id="subtext-pending">Perlu peninjauan manual 29 Jul 2026 s/d 29 Jul 2026</span>
+          <span class="metric-title">Pencairan Diproses</span>
+          <span class="metric-value" id="stat-proses-count">4</span>
+          <span class="metric-subtext" id="subtext-pending">Sedang diproses payment gateway 29 Jul 2026 s/d 29 Jul 2026</span>
         </div>
         <div class="metric-card rejected">
-          <span class="metric-title">Ditolak / Refund</span>
-          <span class="metric-value" id="stat-ditolak-count">8</span>
-          <span class="metric-subtext" id="subtext-ditolak">Dana dikembalikan ke saldo 29 Jul 2026 s/d 29 Jul
-            2026</span>
-        </div>
-      </div>
-
-      <!-- PAGE CONTENT NAVIGATION TABS (MONITORING PENCAIRAN SALDO VS PENCAIRAN PENDING) -->
-      <div class="page-tab-bar">
-        <div class="page-tab-item active" id="page-tab-logs" onclick="switchTab('logs')">
-          <span>📋 Monitoring Pencairan Saldo</span>
-        </div>
-        <div class="page-tab-item" id="page-tab-pending" onclick="switchTab('pending')">
-          <span>⏳ Persetujuan Tertunda</span>
-          <span class="page-tab-badge" id="page-tab-badge-counter">4</span>
-        </div>
-      </div>
-
-      <!-- SECURITY BANNER (Shows on Pending Audit Tab) -->
-      <div class="security-banner" id="security-banner" style="display: none;">
-        <span class="security-banner-icon">⚠️</span>
-        <div class="security-banner-text">
-          <strong>PANDUAN KEAMANAN AUDIT AUDITOR FINANCE (FDE DETECTIONS):</strong><br>
-          Antrean ini berisi transaksi penarikan e-wallet pelanggan yang ditangguhkan oleh <strong>Fraud Detection Engine (FDE)</strong> karena menggunakan <strong>nomor HP baru</strong> atau terdeteksi <strong>terhubung ke akun pelanggan sCanWin lain</strong>.
-          Harap lakukan verifikasi identitas pemilik utama e-wallet pada detail transaksi sebelum menekan tombol <strong>Approve</strong>.
+          <span class="metric-title">Ditolak / Gagal</span>
+          <span class="metric-value" id="stat-ditolak-count">1</span>
+          <span class="metric-subtext" id="subtext-ditolak">Dana dikembalikan ke saldo 29 Jul 2026 s/d 29 Jul 2026</span>
         </div>
       </div>
 
@@ -1468,15 +1395,24 @@
             <div class="search-box">
               <span class="search-icon">🔍</span>
               <input type="text" id="search-input" class="search-input"
-                placeholder="Cari ID Transaksi, ID Pelanggan, Nama Pelanggan, No HP..." oninput="filterTable()">
+                placeholder="Cari ID Transaksi, ID Pelanggan, NIK 16-Digit, Nama KTP, No HP..." oninput="filterTable()">
             </div>
 
+            <!-- FILTER TIPE E-WALLET (PRD 26 STORY 2) -->
+            <select id="ewallet-filter" class="filter-select" onchange="filterTable()">
+              <option value="ALL">Semua E-Wallet</option>
+              <option value="GoPay">GoPay</option>
+              <option value="OVO">OVO</option>
+              <option value="DANA">DANA</option>
+              <option value="ShopeePay">ShopeePay</option>
+            </select>
+
+            <!-- FILTER STATUS PENARIKAN (PRD 26 STORY 2) -->
             <select id="status-filter" class="filter-select" onchange="filterTable()">
               <option value="ALL">Semua Status</option>
-              <option value="Pending Audit">Pending Audit</option>
               <option value="Sukses">Sukses</option>
-              <option value="Ditolak">Ditolak</option>
-              <option value="Timeout Callback">Timeout Callback</option>
+              <option value="Proses">Proses</option>
+              <option value="Gagal">Gagal</option>
             </select>
 
             <!-- INTERACTIVE DATE RANGE PICKER COMPONENT -->
@@ -1535,9 +1471,10 @@
           </div>
 
           <div class="filter-group-right">
-            <button class="btn-export" onclick="exportData()">
-              <span>📥</span>
-              <span>Export CSV</span>
+            <!-- EXPORT EXCEL BUTTON (PRD 27) -->
+            <button class="btn-export" onclick="exportDataExcel()">
+              <span>📊</span>
+              <span>Export Excel (.xlsx)</span>
             </button>
             <button class="btn-refresh" onclick="refreshData()">
               <span>🔄</span>
@@ -1546,21 +1483,24 @@
           </div>
         </div>
 
-        <!-- DATA TABLE (FIGMA SPEC MATCH: Header bg #f5f5f5, bottom-border 2px #4181ef) -->
+        <!-- DATA TABLE (14 KOLOM LENGKAP PRD 26 STORY 3: NIK 16-Digit & Nama KTP Unmasked) -->
         <div class="table-responsive">
           <table class="data-table">
             <thead>
               <tr>
-                <th style="width: 50px; text-align: center;">No</th>
+                <th style="width: 40px; text-align: center;">No.</th>
                 <th>ID Transaksi</th>
                 <th>ID Pelanggan</th>
                 <th>Nama Pelanggan</th>
+                <th>Nama Sesuai KTP</th>
+                <th>NIK Pelanggan</th>
                 <th>Tipe E-Wallet</th>
                 <th>No. HP E-Wallet</th>
                 <th style="text-align: right;">Nominal Penarikan</th>
                 <th style="text-align: right;">Biaya Admin</th>
-                <th>Status Penarikan</th>
                 <th>Waktu Pengajuan</th>
+                <th>Waktu Pencairan</th>
+                <th>Status Penarikan</th>
                 <th style="text-align: center;">Aksi</th>
               </tr>
             </thead>
@@ -1730,9 +1670,11 @@
           <div style="font-size: 13px; display: flex; flex-direction: column; gap: 6px;">
             <div><strong>ID Pelanggan:</strong> <span id="drawer-merchant-id">USR-10821</span></div>
             <div><strong>Nama Pelanggan:</strong> <span id="drawer-toko-name">Budi Santoso</span></div>
-            <div><strong>No. HP Terdaftar App:</strong> <span id="drawer-owner">0812-9900-1122</span></div>
+            <div><strong>Nama Sesuai KTP:</strong> <span id="drawer-ktp-name">Budi Santoso</span></div>
+            <div><strong>NIK Pelanggan:</strong> <span id="drawer-nik" class="font-mono" style="font-weight: 700;">3201234567890001</span></div>
+            <div><strong>No. HP Terdaftar App:</strong> <span id="drawer-owner">081234567890</span></div>
             <div><strong>Status Akun:</strong> <span id="drawer-kontrak-hp"
-                class="status-badge badge-sukses">Terverifikasi</span></div>
+                class="status-badge badge-sukses">Aktif</span></div>
           </div>
         </div>
 
@@ -1744,9 +1686,11 @@
             <div><strong>No. HP E-Wallet Tujuan:</strong> <span class="font-mono"
                 id="drawer-ewallet-hp">081234567890</span></div>
             <div><strong>Status Penarikan Saldo:</strong> <span id="drawer-status-badge"
-                class="status-badge badge-pending">Pending Audit</span></div>
+                class="status-badge badge-pending">Proses</span></div>
             <div><strong>Nominal Penarikan:</strong> <span id="drawer-nominal">Rp 500.000</span></div>
             <div><strong>Biaya Admin:</strong> <span>Rp 1.650</span></div>
+            <div><strong>Waktu Pengajuan:</strong> <span id="drawer-waktu-pengajuan">29 Jul 2026, 14:20 WIB</span></div>
+            <div><strong>Waktu Pencairan (Espay):</strong> <span id="drawer-waktu-pencairan">-</span></div>
           </div>
 
           <!-- DETEKSI FDE & INDIKASI E-WALLET AKUN LAIN -->
@@ -1780,13 +1724,14 @@
   </div>
 
   <script>
-    // INITIAL MOCK DATA (PELANGGAN SCANWIN)
-    // INITIAL MOCK DATA (PELANGGAN SCANWIN - FDE CASE DETECTIONS)
+    // INITIAL MOCK DATA (PELANGGAN SCANWIN - FDE CASE DETECTIONS DENGAN NIK & DATA LENGKAP)
     const initialData = [
       {
-        id: 'TRX-992101',
-        merchantId: 'USR-10821',
+        id: 'TXW-20260729-001',
+        merchantId: 'CUST-1002938',
         toko: 'Budi Santoso',
+        namaKtp: 'Budi Santoso',
+        nik: '3201234567890001',
         ewallet: 'OVO',
         ewalletClass: 'bg-ovo',
         hp: '081234567890',
@@ -1795,13 +1740,16 @@
         linkedAccount: null,
         nominal: 500000,
         admin: 1650,
-        status: 'Pending Audit',
-        time: '29 Jul 2026, 14:20'
+        status: 'Proses',
+        time: '29 Jul 2026, 14:20 WIB',
+        waktuPencairan: '-'
       },
       {
-        id: 'TRX-992100',
-        merchantId: 'USR-10543',
+        id: 'TXW-20260729-002',
+        merchantId: 'CUST-1005432',
         toko: 'Ahmad Hidayat',
+        namaKtp: 'Ahmad Hidayat',
+        nik: '3273012938470002',
         ewallet: 'DANA',
         ewalletClass: 'bg-dana',
         hp: '085711223344',
@@ -1811,47 +1759,56 @@
         nominal: 250000,
         admin: 1650,
         status: 'Sukses',
-        time: '29 Jul 2026, 14:15'
+        time: '29 Jul 2026, 14:15 WIB',
+        waktuPencairan: '29 Jul 2026, 14:16 WIB'
       },
       {
-        id: 'TRX-992099',
-        merchantId: 'USR-10112',
+        id: 'TXW-20260729-003',
+        merchantId: 'CUST-1001123',
         toko: 'Siti Rahmawati',
+        namaKtp: 'Siti Rahmawati',
+        nik: '3171092837460003',
         ewallet: 'GoPay',
         ewalletClass: 'bg-gopay',
-        hp: '081988776655',
+        hp: '081398765432',
         fdeReason: null,
         fdeReasonLabel: null,
         linkedAccount: null,
         nominal: 1000000,
         admin: 1650,
-        status: 'Ditolak',
-        time: '29 Jul 2026, 13:50'
+        status: 'Gagal',
+        time: '29 Jul 2026, 13:50 WIB',
+        waktuPencairan: '29 Jul 2026, 13:51 WIB'
       },
       {
-        id: 'TRX-992098',
-        merchantId: 'USR-10992',
+        id: 'TXW-20260729-004',
+        merchantId: 'CUST-1009921',
         toko: 'Dewi Lestari',
+        namaKtp: 'Dewi Lestari',
+        nik: '3578019283740004',
         ewallet: 'DANA',
         ewalletClass: 'bg-dana',
-        hp: '081988776655',
+        hp: '081398765432',
         fdeReason: 'CROSS_ACCOUNT',
         fdeReasonLabel: '⚠️ Terhubung Akun Lain',
         linkedAccount: {
-          merchantId: 'USR-10112',
+          merchantId: 'CUST-1001123',
           toko: 'Siti Rahmawati',
-          hp: '0819-8877-6655',
-          relation: 'E-Wallet Utama Terdaftar di Akun USR-10112 (Siti Rahmawati)'
+          hp: '081398765432',
+          relation: 'E-Wallet Utama Terdaftar di Akun CUST-1001123 (Siti Rahmawati)'
         },
         nominal: 1250000,
         admin: 1650,
-        status: 'Pending Audit',
-        time: '29 Jul 2026, 13:42'
+        status: 'Proses',
+        time: '29 Jul 2026, 13:42 WIB',
+        waktuPencairan: '-'
       },
       {
-        id: 'TRX-992097',
-        merchantId: 'USR-10441',
+        id: 'TXW-20260729-005',
+        merchantId: 'CUST-1004412',
         toko: 'Rahmat Hidayat',
+        namaKtp: 'Rahmat Hidayat',
+        nik: '3204091827360005',
         ewallet: 'OVO',
         ewalletClass: 'bg-ovo',
         hp: '081211223344',
@@ -1860,13 +1817,16 @@
         linkedAccount: null,
         nominal: 350000,
         admin: 1650,
-        status: 'Pending Audit',
-        time: '29 Jul 2026, 13:30'
+        status: 'Proses',
+        time: '29 Jul 2026, 13:30 WIB',
+        waktuPencairan: '-'
       },
       {
-        id: 'TRX-992096',
-        merchantId: 'USR-10229',
+        id: 'TXW-20260729-006',
+        merchantId: 'CUST-1002290',
         toko: 'Eko Prasetyo',
+        namaKtp: 'Eko Prasetyo',
+        nik: '3374019283740006',
         ewallet: 'GoPay',
         ewalletClass: 'bg-gopay',
         hp: '085677889900',
@@ -1876,31 +1836,33 @@
         nominal: 600000,
         admin: 1650,
         status: 'Sukses',
-        time: '29 Jul 2026, 13:10'
+        time: '29 Jul 2026, 13:10 WIB',
+        waktuPencairan: '29 Jul 2026, 13:11 WIB'
       },
       {
-        id: 'TRX-992095',
-        merchantId: 'USR-10665',
+        id: 'TXW-20260729-007',
+        merchantId: 'CUST-1006654',
         toko: 'Nurtjahja',
-        ewallet: 'OVO',
-        ewalletClass: 'bg-ovo',
+        namaKtp: 'Nurtjahja',
+        nik: '3671092837460007',
+        ewallet: 'ShopeePay',
+        ewalletClass: 'bg-shopeepay',
         hp: '085711223344',
         fdeReason: 'CROSS_ACCOUNT',
         fdeReasonLabel: '⚠️ Terhubung Akun Lain',
         linkedAccount: {
-          merchantId: 'USR-10543',
+          merchantId: 'CUST-1005432',
           toko: 'Ahmad Hidayat',
-          hp: '0857-1122-3344',
-          relation: 'E-Wallet Utama Terdaftar di Akun USR-10543 (Ahmad Hidayat)'
+          hp: '085711223344',
+          relation: 'E-Wallet Utama Terdaftar di Akun CUST-1005432 (Ahmad Hidayat)'
         },
         nominal: 750000,
         admin: 1650,
-        status: 'Pending Audit',
-        time: '29 Jul 2026, 12:55'
+        status: 'Proses',
+        time: '29 Jul 2026, 12:55 WIB',
+        waktuPencairan: '-'
       }
     ];
-
-    let currentTab = 'logs'; // 'logs' or 'pending'
     let activeTrxId = null;
 
     // FORMAT CURRENCY
@@ -1908,27 +1870,33 @@
       return 'Rp ' + num.toLocaleString('id-ID');
     }
 
-    // RENDER TABLE DATA
+    // RENDER TABLE DATA (14 KOLOM LENGKAP PRD 26 STORY 3)
     function renderTable() {
       const tbody = document.getElementById('table-body');
-      const searchVal = document.getElementById('search-input').value.toLowerCase();
+      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
       const statusVal = document.getElementById('status-filter').value;
+      const ewalletVal = document.getElementById('ewallet-filter') ? document.getElementById('ewallet-filter').value : 'ALL';
 
       let filtered = initialData.filter(item => {
-        // Tab filter: 'logs' tab displays completed/processed logs only (NO Pending Audit items)
-        if (currentTab === 'logs' && item.status === 'Pending Audit') return false;
-
-        // Tab filter: 'pending' tab displays ONLY Pending Audit items
-        if (currentTab === 'pending' && item.status !== 'Pending Audit') return false;
-
         // Status dropdown filter
-        if (statusVal !== 'ALL' && item.status !== statusVal) return false;
+        if (statusVal !== 'ALL') {
+          if (statusVal === 'Ditolak' && (item.status === 'Ditolak' || item.status === 'Gagal')) {
+            // match
+          } else if (item.status !== statusVal) {
+            return false;
+          }
+        }
 
-        // Search input filter
+        // E-Wallet dropdown filter
+        if (ewalletVal !== 'ALL' && item.ewallet !== ewalletVal) return false;
+
+        // Search input filter (ID Transaksi, ID Pelanggan, Nama, Nama KTP, NIK 16 digit, No HP)
         if (searchVal) {
           const matchesSearch = item.id.toLowerCase().includes(searchVal) ||
             item.merchantId.toLowerCase().includes(searchVal) ||
             item.toko.toLowerCase().includes(searchVal) ||
+            (item.namaKtp && item.namaKtp.toLowerCase().includes(searchVal)) ||
+            (item.nik && item.nik.includes(searchVal)) ||
             item.hp.includes(searchVal);
           if (!matchesSearch) return false;
         }
@@ -1938,38 +1906,22 @@
       tbody.innerHTML = '';
 
       if (filtered.length === 0) {
-        tbody.innerHTML = `<tr><td colspan="11" style="text-align:center; padding: 24px; color: #999;">Tidak ada data transaksi yang sesuai filter.</td></tr>`;
+        tbody.innerHTML = `<tr><td colspan="14" style="text-align:center; padding: 24px; color: #999;">Tidak ada data transaksi yang sesuai filter.</td></tr>`;
         document.getElementById('pagination-info').innerText = 'Showing 0 items';
+        updateCounterBadges([]);
         return;
       }
 
       filtered.forEach((item, index) => {
         let badgeClass = 'badge-pending';
         if (item.status === 'Sukses') badgeClass = 'badge-sukses';
-        else if (item.status === 'Ditolak') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Ditolak' || item.status === 'Gagal') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Proses') badgeClass = 'badge-pending';
         else if (item.status === 'Timeout Callback') badgeClass = 'badge-timeout';
-
-        // Action Buttons: NO icons on buttons (Item 1)
-        let actionHtml = '';
-        if (currentTab === 'pending' && item.status === 'Pending Audit') {
-          actionHtml = `
-          <div class="action-group">
-            <button class="btn-action-approve" onclick="openApproveModal('${item.id}')">Approve</button>
-            <button class="btn-action-reject" onclick="openRejectModal('${item.id}')">Reject</button>
-            <button class="btn-action-detail" onclick="openDrawer('${item.id}')">Detail</button>
-          </div>
-        `;
-        } else {
-          actionHtml = `
-          <div class="action-group">
-            <button class="btn-action-detail" onclick="openDrawer('${item.id}')">Detail</button>
-          </div>
-        `;
-        }
 
         let fdeBadgeHtml = '';
         if (item.fdeReason === 'CROSS_ACCOUNT') {
-          fdeBadgeHtml = `<div class="tag-new-number" style="background: #FFFBEB; color: #B45309; border-color: #FCD34D;">⚠️ Terhubung Akun Lain (${item.linkedAccount ? item.linkedAccount.merchantId : ''})</div>`;
+          fdeBadgeHtml = `<div class="tag-new-number" style="background: #FFFBEB; color: #B45309; border-color: #FCD34D;">⚠️ Terhubung Akun Lain</div>`;
         } else if (item.fdeReason === 'NEW_NUMBER') {
           fdeBadgeHtml = `<div class="tag-new-number">⚠️ Nomor Baru</div>`;
         }
@@ -1980,72 +1932,27 @@
         <td class="font-mono text-clickable" onclick="openDrawer('${item.id}')">${item.id}</td>
         <td class="font-mono" style="color: #666;">${item.merchantId}</td>
         <td><strong>${item.toko}</strong></td>
-        <td>${item.ewallet}</td>
+        <td>${item.namaKtp || '-'}</td>
+        <td class="font-mono" style="color: #1F2937; font-weight: 600;">${item.nik || '-'}</td>
+        <td><strong>${item.ewallet}</strong></td>
         <td>
           <div class="font-mono">${item.hp}</div>
           ${fdeBadgeHtml}
         </td>
         <td style="text-align: right; font-weight: 600;">${formatRp(item.nominal)}</td>
         <td style="text-align: right; color: #666;">${formatRp(item.admin)}</td>
-        <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
         <td style="font-size: 11px; color: #666;">${item.time}</td>
-        <td style="text-align: center;">${actionHtml}</td>
+        <td style="font-size: 11px; color: #666;">${item.waktuPencairan || '-'}</td>
+        <td><span class="status-badge ${badgeClass}">${item.status}</span></td>
+        <td style="text-align: center;">
+          <button class="btn-action-detail" onclick="openDrawer('${item.id}')">Lihat Detail</button>
+        </td>
       `;
         tbody.appendChild(row);
       });
 
       document.getElementById('pagination-info').innerText = `Showing 1-${filtered.length} of ${filtered.length} items`;
-      updateCounterBadges();
-    }
-
-    // SWITCH TAB LOGS VS PENDING
-    function switchTab(tab) {
-      currentTab = tab;
-
-      // Page content tabs active state
-      if (document.getElementById('page-tab-logs')) {
-        document.getElementById('page-tab-logs').classList.toggle('active', tab === 'logs');
-      }
-      if (document.getElementById('page-tab-pending')) {
-        document.getElementById('page-tab-pending').classList.toggle('active', tab === 'pending');
-      }
-
-      // Sidebar tree tabs active state
-      if (document.getElementById('tab-logs-btn')) {
-        document.getElementById('tab-logs-btn').classList.toggle('active', tab === 'logs');
-      }
-      if (document.getElementById('tab-pending-btn')) {
-        document.getElementById('tab-pending-btn').classList.toggle('active', tab === 'pending');
-      }
-
-      // Toggle timeline dot active class
-      if (document.getElementById('dot-logs')) {
-        document.getElementById('dot-logs').classList.toggle('active', tab === 'logs');
-      }
-      if (document.getElementById('dot-pending')) {
-        document.getElementById('dot-pending').classList.toggle('active', tab === 'pending');
-      }
-
-      // Update table title badge text
-      const titleText = document.getElementById('table-title-text');
-      if (titleText) {
-        titleText.innerText = (tab === 'pending') ? 'Antrean Persetujuan Tertunda' : 'Monitoring Pencairan Saldo';
-      }
-
-      // Security banner visibility
-      document.getElementById('security-banner').style.display = (tab === 'pending') ? 'flex' : 'none';
-
-      if (tab === 'pending') {
-        document.getElementById('status-filter').value = 'Pending Audit';
-      } else {
-        document.getElementById('status-filter').value = 'ALL';
-      }
-      renderTable();
-    }
-
-    // FILTER TRIGGER
-    function filterTable() {
-      renderTable();
+      updateCounterBadges(filtered);
     }
 
     let selectedPreset = 'today';
@@ -2150,6 +2057,11 @@
       const endInput = document.getElementById('end-date-input');
 
       if (startInput && endInput) {
+        if (startInput.value > endInput.value) {
+          showToast('⚠️ Tanggal Mulai tidak boleh lebih besar dari Tanggal Selesai!', '#EF4444');
+          return;
+        }
+
         startDateVal = startInput.value;
         endDateVal = endInput.value;
 
@@ -2182,23 +2094,28 @@
       }
     }
 
-    // UPDATE COUNTERS & METRIC CARD DATES
-    function updateCounterBadges() {
-      const pendingCount = initialData.filter(i => i.status === 'Pending Audit').length;
-      const suksesCount = initialData.filter(i => i.status === 'Sukses').length;
-      const ditolakCount = initialData.filter(i => i.status === 'Ditolak').length;
+    // UPDATE COUNTERS & METRIC CARDS (DINAMIS SESUAI PRD 26 STORY 1)
+    function updateCounterBadges(currentFilteredList) {
+      const list = currentFilteredList || initialData;
+      const totalVolume = list.reduce((acc, curr) => acc + (curr.nominal || 0), 0);
+      const suksesList = list.filter(i => i.status === 'Sukses');
+      const prosesList = list.filter(i => i.status === 'Proses');
+      const ditolakList = list.filter(i => i.status === 'Ditolak' || i.status === 'Gagal');
 
       applyDateFilterLabel();
 
-      if (document.getElementById('pending-badge-counter')) {
-        document.getElementById('pending-badge-counter').innerText = pendingCount;
+      if (document.getElementById('stat-total-volume')) {
+        document.getElementById('stat-total-volume').innerText = formatRp(totalVolume);
       }
-      if (document.getElementById('page-tab-badge-counter')) {
-        document.getElementById('page-tab-badge-counter').innerText = pendingCount;
+      if (document.getElementById('stat-sukses-count')) {
+        document.getElementById('stat-sukses-count').innerText = suksesList.length;
       }
-      document.getElementById('stat-pending-count').innerText = pendingCount;
-      document.getElementById('stat-sukses-count').innerText = suksesCount;
-      document.getElementById('stat-ditolak-count').innerText = ditolakCount;
+      if (document.getElementById('stat-proses-count')) {
+        document.getElementById('stat-proses-count').innerText = prosesList.length;
+      }
+      if (document.getElementById('stat-ditolak-count')) {
+        document.getElementById('stat-ditolak-count').innerText = ditolakList.length;
+      }
     }
 
     // MODAL APPROVE HANDLERS
@@ -2212,9 +2129,8 @@
       document.getElementById('approve-modal-ewallet').innerText = `${item.ewallet} - ${item.hp}`;
       document.getElementById('approve-modal-nominal').innerText = formatRp(item.nominal);
 
-      // Dynamic populate E-Wallet provider & numbers in Checkbox Section
       const existingProvider = item.linkedAccount ? 'OVO' : 'OVO';
-      const existingHp = item.linkedAccount ? item.linkedAccount.hp : '0812-9900-1122';
+      const existingHp = item.linkedAccount ? item.linkedAccount.hp : '081234567890';
 
       if (document.getElementById('approve-modal-ewallet-provider')) {
         document.getElementById('approve-modal-ewallet-provider').innerText = item.ewallet;
@@ -2235,7 +2151,6 @@
         document.getElementById('approve-modal-new-hp').innerText = item.hp;
       }
 
-      // Default checkbox state to checked for new number or cross account
       const chkSetPrimary = document.getElementById('chk-set-primary-ewallet');
       if (chkSetPrimary) chkSetPrimary.checked = true;
 
@@ -2262,10 +2177,11 @@
         const item = initialData.find(i => i.id === activeTrxId);
         if (item) {
           item.status = 'Sukses';
+          item.waktuPencairan = '29 Jul 2026, 14:21 WIB';
           if (isSetPrimary) {
             item.fdeReason = null;
             item.fdeReasonLabel = null;
-            showToast(`✅ Persetujuan Berhasil! Transaksi ${activeTrxId} disetujui & nomor ${item.ewallet} (${item.hp}) telah dijadikan nomor E-Wallet utama pelanggan ${item.toko}.`);
+            showToast(`✅ Persetujuan Berhasil! Transaksi ${activeTrxId} disetujui & nomor ${item.ewallet} (${item.hp}) telah dijadikan E-Wallet utama pelanggan ${item.toko}.`);
           } else {
             showToast(`✅ Persetujuan Berhasil! Transaksi ${activeTrxId} telah disetujui & diproses via Espay.`);
           }
@@ -2296,13 +2212,14 @@
       const item = initialData.find(i => i.id === activeTrxId);
       if (item) {
         item.status = 'Ditolak';
+        item.waktuPencairan = '29 Jul 2026, 14:22 WIB';
         closeModal('modal-reject');
         showToast(`🔴 Penolakan Berhasil! Dana ${formatRp(item.nominal + item.admin)} telah dikembalikan ke Saldo Pelanggan ${item.toko}.`, '#DC2626');
         renderTable();
       }
     }
 
-    // DRAWER HANDLERS
+    // DRAWER HANDLERS (DENGAN NIK & DATA LENGKAP)
     function openDrawer(trxId) {
       activeTrxId = trxId;
       const item = initialData.find(i => i.id === trxId);
@@ -2311,22 +2228,27 @@
       document.getElementById('drawer-trxid').innerText = item.id;
       document.getElementById('drawer-merchant-id').innerText = item.merchantId;
       document.getElementById('drawer-toko-name').innerText = item.toko;
+      document.getElementById('drawer-ktp-name').innerText = item.namaKtp || '-';
+      document.getElementById('drawer-nik').innerText = item.nik || '-';
+      document.getElementById('drawer-owner').innerText = item.hp;
       document.getElementById('drawer-ewallet-type').innerText = item.ewallet;
       document.getElementById('drawer-ewallet-hp').innerText = item.hp;
       document.getElementById('drawer-nominal').innerText = formatRp(item.nominal);
+      document.getElementById('drawer-waktu-pengajuan').innerText = item.time;
+      document.getElementById('drawer-waktu-pencairan').innerText = item.waktuPencairan || '-';
 
-      // Status Penarikan Saldo inline with Table Status Badges
       const statusBadge = document.getElementById('drawer-status-badge');
       if (statusBadge) {
         statusBadge.innerText = item.status;
         let badgeClass = 'badge-pending';
         if (item.status === 'Sukses') badgeClass = 'badge-sukses';
-        else if (item.status === 'Ditolak') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Ditolak' || item.status === 'Gagal') badgeClass = 'badge-ditolak';
+        else if (item.status === 'Proses') badgeClass = 'badge-pending';
         else if (item.status === 'Timeout Callback') badgeClass = 'badge-timeout';
         statusBadge.className = `status-badge ${badgeClass}`;
       }
 
-      // Inject FDE Alert Callout Box (Deteksi Nomor Baru vs Terhubung Akun Lain)
+      // Inject FDE Alert Callout Box
       const fdeAlertBox = document.getElementById('drawer-fde-alert-box');
       if (fdeAlertBox) {
         if (item.fdeReason === 'CROSS_ACCOUNT' && item.linkedAccount) {
@@ -2369,19 +2291,19 @@
           fdeLogText = `Ditangguhkan oleh Fraud Detection Engine (E-Wallet Terhubung ke Akun ${item.linkedAccount.merchantId} - ${item.linkedAccount.toko})`;
         }
 
-        if (item.status === 'Pending Audit') {
+        if (item.status === 'Proses') {
           timelineBox.innerHTML = `
-            <div>• ${item.time} - ${fdeLogText}</div>
+            <div>• ${item.time} - Transaksi sedang diproses oleh payment gateway Espay</div>
             <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
           `;
         } else if (item.status === 'Sukses') {
           timelineBox.innerHTML = `
-            <div>• ${item.time} - Disetujui Auditor & Dana Berhasil Disalurkan ke E-Wallet</div>
+            <div>• ${item.waktuPencairan || item.time} - Dana berhasil disalurkan ke E-Wallet via Espay</div>
             <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
           `;
-        } else if (item.status === 'Ditolak') {
+        } else if (item.status === 'Gagal' || item.status === 'Ditolak') {
           timelineBox.innerHTML = `
-            <div>• ${item.time} - Ditolak Auditor Finance & Dana Direfund 100% ke Saldo</div>
+            <div>• ${item.waktuPencairan || item.time} - Pencairan gagal dieksekusi payment gateway Espay & dana dikembalikan ke saldo</div>
             <div>• ${item.time} - Transaksi diajukan pelanggan via App sCanWin</div>
           `;
         } else {
@@ -2393,7 +2315,7 @@
       }
 
       const footer = document.getElementById('drawer-footer-actions');
-      footer.style.display = (item.status === 'Pending Audit') ? 'flex' : 'none';
+      if (footer) footer.style.display = 'none';
 
       document.getElementById('drawer-detail').classList.add('show');
     }
@@ -2429,15 +2351,80 @@
 
       setTimeout(() => {
         toast.remove();
-      }, 4000);
+      }, 4500);
     }
 
-    function exportData() {
-      showToast('📥 Mengunduh file laporan penarikan CSV...');
+    // EXPORT DATA EXCEL (PRD 27 STORY 1 & 2: 13 KOLOM BAKU UNMASKED & FILE NAMING STANDAR)
+    function exportDataExcel() {
+      const searchVal = document.getElementById('search-input').value.toLowerCase().trim();
+      const statusVal = document.getElementById('status-filter').value;
+      const ewalletVal = document.getElementById('ewallet-filter') ? document.getElementById('ewallet-filter').value : 'ALL';
+
+      const filtered = initialData.filter(item => {
+        if (statusVal !== 'ALL') {
+          if (statusVal === 'Ditolak' && (item.status === 'Ditolak' || item.status === 'Gagal')) {
+            // match
+          } else if (item.status !== statusVal) {
+            return false;
+          }
+        }
+        if (ewalletVal !== 'ALL' && item.ewallet !== ewalletVal) return false;
+
+        if (searchVal) {
+          const matchesSearch = item.id.toLowerCase().includes(searchVal) ||
+            item.merchantId.toLowerCase().includes(searchVal) ||
+            item.toko.toLowerCase().includes(searchVal) ||
+            (item.namaKtp && item.namaKtp.toLowerCase().includes(searchVal)) ||
+            (item.nik && item.nik.includes(searchVal)) ||
+            item.hp.includes(searchVal);
+          if (!matchesSearch) return false;
+        }
+        return true;
+      });
+
+      if (filtered.length === 0) {
+        showToast('⚠️ Tidak ada data untuk diekspor sesuai filter aktif.', '#EF4444');
+        return;
+      }
+
+      const now = new Date();
+      const pad = n => String(n).padStart(2, '0');
+      const timeStamp = `${now.getFullYear()}${pad(now.getMonth() + 1)}${pad(now.getDate())}_${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}`;
+      const fileName = `Monitoring_Pencairan_Saldo_${timeStamp}.xlsx`;
+
+      const headers = [
+        'No.', 'ID Transaksi', 'ID Pelanggan', 'Nama Akun Pelanggan', 'Nama Sesuai KTP',
+        'NIK Pelanggan', 'Tipe E-Wallet', 'Nomor HP E-Wallet', 'Nominal Penarikan (Rp)',
+        'Biaya Admin (Rp)', 'Waktu Pengajuan', 'Waktu Pencairan', 'Status Penarikan'
+      ];
+
+      const csvRows = [headers.join(',')];
+
+      filtered.forEach((item, idx) => {
+        const row = [
+          idx + 1, `"${item.id}"`, `"${item.merchantId}"`, `"${item.toko}"`, `"${item.namaKtp || '-'}"`,
+          `\t${item.nik || '-'}`, `"${item.ewallet}"`, `\t${item.hp}`, item.nominal,
+          item.admin, `"${item.time}"`, `"${item.waktuPencairan || '-'}"`, `"${item.status}"`
+        ];
+        csvRows.push(row.join(','));
+      });
+
+      const csvContent = '\uFEFF' + csvRows.join('\r\n');
+      const blob = new Blob([csvContent], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+
+      showToast(`📊 Berkas ${fileName} (${filtered.length} baris) berhasil diunduh!`);
     }
 
     function refreshData() {
-      showToast('🔄 Data logs transaksi berhasil diperbarui.');
+      showToast('🔄 Data monitoring transaksi berhasil diperbarui.');
       renderTable();
     }
 
@@ -2446,7 +2433,6 @@
       renderTable();
     };
   </script>
-
 </body>
 
 </html>

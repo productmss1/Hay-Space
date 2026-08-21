@@ -557,7 +557,8 @@
             border-bottom: 1px solid var(--border-color);
             color: var(--text-dark);
         }
-            color: var(--text-dark);
+
+        color: var(--text-dark);
         }
 
         /* Seksi 2: Accordion E-Wallet */
@@ -732,6 +733,398 @@
             align-items: center;
             gap: 8px;
         }
+
+        /* Header & Accordion Action Buttons */
+        .header-action-buttons {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-header-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        .btn-header-action.btn-danger {
+            background-color: #EF4444;
+            color: #FFFFFF;
+        }
+
+        .btn-header-action.btn-danger:hover {
+            background-color: #DC2626;
+        }
+
+        .btn-header-action.btn-success {
+            background-color: #10B981;
+            color: #FFFFFF;
+        }
+
+        .btn-header-action.btn-success:hover {
+            background-color: #059669;
+        }
+
+        .btn-header-action.btn-warning {
+            background-color: #F59E0B;
+            color: #FFFFFF;
+        }
+
+        .btn-header-action.btn-warning:hover {
+            background-color: #D97706;
+        }
+
+        .btn-header-action.btn-info {
+            background-color: #0284C7;
+            color: #FFFFFF;
+        }
+
+        .btn-header-action.btn-info:hover {
+            background-color: #0369A1;
+        }
+
+        .btn-acc-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 5px 10px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            cursor: pointer;
+            border: none;
+            margin-right: 8px;
+            transition: all 0.2s;
+        }
+
+        .btn-acc-danger {
+            background-color: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FCA5A5;
+        }
+
+        .btn-acc-danger:hover {
+            background-color: #EF4444;
+            color: #FFFFFF;
+        }
+
+        .btn-acc-success {
+            background-color: #D1FAE5;
+            color: #065F46;
+            border: 1px solid #6EE7B7;
+        }
+
+        .btn-acc-success:hover {
+            background-color: #10B981;
+            color: #FFFFFF;
+        }
+
+        /* Modal Overlay & Card Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(15, 23, 42, 0.65);
+            backdrop-filter: blur(3px);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-card {
+            background-color: #FFFFFF;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 520px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+            transform: scale(0.95);
+            transition: transform 0.2s ease;
+        }
+
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h3 {
+            font-size: 16px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-close-btn {
+            background: none;
+            border: none;
+            font-size: 16px;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 4px;
+            border-radius: 4px;
+        }
+
+        .modal-close-btn:hover {
+            color: var(--text-dark);
+            background-color: #F1F5F9;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 75vh;
+            overflow-y: auto;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            background-color: #F8FAFC;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+
+        .form-label .req {
+            color: #EF4444;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        .form-control.error {
+            border-color: #EF4444;
+        }
+
+        .char-counter {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        .char-counter.error-text {
+            color: #EF4444;
+            font-weight: 600;
+        }
+
+        .notice-box {
+            padding: 12px 14px;
+            border-radius: 8px;
+            font-size: 12.5px;
+            line-height: 1.5;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+        .notice-box.warning {
+            background-color: #FEF3C7;
+            border: 1px solid #FCD34D;
+            color: #92400E;
+        }
+
+        .notice-box.info {
+            background-color: #E0F2FE;
+            border: 1px solid #7DD3FC;
+            color: #075985;
+        }
+
+        .notice-box.danger {
+            background-color: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #991B1B;
+        }
+
+        .notice-box.success {
+            background-color: #D1FAE5;
+            border: 1px solid #6EE7B7;
+            color: #065F46;
+        }
+
+        .impact-list-box {
+            background-color: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 12.5px;
+        }
+
+        .impact-list-box ul {
+            margin-left: 18px;
+            margin-top: 6px;
+        }
+
+        .impact-list-box li {
+            margin-bottom: 4px;
+        }
+
+        /* Checkbox Option Group for E-Wallet Selection */
+        .ewallet-select-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 4px;
+        }
+
+        .ewallet-select-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .ewallet-select-item:hover {
+            background-color: #F1F5F9;
+        }
+
+        .ewallet-select-item input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #EF4444;
+            cursor: pointer;
+        }
+
+        /* Toast Floating Notification */
+        .push-toast-container {
+            position: fixed;
+            top: 75px;
+            right: 24px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .push-toast {
+            pointer-events: auto;
+            width: 360px;
+            background-color: #0F172A;
+            color: #FFFFFF;
+            border-radius: 8px;
+            padding: 14px 16px;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            animation: slideInRight 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .push-toast .toast-icon {
+            font-size: 18px;
+            color: #F87171;
+            margin-top: 2px;
+        }
+
+        .push-toast .toast-content {
+            flex: 1;
+        }
+
+        .push-toast .toast-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .push-toast .toast-msg {
+            font-size: 12px;
+            color: #94A3B8;
+            line-height: 1.4;
+        }
+
+        .push-toast .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: #EF4444;
+            width: 100%;
+            animation: toastTimer 5s linear forwards;
+        }
+
+        @keyframes slideInRight {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes toastTimer {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
     </style>
 </head>
 
@@ -752,35 +1145,44 @@
             <div class="header-simulation-group">
                 <div class="sim-control">
                     <i class="fa-solid fa-user-shield" style="color: #FFD166;"></i>
-                    <span>Role Simulasi:</span>
-                    <select id="rbacSelect" onchange="updateRole(this.value)">
-                        <option value="non-manager">Non-Manager sCanWin (Finance Admin)</option>
-                        <option value="manager">Manager sCanWin (Unmasked Access)</option>
+                    <span>Role Admin:</span>
+                    <select id="rbacSelect" onchange="updateSimRole(this.value)">
+                        <option value="non-manager">Non-Manager (is_manager_scanwin: false)</option>
+                        <option value="manager">Manager sCanWin (is_manager_scanwin: true)</option>
+                    </select>
+                </div>
+
+                <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
+                    <i class="fa-solid fa-sliders" style="color: #FFD166;"></i>
+                    <span>Setting Approval BE:</span>
+                    <select id="approvalPolicySelect" onchange="updateSimApprovalPolicy(this.value)">
+                        <option value="true">Wajib Approval Manager (ON)</option>
+                        <option value="false">Tanpa Approval / Direct (OFF)</option>
                     </select>
                 </div>
 
                 <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
                     <i class="fa-solid fa-triangle-exclamation" style="color: #FFD166;"></i>
-                    <span>Status Fraud Tag:</span>
+                    <span>Status Fraud:</span>
                     <select id="fraudSelect" onchange="updateFraudTag(this.value)">
-                        <option value="active">🔴 Terindikasi Fraud (Aktif)</option>
+                        <option value="active">🔴 Terindikasi Fraud</option>
                         <option value="normal">🟢 Normal / Clean</option>
                     </select>
                 </div>
 
                 <div class="sim-control" style="border-left: 1px solid rgba(255,255,255,0.3); padding-left: 10px;">
                     <i class="fa-solid fa-mobile-screen-button" style="color: #FFD166;"></i>
-                    <span>Simulasi Device:</span>
+                    <span>Device:</span>
                     <select id="deviceScenarioSelect" onchange="switchDeviceScenario(this.value)">
-                        <option value="multi">⚠️ Multi-Akun (3 Akun)</option>
-                        <option value="single">🟢 Perangkat Tunggal (1 Akun)</option>
+                        <option value="multi">⚠️ Multi-Akun (3)</option>
+                        <option value="single">🟢 Single Akun (1)</option>
                     </select>
                 </div>
             </div>
 
             <div class="user-profile">
                 <div class="user-avatar">NA</div>
-                <span style="font-weight: 600; font-size: 13.5px;">Nama Anda</span>
+                <span style="font-weight: 600; font-size: 13.5px;">Admin Portal</span>
                 <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
             </div>
         </div>
@@ -809,6 +1211,13 @@
                     <span>Monitoring Tarik Saldo</span>
                 </div>
             </a>
+            <a href="scanwin-admin-pusat-approval-manager.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Pusat Approval Manager</span>
+                </div>
+                <span style="background:#FEF3C7; color:#D97706; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:10px;">5</span>
+            </a>
         </aside>
 
         <!-- 3. MAIN CONTENT CANVAS -->
@@ -833,8 +1242,9 @@
                     <div class="avatar-box">BS</div>
                     <div class="profile-details">
                         <h2>
-                            <span>Budi Santoso</span>
-                            <span class="status-pill aktif"><i class="fa-solid fa-circle-check"></i> Aktif</span>
+                            <span id="custNameHeader">Budi Santoso</span>
+                            <span id="custStatusPill" class="status-pill aktif"><i class="fa-solid fa-circle-check"></i>
+                                Aktif</span>
                             <span id="fraudTagBadge" class="tag-fraud-warning">
                                 <i class="fa-solid fa-triangle-exclamation"></i> Terindikasi Fraud
                             </span>
@@ -843,7 +1253,7 @@
                             <div class="meta-item">
                                 <i class="fa-solid fa-phone" style="color: var(--text-light);"></i>
                                 <span>No. HP: <strong id="custPhoneDisplay"
-                                        style="font-family: monospace;">0812****5678</strong></span>
+                                        style="font-family: monospace;">081234567890</strong></span>
                             </div>
                             <div class="meta-item">
                                 <i class="fa-solid fa-calendar-day" style="color: var(--text-light);"></i>
@@ -856,18 +1266,72 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Tombol Aksi Header Global (Pusat Seluruh Aksi Intervensi Akun, E-Wallet & NIK) -->
+                <div id="headerActionButtons" class="header-action-buttons">
+                    <button id="btnBlokirAkun" class="btn-header-action btn-danger" onclick="openModalBlokirAkun()">
+                        <i class="fa-solid fa-user-slash"></i> Blokir Akun
+                    </button>
+                    <button id="btnUnblokAkun" class="btn-header-action btn-success" style="display:none;"
+                        onclick="openModalUnblokAkun()">
+                        <i class="fa-solid fa-user-check"></i> Unblok Akun
+                    </button>
+                    <button id="btnBlokirEWallet" class="btn-header-action btn-warning"
+                        onclick="openModalBlokirEWallet()">
+                        <i class="fa-solid fa-wallet"></i> Blokir Nomor E-Wallet
+                    </button>
+                    <button id="btnUnblokEWallet" class="btn-header-action btn-info" style="display:none;"
+                        onclick="openModalUnblokEWallet()">
+                        <i class="fa-solid fa-wallet"></i> Unblok Nomor E-Wallet
+                    </button>
+                    <button id="btnAjukanKoreksiNIK" class="btn-header-action" style="background:#6366F1; color:#FFFFFF;"
+                        onclick="openModalKoreksiNIK()">
+                        <i class="fa-solid fa-id-card"></i> Ubah NIK
+                    </button>
+                </div>
             </div>
 
             <!-- Horizontal 3 Tabs Detail Pelanggan -->
             <div class="detail-tabs">
-                <a href="scanwin-admin-detail-pelanggan-tab-informasi.html" class="detail-tab-item active">1. Informasi Pelanggan</a>
-                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-klaim-voucher.html" class="detail-tab-item">2. Riwayat Klaim Voucher</a>
-                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-pencairan-saldo.html" class="detail-tab-item">3. Riwayat Pencairan Saldo</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-informasi.html" class="detail-tab-item active">1. Informasi
+                    Pelanggan</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-klaim-voucher.html" class="detail-tab-item">2.
+                    Riwayat Klaim Voucher</a>
+                <a href="scanwin-admin-detail-pelanggan-tab-riwayat-pencairan-saldo.html" class="detail-tab-item">3.
+                    Riwayat Pencairan Saldo</a>
             </div>
 
             <!-- TAB 1 CONTENT CONTAINER -->
 
-            <!-- SEKSI 1: Pelacakan Device ID & Multi-Account Device -->
+            <!-- SEKSI 1: Card Identitas KTP (Single Identity NIK KTP - Unmasked) -->
+            <div class="section-card">
+                <div class="section-title">
+                    <i class="fa-solid fa-id-card" style="color: var(--primary-cyan);"></i>
+                    <span>Identitas KTP Pelanggan</span>
+                </div>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 16px;">
+                    <div>
+                        <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">NIK Terdaftar (16 Digit)</div>
+                        <div id="nikDisplayValue" style="font-family: monospace; font-size: 15px; font-weight: 700; color: var(--text-dark); letter-spacing: 0.5px;">3201234567890001</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">Nama Sesuai KTP</div>
+                        <div id="namaKtpDisplayValue" style="font-size: 14.5px; font-weight: 700; color: var(--text-dark);">Budi Santoso</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">Status Verifikasi NIK</div>
+                        <div>
+                            <span id="statusNikBadge" class="status-pill aktif"><i class="fa-solid fa-circle-check"></i> Active</span>
+                        </div>
+                    </div>
+                    <div>
+                        <div style="font-size: 11.5px; color: var(--text-muted); font-weight: 600; text-transform: uppercase; margin-bottom: 4px;">Waktu Verifikasi</div>
+                        <div id="waktuNikDisplayValue" style="font-size: 13px; color: var(--text-dark); font-weight: 600;">14 Jan 2024, 10:30 WIB</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SEKSI 2: Pelacakan Device ID & Multi-Account Device -->
             <div class="section-card">
                 <div class="section-title">
                     <i class="fa-solid fa-mobile-screen-button" style="color: var(--primary-cyan);"></i>
@@ -899,22 +1363,24 @@
                             <tbody id="deviceTableBody">
                                 <tr>
                                     <td>1</td>
-                                    <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
-                                    <td class="phone-target" style="font-family: monospace;">0812****5678</td>
+                                    <td><strong>Budi Santoso</strong> <span
+                                            style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun
+                                            Ini</span></td>
+                                    <td class="phone-target" style="font-family: monospace;">081234567890</td>
                                     <td>14 Jan 2024, 10:30 WIB</td>
                                     <td><span class="status-pill aktif">Aktif</span></td>
                                 </tr>
                                 <tr>
                                     <td>2</td>
                                     <td><strong>Siti Rahmawati</strong></td>
-                                    <td class="phone-target" style="font-family: monospace;">0813****5432</td>
+                                    <td class="phone-target" style="font-family: monospace;">081398765432</td>
                                     <td>12 Jan 2024, 14:15 WIB</td>
                                     <td><span class="status-pill aktif">Aktif</span></td>
                                 </tr>
                                 <tr>
                                     <td>3</td>
                                     <td><strong>Ahmad Wijaya</strong></td>
-                                    <td class="phone-target" style="font-family: monospace;">0857****3344</td>
+                                    <td class="phone-target" style="font-family: monospace;">085711223344</td>
                                     <td>08 Jan 2024, 09:00 WIB</td>
                                     <td><span class="status-pill diblokir"
                                             style="background-color:#FCE8E6; color:#C5221F;">Diblokir</span></td>
@@ -925,7 +1391,7 @@
                 </div>
             </div>
 
-            <!-- SEKSI 2: Accordion Riwayat E-Wallet & Log -->
+            <!-- SEKSI 3: Accordion Riwayat E-Wallet & Log -->
             <div class="section-card">
                 <div class="section-title">
                     <i class="fa-solid fa-wallet" style="color: var(--primary-cyan);"></i>
@@ -941,14 +1407,14 @@
                             <div class="accordion-header-left">
                                 <div class="ewallet-title-info">
                                     <h4>
-                                        <span class="phone-target">0812****5678</span>
-                                        <span class="status-pill aktif">Active</span>
+                                        <span class="phone-target">081234567890</span>
+                                        <span id="acc1StatusPill" class="status-pill aktif">Active</span>
                                         <span class="badge-fraud-alert">
                                             🔴 Terikat 2 Akun
                                         </span>
                                     </h4>
                                     <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
-                                        Terdaftar: 10 Jan 2024
+                                        Provider: <strong>GoPay (Primary)</strong> • Terdaftar: 10 Jan 2024
                                     </div>
                                 </div>
                             </div>
@@ -990,7 +1456,7 @@
                                             <span class="timeline-timestamp">• 12 Jan 2024, 14:15 WIB</span>
                                         </div>
                                         <div class="timeline-executor">
-                                            Pengajuan disetujui. Oleh: <strong>Siti Admin (Admin Portal)</strong>
+                                            Pengajuan e-wallet disetujui. Oleh: <strong>Siti Admin (Admin Backoffice)</strong>
                                         </div>
                                     </div>
 
@@ -1022,40 +1488,43 @@
                                 </div>
                             </div>
 
-                            <!-- BAGIAN BAWAH: TABEL TAUTAN AKUN TERIKAT -->
-                            <div style="border-top: 1px dashed var(--border-color); padding-top: 20px;">
-                                <div class="shared-table-title">
-                                    <i class="fa-solid fa-link-slash" style="color: #DC2626;"></i>
-                                    <span>Akun Lain Terhubung Nomor Ini</span>
-                                </div>
+                            <!-- BAGIAN BAWAH: TABEL CROSS-ACCOUNT -->
+                            <div style="margin-top: 24px; padding-top: 16px; border-top: 1px dashed var(--border-color);">
+                                <h5
+                                    style="font-size: 13px; font-weight: 700; color: #B91C1C; margin-bottom: 10px; display: flex; align-items: center; gap: 6px;">
+                                    <i class="fa-solid fa-circle-nodes"></i>
+                                    Daftar Akun Lain yang Terhubung dengan Nomor E-Wallet Ini
+                                </h5>
 
                                 <table class="mini-table">
                                     <thead>
                                         <tr>
                                             <th style="width: 40px;">No.</th>
                                             <th>Nama Pelanggan</th>
-                                            <th>Nomor HP</th>
-                                            <th>Nomor HP Terikat</th>
-                                            <th>Tanggal Pendaftaran</th>
-                                            <th>Status E-Wallet</th>
+                                            <th>No. HP Akun</th>
+                                            <th>No. HP E-Wallet</th>
+                                            <th>Tanggal Tertaut</th>
                                             <th>Status Akun</th>
+                                            <th>Status E-Wallet</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <tr>
                                             <td>1</td>
-                                            <td><strong>Siti Rahmawati</strong></td>
-                                            <td class="phone-target" style="font-family: monospace;">0813****5432</td>
-                                            <td class="phone-target" style="font-family: monospace;">0812****5678</td>
-                                            <td>12 Jan 2024, 14:00 WIB</td>
-                                            <td><span class="status-pill aktif">Active</span></td>
+                                            <td><strong>Budi Santoso</strong> <span
+                                                    style="font-size: 10.5px; background-color: #E0F2FE; color: #0369A1; padding: 2px 5px; border-radius: 4px; font-weight: 600;">Akun
+                                                    Ini</span></td>
+                                            <td class="phone-target" style="font-family: monospace;">081234567890</td>
+                                            <td class="phone-target" style="font-family: monospace;">081234567890</td>
+                                            <td>10 Jan 2024, 08:30 WIB</td>
+                                            <td><span class="status-pill aktif">Aktif</span></td>
                                             <td><span class="status-pill aktif">Aktif</span></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
                                             <td><strong>Ahmad Wijaya</strong></td>
-                                            <td class="phone-target" style="font-family: monospace;">0857****3344</td>
-                                            <td class="phone-target" style="font-family: monospace;">0812****5678</td>
+                                            <td class="phone-target" style="font-family: monospace;">085711223344</td>
+                                            <td class="phone-target" style="font-family: monospace;">081234567890</td>
                                             <td>08 Jan 2024, 11:20 WIB</td>
                                             <td><span class="status-pill"
                                                     style="background-color:#F1F5F9; color:#64748B;">Deleted</span></td>
@@ -1077,14 +1546,14 @@
                             <div class="accordion-header-left">
                                 <div class="ewallet-title-info">
                                     <h4>
-                                        <span class="phone-target">0857****1234</span>
+                                        <span class="phone-target">085799887766</span>
                                         <span class="status-pill"
                                             style="background-color:#F1F5F9; color:#64748B;">Deleted</span>
                                         <span class="status-pill aktif"
                                             style="background-color: #DCFCE7; color: #166534;">🟢 Nomor Unik</span>
                                     </h4>
                                     <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">
-                                        Terdaftar: 01 Jan 2024
+                                        Provider: <strong>DANA</strong> • Terdaftar: 01 Jan 2024
                                     </div>
                                 </div>
                             </div>
@@ -1140,9 +1609,903 @@
         </main>
     </div>
 
+    <!-- ==================== MODAL DIALOGS FOR INTERVENTION ACTIONS ==================== -->
+
+    <!-- 1. MODAL KONFIRMASI BLOKIR AKUN PELANGGAN -->
+    <div id="modalBlokirAkun" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #DC2626;"><i class="fa-solid fa-user-slash"></i> Konfirmasi Blokir Akun Pelanggan</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalBlokirAkun')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notice-box danger">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div>
+                        <strong>Peringatan Tindakan Keamanan:</strong> Akun pelanggan akan dibekukan berstatus
+                        <strong>Diblokir</strong>. Pelanggan akan di-force logout secara real-time dari aplikasi mobile
+                        sCanWin (Pop-up alert 5 detik).
+                    </div>
+                </div>
+
+                <div class="impact-list-box">
+                    <strong style="color: var(--text-dark);">Dampak Pemblokiran Akun:</strong>
+                    <ul>
+                        <li><strong>Saldo Tersisa (Rp 250.000)</strong>: Dibiarkan utuh & tidak dikurangi.</li>
+                        <li><strong>Klaim Voucher Pending</strong>: Otomatis dibatalkan & kuota dikembalikan ke toko.</li>
+                        <li><strong>Pengajuan E-Wallet Pending</strong>: Otomatis dibatalkan.</li>
+                        <li><strong>Pencairan Saldo Pending</strong>: Otomatis dibatalkan & saldo dikembalikan ke akun.</li>
+                    </ul>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Pemblokiran <span class="req">*</span></label>
+                    <textarea id="noteBlokirAkun" class="form-control" rows="3"
+                        placeholder="Masukkan alasan pemblokiran akun pelanggan (minimal 10 karakter)..."
+                        oninput="validateNote('noteBlokirAkun', 'counterBlokirAkun', 'errBlokirAkun', 'btnSubmitBlokirAkun')"></textarea>
+                    <div class="char-counter">
+                        <span id="errBlokirAkun" class="error-text" style="display:none;"><i
+                                class="fa-solid fa-circle-exclamation"></i> Catatan minimal 10 karakter</span>
+                        <span id="counterBlokirAkun" style="margin-left: auto;">0 / 500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action" style="background:#E2E8F0; color:#475569;"
+                    onclick="closeModal('modalBlokirAkun')">Batal</button>
+                <button id="btnSubmitBlokirAkun" class="btn-header-action btn-danger" onclick="submitBlokirAkun()"
+                    disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fa-solid fa-check"></i> Ya, Blokir Akun
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 2. MODAL SUKSES BLOKIR AKUN -->
+    <div id="modalSuksesBlokirAkun" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-circle-check"></i> <span id="titleSuksesBlokirAkun">Akun Pelanggan Berhasil Diblokir</span></h3>
+                <button class="modal-close-btn" onclick="closeModal('modalSuksesBlokirAkun')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="boxSuksesBlokirAkun" class="notice-box success">
+                    <i class="fa-solid fa-check-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div id="msgSuksesBlokirAkun">
+                        Pemblokiran akun untuk <strong>Budi Santoso (CUST-1002938)</strong> telah berhasil diproses.
+                    </div>
+                </div>
+
+                <div class="impact-list-box">
+                    <strong style="color: var(--text-dark);">Ringkasan Hasil Sistem:</strong>
+                    <ul id="summaryListBlokirAkun">
+                        <li>Status Akun: <span class="status-pill diblokir"
+                                style="background-color:#FCE8E6; color:#C5221F; padding:2px 6px;">Diblokir</span></li>
+                        <li>Force Logout App: <strong>Terkirim (Push Notification Toast 5s)</strong></li>
+                        <li>Saldo Tersisa: <strong>Rp 250.000 (Tetap Utuh)</strong></li>
+                        <li>Klaim Voucher Pending: <strong>Dibatalkan & Kuota Dikembalikan ke Toko</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action btn-success" onclick="closeModalSuksesBlokirAkun()">
+                    <i class="fa-solid fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MODAL KONFIRMASI UNBLOK AKUN PELANGGAN -->
+    <div id="modalUnblokAkun" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-user-check"></i> Konfirmasi Buka Blokir Akun Pelanggan</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalUnblokAkun')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notice-box info">
+                    <i class="fa-solid fa-info-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div>
+                        Status akun pelanggan akan dikembalikan menjadi <strong>Aktif</strong>. Pelanggan dapat kembali
+                        melakukan login dan bertransaksi.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Pembukaan Blokir <span class="req">*</span></label>
+                    <textarea id="noteUnblokAkun" class="form-control" rows="3"
+                        placeholder="Masukkan alasan pembukaan blokir akun (minimal 10 karakter)..."
+                        oninput="validateNote('noteUnblokAkun', 'counterUnblokAkun', 'errUnblokAkun', 'btnSubmitUnblokAkun')"></textarea>
+                    <div class="char-counter">
+                        <span id="errUnblokAkun" class="error-text" style="display:none;"><i
+                                class="fa-solid fa-circle-exclamation"></i> Catatan minimal 10 karakter</span>
+                        <span id="counterUnblokAkun" style="margin-left: auto;">0 / 500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action" style="background:#E2E8F0; color:#475569;"
+                    onclick="closeModal('modalUnblokAkun')">Batal</button>
+                <button id="btnSubmitUnblokAkun" class="btn-header-action btn-success" onclick="submitUnblokAkun()"
+                    disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fa-solid fa-check"></i> Ya, Buka Blokir Akun
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. MODAL SUKSES UNBLOK AKUN -->
+    <div id="modalSuksesUnblokAkun" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-circle-check"></i> <span id="titleSuksesUnblokAkun">Blokir Akun Berhasil Dibuka</span></h3>
+                <button class="modal-close-btn" onclick="closeModal('modalSuksesUnblokAkun')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="boxSuksesUnblokAkun" class="notice-box success">
+                    <i class="fa-solid fa-check-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div id="msgSuksesUnblokAkun">
+                        Pembukaan blokir akun untuk <strong>Budi Santoso (CUST-1002938)</strong> telah berhasil
+                        diproses. Status akun kembali <strong>Aktif</strong>.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action btn-success" onclick="closeModalSuksesUnblokAkun()">
+                    <i class="fa-solid fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. MODAL FORM BLOKIR NOMOR E-WALLET -->
+    <div id="modalBlokirEWallet" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #D97706;"><i class="fa-solid fa-wallet"></i> Blokir Nomor Handphone E-Wallet</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalBlokirEWallet')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notice-box warning">
+                    <i class="fa-solid fa-triangle-exclamation" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div>
+                        Nomor HP e-wallet yang diblokir akan dimasukkan ke <strong>Blacklist Sistem</strong> (tidak
+                        dapat didaftarkan kembali) dan pencairan saldo pending terkait akan dibatalkan (saldo
+                        dikembalikan ke akun).
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Pilih Nomor E-Wallet Aktif Dituju <span class="req">*</span></label>
+                    <div class="ewallet-select-list">
+                        <label class="ewallet-select-item">
+                            <input type="checkbox" name="ewalletTarget" value="081234567890" checked
+                                onchange="validateEWalletForm()">
+                            <div>
+                                <strong class="phone-target">081234567890</strong> <span
+                                    style="font-size: 11px; background:#E0F2FE; color:#0369A1; padding:2px 6px; border-radius:4px; font-weight:600;">GoPay
+                                    (Active)</span>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Pemblokiran Nomor E-Wallet <span class="req">*</span></label>
+                    <textarea id="noteBlokirEWallet" class="form-control" rows="3"
+                        placeholder="Masukkan alasan pemblokiran nomor e-wallet (minimal 10 karakter)..."
+                        oninput="validateEWalletForm()"></textarea>
+                    <div class="char-counter">
+                        <span id="errBlokirEWallet" class="error-text" style="display:none;"><i
+                                class="fa-solid fa-circle-exclamation"></i> Catatan minimal 10 karakter</span>
+                        <span id="counterBlokirEWallet" style="margin-left: auto;">0 / 500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action" style="background:#E2E8F0; color:#475569;"
+                    onclick="closeModal('modalBlokirEWallet')">Batal</button>
+                <button id="btnSubmitBlokirEWallet" class="btn-header-action btn-warning"
+                    onclick="submitBlokirEWallet()" disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fa-solid fa-ban"></i> Ya, Blokir Nomor E-Wallet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 6. MODAL SUKSES BLOKIR NOMOR E-WALLET -->
+    <div id="modalSuksesBlokirEWallet" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-circle-check"></i> <span id="titleSuksesBlokirEWallet">Nomor E-Wallet Berhasil Diblokir</span></h3>
+                <button class="modal-close-btn" onclick="closeModal('modalSuksesBlokirEWallet')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="boxSuksesBlokirEWallet" class="notice-box success">
+                    <i class="fa-solid fa-check-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div id="msgSuksesBlokirEWallet">
+                        Nomor HP e-wallet telah berhasil diblokir dan dimasukkan ke Blacklist Sistem.
+                    </div>
+                </div>
+
+                <div class="impact-list-box">
+                    <strong style="color: var(--text-dark);">Ringkasan Hasil Pemblokiran E-Wallet:</strong>
+                    <ul id="summaryListBlokirEWallet">
+                        <li>Nomor E-Wallet: <strong class="phone-target">081234567890</strong></li>
+                        <li>Status Blacklist: <strong>Didaftarkan (Permanen Mencegah Registrasi Ulang)</strong></li>
+                        <li>Pencairan Saldo Pending: <strong>Dibatalkan & Saldo Dikembalikan ke Akun</strong></li>
+                        <li>Push Notification: <strong>Terkirim ke Perangkat User</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action btn-success" onclick="closeModalSuksesBlokirEWallet()">
+                    <i class="fa-solid fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 7. MODAL KONFIRMASI UNBLOK NOMOR E-WALLET -->
+    <div id="modalUnblokEWallet" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #0284C7;"><i class="fa-solid fa-wallet"></i> Konfirmasi Buka Blokir Nomor E-Wallet
+                </h3>
+                <button class="modal-close-btn" onclick="closeModal('modalUnblokEWallet')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="notice-box info">
+                    <i class="fa-solid fa-info-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div>
+                        Nomor HP e-wallet akan dikeluarkan dari Blacklist Sistem dan statusnya dikembalikan menjadi
+                        <strong>Active</strong>.
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Catatan Pembukaan Blokir E-Wallet <span class="req">*</span></label>
+                    <textarea id="noteUnblokEWallet" class="form-control" rows="3"
+                        placeholder="Masukkan alasan pembukaan blokir nomor e-wallet (minimal 10 karakter)..."
+                        oninput="validateNote('noteUnblokEWallet', 'counterUnblokEWallet', 'errUnblokEWallet', 'btnSubmitUnblokEWallet')"></textarea>
+                    <div class="char-counter">
+                        <span id="errUnblokEWallet" class="error-text" style="display:none;"><i
+                                class="fa-solid fa-circle-exclamation"></i> Catatan minimal 10 karakter</span>
+                        <span id="counterUnblokEWallet" style="margin-left: auto;">0 / 500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action" style="background:#E2E8F0; color:#475569;"
+                    onclick="closeModal('modalUnblokEWallet')">Batal</button>
+                <button id="btnSubmitUnblokEWallet" class="btn-header-action btn-info" onclick="submitUnblokEWallet()"
+                    disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fa-solid fa-check"></i> Ya, Buka Blokir E-Wallet
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 8. MODAL SUKSES UNBLOK NOMOR E-WALLET -->
+    <div id="modalSuksesUnblokEWallet" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-circle-check"></i> <span id="titleSuksesUnblokEWallet">Blokir Nomor E-Wallet Berhasil Dibuka</span></h3>
+                <button class="modal-close-btn" onclick="closeModal('modalSuksesUnblokEWallet')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="boxSuksesUnblokEWallet" class="notice-box success">
+                    <i class="fa-solid fa-check-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div id="msgSuksesUnblokEWallet">
+                        Nomor HP e-wallet telah berhasil dikeluarkan dari Blacklist Sistem dan siap digunakan kembali.
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action btn-success" onclick="closeModalSuksesUnblokEWallet()">
+                    <i class="fa-solid fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 9. MODAL PENGAJUAN UBAH DATA NIK PELANGGAN (PRD 32) -->
+    <div id="modalKoreksiNIK" class="modal-overlay">
+        <div class="modal-card" style="max-width: 540px;">
+            <div class="modal-header">
+                <h3 style="color: #4F46E5;"><i class="fa-solid fa-id-card"></i> Ubah Data NIK Pelanggan</h3>
+                <button class="modal-close-btn" onclick="closeModal('modalKoreksiNIK')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <!-- Info Identitas Terdaftar Saat Ini -->
+                <div style="background: #F1F5F9; border: 1px solid #CBD5E1; border-radius: 6px; padding: 10px 14px; margin-bottom: 16px; font-size: 12.5px;">
+                    <div style="color: var(--text-muted); font-size: 11px; font-weight: 700; text-transform: uppercase;">Data Identitas Saat Ini (Read-Only)</div>
+                    <div style="display: flex; justify-content: space-between; margin-top: 4px;">
+                        <span>Nama KTP: <strong id="currentKtpName">Budi Santoso</strong></span>
+                        <span>NIK: <strong id="currentNikCode" style="font-family: monospace;">3201234567890001</strong></span>
+                    </div>
+                </div>
+
+                <!-- Form Fields untuk Ubah Data NIK Baru -->
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label">NIK Baru (Tepat 16 Digit Angka) <span class="req">*</span></label>
+                    <input type="text" id="inputNikBaru" class="form-control" maxlength="16" placeholder="Contoh: 3273201234560002"
+                        oninput="validateKoreksiNIKForm()" style="font-family: monospace; font-size: 13.5px;">
+                    <span id="errNikBaru" class="error-text" style="display:none;"><i class="fa-solid fa-circle-exclamation"></i> Wajib tepat 16 digit angka numerik & unik</span>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label">Nama Lengkap Sesuai KTP Baru <span class="req">*</span></label>
+                    <input type="text" id="inputNamaKtpBaru" class="form-control" maxlength="100" placeholder="Masukkan nama lengkap sesuai fisik KTP..."
+                        oninput="validateKoreksiNIKForm()">
+                </div>
+
+                <div class="form-group" style="margin-bottom: 12px;">
+                    <label class="form-label">Alasan Pengubahan <span class="req">*</span></label>
+                    <select id="selectAlasanKoreksi" class="form-control" onchange="validateKoreksiNIKForm()">
+                        <option value="">-- Pilih Alasan Pengubahan --</option>
+                        <option value="Typo / Salah Input Awal">Typo / Salah Input NIK Awal</option>
+                        <option value="Perubahan Identitas KTP">Perubahan Identitas KTP</option>
+                        <option value="Hasil Investigasi Call Verification">Hasil Investigasi Call Verification</option>
+                        <option value="Lainnya">Lainnya</option>
+                    </select>
+                </div>
+
+                <!-- Field Catatan Call Verification (Mandatory) -->
+                <div class="form-group">
+                    <label class="form-label">Catatan Hasil Verifikasi Call (Mandatory) <span class="req">*</span></label>
+                    <textarea id="noteCallKoreksi" class="form-control" rows="3"
+                        placeholder="Wajib diisi penjelasan hasil konfirmasi panggilan telepon kepada pelanggan (min 10 karakter)..."
+                        oninput="validateKoreksiNIKForm()"></textarea>
+                    <div class="char-counter">
+                        <span id="errNoteCallKoreksi" class="error-text" style="display:none;"><i
+                                class="fa-solid fa-circle-exclamation"></i> Catatan minimal 10 karakter</span>
+                        <span id="counterNoteCallKoreksi" style="margin-left: auto;">0 / 500</span>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action" style="background:#E2E8F0; color:#475569;"
+                    onclick="closeModal('modalKoreksiNIK')">Batal</button>
+                <button id="btnSubmitKoreksiNIK" class="btn-header-action" style="background:#4F46E5; color:#FFFFFF;" onclick="submitKoreksiNIK()"
+                    disabled style="opacity: 0.6; cursor: not-allowed;">
+                    <i class="fa-solid fa-paper-plane"></i> Simpan Perubahan NIK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 10. MODAL SUKSES KOREKSI NIK -->
+    <div id="modalSuksesKoreksiNIK" class="modal-overlay">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3 style="color: #10B981;"><i class="fa-solid fa-circle-check"></i> <span id="titleSuksesKoreksiNIK">Pengajuan Ubah NIK Diproses</span></h3>
+                <button class="modal-close-btn" onclick="closeModal('modalSuksesKoreksiNIK')"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div id="boxSuksesKoreksiNIK" class="notice-box success">
+                    <i class="fa-solid fa-check-circle" style="font-size: 18px; margin-top: 2px;"></i>
+                    <div id="msgSuksesKoreksiNIK">
+                        Pengubahan data NIK untuk <strong>Budi Santoso</strong> telah berhasil diproses.
+                    </div>
+                </div>
+
+                <div class="impact-list-box">
+                    <strong style="color: var(--text-dark);">Detail Hasil Aksi:</strong>
+                    <ul id="summaryListKoreksiNIK">
+                        <li>Tipe Alur: <strong>Maker Pengajuan Tiket</strong></li>
+                        <li>Status Tiket: <strong>Menunggu Persetujuan Manager</strong></li>
+                        <li>Status NIK Akun: <strong>Proses Verifikasi (Koreksi)</strong></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-header-action btn-success" onclick="closeModalSuksesKoreksiNIK()">
+                    <i class="fa-solid fa-check"></i> Selesai
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUSH NOTIFICATION FLOATING TOAST CONTAINER -->
+    <div id="pushToastContainer" class="push-toast-container"></div>
+
     <!-- JAVASCRIPT FOR INTERACTIVITY & SIMULATIONS -->
     <script>
-        let currentRole = 'non-manager';
+        // State Global Aplikasi
+        let currentRole = 'non-manager'; // 'non-manager' or 'manager'
+        let approvalPolicy = 'true';     // 'true' (Wajib Approval) or 'false' (Direct Execution)
+        let accountStatus = 'aktif';     // 'aktif' or 'diblokir'
+        let ewalletStatus = 'active';    // 'active' or 'diblokir'
+        let nikStatus = 'active';        // 'active', 'proses', or 'belum'
+
+        // Data Pelanggan Aktif
+        let customerData = {
+            id: 'CUST-1002938',
+            nama: 'Budi Santoso',
+            phone: '081234567890',
+            nik: '3201234567890001',
+            namaKtp: 'Budi Santoso',
+            ewallet: '081234567890'
+        };
+
+        // Modal Open / Close Helpers
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            if (modal) modal.classList.remove('active');
+        }
+
+        // Generic Note Validator (Min 10, Max 500)
+        function validateNote(inputId, counterId, errorId, btnId) {
+            const input = document.getElementById(inputId);
+            const counter = document.getElementById(counterId);
+            const error = document.getElementById(errorId);
+            const btn = document.getElementById(btnId);
+
+            if (!input) return;
+
+            const val = input.value.trim();
+            const len = input.value.length;
+
+            if (counter) counter.innerText = `${len} / 500`;
+
+            if (len > 0 && val.length < 10) {
+                if (error) error.style.display = 'inline-flex';
+                input.classList.add('error');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'not-allowed';
+                }
+            } else if (val.length >= 10 && len <= 500) {
+                if (error) error.style.display = 'none';
+                input.classList.remove('error');
+                if (btn) {
+                    btn.disabled = false;
+                    btn.style.opacity = '1';
+                    btn.style.cursor = 'pointer';
+                }
+            } else {
+                if (error) error.style.display = 'none';
+                input.classList.remove('error');
+                if (btn) {
+                    btn.disabled = true;
+                    btn.style.opacity = '0.6';
+                    btn.style.cursor = 'not-allowed';
+                }
+            }
+        }
+
+        // E-Wallet Specific Form Validation
+        function validateEWalletForm() {
+            const checkboxes = document.querySelectorAll('input[name="ewalletTarget"]:checked');
+            validateNote('noteBlokirEWallet', 'counterBlokirEWallet', 'errBlokirEWallet', 'btnSubmitBlokirEWallet');
+            const btn = document.getElementById('btnSubmitBlokirEWallet');
+            if (checkboxes.length === 0 && btn) {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+                btn.style.cursor = 'not-allowed';
+            }
+        }
+
+        // Action Trigger Modal Openers
+        function openModalBlokirAkun() {
+            document.getElementById('noteBlokirAkun').value = '';
+            validateNote('noteBlokirAkun', 'counterBlokirAkun', 'errBlokirAkun', 'btnSubmitBlokirAkun');
+            openModal('modalBlokirAkun');
+        }
+
+        function openModalUnblokAkun() {
+            document.getElementById('noteUnblokAkun').value = '';
+            validateNote('noteUnblokAkun', 'counterUnblokAkun', 'errUnblokAkun', 'btnSubmitUnblokAkun');
+            openModal('modalUnblokAkun');
+        }
+
+        function openModalBlokirEWallet() {
+            document.getElementById('noteBlokirEWallet').value = '';
+            validateEWalletForm();
+            openModal('modalBlokirEWallet');
+        }
+
+        function openModalUnblokEWallet() {
+            document.getElementById('noteUnblokEWallet').value = '';
+            validateNote('noteUnblokEWallet', 'counterUnblokEWallet', 'errUnblokEWallet', 'btnSubmitUnblokEWallet');
+            openModal('modalUnblokEWallet');
+        }
+
+        function openModalKoreksiNIK() {
+            document.getElementById('inputNikBaru').value = '';
+            document.getElementById('inputNamaKtpBaru').value = '';
+            document.getElementById('selectAlasanKoreksi').value = '';
+            document.getElementById('noteCallKoreksi').value = '';
+            validateKoreksiNIKForm();
+            openModal('modalKoreksiNIK');
+        }
+
+        function validateKoreksiNIKForm() {
+            const nikInput = document.getElementById('inputNikBaru');
+            const namaInput = document.getElementById('inputNamaKtpBaru');
+            const alasanSelect = document.getElementById('selectAlasanKoreksi');
+            const noteInput = document.getElementById('noteCallKoreksi');
+            const btn = document.getElementById('btnSubmitKoreksiNIK');
+            const errNik = document.getElementById('errNikBaru');
+            const errNote = document.getElementById('errNoteCallKoreksi');
+            const counter = document.getElementById('counterNoteCallKoreksi');
+
+            if (counter && noteInput) {
+                counter.innerText = `${noteInput.value.length} / 500`;
+            }
+
+            let isValid = true;
+
+            // Validate Call note (Mandatory)
+            if (!noteInput || noteInput.value.trim().length < 10) {
+                isValid = false;
+                if (errNote && noteInput && noteInput.value.length > 0) errNote.style.display = 'inline-flex';
+                else if (errNote) errNote.style.display = 'none';
+            } else {
+                if (errNote) errNote.style.display = 'none';
+            }
+
+            const nikVal = (nikInput?.value || '').trim();
+            const is16Digit = /^\d{16}$/.test(nikVal);
+
+            if (!is16Digit) {
+                isValid = false;
+                if (errNik && nikVal.length > 0) errNik.style.display = 'inline-flex';
+                else if (errNik) errNik.style.display = 'none';
+            } else {
+                if (errNik) errNik.style.display = 'none';
+            }
+
+            if (!namaInput || namaInput.value.trim().length < 3) {
+                isValid = false;
+            }
+
+            if (!alasanSelect || alasanSelect.value === '') {
+                isValid = false;
+            }
+
+            if (btn) {
+                btn.disabled = !isValid;
+                btn.style.opacity = isValid ? '1' : '0.6';
+                btn.style.cursor = isValid ? 'pointer' : 'not-allowed';
+            }
+        }
+
+        // Evaluator Maker-Checker Decision
+        function isDirectExecution() {
+            // If manager -> Always direct execution (Bypass)
+            if (currentRole === 'manager') return true;
+            // If non-manager & setting OFF -> Direct execution (false-false)
+            if (approvalPolicy === 'false') return true;
+            // Otherwise -> Maker Flow (Create Ticket)
+            return false;
+        }
+
+        // ==================== SUBMIT HANDLERS ====================
+
+        // 1. Submit Blokir Akun
+        function submitBlokirAkun() {
+            closeModal('modalBlokirAkun');
+            const isDirect = isDirectExecution();
+
+            const title = document.getElementById('titleSuksesBlokirAkun');
+            const msg = document.getElementById('msgSuksesBlokirAkun');
+            const summary = document.getElementById('summaryListBlokirAkun');
+            const box = document.getElementById('boxSuksesBlokirAkun');
+
+            if (isDirect) {
+                title.innerText = "Akun Pelanggan Berhasil Diblokir (Direct)";
+                box.className = "notice-box success";
+                msg.innerHTML = `Pemblokiran akun untuk <strong>${customerData.nama} (${customerData.id})</strong> telah dieksekusi secara instan.`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Eksekusi Langsung (Direct Execution)</strong></li>
+                    <li>Status Akun Baru: <span class="status-pill diblokir" style="background-color:#FCE8E6; color:#C5221F; padding:2px 6px;">Diblokir</span></li>
+                    <li>Force Logout App: <strong>Terkirim (Push Notification Toast 5s)</strong></li>
+                    <li>Klaim & Pencairan Pending: <strong>Dibatalkan Otomatis</strong></li>
+                `;
+            } else {
+                title.innerText = "Tiket Pengajuan Blokir Akun Diterbitkan";
+                box.className = "notice-box info";
+                msg.innerHTML = `Tiket pengajuan pemblokiran akun untuk <strong>${customerData.nama}</strong> berhasil diterbitkan dan masuk ke antrean persetujuan Manager.`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Maker-Checker (Pengajuan Tiket)</strong></li>
+                    <li>Status Tiket: <strong>Menunggu Persetujuan Manager</strong></li>
+                    <li>Status Akun Saat Ini: <strong>Aktif (Menunggu Eksekusi Manager)</strong></li>
+                `;
+            }
+            openModal('modalSuksesBlokirAkun');
+        }
+
+        function closeModalSuksesBlokirAkun() {
+            closeModal('modalSuksesBlokirAkun');
+            if (isDirectExecution()) {
+                accountStatus = 'diblokir';
+                updateHeaderAndPillStatus();
+                showPushToast("Akun sCanWin Diblokir", "Akun sCanWin Anda telah diblokir oleh sistem. Anda akan dikeluarkan dari aplikasi dalam 5 detik.");
+            } else {
+                showPushToast("Tiket Pengajuan Terkirim", "Tiket pengajuan pemblokiran akun telah masuk ke antrean persetujuan Manager sCanWin.");
+            }
+        }
+
+        // 2. Submit Unblok Akun
+        function submitUnblokAkun() {
+            closeModal('modalUnblokAkun');
+            const isDirect = isDirectExecution();
+
+            const title = document.getElementById('titleSuksesUnblokAkun');
+            const msg = document.getElementById('msgSuksesUnblokAkun');
+            const box = document.getElementById('boxSuksesUnblokAkun');
+
+            if (isDirect) {
+                title.innerText = "Blokir Akun Berhasil Dibuka (Direct)";
+                box.className = "notice-box success";
+                msg.innerHTML = `Pembukaan blokir akun untuk <strong>${customerData.nama} (${customerData.id})</strong> telah dieksekusi secara instan. Status akun kembali <strong>Aktif</strong>.`;
+            } else {
+                title.innerText = "Tiket Pengajuan Buka Blokir Diterbitkan";
+                box.className = "notice-box info";
+                msg.innerHTML = `Tiket pengajuan pembukaan blokir akun untuk <strong>${customerData.nama}</strong> telah masuk ke antrean persetujuan Manager.`;
+            }
+            openModal('modalSuksesUnblokAkun');
+        }
+
+        function closeModalSuksesUnblokAkun() {
+            closeModal('modalSuksesUnblokAkun');
+            if (isDirectExecution()) {
+                accountStatus = 'aktif';
+                updateHeaderAndPillStatus();
+                showPushToast("Akun sCanWin Aktif Kembali", "Akun sCanWin Anda telah dibuka blokirnya oleh sistem. Silakan melakukan login kembali.");
+            } else {
+                showPushToast("Tiket Pengajuan Terkirim", "Tiket pengajuan buka blokir akun telah masuk ke antrean persetujuan Manager sCanWin.");
+            }
+        }
+
+        // 3. Submit Blokir E-Wallet
+        function submitBlokirEWallet() {
+            closeModal('modalBlokirEWallet');
+            const isDirect = isDirectExecution();
+
+            const title = document.getElementById('titleSuksesBlokirEWallet');
+            const msg = document.getElementById('msgSuksesBlokirEWallet');
+            const summary = document.getElementById('summaryListBlokirEWallet');
+            const box = document.getElementById('boxSuksesBlokirEWallet');
+
+            if (isDirect) {
+                title.innerText = "Nomor E-Wallet Berhasil Diblokir (Direct)";
+                box.className = "notice-box success";
+                msg.innerHTML = `Nomor HP e-wallet <strong>081234567890</strong> berhasil diblokir dan didaftarkan ke Blacklist Sistem.`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Eksekusi Langsung (Direct)</strong></li>
+                    <li>Status E-Wallet Akun: <strong>Diblokir</strong></li>
+                    <li>Blacklist Sistem: <strong>Permanen Mencegah Registrasi Ulang</strong></li>
+                    <li>Pencairan Pending: <strong>Dibatalkan & Saldo Dikembalikan</strong></li>
+                `;
+            } else {
+                title.innerText = "Tiket Pengajuan Blokir E-Wallet Diterbitkan";
+                box.className = "notice-box info";
+                msg.innerHTML = `Tiket pengajuan blokir nomor e-wallet berhasil diteruskan ke antrean persetujuan Manager (Tab Riwayat Pengajuan E-Wallet).`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Maker-Checker (Pengajuan Tiket)</strong></li>
+                    <li>Status Tiket: <strong>Menunggu Persetujuan Manager</strong></li>
+                    <li>Status E-Wallet: <strong>Active (Menunggu Approval)</strong></li>
+                `;
+            }
+            openModal('modalSuksesBlokirEWallet');
+        }
+
+        function closeModalSuksesBlokirEWallet() {
+            closeModal('modalSuksesBlokirEWallet');
+            if (isDirectExecution()) {
+                ewalletStatus = 'diblokir';
+                updateHeaderAndPillStatus();
+                showPushToast("Nomor E-Wallet Diblokir", "Nomor e-wallet 081234567890 telah diblokir oleh sistem.");
+            } else {
+                showPushToast("Tiket Pengajuan Terkirim", "Tiket pengajuan pemblokiran e-wallet masuk ke antrean Manager sCanWin.");
+            }
+        }
+
+        // 4. Submit Unblok E-Wallet
+        function submitUnblokEWallet() {
+            closeModal('modalUnblokEWallet');
+            const isDirect = isDirectExecution();
+
+            const title = document.getElementById('titleSuksesUnblokEWallet');
+            const msg = document.getElementById('msgSuksesUnblokEWallet');
+            const box = document.getElementById('boxSuksesUnblokEWallet');
+
+            if (isDirect) {
+                title.innerText = "Blokir Nomor E-Wallet Berhasil Dibuka (Direct)";
+                box.className = "notice-box success";
+                msg.innerHTML = `Nomor HP e-wallet <strong>081234567890</strong> telah dikeluarkan dari Blacklist Sistem dan statusnya kembali <strong>Active</strong>.`;
+            } else {
+                title.innerText = "Tiket Pengajuan Unblok E-Wallet Diterbitkan";
+                box.className = "notice-box info";
+                msg.innerHTML = `Tiket pengajuan unblok nomor e-wallet telah diteruskan ke antrean persetujuan Manager.`;
+            }
+            openModal('modalSuksesUnblokEWallet');
+        }
+
+        function closeModalSuksesUnblokEWallet() {
+            closeModal('modalSuksesUnblokEWallet');
+            if (isDirectExecution()) {
+                ewalletStatus = 'active';
+                updateHeaderAndPillStatus();
+                showPushToast("Nomor E-Wallet Aktif Kembali", "Nomor e-wallet 081234567890 siap digunakan kembali.");
+            } else {
+                showPushToast("Tiket Pengajuan Terkirim", "Tiket pengajuan unblok e-wallet masuk ke antrean Manager sCanWin.");
+            }
+        }
+
+        // 5. Submit Ubah NIK (PRD 32)
+        function submitKoreksiNIK() {
+            closeModal('modalKoreksiNIK');
+            const isDirect = isDirectExecution();
+
+            const title = document.getElementById('titleSuksesKoreksiNIK');
+            const msg = document.getElementById('msgSuksesKoreksiNIK');
+            const summary = document.getElementById('summaryListKoreksiNIK');
+            const box = document.getElementById('boxSuksesKoreksiNIK');
+
+            const newNik = document.getElementById('inputNikBaru').value.trim();
+            const newNama = document.getElementById('inputNamaKtpBaru').value.trim();
+
+            if (isDirect) {
+                title.innerText = "Data NIK Berhasil Diperbarui (Direct)";
+                box.className = "notice-box success";
+                msg.innerHTML = `Perubahan identitas NIK untuk <strong>${newNama}</strong> telah langsung diaktifkan di database.`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Eksekusi Langsung (Direct Execution)</strong></li>
+                    <li>NIK Baru Aktif: <strong style="font-family:monospace;">${newNik}</strong></li>
+                    <li>Nama Sesuai KTP: <strong>${newNama}</strong></li>
+                    <li>Status NIK: <span class="status-pill aktif" style="padding:2px 6px;">Active</span></li>
+                `;
+                customerData.nik = newNik;
+                customerData.namaKtp = newNama;
+                nikStatus = 'active';
+            } else {
+                title.innerText = "Tiket Pengajuan Ubah NIK Diterbitkan";
+                box.className = "notice-box info";
+                msg.innerHTML = `Tiket pengajuan ubah data NIK berhasil diterbitkan dan masuk ke antrean <strong>Tab 2: Pengajuan Verifikasi NIK</strong>.`;
+                summary.innerHTML = `
+                    <li>Tipe Alur: <strong>Maker-Checker (Pengajuan Tiket)</strong></li>
+                    <li>Status Tiket: <strong>Menunggu Persetujuan Manager</strong></li>
+                    <li>Status NIK Pelanggan: <strong>Proses Verifikasi (Koreksi)</strong></li>
+                    <li>NIK Diajukan: <strong style="font-family:monospace;">${newNik}</strong> (${newNama})</li>
+                `;
+                nikStatus = 'proses';
+            }
+            openModal('modalSuksesKoreksiNIK');
+        }
+
+        function closeModalSuksesKoreksiNIK() {
+            closeModal('modalSuksesKoreksiNIK');
+            updateHeaderAndPillStatus();
+            if (isDirectExecution()) {
+                showPushToast("Identitas NIK Diperbarui", "Data NIK dan KTP pelanggan berhasil diperbarui di sistem.");
+            } else {
+                showPushToast("Tiket Ubah NIK Diterbitkan", "Tiket telah masuk ke antrean verifikasi & persetujuan Manager.");
+            }
+        }
+
+        // ==================== UI STATUS SYNC ====================
+
+        function updateHeaderAndPillStatus() {
+            // Update Account Pill & Header Buttons
+            const statusPill = document.getElementById('custStatusPill');
+            const btnBlokirAkun = document.getElementById('btnBlokirAkun');
+            const btnUnblokAkun = document.getElementById('btnUnblokAkun');
+
+            if (accountStatus === 'aktif') {
+                if (statusPill) {
+                    statusPill.className = 'status-pill aktif';
+                    statusPill.style.backgroundColor = '';
+                    statusPill.style.color = '';
+                    statusPill.innerHTML = '<i class="fa-solid fa-circle-check"></i> Aktif';
+                }
+                if (btnBlokirAkun) btnBlokirAkun.style.display = 'inline-flex';
+                if (btnUnblokAkun) btnUnblokAkun.style.display = 'none';
+            } else {
+                if (statusPill) {
+                    statusPill.className = 'status-pill diblokir';
+                    statusPill.style.backgroundColor = '#FCE8E6';
+                    statusPill.style.color = '#C5221F';
+                    statusPill.innerHTML = '<i class="fa-solid fa-lock"></i> Diblokir';
+                }
+                if (btnBlokirAkun) btnBlokirAkun.style.display = 'none';
+                if (btnUnblokAkun) btnUnblokAkun.style.display = 'inline-flex';
+            }
+
+            // Update E-Wallet Header Buttons & Accordion 1 Pill
+            const btnBlokirEW = document.getElementById('btnBlokirEWallet');
+            const btnUnblokEW = document.getElementById('btnUnblokEWallet');
+            const acc1Pill = document.getElementById('acc1StatusPill');
+
+            if (ewalletStatus === 'active') {
+                if (btnBlokirEW) btnBlokirEW.style.display = 'inline-flex';
+                if (btnUnblokEW) btnUnblokEW.style.display = 'none';
+                if (acc1Pill) {
+                    acc1Pill.className = 'status-pill aktif';
+                    acc1Pill.innerText = 'Active';
+                }
+            } else {
+                if (btnBlokirEW) btnBlokirEW.style.display = 'none';
+                if (btnUnblokEW) btnUnblokEW.style.display = 'inline-flex';
+                if (acc1Pill) {
+                    acc1Pill.className = 'status-pill diblokir';
+                    acc1Pill.innerText = 'Diblokir';
+                }
+            }
+
+            // Update NIK Card Display
+            const nikValEl = document.getElementById('nikDisplayValue');
+            const namaKtpValEl = document.getElementById('namaKtpDisplayValue');
+            const statusNikBadge = document.getElementById('statusNikBadge');
+            const currentNikCode = document.getElementById('currentNikCode');
+            const currentKtpName = document.getElementById('currentKtpName');
+
+            if (nikValEl) nikValEl.innerText = customerData.nik;
+            if (namaKtpValEl) namaKtpValEl.innerText = customerData.namaKtp;
+            if (currentNikCode) currentNikCode.innerText = customerData.nik;
+            if (currentKtpName) currentKtpName.innerText = customerData.namaKtp;
+
+            if (statusNikBadge) {
+                if (nikStatus === 'active') {
+                    statusNikBadge.className = 'status-pill aktif';
+                    statusNikBadge.innerHTML = '<i class="fa-solid fa-circle-check"></i> Active';
+                } else if (nikStatus === 'proses') {
+                    statusNikBadge.className = 'status-pill';
+                    statusNikBadge.style.backgroundColor = '#FEF3C7';
+                    statusNikBadge.style.color = '#92400E';
+                    statusNikBadge.innerHTML = '<i class="fa-solid fa-clock"></i> Proses Verifikasi';
+                } else {
+                    statusNikBadge.className = 'status-pill';
+                    statusNikBadge.style.backgroundColor = '#F1F5F9';
+                    statusNikBadge.style.color = '#64748B';
+                    statusNikBadge.innerHTML = 'Belum Terdaftar';
+                }
+            }
+        }
+
+        // Floating Push Notification Toast Generator
+        function showPushToast(title, message) {
+            const container = document.getElementById('pushToastContainer');
+            if (!container) return;
+
+            const toast = document.createElement('div');
+            toast.className = 'push-toast';
+            toast.innerHTML = `
+                <i class="fa-solid fa-bell toast-icon"></i>
+                <div class="toast-content">
+                    <div class="toast-title">${title}</div>
+                    <div class="toast-msg">${message}</div>
+                </div>
+                <div class="toast-progress"></div>
+            `;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transition = 'opacity 0.3s ease';
+                setTimeout(() => toast.remove(), 300);
+            }, 5000);
+        }
 
         // Accordion Toggle Handler
         function toggleAccordion(id) {
@@ -1152,50 +2515,26 @@
             }
         }
 
-        // Role Switcher Handler (Masked vs Full Phone Numbers)
-        function updateRole(role) {
+        // Top Bar Simulator Controls Handlers
+        function updateSimRole(role) {
             currentRole = role;
-            const phoneDisplays = document.querySelectorAll('.phone-target');
-
-            const phoneData = [
-                { full: "081234567890", masked: "0812****5678" },
-                { full: "081398765432", masked: "0813****5432" },
-                { full: "085711223344", masked: "0857****3344" },
-                { full: "081234567890", masked: "0812****5678" },
-                { full: "081398765432", masked: "0813****5432" },
-                { full: "085711223344", masked: "0857****3344" },
-                { full: "085799887766", masked: "0857****1234" }
-            ];
-
-            const headerPhone = document.getElementById('custPhoneDisplay');
-            if (headerPhone) {
-                headerPhone.innerText = (role === 'manager') ? "081234567890" : "0812****5678";
-            }
-
-            phoneDisplays.forEach((el, i) => {
-                if (phoneData[i]) {
-                    el.innerText = (role === 'manager') ? phoneData[i].full : phoneData[i].masked;
-                }
-            });
         }
 
-        // Fraud Tag Evaluator Toggle Handler
+        function updateSimApprovalPolicy(policy) {
+            approvalPolicy = policy;
+        }
+
         function updateFraudTag(status) {
             const badge = document.getElementById('fraudTagBadge');
             if (badge) {
-                if (status === 'active') {
-                    badge.style.display = 'inline-flex';
-                } else {
-                    badge.style.display = 'none';
-                }
+                badge.style.display = (status === 'active') ? 'inline-flex' : 'none';
             }
         }
 
-        // Device Scenario Switcher Handler (Single vs Multi-Account)
         function switchDeviceScenario(scenario) {
             const badgeEl = document.getElementById('deviceAlertBadge');
             const tbodyEl = document.getElementById('deviceTableBody');
-            
+
             if (scenario === 'single') {
                 if (badgeEl) {
                     badgeEl.className = 'badge-device-normal';
@@ -1206,7 +2545,7 @@
                         <tr>
                             <td>1</td>
                             <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
-                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081234567890' : '0812****5678'}</td>
+                            <td class="phone-target" style="font-family: monospace;">081234567890</td>
                             <td>14 Jan 2024, 10:30 WIB</td>
                             <td><span class="status-pill aktif">Aktif</span></td>
                         </tr>
@@ -1222,21 +2561,21 @@
                         <tr>
                             <td>1</td>
                             <td><strong>Budi Santoso</strong> <span style="font-size: 11px; background-color: #E0F2FE; color: #0369A1; padding: 2px 6px; border-radius: 4px; font-weight: 600;">Akun Ini</span></td>
-                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081234567890' : '0812****5678'}</td>
+                            <td class="phone-target" style="font-family: monospace;">081234567890</td>
                             <td>14 Jan 2024, 10:30 WIB</td>
                             <td><span class="status-pill aktif">Aktif</span></td>
                         </tr>
                         <tr>
                             <td>2</td>
                             <td><strong>Siti Rahmawati</strong></td>
-                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '081398765432' : '0813****5432'}</td>
+                            <td class="phone-target" style="font-family: monospace;">081398765432</td>
                             <td>12 Jan 2024, 14:15 WIB</td>
                             <td><span class="status-pill aktif">Aktif</span></td>
                         </tr>
                         <tr>
                             <td>3</td>
                             <td><strong>Ahmad Wijaya</strong></td>
-                            <td class="phone-target" style="font-family: monospace;">${currentRole === 'manager' ? '085711223344' : '0857****3344'}</td>
+                            <td class="phone-target" style="font-family: monospace;">085711223344</td>
                             <td>08 Jan 2024, 09:00 WIB</td>
                             <td><span class="status-pill diblokir" style="background-color:#FCE8E6; color:#C5221F;">Diblokir</span></td>
                         </tr>
@@ -1244,6 +2583,9 @@
                 }
             }
         }
+
+        // Initialize on Load
+        updateHeaderAndPillStatus();
     </script>
 </body>
 

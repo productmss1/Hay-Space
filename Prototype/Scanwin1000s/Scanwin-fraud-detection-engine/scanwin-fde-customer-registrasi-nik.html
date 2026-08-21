@@ -1,0 +1,1527 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registrasi & Verifikasi NIK (PRD 15a) — sCanWin FDE Prototype</title>
+  <!-- Google Fonts & FontAwesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    :root {
+      --primary-blue: #016EFF;
+      --primary-blue-dark: #0056C6;
+      --primary-blue-light: #EFF6FF;
+      --navy-dark: #0F172A;
+      --slate-border: #E2E8F0;
+      --success-green: #059669;
+      --success-light: #ECFDF5;
+      --warning-amber: #D97706;
+      --warning-light: #FFFBEB;
+      --danger-red: #DC2626;
+      --danger-light: #FEF2F2;
+      --text-dark: #1E293B;
+      --text-muted: #64748B;
+      --bg-page: #F8FAFC;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background-color: var(--bg-page);
+      color: var(--text-dark);
+      display: flex;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+
+    /* ========== DASHBOARD PORTAL CONTAINER ========== */
+    .portal-container {
+      display: flex;
+      width: 100vw;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .portal-main {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .feature-container {
+      display: grid;
+      grid-template-columns: 1fr 430px;
+      width: 100%;
+      height: 100%;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    /* Left Canvas: Mobile Phone Frame */
+    .feature-left-canvas {
+      background: #0B0F19;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow-y: auto;
+      position: relative;
+      flex: 1;
+    }
+
+    .phone-simulator-frame {
+      width: 390px;
+      height: 780px;
+      background: #FFFFFF;
+      border-radius: 38px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.45), 0 0 0 10px #1E293B, 0 0 0 12px #334155;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Notch */
+    .status-notch {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 130px;
+      height: 24px;
+      background: #1E293B;
+      border-bottom-left-radius: 14px;
+      border-bottom-right-radius: 14px;
+      z-index: 30;
+      pointer-events: none;
+    }
+
+    /* Simulator Embedded Iframe (Homepage / Account reference) */
+    .homepage-iframe {
+      border: none;
+      width: 100%;
+      height: 100%;
+      display: block;
+      background: #FFFFFF;
+    }
+
+    /* Overlay Screens inside phone frame */
+    .app-screen {
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      display: none;
+      flex-direction: column;
+      z-index: 20;
+      animation: fadeInScreen 0.2s ease;
+    }
+
+    .app-screen.active {
+      display: flex;
+    }
+
+    @keyframes fadeInScreen {
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* iOS Status Bar in Overlays */
+    .phone-status-bar {
+      height: 44px;
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #0F172A;
+      z-index: 10;
+      flex-shrink: 0;
+    }
+
+    /* App Header */
+    .app-header {
+      padding: 12px 18px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #F1F5F9;
+      background: #FFFFFF;
+      flex-shrink: 0;
+    }
+
+    .btn-back-nav {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 1px solid var(--slate-border);
+      background: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #334155;
+      cursor: pointer;
+      font-size: 14px;
+      transition: all 0.2s;
+    }
+
+    .btn-back-nav:hover {
+      background: #F8FAFC;
+      border-color: #CBD5E1;
+    }
+
+    .app-header-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0F172A;
+      letter-spacing: -0.2px;
+    }
+
+    /* Content Area */
+    .app-content-body {
+      flex: 1;
+      padding: 20px 18px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    /* Security & Tax Notice Banner */
+    .security-notice-card {
+      background: #F0FDF4;
+      border: 1px solid #BBF7D0;
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+
+    .security-notice-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: #DCFCE7;
+      color: #16A34A;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .security-notice-text h4 {
+      font-size: 12.5px;
+      font-weight: 700;
+      color: #166534;
+      margin-bottom: 3px;
+    }
+
+    .security-notice-text p {
+      font-size: 11.5px;
+      color: #15803D;
+      line-height: 1.45;
+    }
+
+    /* Form Fields */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .char-counter {
+      font-size: 11px;
+      color: #94A3B8;
+      font-weight: 600;
+    }
+
+    .form-input-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .form-input-icon {
+      position: absolute;
+      left: 14px;
+      color: #94A3B8;
+      font-size: 14px;
+      pointer-events: none;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 48px;
+      border: 1.5px solid #CBD5E1;
+      border-radius: 12px;
+      padding: 0 14px 0 40px;
+      font-size: 14px;
+      color: #0F172A;
+      background: #FFFFFF;
+      transition: all 0.2s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-blue);
+      box-shadow: 0 0 0 3px rgba(1, 110, 255, 0.15);
+    }
+
+    .form-input.is-invalid {
+      border-color: var(--danger-red);
+      background: #FFF5F5;
+    }
+
+    .form-input.is-valid {
+      border-color: var(--success-green);
+      background: #F0FDF4;
+    }
+
+    .font-mono {
+      font-family: 'JetBrains Mono', monospace !important;
+      letter-spacing: 0.5px;
+    }
+
+    .input-feedback-msg {
+      font-size: 11px;
+      line-height: 1.4;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 2px;
+    }
+
+    .input-feedback-msg.hint {
+      color: #64748B;
+    }
+
+    .input-feedback-msg.error {
+      color: var(--danger-red);
+      font-weight: 600;
+    }
+
+    .input-feedback-msg.success {
+      color: var(--success-green);
+      font-weight: 600;
+    }
+
+    /* Consent Box */
+    .consent-box {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      border-radius: 12px;
+      padding: 12px;
+    }
+
+    .consent-box input[type="checkbox"] {
+      margin-top: 2px;
+      accent-color: var(--primary-blue);
+      width: 16px;
+      height: 16px;
+      cursor: pointer;
+    }
+
+    .consent-box label {
+      font-size: 11.5px;
+      color: #475569;
+      line-height: 1.45;
+      cursor: pointer;
+    }
+
+    /* Footer Action Button */
+    .app-footer-actions {
+      padding: 14px 18px 20px;
+      background: #FFFFFF;
+      border-top: 1px solid #F1F5F9;
+      flex-shrink: 0;
+    }
+
+    .btn-submit-nik {
+      width: 100%;
+      height: 48px;
+      background: var(--primary-blue);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      box-shadow: 0 4px 14px rgba(1, 110, 255, 0.25);
+    }
+
+    .btn-submit-nik:hover:not(:disabled) {
+      background: var(--primary-blue-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-submit-nik:disabled {
+      background: #CBD5E1;
+      color: #94A3B8;
+      cursor: not-allowed;
+      box-shadow: none;
+    }
+
+    /* Digital KTP Card Display (State B) */
+    .nik-id-card {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      border-radius: 18px;
+      padding: 20px;
+      color: #FFFFFF;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 25px rgba(15, 23, 42, 0.25);
+    }
+
+    .nik-id-card::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 120px;
+      height: 120px;
+      background: radial-gradient(circle, rgba(1, 110, 255, 0.2) 0%, rgba(255, 255, 255, 0) 70%);
+      border-radius: 50%;
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .card-brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      color: #94A3B8;
+    }
+
+    .card-status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .card-status-badge.pending {
+      background: rgba(217, 119, 6, 0.2);
+      border: 1px solid rgba(245, 158, 11, 0.4);
+      color: #FBBF24;
+    }
+
+    .card-nik-number {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      color: #FFFFFF;
+      margin-bottom: 18px;
+    }
+
+    .card-holder-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 12px;
+    }
+
+    .holder-meta {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .meta-label {
+      font-size: 10px;
+      color: #94A3B8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .meta-val {
+      font-size: 14px;
+      font-weight: 700;
+      color: #FFFFFF;
+      margin-top: 2px;
+    }
+
+    /* Immutable info box */
+    .immutable-info-box {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .immutable-info-row {
+      display: flex;
+      gap: 10px;
+      font-size: 11.5px;
+      color: #475569;
+      line-height: 1.45;
+    }
+
+    .immutable-info-row i {
+      color: var(--primary-blue);
+      margin-top: 2px;
+      font-size: 13px;
+    }
+
+    /* Overlay Modals */
+    .mobile-overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 50;
+      display: none;
+      align-items: flex-end;
+      justify-content: center;
+    }
+
+    .mobile-sheet {
+      width: 100%;
+      background: #FFFFFF;
+      border-top-left-radius: 24px;
+      border-top-right-radius: 24px;
+      padding: 20px 18px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      animation: slideUp 0.25s ease-out;
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(100%);
+      }
+
+      to {
+        transform: translateY(0);
+      }
+    }
+
+    /* PIN Numpad */
+    .pin-dots-row {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      margin: 12px 0 16px;
+    }
+
+    .pin-dot-circle {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      border: 2px solid #CBD5E1;
+      transition: all 0.15s;
+    }
+
+    .pin-dot-circle.filled {
+      background: var(--primary-blue);
+      border-color: var(--primary-blue);
+      transform: scale(1.15);
+    }
+
+    .numpad-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      max-width: 280px;
+      margin: 0 auto;
+    }
+
+    .numpad-key {
+      height: 52px;
+      border-radius: 14px;
+      border: 1px solid #E2E8F0;
+      background: #F8FAFC;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0F172A;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.15s;
+    }
+
+    .numpad-key:active {
+      background: #E2E8F0;
+      transform: scale(0.95);
+    }
+
+    /* Duplicate Error Modal */
+    .error-dialog-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 8px;
+    }
+
+    .error-dialog-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: #FEE2E2;
+      color: #DC2626;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      margin-bottom: 12px;
+    }
+
+    .error-dialog-title {
+      font-size: 16px;
+      font-weight: 800;
+      color: #0F172A;
+      margin-bottom: 6px;
+    }
+
+    .error-dialog-desc {
+      font-size: 12.5px;
+      color: #64748B;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    /* ========== RIGHT SIDEBAR: INTERACTIVE TESTER ========== */
+    .feature-right-sidebar {
+      background: #FFFFFF;
+      border-left: 1px solid var(--slate-border);
+      display: flex;
+      flex-direction: column;
+      padding: 24px 20px;
+      overflow-y: auto;
+      gap: 16px;
+    }
+
+    .sidebar-header h2 {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--primary-blue);
+      margin-bottom: 2px;
+    }
+
+    .sidebar-header h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+      line-height: 1.25;
+      margin-bottom: 6px;
+    }
+
+    .sidebar-header p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .tester-card {
+      background: #F8FAFC;
+      border: 1px solid var(--slate-border);
+      border-radius: 14px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .tester-card h3 {
+      font-size: 12px;
+      font-weight: 700;
+      color: #0F172A;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .radio-option-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 8px 12px;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .radio-option-card:hover {
+      border-color: #CBD5E1;
+    }
+
+    .radio-option-card input[type="radio"] {
+      accent-color: var(--primary-blue);
+      cursor: pointer;
+    }
+
+    /* Flow Step List */
+    .flow-step-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .flow-step-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 10px;
+      padding: 8px 10px;
+      font-size: 11.5px;
+      opacity: 0.6;
+      transition: all 0.2s;
+    }
+
+    .flow-step-item.active {
+      opacity: 1;
+      border-color: var(--primary-blue);
+      background: #EFF6FF;
+    }
+
+    .step-badge-num {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10.5px;
+      font-weight: 700;
+    }
+
+    .flow-step-item.active .step-badge-num {
+      background: var(--primary-blue);
+      color: #FFFFFF;
+    }
+
+    /* Log Terminal */
+    .log-terminal-box {
+      background: #0F172A;
+      color: #E2E8F0;
+      border-radius: 12px;
+      padding: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      height: 130px;
+      overflow-y: auto;
+    }
+
+    .btn-reset-tester {
+      width: 100%;
+      padding: 10px;
+      background: #FFFFFF;
+      border: 1px solid #CBD5E1;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s;
+    }
+
+    .btn-reset-tester:hover {
+      background: #F1F5F9;
+      color: #0F172A;
+    }
+  </style>
+  <script src="sidebar.js"></script>
+</head>
+
+<body>
+
+  <div class="portal-container">
+    <!-- Master Sidebar -->
+    <div id="portal-sidebar-container"></div>
+
+    <!-- Main Content Area -->
+    <div class="portal-main">
+      <div class="feature-container">
+
+        <!-- Left Column: Phone Simulator Frame -->
+        <div class="feature-left-canvas">
+          <div class="phone-simulator-frame">
+            <!-- iOS Notch -->
+            <div class="status-notch"></div>
+
+            <!-- 1. Real Homepage/Account Loaded via Iframe Reference -->
+            <iframe id="homepage-frame" class="homepage-iframe" src="scanwin-homepage.html"></iframe>
+
+            <!-- 2. OVERLAY SCREEN A: Form Input NIK 16-Digit -->
+            <div id="screen-nik-form" class="app-screen">
+              <!-- Status Bar -->
+              <div class="phone-status-bar">
+                <span>09:41</span>
+                <div style="display:flex; align-items:center; gap:5px; font-size:11px;">
+                  <i class="fas fa-signal"></i>
+                  <i class="fas fa-wifi"></i>
+                  <i class="fas fa-battery-full"></i>
+                </div>
+              </div>
+
+              <!-- App Header -->
+              <div class="app-header">
+                <button class="btn-back-nav" onclick="setSimulatorScreen('account')" title="Kembali ke Akun">
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="app-header-title">Pendaftaran NIK (Pajak)</div>
+                <button class="btn-back-nav" style="border:none; background:none; cursor:pointer;"
+                  onclick="setSimulatorScreen('account')" title="Menu Akun">
+                  <i class="fas fa-user-circle" style="font-size:18px; color:var(--primary-blue);"></i>
+                </button>
+              </div>
+
+              <!-- Form Body -->
+              <div class="app-content-body">
+                <!-- Security & Tax Notice Banner -->
+                <div class="security-notice-card">
+                  <div class="security-notice-icon">
+                    <i class="fas fa-shield-halved"></i>
+                  </div>
+                  <div class="security-notice-text">
+                    <h4>Kepatuhan Pajak &amp; Keamanan Akun</h4>
+                    <p>Data NIK digunakan untuk keperluan pelaporan pajak. Satu NIK hanya dapat terdaftar pada 1 akun
+                      sCanWin.</p>
+                  </div>
+                </div>
+
+                <!-- Form Input Nama Lengkap Sesuai KTP -->
+                <div class="form-group">
+                  <label class="form-label" for="input-nama-ktp">
+                    <span>Nama Lengkap Sesuai KTP <strong style="color:var(--danger-red);">*</strong></span>
+                  </label>
+                  <div class="form-input-wrap">
+                    <i class="fas fa-user form-input-icon"></i>
+                    <input type="text" id="input-nama-ktp" class="form-input" placeholder="Masukkan nama sesuai e-KTP"
+                      oninput="handleFormValidation()">
+                  </div>
+                  <div class="input-feedback-msg hint">
+                    <i class="fas fa-info-circle"></i> Pastikan nama sama persis dengan e-KTP Anda.
+                  </div>
+                </div>
+
+                <!-- Form Input NIK 16 Digit -->
+                <div class="form-group">
+                  <label class="form-label" for="input-nik-number">
+                    <span>Nomor Induk Kependudukan (NIK) <strong style="color:var(--danger-red);">*</strong></span>
+                    <span class="char-counter" id="nik-char-count">0/16</span>
+                  </label>
+                  <div class="form-input-wrap">
+                    <i class="fas fa-id-card form-input-icon"></i>
+                    <input type="text" id="input-nik-number" class="form-input font-mono" maxlength="16"
+                      placeholder="16 Digit Angka NIK" inputmode="numeric" oninput="handleNikInput(this)">
+                  </div>
+                  <div class="input-feedback-msg hint" id="nik-feedback">
+                    <i class="fas fa-info-circle"></i> Wajib tepat 16 digit angka numerik.
+                  </div>
+                </div>
+
+                <!-- Consent Checkbox -->
+                <div class="consent-box">
+                  <input type="checkbox" id="chk-consent" onchange="handleFormValidation()">
+                  <label for="chk-consent">
+                    Saya menyatakan bahwa data NIK dan Nama KTP yang saya daftarkan adalah benar dan sesuai dengan
+                    identitas resmi saya.
+                  </label>
+                </div>
+
+                <!-- Helper info -->
+                <div style="font-size:11px; color:#94A3B8; text-align:center; margin-top:auto; padding-top:12px;">
+                  <i class="fas fa-lock"></i> Data NIK Anda terlindungi dengan enkripsi AES-256.
+                </div>
+              </div>
+
+              <!-- Footer CTA -->
+              <div class="app-footer-actions">
+                <button type="button" class="btn-submit-nik" id="btn-submit-nik" disabled onclick="submitNikForm()">
+                  <span>Simpan &amp; Lanjutkan</span>
+                  <i class="fas fa-chevron-right"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- 3. OVERLAY SCREEN B: Kartu Digital NIK Terdaftar (Immutable) -->
+            <div id="screen-nik-registered" class="app-screen" style="background:#F8FAFC;">
+              <!-- Status Bar -->
+              <div class="phone-status-bar">
+                <span>09:41</span>
+                <div style="display:flex; align-items:center; gap:5px; font-size:11px;">
+                  <i class="fas fa-signal"></i>
+                  <i class="fas fa-wifi"></i>
+                  <i class="fas fa-battery-full"></i>
+                </div>
+              </div>
+
+              <!-- App Header -->
+              <div class="app-header">
+                <button class="btn-back-nav" onclick="setSimulatorScreen('account')" title="Kembali ke Akun">
+                  <i class="fas fa-arrow-left"></i>
+                </button>
+                <div class="app-header-title">Identitas KTP Terdaftar</div>
+                <button class="btn-back-nav" style="border:none; background:none; cursor:pointer;"
+                  onclick="setSimulatorScreen('account')" title="Menu Akun">
+                  <i class="fas fa-user-circle" style="font-size:18px; color:var(--primary-blue);"></i>
+                </button>
+              </div>
+
+              <!-- Body Registered -->
+              <div class="app-content-body">
+                <!-- Digital KTP Card Display -->
+                <div class="nik-id-card">
+                  <div class="card-top-row">
+                    <div class="card-brand">
+                      <i class="fas fa-id-badge"></i>
+                      <span>IDENTITAS KTP TERDAFTAR</span>
+                    </div>
+                    <div class="card-status-badge pending" id="card-status-badge">
+                      <i class="fas fa-clock"></i>
+                      <span id="badge-status-text">Proses Verifikasi</span>
+                    </div>
+                  </div>
+
+                  <div class="card-nik-number font-mono" id="display-masked-nik">
+                    320123******0001
+                  </div>
+
+                  <div class="card-holder-info">
+                    <div class="holder-meta">
+                      <span class="meta-label">Nama Lengkap Sesuai KTP</span>
+                      <span class="meta-val" id="display-nama-ktp">Budi Santoso</span>
+                    </div>
+                    <div style="font-size:18px; color:rgba(255,255,255,0.4);">
+                      <i class="fas fa-shield-check"></i>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Immutable Rules Box -->
+                <div class="immutable-info-box">
+                  <div style="font-size:12px; font-weight:700; color:#1E293B; margin-bottom:2px;">
+                    📌 Ketentuan Data Identitas Pelanggan:
+                  </div>
+                  <div class="immutable-info-row">
+                    <i class="fas fa-lock"></i>
+                    <div><strong>Data Terkunci (Immutable):</strong> Demi keamanan dan pencegahan kecurangan, data NIK
+                      yang telah didaftarkan tidak dapat diubah mandiri melalui aplikasi.</div>
+                  </div>
+                  <div class="immutable-info-row">
+                    <i class="fas fa-file-invoice-dollar"></i>
+                    <div><strong>Kebutuhan Pelaporan Pajak:</strong> NIK Anda digunakan untuk keperluan kepatuhan
+                      pelaporan pajak resmi sCanWin.</div>
+                  </div>
+                  <div class="immutable-info-row">
+                    <i class="fas fa-headset"></i>
+                    <div><strong>Koreksi Data:</strong> Jika terdapat kesalahan penginputan, silakan hubungi tim
+                      Customer Service untuk verifikasi identitas resmi.</div>
+                  </div>
+                </div>
+
+                <div style="margin-top:auto; display:flex; flex-direction:column; gap:8px;">
+                  <button class="btn-submit-nik" style="background:#0F172A;" onclick="simulateContactCs()">
+                    <i class="fas fa-headset"></i> Hubungi Customer Service
+                  </button>
+                  <button class="btn-back-nav" style="width:100%; height:44px; font-weight:600;"
+                    onclick="setSimulatorScreen('account')">
+                    <i class="fas fa-arrow-left"></i> Kembali ke Menu Akun
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- OVERLAY MODAL 1: PIN 6-Digit Confirmation Modal -->
+            <div class="mobile-overlay" id="overlay-pin-modal">
+              <div class="mobile-sheet">
+                <div style="display:flex; justify-content:space-between; align-items:center;">
+                  <h3 style="font-size:15px; font-weight:700; color:#0F172A;">Konfirmasi PIN sCanWin</h3>
+                  <button onclick="closePinModal()"
+                    style="border:none; background:none; font-size:16px; color:#64748B; cursor:pointer;">
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                <p style="font-size:12px; color:#64748B; text-align:center;">Masukkan 6-digit PIN sCanWin Anda untuk
+                  mengonfirmasi pendaftaran NIK.</p>
+
+                <!-- 6 PIN Dots Indicator -->
+                <div class="pin-dots-row">
+                  <div class="pin-dot-circle" id="pindot-0"></div>
+                  <div class="pin-dot-circle" id="pindot-1"></div>
+                  <div class="pin-dot-circle" id="pindot-2"></div>
+                  <div class="pin-dot-circle" id="pindot-3"></div>
+                  <div class="pin-dot-circle" id="pindot-4"></div>
+                  <div class="pin-dot-circle" id="pindot-5"></div>
+                </div>
+
+                <!-- Interactive Numpad -->
+                <div class="numpad-container">
+                  <button class="numpad-key" onclick="pressNumpad('1')">1</button>
+                  <button class="numpad-key" onclick="pressNumpad('2')">2</button>
+                  <button class="numpad-key" onclick="pressNumpad('3')">3</button>
+                  <button class="numpad-key" onclick="pressNumpad('4')">4</button>
+                  <button class="numpad-key" onclick="pressNumpad('5')">5</button>
+                  <button class="numpad-key" onclick="pressNumpad('6')">6</button>
+                  <button class="numpad-key" onclick="pressNumpad('7')">7</button>
+                  <button class="numpad-key" onclick="pressNumpad('8')">8</button>
+                  <button class="numpad-key" onclick="pressNumpad('9')">9</button>
+                  <div></div>
+                  <button class="numpad-key" onclick="pressNumpad('0')">0</button>
+                  <button class="numpad-key" onclick="pressNumpadBackspace()"><i class="fas fa-backspace"></i></button>
+                </div>
+              </div>
+            </div>
+
+            <!-- OVERLAY MODAL 2: Duplicate NIK Error Dialog -->
+            <div class="mobile-overlay" id="overlay-error-duplicate">
+              <div class="mobile-sheet">
+                <div class="error-dialog-content">
+                  <div class="error-dialog-icon">
+                    <i class="fas fa-user-xmark"></i>
+                  </div>
+                  <div class="error-dialog-title">NIK Sudah Terdaftar</div>
+                  <div class="error-dialog-desc">
+                    Nomor NIK yang Anda masukkan sudah terhubung dengan akun sCanWin lain. Sesuai ketentuan, <strong>1
+                      NIK hanya dapat didaftarkan pada 1 akun sCanWin</strong>.
+                  </div>
+                  <div style="display:flex; flex-direction:column; gap:8px; width:100%;">
+                    <button class="btn-submit-nik" onclick="closeDuplicateModal()">
+                      Periksa Kembali NIK
+                    </button>
+                    <button class="btn-back-nav" style="width:100%; height:44px; font-weight:600;"
+                      onclick="closeDuplicateModal(); simulateContactCs();">
+                      <i class="fas fa-headset"></i> Hubungi Customer Service
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Right Column: Interactive Tester Panel -->
+        <div class="feature-right-sidebar">
+          <div class="sidebar-header">
+            <h2>PRD 15a INTERACTIVE TESTER</h2>
+            <h1>Registrasi &amp; Verifikasi NIK</h1>
+            <p>Simulasikan alur entry point dari Homepage &rarr; Akun Saya &rarr; Input 16 Digit NIK &rarr; Strict
+              1-to-1 Uniqueness &rarr; Otorisasi PIN &rarr; Data Terkunci (Immutable).</p>
+          </div>
+
+          <!-- Quick Screen Navigator -->
+          <div class="tester-card" style="background:#EFF6FF; border-color:#BFDBFE;">
+            <h3 style="color:#1D4ED8;"><i class="fas fa-mobile-screen"></i> Navigasi Halaman Prototype</h3>
+            <div style="display:grid; grid-template-columns: 1fr 1fr; gap:8px;">
+              <button onclick="setSimulatorScreen('account')" id="btn-nav-account"
+                style="padding:10px 8px; background:#FFFFFF; border:1px solid #93C5FD; border-radius:8px; font-size:11px; font-weight:700; color:#1E40AF; cursor:pointer; text-align:left;">
+                <i class="fas fa-user-circle"></i> 1. Layar Akun Saya
+              </button>
+              <button onclick="setSimulatorScreen('homepage')" id="btn-nav-home"
+                style="padding:10px 8px; background:#FFFFFF; border:1px solid #93C5FD; border-radius:8px; font-size:11px; font-weight:700; color:#1E40AF; cursor:pointer; text-align:left;">
+                <i class="fas fa-house"></i> 2. Homepage sCanWin
+              </button>
+              <button onclick="setSimulatorScreen('form')" id="btn-nav-form"
+                style="padding:10px 8px; background:#1D4ED8; border:none; border-radius:8px; font-size:11px; font-weight:700; color:#FFFFFF; cursor:pointer; text-align:left;">
+                <i class="fas fa-id-card"></i> 3. Form Input NIK
+              </button>
+              <button onclick="setSimulatorScreen('registered')" id="btn-nav-reg"
+                style="padding:10px 8px; background:#0F172A; border:none; border-radius:8px; font-size:11px; font-weight:700; color:#FFFFFF; cursor:pointer; text-align:left;">
+                <i class="fas fa-id-badge"></i> 4. Kartu NIK Terdaftar
+              </button>
+            </div>
+          </div>
+
+          <!-- Tester Control 1: Customer PIN State -->
+          <div class="tester-card">
+            <h3><i class="fas fa-key" style="color:var(--primary-blue);"></i> Status PIN Customer</h3>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label class="radio-option-card">
+                <span>PIN Aktif (Active) - default: 123456</span>
+                <input type="radio" name="testerPinState" value="active" checked onchange="setTesterPinState('active')">
+              </label>
+              <label class="radio-option-card">
+                <span>PIN Belum Dibuat (Unregistered)</span>
+                <input type="radio" name="testerPinState" value="unregistered"
+                  onchange="setTesterPinState('unregistered')">
+              </label>
+              <label class="radio-option-card">
+                <span>PIN Terblokir (Blocked)</span>
+                <input type="radio" name="testerPinState" value="blocked" onchange="setTesterPinState('blocked')">
+              </label>
+            </div>
+          </div>
+
+          <!-- Tester Control 2: Preset Skenario NIK -->
+          <div class="tester-card">
+            <h3><i class="fas fa-database" style="color:#059669;"></i> Preset Pengujian Skenario NIK</h3>
+            <div style="display:flex; flex-direction:column; gap:6px;">
+              <label class="radio-option-card">
+                <div>
+                  <strong>Happy Path (NIK Bersih)</strong>
+                  <div style="font-size:11px; color:#64748B;">3201234567890001 (Belum Terdaftar)</div>
+                </div>
+                <input type="radio" name="testerScenario" value="clean" checked onchange="applyScenario('clean')">
+              </label>
+              <label class="radio-option-card">
+                <div>
+                  <strong>Duplikasi NIK (Terdaftar di Akun Lain)</strong>
+                  <div style="font-size:11px; color:#DC2626;">3171092837460003 (Milik Siti Rahmawati)</div>
+                </div>
+                <input type="radio" name="testerScenario" value="duplicate" onchange="applyScenario('duplicate')">
+              </label>
+              <label class="radio-option-card">
+                <div>
+                  <strong>Format Tidak Valid (&lt; 16 Digit)</strong>
+                  <div style="font-size:11px; color:#D97706;">32012345678900 (14 Digit)</div>
+                </div>
+                <input type="radio" name="testerScenario" value="invalid_length"
+                  onchange="applyScenario('invalid_length')">
+              </label>
+            </div>
+          </div>
+
+          <!-- Flow Step Indicator (4 Steps) -->
+          <div class="tester-card">
+            <h3><i class="fas fa-list-check" style="color:#2563EB;"></i> Status Alur Transaksi</h3>
+            <div class="flow-step-list">
+              <div class="flow-step-item active" id="flow-1">
+                <div class="step-badge-num">1</div>
+                <div>
+                  <div style="font-weight:700;">Entry Point: Homepage / Akun Saya</div>
+                  <div style="color:#64748B;">Klik profil header / menu Identitas NIK</div>
+                </div>
+              </div>
+              <div class="flow-step-item" id="flow-2">
+                <div class="step-badge-num">2</div>
+                <div>
+                  <div style="font-weight:700;">Input Form &amp; Validasi 1-to-1</div>
+                  <div style="color:#64748B;">Nama KTP &amp; cek keunikan 16 digit</div>
+                </div>
+              </div>
+              <div class="flow-step-item" id="flow-3">
+                <div class="step-badge-num">3</div>
+                <div>
+                  <div style="font-weight:700;">Otorisasi PIN 6-Digit</div>
+                  <div style="color:#64748B;">Verifikasi PIN transaksi sCanWin</div>
+                </div>
+              </div>
+              <div class="flow-step-item" id="flow-4">
+                <div class="step-badge-num">4</div>
+                <div>
+                  <div style="font-weight:700;">Status Tersimpan &amp; Terkunci</div>
+                  <div style="color:#64748B;">Proses Verifikasi (Immutable)</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Log Console -->
+          <div style="font-size:11px; font-weight:700; color:#475569;">AUDIT LOG &amp; SECURITY VERIFICATION:</div>
+          <div class="log-terminal-box" id="terminal-log">
+            [SYS] Modul Registrasi NIK (PRD 15a) Ready.<br>
+            [ENTRY POINT] Simulator memuat referensi Homepage sCanWin.<br>
+            [STATUS] PIN Customer: Active (123456)<br>
+            [ACTION] Klik profil 'Andhika M..' di dalam simulator untuk membuka Layar Akun.
+          </div>
+
+          <button class="btn-reset-tester" onclick="resetAllState()">
+            <i class="fas fa-rotate-left"></i> Reset Pengujian Ke Awal
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // State Variables
+    let currentInputPin = '';
+    let failedPinCount = 0;
+    let testerPinState = 'active';
+    let isNikRegistered = false;
+    let savedNikData = null;
+
+    let registeredNikDb = [
+      { nik: '3171092837460003', name: 'Siti Rahmawati', account: 'CUST-1001123' },
+      { nik: '3273012938470002', name: 'Ahmad Hidayat', account: 'CUST-1005432' },
+      { nik: '3578019283740004', name: 'Dewi Lestari', account: 'CUST-1009921' }
+    ];
+
+    function appendLog(msg) {
+      const term = document.getElementById('terminal-log');
+      term.innerHTML += `<br>[${new Date().toLocaleTimeString()}] ${msg}`;
+      term.scrollTop = term.scrollHeight;
+    }
+
+    function setTesterPinState(state) {
+      testerPinState = state;
+      localStorage.setItem('scanwin_pin_status', state);
+      appendLog(`Status PIN diubah menjadi: ${state.toUpperCase()}`);
+    }
+
+    function updateFlowStep(stepNum) {
+      for (let i = 1; i <= 4; i++) {
+        const el = document.getElementById(`flow-${i}`);
+        if (el) {
+          if (i === stepNum) el.classList.add('active');
+          else el.classList.remove('active');
+        }
+      }
+    }
+
+    // SIMULATOR SCREEN CONTROLLER
+    function setSimulatorScreen(screen) {
+      const frame = document.getElementById('homepage-frame');
+      const screenForm = document.getElementById('screen-nik-form');
+      const screenReg = document.getElementById('screen-nik-registered');
+
+      if (screen === 'homepage') {
+        screenForm.classList.remove('active');
+        screenReg.classList.remove('active');
+        frame.src = 'scanwin-homepage.html';
+        updateFlowStep(1);
+        appendLog('[SIMULATOR] Memuat halaman Homepage sCanWin.');
+      } else if (screen === 'account') {
+        screenForm.classList.remove('active');
+        screenReg.classList.remove('active');
+        frame.src = 'scanwin-aaccount.html';
+        updateFlowStep(1);
+        appendLog('[SIMULATOR] Memuat halaman Akun Saya (scanwin-aaccount.html).');
+      } else if (screen === 'form') {
+        screenReg.classList.remove('active');
+        screenForm.classList.add('active');
+        updateFlowStep(2);
+        appendLog('[SIMULATOR] Menampilkan Form Registrasi NIK 16-Digit.');
+      } else if (screen === 'registered') {
+        screenForm.classList.remove('active');
+        screenReg.classList.add('active');
+        updateFlowStep(4);
+        appendLog('[SIMULATOR] Menampilkan Kartu Digital NIK Terdaftar (Immutable).');
+      }
+    }
+
+    function resetToAccount() {
+      setSimulatorScreen('account');
+    }
+
+    // Listen to postMessage from iframe (scanwin-aaccount.html)
+    window.addEventListener('message', function (event) {
+      if (event.data === 'startNikRegistration') {
+        appendLog('[EVENT] Customer memilih "Data Identitas KTP / NIK" dari Layar Akun.');
+        if (isNikRegistered) {
+          setSimulatorScreen('registered');
+        } else {
+          setSimulatorScreen('form');
+        }
+      }
+    });
+
+    function handleNikInput(input) {
+      // Clean non-numeric
+      input.value = input.value.replace(/\D/g, '');
+      const len = input.value.length;
+      document.getElementById('nik-char-count').innerText = `${len}/16`;
+
+      const fb = document.getElementById('nik-feedback');
+      if (len === 16) {
+        fb.className = 'input-feedback-msg success';
+        fb.innerHTML = '<i class="fas fa-check-circle"></i> Format 16 digit angka lengkap.';
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+      } else if (len > 0 && len < 16) {
+        fb.className = 'input-feedback-msg error';
+        fb.innerHTML = `<i class="fas fa-triangle-exclamation"></i> NIK kurang ${16 - len} digit (wajib tepat 16 digit).`;
+        input.classList.remove('is-valid');
+      } else {
+        fb.className = 'input-feedback-msg hint';
+        fb.innerHTML = '<i class="fas fa-info-circle"></i> Wajib tepat 16 digit angka numerik.';
+        input.classList.remove('is-valid', 'is-invalid');
+      }
+
+      handleFormValidation();
+    }
+
+    function handleFormValidation() {
+      const nama = document.getElementById('input-nama-ktp').value.trim();
+      const nik = document.getElementById('input-nik-number').value.trim();
+      const consent = document.getElementById('chk-consent').checked;
+      const btn = document.getElementById('btn-submit-nik');
+
+      const isNamaValid = nama.length >= 3;
+      const isNikValid = nik.length === 16 && /^\d{16}$/.test(nik);
+
+      if (isNamaValid && isNikValid && consent) {
+        btn.disabled = false;
+      } else {
+        btn.disabled = true;
+      }
+    }
+
+    function applyScenario(scenario) {
+      const namaInput = document.getElementById('input-nama-ktp');
+      const nikInput = document.getElementById('input-nik-number');
+      const consentChk = document.getElementById('chk-consent');
+
+      if (scenario === 'clean') {
+        namaInput.value = 'Budi Santoso';
+        nikInput.value = '3201234567890001';
+        consentChk.checked = true;
+        appendLog('Skenario dimuat: NIK Bersih (3201234567890001)');
+      } else if (scenario === 'duplicate') {
+        namaInput.value = 'Siti Rahmawati';
+        nikInput.value = '3171092837460003';
+        consentChk.checked = true;
+        appendLog('Skenario dimuat: NIK Duplikat Akun Lain (3171092837460003)');
+      } else if (scenario === 'invalid_length') {
+        namaInput.value = 'Ahmad Testing';
+        nikInput.value = '32012345678900';
+        consentChk.checked = false;
+        appendLog('Skenario dimuat: NIK 14 Digit (Invalid Length)');
+      }
+
+      handleNikInput(nikInput);
+    }
+
+    function submitNikForm() {
+      const nama = document.getElementById('input-nama-ktp').value.trim();
+      const nik = document.getElementById('input-nik-number').value.trim();
+
+      updateFlowStep(2);
+      appendLog(`Memvalidasi data: NIK=${nik}, Nama=${nama}...`);
+
+      // 1. Check PIN Status First (Story 1)
+      if (testerPinState === 'unregistered') {
+        appendLog('[GATE CHECK] PIN Belum Set. Mengarahkan ke pembuatan PIN...');
+        alert('Anda belum membuat PIN sCanWin!\nSilakan buat PIN terlebih dahulu sebelum mendaftarkan NIK.');
+        return;
+      } else if (testerPinState === 'blocked') {
+        appendLog('[GATE CHECK] PIN Terblokir. Mengarahkan ke Reset PIN...');
+        alert('PIN sCanWin Anda Terblokir (Salah 3x)!\nSilakan lakukan reset PIN melalui OTP WhatsApp.');
+        return;
+      }
+
+      // 2. Check Strict 1-to-1 Uniqueness (Story 2)
+      const isDuplicate = registeredNikDb.some(item => item.nik === nik);
+      if (isDuplicate) {
+        appendLog(`[ERROR 409] Strict 1-to-1 Violation! NIK ${nik} sudah terdaftar pada akun lain.`);
+        openDuplicateModal();
+        return;
+      }
+
+      // 3. Open PIN Confirmation Modal (Story 3)
+      appendLog('[PASS] NIK Unik & Format Valid. Membuka modal otorisasi PIN 6-digit...');
+      openPinModal();
+    }
+
+    function openPinModal() {
+      currentInputPin = '';
+      updatePinDots();
+      document.getElementById('overlay-pin-modal').style.display = 'flex';
+      updateFlowStep(3);
+    }
+
+    function closePinModal() {
+      document.getElementById('overlay-pin-modal').style.display = 'none';
+      currentInputPin = '';
+      updatePinDots();
+    }
+
+    function pressNumpad(digit) {
+      if (currentInputPin.length < 6) {
+        currentInputPin += digit;
+        updatePinDots();
+
+        if (currentInputPin.length === 6) {
+          setTimeout(verifyPinSubmission, 160);
+        }
+      }
+    }
+
+    function pressNumpadBackspace() {
+      if (currentInputPin.length > 0) {
+        currentInputPin = currentInputPin.slice(0, -1);
+        updatePinDots();
+      }
+    }
+
+    function updatePinDots() {
+      for (let i = 0; i < 6; i++) {
+        const dot = document.getElementById(`pindot-${i}`);
+        if (i < currentInputPin.length) dot.classList.add('filled');
+        else dot.classList.remove('filled');
+      }
+    }
+
+    function verifyPinSubmission() {
+      appendLog(`Verifikasi PIN 6-digit: ${currentInputPin}`);
+      const correctPin = '123456';
+
+      if (currentInputPin === correctPin) {
+        appendLog('[AUTH SUCCESS] PIN Valid. Menyimpan data NIK ke database...');
+        closePinModal();
+        saveAndLockNikData();
+      } else {
+        failedPinCount++;
+        const remaining = 3 - failedPinCount;
+        appendLog(`[AUTH FAILED] PIN Salah. Percobaan ke-${failedPinCount}/3.`);
+
+        if (failedPinCount >= 3) {
+          appendLog('[SECURITY LOCK] PIN Salah 3x! Status PIN diubah menjadi BLOCKED.');
+          setTesterPinState('blocked');
+          const blockedRadio = document.querySelector('input[name="testerPinState"][value="blocked"]');
+          if (blockedRadio) blockedRadio.checked = true;
+          closePinModal();
+          alert('PIN sCanWin Terblokir karena 3x salah input berturut-turut.\nSilakan lakukan Reset PIN.');
+        } else {
+          alert(`PIN sCanWin Salah!\nSisa percobaan: ${remaining} kali.`);
+          currentInputPin = '';
+          updatePinDots();
+        }
+      }
+    }
+
+    function saveAndLockNikData() {
+      const nama = document.getElementById('input-nama-ktp').value.trim();
+      const nik = document.getElementById('input-nik-number').value.trim();
+
+      // Mask NIK: e.g. 3201234567890001 -> 320123******0001
+      const maskedNik = nik.substring(0, 6) + '******' + nik.substring(12);
+
+      document.getElementById('display-masked-nik').innerText = maskedNik;
+      document.getElementById('display-nama-ktp').innerText = nama;
+
+      isNikRegistered = true;
+      savedNikData = { nama, nik, maskedNik };
+      localStorage.setItem('scanwin_nik_status', 'pending');
+      localStorage.setItem('scanwin_nik_data', JSON.stringify(savedNikData));
+
+      setSimulatorScreen('registered');
+      appendLog(`[DATA SAVED] Status NIK: PROSES VERIFIKASI. Masked: ${maskedNik}. Data di-lock (Immutable).`);
+    }
+
+    function openDuplicateModal() {
+      document.getElementById('overlay-error-duplicate').style.display = 'flex';
+    }
+
+    function closeDuplicateModal() {
+      document.getElementById('overlay-error-duplicate').style.display = 'none';
+    }
+
+    function simulateContactCs() {
+      alert('Membuka layanan WhatsApp Customer Service sCanWin:\n"Halo CS sCanWin, saya ingin mengajukan permohonan verifikasi/koreksi data NIK akun saya."');
+    }
+
+    function resetAllState() {
+      failedPinCount = 0;
+      currentInputPin = '';
+      isNikRegistered = false;
+      savedNikData = null;
+      localStorage.removeItem('scanwin_nik_status');
+      localStorage.removeItem('scanwin_nik_data');
+
+      closePinModal();
+      closeDuplicateModal();
+      document.getElementById('input-nama-ktp').value = '';
+      document.getElementById('input-nik-number').value = '';
+      document.getElementById('chk-consent').checked = false;
+      document.getElementById('nik-char-count').innerText = '0/16';
+      document.getElementById('btn-submit-nik').disabled = true;
+
+      const cleanRadio = document.querySelector('input[name="testerScenario"][value="clean"]');
+      if (cleanRadio) cleanRadio.checked = true;
+      const activePinRadio = document.querySelector('input[name="testerPinState"][value="active"]');
+      if (activePinRadio) activePinRadio.checked = true;
+      testerPinState = 'active';
+
+      setSimulatorScreen('homepage');
+      appendLog('[RESET] Pengujian dikembalikan ke awal (Homepage sCanWin).');
+    }
+
+    // Initialize View on Page Load
+    document.addEventListener("DOMContentLoaded", function () {
+      const savedStatus = localStorage.getItem('scanwin_nik_status');
+      const savedRawData = localStorage.getItem('scanwin_nik_data');
+
+      if (savedStatus === 'pending' || savedStatus === 'active') {
+        isNikRegistered = true;
+        if (savedRawData) {
+          try {
+            const parsed = JSON.parse(savedRawData);
+            document.getElementById('display-masked-nik').innerText = parsed.maskedNik || '320123******0001';
+            document.getElementById('display-nama-ktp').innerText = parsed.nama || 'Budi Santoso';
+          } catch (e) { }
+        }
+      }
+
+      setSimulatorScreen('homepage');
+    });
+  </script>
+</body>
+
+</html>

@@ -158,6 +158,7 @@
     else if (path.includes('direct-scan')) activeKey = 'direct';
     else if (path.includes('shareable-qr') || path.includes('shareable')) activeKey = 'shareable';
     else if (path.includes('klaim-mandiri') || path.includes('klaim')) activeKey = 'klaim';
+    else if (path.includes('registrasi-nik')) activeKey = 'registrasi-nik';
     else if (path.includes('validasi-pencairan-ewallet')) activeKey = 'validasi-ewallet';
     else if (path.includes('kelola-ewallet')) activeKey = 'kelola-ewallet';
     else if (path.includes('monitoring-penarikan-ewallet')) activeKey = 'monitoring-ewallet';
@@ -220,17 +221,37 @@
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18V6C21 4.89543 20.1046 4 19 4H5C3.89543 4 3 4.89543 3 6V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18Z" stroke="currentColor" stroke-width="2" fill="none"/><path d="M3 10H21" stroke="currentColor" stroke-width="2"/><path d="M16 14H16.01" stroke="currentColor" stroke-width="2.5"/></svg>
           <span>9. Kelola E-Wallet Customer</span>
         </a>
+        <a href="scanwin-fde-customer-registrasi-nik.html" class="portal-menu-item ${activeKey === 'registrasi-nik' ? 'active' : ''}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 3c1.93 0 3.5 1.57 3.5 3.5S13.93 13 12 13s-3.5-1.57-3.5-3.5S10.07 6 12 6zm7 13H5v-.23c0-.62.28-1.2.76-1.58C7.47 15.82 9.64 15 12 15s4.53.82 6.24 2.19c.48.38.76.96.76 1.58V19z"/></svg>
+          <span>10. Registrasi NIK (Pajak)</span>
+        </a>
         <a href="scanwin-fde-validasi-pencairan-ewallet.html" class="portal-menu-item ${activeKey === 'validasi-ewallet' ? 'active' : ''}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
-          <span>10. Validasi Pencairan E-Wallet</span>
+          <span>11. Validasi Pencairan E-Wallet</span>
         </a>
         <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-ewallet' ? 'active' : ''}" style="${activeKey === 'monitoring-ewallet' ? '' : 'color: #c7d2fe;'}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z"/></svg>
-          <span>11. Monitoring Pencairan (Admin) ↗</span>
+          <span>12. Monitoring Pencairan (Admin) ↗</span>
         </a>
         <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" target="_blank" class="portal-menu-item ${activeKey === 'monitoring-voucher' ? 'active' : ''}" style="${activeKey === 'monitoring-voucher' ? '' : 'color: #c7d2fe;'}">
           <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M20 6h-4V4c0-1.11-.89-2-2-2h-4c-1.11 0-2 .89-2 2v2H4c-1.11 0-1.99.89-1.99 2L2 19c0 1.11.89 2 2 2h16c1.11 0 2-.89 2-2V8c0-1.11-.89-2-2-2zm-6 0h-4V4h4v2z"/></svg>
-          <span>12. Monitoring Voucher (Admin) ↗</span>
+          <span>13. Monitoring Voucher (Admin) ↗</span>
+        </a>
+        <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" target="_blank" class="portal-menu-item" style="color: #6ee7b7;">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          <span>14. Data Pelanggan (Admin) ↗</span>
+        </a>
+        <a href="scanwin-admin-manajemen-pelanggan-tab-verifikasi-nik.html" target="_blank" class="portal-menu-item" style="color: #fde047;">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+          <span>15. Verifikasi NIK (Admin) ↗</span>
+        </a>
+        <a href="scanwin-admin-manajemen-pelanggan-tab-riwayat-ewallet.html" target="_blank" class="portal-menu-item" style="color: #93c5fd;">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M21 18v1c0 1.1-.9 2-2 2H5c-1.11 0-2-.9-2-2V5c0-1.1.89-2 2-2h14c1.1 0 2 .9 2 2v1h-9c-1.11 0-2 .9-2 2v8c0 1.1.89 2 2 2h9zm-9-2h10V8H12v8zm4-2.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5 1.5.67 1.5 1.5-.67 1.5-1.5 1.5z"/></svg>
+          <span>16. Riwayat E-Wallet (Admin) ↗</span>
+        </a>
+        <a href="scanwin-admin-pusat-approval-manager.html" target="_blank" class="portal-menu-item ${activeKey === 'approval-manager' ? 'active' : ''}" style="${activeKey === 'approval-manager' ? '' : 'color: #c084fc;'}">
+          <svg class="portal-menu-icon" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+          <span>17. Pusat Approval Manager ↗</span>
         </a>
       </div>
 

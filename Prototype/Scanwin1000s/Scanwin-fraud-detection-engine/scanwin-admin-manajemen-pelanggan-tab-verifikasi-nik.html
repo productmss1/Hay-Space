@@ -1,0 +1,1786 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pengajuan Verifikasi NIK (PRD 15b) | sCanWin Admin Portal</title>
+    <!-- Google Fonts Inter & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-cyan: #00B4D8;
+            --primary-cyan-hover: #0096B4;
+            --primary-blue: #016EFF;
+            --primary-blue-dark: #0056C6;
+            --bg-canvas: #F4F6F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            --border-color: #E2E8F0;
+
+            /* Status Badge Colors */
+            --badge-active-bg: #E6F4EA;
+            --badge-active-text: #137333;
+            --badge-pending-bg: #FEF3C7;
+            --badge-pending-text: #B45309;
+            --badge-escalate-bg: #EDE9FE;
+            --badge-escalate-text: #6D28D9;
+            --badge-blocked-bg: #FEE2E2;
+            --badge-blocked-text: #DC2626;
+
+            /* Button Colors */
+            --btn-green: #10B981;
+            --btn-green-hover: #059669;
+            --btn-amber: #F59E0B;
+            --btn-amber-hover: #D97706;
+            --btn-red: #EF4444;
+            --btn-red-hover: #DC2626;
+
+            --sidebar-width: 250px;
+            --header-height: 60px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-dark);
+            font-size: 14px;
+            line-height: 1.5;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ==================== 1. TOP HEADER BAR ==================== */
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .btn-hamburger {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn-hamburger:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        /* RBAC & Backend Config Pills */
+        .config-pill {
+            background-color: rgba(255, 255, 255, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            border-radius: 20px;
+            padding: 4px 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .config-pill select {
+            background: transparent;
+            border: none;
+            color: #FFFFFF;
+            font-weight: 700;
+            font-size: 12px;
+            cursor: pointer;
+            outline: none;
+        }
+
+        .config-pill select option {
+            color: var(--text-dark);
+            background: #FFFFFF;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: background 0.2s;
+        }
+
+        .user-profile:hover {
+            background-color: rgba(255, 255, 255, 0.15);
+        }
+
+        .avatar-circle {
+            width: 32px;
+            height: 32px;
+            background-color: #FFFFFF;
+            color: var(--primary-cyan);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* ==================== 2. LAYOUT & SIDEBAR ==================== */
+        .app-body {
+            display: flex;
+            margin-top: var(--header-height);
+            min-height: calc(100vh - var(--header-height));
+        }
+
+        .sidebar-admin {
+            width: var(--sidebar-width);
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            left: 0;
+            z-index: 90;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        .nav-category {
+            padding: 14px 20px 6px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13.5px;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: #F8FAFC;
+            color: var(--text-dark);
+        }
+
+        .nav-item.active {
+            color: var(--text-dark);
+            font-weight: 700;
+            background-color: #F1F5F9;
+            border-right: 3px solid var(--primary-cyan);
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--text-light);
+            display: inline-block;
+        }
+
+        .nav-item.active .nav-bullet {
+            background-color: var(--primary-cyan);
+            border-color: var(--primary-cyan);
+        }
+
+        /* ==================== 3. MAIN CONTENT CANVAS ==================== */
+        .main-canvas {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .page-title-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        /* Horizontal Tabs for Menu Manajemen Pelanggan */
+        .page-tabs {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            border-bottom: 2px solid var(--border-color);
+            margin-top: -8px;
+        }
+
+        .tab-item {
+            padding: 10px 4px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            position: relative;
+            transition: color 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .tab-item:hover {
+            color: var(--primary-cyan);
+        }
+
+        .tab-item.active {
+            color: var(--primary-cyan);
+            font-weight: 700;
+        }
+
+        .tab-item.active::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: var(--primary-cyan);
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-badge {
+            font-size: 10.5px;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 12px;
+        }
+
+        .tab-badge.amber { background: #FEF3C7; color: #B45309; }
+        .tab-badge.blue { background: #E0F2FE; color: #0284C7; }
+
+        /* White Card Container */
+        .content-card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* ==================== 4. SUMMARY METRIC CARDS ==================== */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+        }
+
+        .metric-card {
+            background-color: #F8FAFC;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-info h4 {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+            letter-spacing: 0.3px;
+        }
+
+        .metric-info .value {
+            font-size: 26px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .metric-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .metric-icon.amber { background-color: #FEF3C7; color: #D97706; }
+        .metric-icon.purple { background-color: #EDE9FE; color: #7C3AED; }
+        .metric-icon.green { background-color: #DCFCE7; color: #16A34A; }
+
+        /* ==================== 5. SEARCH & FILTER CONTROLS ==================== */
+        .controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            min-width: 320px;
+            flex: 1;
+            max-width: 440px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 9px 12px 9px 36px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13.5px;
+            outline: none;
+            background-color: #FFFFFF;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.15);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+            font-size: 14px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-select {
+            padding: 9px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-dark);
+            background-color: #FFFFFF;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.2s;
+        }
+
+        .filter-select:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        /* ==================== 6. DATA TABLE ==================== */
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 13px;
+        }
+
+        .custom-table th {
+            background-color: #F8FAFC;
+            color: var(--text-muted);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        .custom-table td {
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+            color: var(--text-dark);
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace !important;
+            letter-spacing: 0.5px;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11.5px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .status-badge.pending { background-color: var(--badge-pending-bg); color: var(--badge-pending-text); }
+        .status-badge.escalate { background-color: var(--badge-escalate-bg); color: var(--badge-escalate-text); }
+        .status-badge.active { background-color: var(--badge-active-bg); color: var(--badge-active-text); }
+        .status-badge.blocked { background-color: var(--badge-blocked-bg); color: var(--badge-blocked-text); }
+
+        /* Action Buttons */
+        .btn-action-view {
+            padding: 6px 12px;
+            background-color: #FFFFFF;
+            border: 1px solid var(--primary-cyan);
+            color: var(--primary-cyan);
+            font-size: 12.5px;
+            font-weight: 700;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-action-view:hover {
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+        }
+
+        /* ==================== 7. SLIDE-OVER DETAIL AUDIT DRAWER ==================== */
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 200;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .drawer-backdrop.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .audit-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 540px;
+            max-width: 90vw;
+            background: #FFFFFF;
+            z-index: 210;
+            box-shadow: -6px 0 25px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drawer-backdrop.active .audit-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .drawer-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .btn-close-drawer {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-close-drawer:hover {
+            background: #F1F5F9;
+            color: var(--text-dark);
+        }
+
+        .drawer-body {
+            flex: 1;
+            padding: 24px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .drawer-section {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .section-heading {
+            font-size: 12.5px;
+            font-weight: 800;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #F1F5F9;
+            padding-bottom: 8px;
+        }
+
+        .info-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Cross-Check FDE Cards */
+        .fraud-check-card {
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12.5px;
+        }
+
+        .fraud-check-card.clean {
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
+        }
+
+        .fraud-check-card.warning {
+            background: #FFFBEB;
+            border: 1px solid #FDE68A;
+            color: #92400E;
+        }
+
+        .fraud-check-card.danger {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #991B1B;
+        }
+
+        .fraud-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        /* Multi-Account Device Table inside Drawer */
+        .device-accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 11.5px;
+            background: #FFFFFF;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #FECACA;
+        }
+
+        .device-accounts-table th {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 6px 10px;
+            font-weight: 700;
+            text-align: left;
+            border-bottom: 1px solid #FECACA;
+        }
+
+        .device-accounts-table td {
+            padding: 7px 10px;
+            border-bottom: 1px solid #FEE2E2;
+            color: #1E293B;
+            vertical-align: middle;
+        }
+
+        /* Drawer Footer Actions */
+        .drawer-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background: #F8FAFC;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .btn-footer {
+            flex: 1;
+            height: 42px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-approve { background: var(--btn-green); color: #FFFFFF; }
+        .btn-approve:hover { background: var(--btn-green-hover); }
+
+        .btn-revise { background: var(--btn-amber); color: #FFFFFF; }
+        .btn-revise:hover { background: var(--btn-amber-hover); }
+
+        .btn-block-account { background: var(--btn-red); color: #FFFFFF; }
+        .btn-block-account:hover { background: var(--btn-red-hover); }
+
+        /* ==================== 8. MODAL DIALOGS ==================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #FFFFFF;
+            border-radius: 14px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            animation: modalPop 0.2s ease-out;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.95); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h4 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .form-control-wrap {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-control-wrap label {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .form-control-wrap input,
+        .form-control-wrap textarea {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1.5px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 13.5px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .form-control-wrap input:focus,
+        .form-control-wrap textarea:focus {
+            border-color: var(--primary-cyan);
+            box-shadow: 0 0 0 2px rgba(0, 180, 216, 0.15);
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            background: #F8FAFC;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+        }
+
+        .btn-modal-cancel {
+            padding: 9px 16px;
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .btn-modal-submit {
+            padding: 9px 18px;
+            border: none;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #FFFFFF;
+        }
+
+        /* Toast notification */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 400;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            pointer-events: none;
+        }
+
+        .toast-item {
+            background: #0F172A;
+            color: #FFFFFF;
+            padding: 12px 18px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            pointer-events: auto;
+            animation: slideInRight 0.25s ease-out;
+        }
+
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP HEADER BAR -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="btn-hamburger" title="Toggle Sidebar">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+            <a href="scanwin-fde.html" class="brand-logo">
+                <i class="fa-solid fa-shield-halved" style="font-size: 20px;"></i>
+                <span>sCanWin Admin Portal</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Dynamic RBAC Switcher -->
+            <div class="config-pill" title="Ubah Role untuk Simulasi Maker-Checker">
+                <i class="fa-solid fa-user-shield"></i>
+                <span>Role:</span>
+                <select id="roleSelector" onchange="handleRoleChange(this.value)">
+                    <option value="admin_cs">Admin CS / Finance (Non-Manager)</option>
+                    <option value="manager_scanwin">Manager sCanWin (is_manager_scanwin: TRUE)</option>
+                </select>
+            </div>
+
+            <!-- Global BE Escalation Rule Toggle -->
+            <div class="config-pill" title="Konfigurasi Backend Maker-Checker">
+                <i class="fa-solid fa-gears"></i>
+                <span>require_manager_approval_nik:</span>
+                <select id="beConfigSelector" onchange="handleBeConfigChange(this.value)">
+                    <option value="true">TRUE (Wajib Approval 2 Tingkat)</option>
+                    <option value="false">FALSE (Bypass Eskalasi)</option>
+                </select>
+            </div>
+
+            <div class="user-profile">
+                <div class="avatar-circle">SA</div>
+                <div style="font-size: 13px; font-weight: 600;" id="userProfileName">Admin CS</div>
+                <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <div class="app-body">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-category">Management sCanWin 1000s</div>
+            <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" class="nav-item active">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span style="font-weight: 700;">Manajemen Pelanggan</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Klaim Voucher</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Tarik Saldo</span>
+                </div>
+            </a>
+            <a href="scanwin-admin-pusat-approval-manager.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Pusat Approval Manager</span>
+                </div>
+                <span style="background:#FEF3C7; color:#D97706; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:10px;">5</span>
+            </a>
+        </aside>
+
+        <!-- 3. MAIN CONTENT CANVAS -->
+        <main class="main-canvas">
+            <div class="page-title-row">
+                <h1 class="page-title">Manajemen Pelanggan</h1>
+                <div style="font-size:12.5px; color:var(--text-muted); font-weight:600;">
+                    <i class="fa-solid fa-clock"></i> Data Sinkron Real-time
+                </div>
+            </div>
+
+            <!-- Horizontal Page Tabs (3 Active Tabs) -->
+            <div class="page-tabs">
+                <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" class="tab-item">
+                    Data Pelanggan
+                </a>
+                <a href="scanwin-admin-manajemen-pelanggan-tab-verifikasi-nik.html" class="tab-item active">
+                    Pengajuan Verifikasi NIK
+                    <span class="tab-badge amber" id="tabCountPending">2</span>
+                </a>
+                <a href="scanwin-admin-manajemen-pelanggan-tab-riwayat-ewallet.html" class="tab-item">
+                    Riwayat Pengajuan E-Wallet
+                    <span class="tab-badge blue">3</span>
+                </a>
+            </div>
+
+            <!-- Main White Card Container -->
+            <div class="content-card">
+
+                <!-- Story 1: Summary Metric Cards -->
+                <div class="metrics-grid">
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Total Menunggu Verifikasi</h4>
+                            <div class="value" id="metricPendingCount" style="color:#D97706;">2</div>
+                        </div>
+                        <div class="metric-icon amber"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Menunggu Approval Manager</h4>
+                            <div class="value" id="metricEscalateCount" style="color:#7C3AED;">1</div>
+                        </div>
+                        <div class="metric-icon purple"><i class="fa-solid fa-user-shield"></i></div>
+                    </div>
+                    <div class="metric-card">
+                        <div class="metric-info">
+                            <h4>Disetujui Bulan Ini</h4>
+                            <div class="value" id="metricApprovedCount" style="color:#16A34A;">142</div>
+                        </div>
+                        <div class="metric-icon green"><i class="fa-solid fa-check-double"></i></div>
+                    </div>
+                </div>
+
+                <!-- Story 1: Search & Filter Controls -->
+                <div class="controls-row">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                        <input type="text" id="searchInput" placeholder="Cari ID Pelanggan, Nama, atau NIK 16-Digit..." oninput="handleTableSearch(this.value)">
+                    </div>
+
+                    <div class="filter-group">
+                        <select class="filter-select" id="filterStatus" onchange="handleFilterChange()">
+                            <option value="ALL">Semua Status</option>
+                            <option value="pending" selected>Proses Verifikasi</option>
+                            <option value="escalated">Menunggu Persetujuan Manager</option>
+                            <option value="active">Disetujui</option>
+                            <option value="blocked">Dibatalkan (Akun Diblokir)</option>
+                        </select>
+
+                        <select class="filter-select" id="filterDate" onchange="handleFilterChange()">
+                            <option value="ALL">Semua Tanggal</option>
+                            <option value="today">Hari Ini</option>
+                            <option value="7d">7 Hari Terakhir</option>
+                            <option value="30d">30 Hari Terakhir</option>
+                        </select>
+
+                        <button class="btn-action-view" onclick="resetFilters()" style="height:38px;">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Filter
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Story 1: Antrean Pengajuan NIK Data Table -->
+                <div class="table-responsive">
+                    <table class="custom-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 50px;">No</th>
+                                <th>ID Pengajuan</th>
+                                <th>ID Pelanggan</th>
+                                <th>Nama Pelanggan</th>
+                                <th>NIK Terdaftar / Pengajuan</th>
+                                <th>Tanggal Pengajuan</th>
+                                <th>Status Pengajuan</th>
+                                <th style="text-align: center; width: 130px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="nikTableBody">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== SLIDE-OVER DETAIL AUDIT DRAWER ==================== -->
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawerOnBackdrop(event)">
+        <div class="audit-drawer" id="auditDrawer">
+            <div class="drawer-header">
+                <div>
+                    <h3 id="drawerTicketId">Detail Pengajuan NIK</h3>
+                    <div style="font-size: 11.5px; color: var(--text-muted);" id="drawerSubmittedTime">Diajukan: -</div>
+                </div>
+                <button class="btn-close-drawer" onclick="closeAuditDrawer()" title="Tutup Drawer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="drawer-body" id="drawerBodyContent">
+                <!-- Profil Pelanggan -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-user-tag" style="color:var(--primary-cyan);"></i> Profil Pelanggan
+                    </div>
+                    <div class="info-grid-2">
+                        <div class="info-item">
+                            <span class="info-label">ID Pelanggan</span>
+                            <span class="info-value font-mono" id="dCustId">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama Akun Terdaftar</span>
+                            <span class="info-value" id="dCustName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nomor HP Terdaftar</span>
+                            <span class="info-value font-mono" id="dCustPhone">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status Akun Saat Ini</span>
+                            <span class="info-value" id="dCustStatus">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Detail Identitas NIK -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-id-card" style="color:var(--primary-blue);"></i> Detail Pengajuan Identitas NIK
+                    </div>
+                    <div class="info-grid-2">
+                        <div class="info-item">
+                            <span class="info-label">Nama Lengkap Sesuai KTP</span>
+                            <span class="info-value" id="dKtpName" style="color:var(--primary-blue); font-size:14.5px;">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status Tiket Saat Ini</span>
+                            <span id="dTicketStatusBadge">-</span>
+                        </div>
+                    </div>
+                    <div class="info-item" style="margin-top:6px;">
+                        <span class="info-label">NIK 16-Digit (Ditampilkan Utuh Tanpa Masking)</span>
+                        <span class="info-value font-mono" id="dKtpNik" style="font-size:17px; letter-spacing:1px; color:#0F172A;">-</span>
+                    </div>
+                    <div class="info-item" style="margin-top:6px;">
+                        <span class="info-label">Catatan Admin / Riwayat Call Verification</span>
+                        <div style="background:#F8FAFC; border:1px solid var(--border-color); border-radius:6px; padding:10px; font-size:12px; color:var(--text-dark); line-height:1.45;" id="dAdminNotes">
+                            Belum ada catatan verifikasi.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analisis Silang Pencegahan Fraud (Cross-Check FDE) -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-shield-virus" style="color:#D97706;"></i> Analisis Silang Pencegahan Fraud (FDE)
+                    </div>
+
+                    <!-- Indikator 1: Status Perangkat (Device ID) -->
+                    <div class="fraud-check-card clean" id="fdeDeviceCard">
+                        <div class="fraud-card-header">
+                            <span><i class="fa-solid fa-mobile-screen"></i> Status Perangkat (Device ID)</span>
+                            <span id="fdeDeviceBadge" class="status-badge active">Clean (1 Akun)</span>
+                        </div>
+                        <div id="fdeDeviceText">Perangkat ini unik dan hanya terikat pada akun pelanggan ini.</div>
+                    </div>
+
+                    <!-- Indikator 2: Keselarasan Nama -->
+                    <div class="fraud-check-card clean" id="fdeNameCard">
+                        <div class="fraud-card-header">
+                            <span><i class="fa-solid fa-signature"></i> Keselarasan Nama Akun vs KTP</span>
+                            <span id="fdeNameBadge" class="status-badge active">Nama Selaras</span>
+                        </div>
+                        <div id="fdeNameText">Nama akun dan nama e-KTP 100% identik.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drawer Footer Actions -->
+            <div class="drawer-footer" id="drawerFooterActions">
+                <button class="btn-footer btn-approve" onclick="openApproveModal()">
+                    <i class="fa-solid fa-check"></i> Setujui
+                </button>
+                <button class="btn-footer btn-revise" onclick="openReviseModal()">
+                    <i class="fa-solid fa-pen-to-square"></i> Revisi Data NIK
+                </button>
+                <button class="btn-footer btn-block-account" onclick="openBlockModal()">
+                    <i class="fa-solid fa-ban"></i> Blokir Akun
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 1: PERSETUJUAN (APPROVE) ==================== -->
+    <div class="modal-overlay" id="modalApprove">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4><i class="fa-solid fa-check-circle" style="color:var(--btn-green);"></i> Konfirmasi Persetujuan NIK</h4>
+                <button class="btn-close-drawer" onclick="closeModal('modalApprove')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px; color:var(--text-muted);">
+                    Apakah Anda yakin ingin menyetujui pendaftaran NIK untuk pelanggan <strong id="approveModalCustName">-</strong>?
+                </p>
+                <div class="form-control-wrap">
+                    <label for="approveAdminNotes">Catatan Admin / Verifikasi <strong style="color:red;">*</strong></label>
+                    <textarea id="approveAdminNotes" rows="3" placeholder="Contoh: Identitas telah diverifikasi via telepon dan data KTP valid."></textarea>
+                </div>
+                <div id="makerCheckerEscalateNotice" style="display:none; background:#EDE9FE; border:1px solid #C4B5FD; border-radius:8px; padding:10px; font-size:12px; color:#5B21B6;">
+                    <i class="fa-solid fa-info-circle"></i> <strong>Aturan Maker-Checker Aktif:</strong> Anda login sebagai Admin Biasa. Persetujuan ini akan mengeskalasi tiket ke status <strong>Menunggu Persetujuan Manager</strong>.
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" onclick="closeModal('modalApprove')">Batal</button>
+                <button class="btn-modal-submit" style="background:var(--btn-green);" onclick="submitApproval()">Konfirmasi Setujui</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: REVISI DATA NIK ==================== -->
+    <div class="modal-overlay" id="modalRevise">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4><i class="fa-solid fa-pen-to-square" style="color:var(--btn-amber);"></i> Form Koreksi / Revisi Data NIK</h4>
+                <button class="btn-close-drawer" onclick="closeModal('modalRevise')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div style="background:#FFFBEB; border:1px solid #FDE68A; border-radius:8px; padding:10px; font-size:12px; color:#92400E;">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Koreksi dilakukan berdasarkan hasil <strong>Call Verification</strong> resmi dengan pelanggan.
+                </div>
+                <div class="form-control-wrap">
+                    <label for="reviseNamaKtp">Nama Lengkap Sesuai KTP <strong style="color:red;">*</strong></label>
+                    <input type="text" id="reviseNamaKtp" placeholder="Nama Lengkap KTP">
+                </div>
+                <div class="form-control-wrap">
+                    <label for="reviseNik16">Nomor NIK 16-Digit <strong style="color:red;">*</strong></label>
+                    <input type="text" id="reviseNik16" class="font-mono" maxlength="16" placeholder="16 Digit Angka NIK">
+                </div>
+                <div class="form-control-wrap">
+                    <label for="reviseNotes">Catatan Hasil Call Verification <strong style="color:red;">*</strong></label>
+                    <textarea id="reviseNotes" rows="2" placeholder="Contoh: Pelanggan salah ketik digit terakhir saat mendaftar, sudah dikonfirmasi via telepon."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" onclick="closeModal('modalRevise')">Batal</button>
+                <button class="btn-modal-submit" style="background:var(--btn-amber);" onclick="submitRevision()">Simpan &amp; Proses</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 3: BLOKIR AKUN PELANGGAN ==================== -->
+    <div class="modal-overlay" id="modalBlock">
+        <div class="modal-box">
+            <div class="modal-header">
+                <h4 style="color:var(--btn-red);"><i class="fa-solid fa-ban"></i> Konfirmasi Blokir Akun Pelanggan</h4>
+                <button class="btn-close-drawer" onclick="closeModal('modalBlock')"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px; color:var(--text-dark);">
+                    Tindakan ini akan <strong>membekukan akun pelanggan</strong>, membatalkan seluruh pengajuan NIK/E-Wallet, dan melakukan <strong>Force Logout</strong> secara seketika.
+                </p>
+                <div class="form-control-wrap">
+                    <label for="blockReason">Alasan Pemblokiran (Wajib Diisi) <strong style="color:red;">*</strong></label>
+                    <textarea id="blockReason" rows="3" placeholder="Contoh: Terdeteksi sindikat pemalsuan KTP dan nomor identitas ganda pada multi-device."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal-cancel" onclick="closeModal('modalBlock')">Batal</button>
+                <button class="btn-modal-submit" style="background:var(--btn-red);" onclick="submitBlockAccount()">Konfirmasi Blokir Akun</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript Data and Controller -->
+    <script>
+        // Mock Master NIK Queue Dataset
+        let nikQueueData = [
+            {
+                ticketId: 'NIK-202608-001',
+                custId: 'CUST-1002341',
+                custName: 'Andhika Pratama',
+                custPhone: '081289765432',
+                joinDate: '12 Jan 2026',
+                custStatus: 'Aktif',
+                ktpName: 'Andhika Pratama',
+                nik: '3201234567890001',
+                submittedAt: '21 Agu 2026, 09:41 WIB',
+                status: 'pending', // pending, escalated, active, blocked
+                adminNotes: 'Menunggu peninjauan awal.',
+                deviceId: 'DEV-SAMSUNG-A53-99120',
+                deviceStatus: 'clean', // clean or multi
+                deviceDetail: 'Perangkat unik dan hanya terikat pada 1 akun pelanggan ini.',
+                nameMatch: 'match' // match or mismatch
+            },
+            {
+                ticketId: 'NIK-202608-002',
+                custId: 'CUST-1004892',
+                custName: 'Bambang Hariyanto',
+                custPhone: '081398761234',
+                joinDate: '05 Feb 2026',
+                custStatus: 'Aktif',
+                ktpName: 'Bambang Hariyanto',
+                nik: '3171092837460003',
+                submittedAt: '20 Agu 2026, 14:15 WIB',
+                status: 'escalated',
+                adminNotes: 'Diverifikasi awal oleh Admin CS (Budi). Menunggu approval final Manager sCanWin.',
+                deviceId: 'DEV-XIAOMI-M2012K11AG',
+                deviceStatus: 'multi',
+                deviceDetail: 'Device ID terdeteksi digunakan secara aktif pada 3 akun sCanWin yang berbeda.',
+                nameMatch: 'match',
+                boundAccounts: [
+                    { name: 'Bambang Hariyanto', phone: '081398761234', status: 'Aktif', isCurrent: true },
+                    { name: 'Siti Rahmawati', phone: '087811223344', status: 'Aktif', isCurrent: false },
+                    { name: 'Rian Pratama', phone: '081299887766', status: 'Diblokir', isCurrent: false }
+                ]
+            },
+            {
+                ticketId: 'NIK-202608-003',
+                custId: 'CUST-1006782',
+                custName: 'Hendra Setiawan',
+                custPhone: '085211993344',
+                joinDate: '15 Jul 2026',
+                custStatus: 'Aktif',
+                ktpName: 'Hendra Setiawan',
+                nik: '3275019283740008',
+                submittedAt: '21 Agu 2026, 08:15 WIB',
+                status: 'pending',
+                adminNotes: 'Menunggu peninjauan admin. Terdeteksi anomali multi-account device.',
+                deviceId: 'DEV-INFINIX-X6815B-8831',
+                deviceStatus: 'multi',
+                deviceDetail: 'Device ID terdeteksi aktif pada 4 akun sCanWin berbeda.',
+                nameMatch: 'match',
+                boundAccounts: [
+                    { name: 'Hendra Setiawan', phone: '085211993344', status: 'Aktif', isCurrent: true },
+                    { name: 'Dimas Anggara', phone: '085222884455', status: 'Aktif', isCurrent: false },
+                    { name: 'Maya Indah', phone: '085233775566', status: 'Aktif', isCurrent: false },
+                    { name: 'Reza Fahlevi', phone: '085244667788', status: 'Diblokir', isCurrent: false }
+                ]
+            },
+            {
+                ticketId: 'NIK-202608-004',
+                custId: 'CUST-1009124',
+                custName: 'Dewi',
+                custPhone: '085712349988',
+                joinDate: '28 Mei 2026',
+                custStatus: 'Aktif',
+                ktpName: 'Dewi Sartika',
+                nik: '3578019283740004',
+                submittedAt: '19 Agu 2026, 11:20 WIB',
+                status: 'pending',
+                adminNotes: 'Nama akun "Dewi" merupakan singkatan dari KTP "Dewi Sartika". Disarankan verifikasi telepon.',
+                deviceId: 'DEV-IPHONE-14PRO-7712',
+                deviceStatus: 'clean',
+                deviceDetail: 'Perangkat unik (1 akun).',
+                nameMatch: 'mismatch'
+            },
+            {
+                ticketId: 'NIK-202608-005',
+                custId: 'CUST-1008761',
+                custName: 'Siti Aminah',
+                custPhone: '087812903456',
+                joinDate: '10 Mar 2026',
+                custStatus: 'Aktif',
+                ktpName: 'Siti Aminah',
+                nik: '3302019283740005',
+                submittedAt: '18 Agu 2026, 16:30 WIB',
+                status: 'active',
+                adminNotes: 'Disetujui oleh Manager sCanWin (Hendrawan). NIK Active.',
+                deviceId: 'DEV-OPPO-CPH2269-1122',
+                deviceStatus: 'clean',
+                deviceDetail: 'Perangkat unik (1 akun).',
+                nameMatch: 'match'
+            },
+            {
+                ticketId: 'NIK-202608-006',
+                custId: 'CUST-1006543',
+                custName: 'Rudi Hartono (Fraud)',
+                custPhone: '081299001122',
+                joinDate: '01 Agu 2026',
+                custStatus: 'Diblokir',
+                ktpName: 'Rudi Hartono',
+                nik: '3273012938470002',
+                submittedAt: '17 Agu 2026, 10:05 WIB',
+                status: 'blocked',
+                adminNotes: 'Akun diblokir karena terindikasi sindikat pemalsuan e-KTP.',
+                deviceId: 'DEV-EMULATOR-NOX-88991',
+                deviceStatus: 'multi',
+                deviceDetail: 'Peringatan Multi-Account: Device Emulator terhubung ke 5 akun bot terindikasi sindikat.',
+                nameMatch: 'match',
+                boundAccounts: [
+                    { name: 'Rudi Hartono', phone: '081299001122', status: 'Diblokir', isCurrent: true },
+                    { name: 'Bot Account 101', phone: '081299001123', status: 'Diblokir', isCurrent: false },
+                    { name: 'Bot Account 102', phone: '081299001124', status: 'Diblokir', isCurrent: false },
+                    { name: 'Bot Account 103', phone: '081299001125', status: 'Diblokir', isCurrent: false },
+                    { name: 'Bot Account 104', phone: '081299001126', status: 'Diblokir', isCurrent: false }
+                ]
+            }
+        ];
+
+        // Global State Configuration
+        let currentRole = 'admin_cs'; // 'admin_cs' or 'manager_scanwin'
+        let beRequireManagerApproval = true; // boolean
+        let selectedTicket = null;
+
+        function showToast(msg, icon = 'fa-check-circle') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color:#00B4D8; font-size:16px;"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 250);
+            }, 3500);
+        }
+
+        function handleRoleChange(val) {
+            currentRole = val;
+            const nameEl = document.getElementById('userProfileName');
+            if (val === 'manager_scanwin') {
+                nameEl.innerText = 'Manager sCanWin (is_manager: TRUE)';
+                showToast('Role diubah: Manager sCanWin (Memiliki Hak Approval Penuh)');
+            } else {
+                nameEl.innerText = 'Admin CS (Non-Manager)';
+                showToast('Role diubah: Admin CS / Finance');
+            }
+            renderTable();
+        }
+
+        function handleBeConfigChange(val) {
+            beRequireManagerApproval = (val === 'true');
+            if (beRequireManagerApproval) {
+                showToast('Konfigurasi BE: require_manager_approval_nik = TRUE (Eskalasi 2 Tingkat Aktif)');
+            } else {
+                showToast('Konfigurasi BE: require_manager_approval_nik = FALSE (Bypass Eskalasi)');
+            }
+            renderTable();
+        }
+
+        function getStatusBadge(status) {
+            if (status === 'pending') {
+                return '<span class="status-badge pending"><i class="fa-solid fa-clock"></i> Proses Verifikasi</span>';
+            } else if (status === 'escalated') {
+                return '<span class="status-badge escalate"><i class="fa-solid fa-user-shield"></i> Menunggu Approval Manager</span>';
+            } else if (status === 'active') {
+                return '<span class="status-badge active"><i class="fa-solid fa-check"></i> Disetujui</span>';
+            } else if (status === 'blocked') {
+                return '<span class="status-badge blocked"><i class="fa-solid fa-ban"></i> Dibatalkan (Akun Diblokir)</span>';
+            }
+            return '-';
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('nikTableBody');
+            const searchVal = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            let filtered = nikQueueData.filter(item => {
+                // Search filter
+                const matchesSearch = !searchVal || 
+                    item.ticketId.toLowerCase().includes(searchVal) ||
+                    item.custId.toLowerCase().includes(searchVal) ||
+                    item.custName.toLowerCase().includes(searchVal) ||
+                    item.nik.includes(searchVal);
+
+                // Status filter
+                const matchesStatus = (statusFilter === 'ALL') || (item.status === statusFilter);
+
+                return matchesSearch && matchesStatus;
+            });
+
+            // Update Metrics
+            const pendingCount = nikQueueData.filter(i => i.status === 'pending').length;
+            const escalateCount = nikQueueData.filter(i => i.status === 'escalated').length;
+            const approvedCount = nikQueueData.filter(i => i.status === 'active').length + 140;
+
+            document.getElementById('metricPendingCount').innerText = pendingCount;
+            document.getElementById('metricEscalateCount').innerText = escalateCount;
+            document.getElementById('metricApprovedCount').innerText = approvedCount;
+            document.getElementById('tabCountPending').innerText = pendingCount;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="8" style="text-align:center; padding:32px; color:var(--text-muted);">
+                    <i class="fa-solid fa-folder-open" style="font-size:24px; margin-bottom:8px; display:block;"></i>
+                    Tidak ada data pengajuan NIK yang sesuai dengan filter.
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((item, idx) => `
+                <tr>
+                    <td style="color:var(--text-muted); font-weight:600;">${idx + 1}</td>
+                    <td class="font-mono" style="font-weight:700; color:var(--primary-blue);">${item.ticketId}</td>
+                    <td class="font-mono">${item.custId}</td>
+                    <td>
+                        <div style="font-weight:700;">${item.custName}</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono';">${item.custPhone}</div>
+                    </td>
+                    <td class="font-mono" style="font-weight:700; color:#0F172A;">${item.nik}</td>
+                    <td style="font-size:12px; color:var(--text-muted);">${item.submittedAt}</td>
+                    <td>${getStatusBadge(item.status)}</td>
+                    <td style="text-align:center;">
+                        <button class="btn-action-view" onclick="openAuditDrawer('${item.ticketId}')">
+                            <i class="fa-solid fa-eye"></i> Tinjau Detail
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleTableSearch() {
+            renderTable();
+        }
+
+        function handleFilterChange() {
+            renderTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = 'ALL';
+            document.getElementById('filterDate').value = 'ALL';
+            renderTable();
+            showToast('Filter berhasil di-reset.');
+        }
+
+        // ==================== DRAWER CONTROLLER ====================
+        function openAuditDrawer(ticketId) {
+            selectedTicket = nikQueueData.find(i => i.ticketId === ticketId);
+            if (!selectedTicket) return;
+
+            document.getElementById('drawerTicketId').innerText = `Detail Pengajuan NIK - ${selectedTicket.ticketId}`;
+            document.getElementById('drawerSubmittedTime').innerText = `Diajukan: ${selectedTicket.submittedAt}`;
+
+            // Section 1: Profil Pelanggan
+            document.getElementById('dCustId').innerText = selectedTicket.custId;
+            document.getElementById('dCustName').innerText = selectedTicket.custName;
+            document.getElementById('dCustPhone').innerText = selectedTicket.custPhone;
+            document.getElementById('dCustStatus').innerText = selectedTicket.custStatus;
+
+            // Section 2: Detail Identitas NIK
+            document.getElementById('dKtpName').innerText = selectedTicket.ktpName;
+            document.getElementById('dTicketStatusBadge').innerHTML = getStatusBadge(selectedTicket.status);
+            document.getElementById('dKtpNik').innerText = selectedTicket.nik;
+            document.getElementById('dAdminNotes').innerText = selectedTicket.adminNotes || 'Belum ada catatan verifikasi.';
+
+            // Section 3: Cross-Check FDE
+            const fdeDevCard = document.getElementById('fdeDeviceCard');
+
+            if (selectedTicket.deviceStatus === 'clean') {
+                fdeDevCard.className = 'fraud-check-card clean';
+                fdeDevCard.innerHTML = `
+                    <div class="fraud-card-header">
+                        <span><i class="fa-solid fa-mobile-screen"></i> Status Perangkat (Device ID: <span class="font-mono" style="font-size:11.5px; color:#065F46;">${selectedTicket.deviceId || 'DEV-SM-A536B-99120'}</span>)</span>
+                        <span class="status-badge active"><i class="fa-solid fa-check"></i> Clean (1 Akun)</span>
+                    </div>
+                    <div style="font-size:12px; margin-top:3px; line-height:1.4;">${selectedTicket.deviceDetail || 'Perangkat ini unik dan hanya terikat pada 1 akun pelanggan ini.'}</div>
+                `;
+            } else {
+                const countAccounts = (selectedTicket.boundAccounts && selectedTicket.boundAccounts.length) || 3;
+                fdeDevCard.className = 'fraud-check-card danger';
+                
+                let accountsTableHtml = '';
+                if (selectedTicket.boundAccounts && selectedTicket.boundAccounts.length > 0) {
+                    accountsTableHtml = `
+                        <div style="margin-top:8px; font-weight:700; font-size:11.5px; color:#991B1B;">
+                            Daftar Akun Terhubung pada Device ID: <span class="font-mono" style="color:#0F172A;">${selectedTicket.deviceId || 'DEV-XIAOMI-M2012K11AG'}</span>
+                        </div>
+                        <table class="device-accounts-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:28px;">No</th>
+                                    <th>Nama Akun Terikat</th>
+                                    <th>Nomor HP (Utuh)</th>
+                                    <th>Status Akun</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${selectedTicket.boundAccounts.map((acc, idx) => `
+                                    <tr>
+                                        <td style="color:#64748B; font-weight:600;">${idx + 1}</td>
+                                        <td>
+                                            <strong>${acc.name}</strong>
+                                            ${acc.isCurrent ? '<span style="font-size:10px; background:#EFF6FF; color:#1D4ED8; padding:1px 5px; border-radius:4px; font-weight:700; margin-left:4px;">Pemohon</span>' : ''}
+                                        </td>
+                                        <td class="font-mono">${acc.phone}</td>
+                                        <td>
+                                            <span class="status-badge ${acc.status === 'Aktif' ? 'active' : 'blocked'}" style="font-size:10px; padding:2px 6px;">
+                                                ${acc.status}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                fdeDevCard.innerHTML = `
+                    <div class="fraud-card-header">
+                        <span><i class="fa-solid fa-triangle-exclamation"></i> Status Perangkat (Device ID: <span class="font-mono" style="font-size:11.5px; color:#991B1B;">${selectedTicket.deviceId || 'DEV-XIAOMI-M2012K11AG'}</span>)</span>
+                        <span class="status-badge blocked"><i class="fa-solid fa-users"></i> Peringatan Multi-Account (${countAccounts} Akun)</span>
+                    </div>
+                    <div style="font-size:12px; margin-top:3px; line-height:1.45;"><strong>⚠️ Terdeteksi Anomali:</strong> ${selectedTicket.deviceDetail}</div>
+                    ${accountsTableHtml}
+                `;
+            }
+
+            const fdeNameCard = document.getElementById('fdeNameCard');
+            const fdeNameBadge = document.getElementById('fdeNameBadge');
+            const fdeNameText = document.getElementById('fdeNameText');
+
+            if (selectedTicket.nameMatch === 'match') {
+                fdeNameCard.className = 'fraud-check-card clean';
+                fdeNameBadge.className = 'status-badge active';
+                fdeNameBadge.innerText = 'Nama Selaras';
+                fdeNameText.innerText = 'Nama akun dan nama e-KTP 100% identik.';
+            } else {
+                fdeNameCard.className = 'fraud-check-card warning';
+                fdeNameBadge.className = 'status-badge pending';
+                fdeNameBadge.innerText = 'Nama Berbeda / Potensi Pinjam';
+                fdeNameText.innerHTML = `<strong>Perhatian:</strong> Nama akun "${selectedTicket.custName}" berbeda dengan e-KTP "${selectedTicket.ktpName}". Disarankan konfirmasi via telepon.`;
+            }
+
+            // Footer Button States
+            const footer = document.getElementById('drawerFooterActions');
+            if (selectedTicket.status === 'active' || selectedTicket.status === 'blocked') {
+                footer.innerHTML = `
+                    <div style="font-size:12px; color:var(--text-muted); text-align:center; width:100%;">
+                        <i class="fa-solid fa-lock"></i> Pengajuan ini sudah selesai diproses (Status: <strong>${selectedTicket.status.toUpperCase()}</strong>).
+                    </div>
+                `;
+            } else {
+                footer.innerHTML = `
+                    <button class="btn-footer btn-approve" onclick="openApproveModal()">
+                        <i class="fa-solid fa-check"></i> Setujui
+                    </button>
+                    <button class="btn-footer btn-revise" onclick="openReviseModal()">
+                        <i class="fa-solid fa-pen-to-square"></i> Revisi Data NIK
+                    </button>
+                    <button class="btn-footer btn-block-account" onclick="openBlockModal()">
+                        <i class="fa-solid fa-ban"></i> Blokir Akun
+                    </button>
+                `;
+            }
+
+            document.getElementById('drawerBackdrop').classList.add('active');
+        }
+
+        function closeAuditDrawer() {
+            document.getElementById('drawerBackdrop').classList.remove('active');
+        }
+
+        function closeDrawerOnBackdrop(e) {
+            if (e.target.id === 'drawerBackdrop') {
+                closeAuditDrawer();
+            }
+        }
+
+        // ==================== MODAL CONTROLLER & ACTIONS ====================
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openApproveModal() {
+            if (!selectedTicket) return;
+            document.getElementById('approveModalCustName').innerText = `${selectedTicket.custName} (${selectedTicket.custId})`;
+            document.getElementById('approveAdminNotes').value = '';
+
+            const escalateNotice = document.getElementById('makerCheckerEscalateNotice');
+            if (beRequireManagerApproval && currentRole !== 'manager_scanwin') {
+                escalateNotice.style.display = 'block';
+            } else {
+                escalateNotice.style.display = 'none';
+            }
+
+            document.getElementById('modalApprove').style.display = 'flex';
+        }
+
+        function submitApproval() {
+            const notes = document.getElementById('approveAdminNotes').value.trim();
+            if (!notes) {
+                alert('Wajib mengisi Catatan Admin / Verifikasi sebelum menyetujui!');
+                return;
+            }
+
+            closeModal('modalApprove');
+
+            if (beRequireManagerApproval && currentRole !== 'manager_scanwin') {
+                // Kasus 1: Eskalasi ke Manager
+                selectedTicket.status = 'escalated';
+                selectedTicket.adminNotes = `[Eskalasi Admin CS]: ${notes} (Menunggu persetujuan Manager sCanWin)`;
+                showToast(`Tiket ${selectedTicket.ticketId} berhasil diteruskan ke Manager sCanWin.`, 'fa-paper-plane');
+            } else {
+                // Kasus 2: Final Approval (Active)
+                selectedTicket.status = 'active';
+                const approver = (currentRole === 'manager_scanwin') ? 'Manager sCanWin' : 'Admin CS';
+                selectedTicket.adminNotes = `[Disetujui oleh ${approver}]: ${notes}`;
+                showToast(`NIK ${selectedTicket.nik} Berhasil Diaktifkan! Push notifikasi terkirim ke customer.`, 'fa-circle-check');
+            }
+
+            closeAuditDrawer();
+            renderTable();
+        }
+
+        function openReviseModal() {
+            if (!selectedTicket) return;
+            document.getElementById('reviseNamaKtp').value = selectedTicket.ktpName;
+            document.getElementById('reviseNik16').value = selectedTicket.nik;
+            document.getElementById('reviseNotes').value = '';
+            document.getElementById('modalRevise').style.display = 'flex';
+        }
+
+        function submitRevision() {
+            const newName = document.getElementById('reviseNamaKtp').value.trim();
+            const newNik = document.getElementById('reviseNik16').value.trim();
+            const notes = document.getElementById('reviseNotes').value.trim();
+
+            if (!newName || newName.length < 3) {
+                alert('Nama Lengkap Sesuai KTP tidak valid (minimal 3 karakter)!');
+                return;
+            }
+            if (!newNik || newNik.length !== 16 || !/^\d{16}$/.test(newNik)) {
+                alert('Nomor NIK wajib tepat 16 digit angka numerik!');
+                return;
+            }
+            if (!notes) {
+                alert('Wajib mengisi Catatan Hasil Call Verification!');
+                return;
+            }
+
+            // Strict 1-to-1 Uniqueness check against other records
+            const isDuplicate = nikQueueData.some(i => i.ticketId !== selectedTicket.ticketId && i.nik === newNik);
+            if (isDuplicate) {
+                alert(`[ERROR 409] Strict 1-to-1 Violation! NIK ${newNik} sudah terdaftar pada akun lain.`);
+                return;
+            }
+
+            selectedTicket.ktpName = newName;
+            selectedTicket.nik = newNik;
+            selectedTicket.adminNotes = `[Revisi NIK via Call]: ${notes}`;
+            
+            closeModal('modalRevise');
+
+            if (beRequireManagerApproval && currentRole !== 'manager_scanwin') {
+                selectedTicket.status = 'escalated';
+                showToast(`Data NIK berhasil direvisi dan diteruskan ke Manager sCanWin.`);
+            } else {
+                selectedTicket.status = 'active';
+                showToast(`Data NIK berhasil direvisi dan langsung Disetujui (Active)!`);
+            }
+
+            closeAuditDrawer();
+            renderTable();
+        }
+
+        function openBlockModal() {
+            if (!selectedTicket) return;
+            document.getElementById('blockReason').value = '';
+            document.getElementById('modalBlock').style.display = 'flex';
+        }
+
+        function submitBlockAccount() {
+            const reason = document.getElementById('blockReason').value.trim();
+            if (!reason) {
+                alert('Wajib mengisi Alasan Pemblokiran Akun!');
+                return;
+            }
+
+            selectedTicket.status = 'blocked';
+            selectedTicket.custStatus = 'Diblokir';
+            selectedTicket.adminNotes = `[AKUN DIBLOKIR]: ${reason}`;
+
+            closeModal('modalBlock');
+            closeAuditDrawer();
+            renderTable();
+            showToast(`Akun ${selectedTicket.custId} berhasil DIBLOKIR! Force logout dieksekusi.`, 'fa-ban');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>

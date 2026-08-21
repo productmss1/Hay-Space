@@ -1,0 +1,1839 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pusat Approval Manager (PRD 33) | sCanWin Admin Portal</title>
+    <!-- Google Fonts Inter & FontAwesome Icons -->
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary-cyan: #00B4D8;
+            --primary-cyan-hover: #0096B4;
+            --primary-blue: #016EFF;
+            --bg-canvas: #F4F6F8;
+            --card-bg: #FFFFFF;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --text-light: #94A3B8;
+            --border-color: #E2E8F0;
+            --sidebar-width: 250px;
+            --header-height: 60px;
+
+            /* Status Colors */
+            --status-pending-bg: #FFF8E1;
+            --status-pending-text: #B78103;
+            --status-pending-border: #FFE082;
+
+            --status-active-bg: #DEF7EC;
+            --status-active-text: #03543F;
+            --status-active-border: #80CBC4;
+
+            --status-blocked-bg: #FCE8E6;
+            --status-blocked-text: #C5221F;
+            --status-blocked-border: #F8B4B1;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html,
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        /* ==================== 1. TOP HEADER BAR ==================== */
+        .top-header {
+            height: var(--header-height);
+            background-color: var(--primary-cyan);
+            color: #FFFFFF;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 24px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .btn-hamburger {
+            background: none;
+            border: none;
+            color: #FFFFFF;
+            font-size: 18px;
+            cursor: pointer;
+            padding: 4px;
+        }
+
+        .brand-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 700;
+            font-size: 16px;
+            color: #FFFFFF;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-simulation-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 6px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+        }
+
+        .sim-control {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 12px;
+        }
+
+        .sim-control select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            font-weight: 600;
+            background-color: #FFFFFF;
+            color: var(--text-dark);
+            cursor: pointer;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .user-avatar {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.25);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 13.5px;
+        }
+
+        /* ==================== 2. LAYOUT CONTAINER & SIDEBAR ==================== */
+        .app-body {
+            margin-top: var(--header-height);
+            display: flex;
+            flex: 1;
+            overflow-x: hidden;
+            width: 100%;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background-color: #FFFFFF;
+            border-right: 1px solid var(--border-color);
+            padding: 16px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            position: fixed;
+            top: var(--header-height);
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            z-index: 90;
+        }
+
+        .nav-category {
+            padding: 10px 20px 4px 20px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 12px 20px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13.5px;
+            font-weight: 500;
+            transition: all 0.2s;
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background-color: #F8FAFC;
+            color: var(--primary-cyan);
+        }
+
+        .nav-item.active {
+            background-color: #E0F2FE;
+            color: var(--primary-cyan);
+            font-weight: 700;
+            border-right: 3.5px solid var(--primary-cyan);
+        }
+
+        .nav-item-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-bullet {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            border: 1.5px solid var(--text-light);
+            display: inline-block;
+        }
+
+        .nav-item.active .nav-bullet {
+            background-color: var(--primary-cyan);
+            border-color: var(--primary-cyan);
+        }
+
+        /* ==================== 3. MAIN CONTENT CANVAS ==================== */
+        .main-canvas {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            min-width: 0;
+            overflow-x: hidden;
+            width: calc(100% - var(--sidebar-width));
+        }
+
+        .page-title-row {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .page-title {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .meta-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* ==================== 4. SUMMARY METRICS (5 CARDS) ==================== */
+        .metrics-grid-5 {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        @media (max-width: 1400px) {
+            .metrics-grid-5 {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .metrics-grid-5 {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        .metric-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 16px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .metric-info h4 {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+
+        .metric-info .value {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-dark);
+            margin-top: 6px;
+        }
+
+        .metric-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            flex-shrink: 0;
+        }
+
+        .metric-icon.blue {
+            background-color: #E0F2FE;
+            color: #0284C7;
+        }
+
+        .metric-icon.red {
+            background-color: #FEE2E2;
+            color: #DC2626;
+        }
+
+        .metric-icon.orange {
+            background-color: #FFEDD5;
+            color: #EA580C;
+        }
+
+        .metric-icon.teal {
+            background-color: #CCFBF1;
+            color: #0D9488;
+        }
+
+        .metric-icon.green {
+            background-color: #DCFCE7;
+            color: #16A34A;
+        }
+
+        /* ==================== 5. FILTER & CONTROL CARD ==================== */
+        .filter-control-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            padding: 18px 20px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Category Filter Pills */
+        .category-pills-bar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .category-pill {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            white-space: nowrap;
+            transition: all 0.2s;
+        }
+
+        .category-pill:hover {
+            border-color: var(--primary-cyan);
+            color: var(--primary-cyan);
+        }
+
+        .category-pill.active {
+            background: #00B4D8;
+            color: #FFFFFF;
+            border-color: #00B4D8;
+        }
+
+        .category-pill .pill-badge {
+            padding: 1px 7px;
+            border-radius: 10px;
+            font-size: 10.5px;
+            font-weight: 700;
+            background: rgba(0, 0, 0, 0.08);
+            color: inherit;
+        }
+
+        .category-pill.active .pill-badge {
+            background: rgba(255, 255, 255, 0.25);
+            color: #FFFFFF;
+        }
+
+        .filter-left-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 260px;
+        }
+
+        .search-box input {
+            width: 100%;
+            height: 38px;
+            padding: 8px 12px 8px 36px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary-cyan);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-light);
+        }
+
+        .filter-select {
+            height: 38px;
+            padding: 0 12px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            font-size: 13px;
+            color: var(--text-dark);
+            outline: none;
+            cursor: pointer;
+        }
+
+        .btn-reset {
+            height: 38px;
+            padding: 0 14px;
+            border-radius: 6px;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            font-size: 12.5px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-reset:hover {
+            background-color: #F1F5F9;
+            color: var(--text-dark);
+        }
+
+        /* ==================== 6. DATA TABLE ==================== */
+        .table-card {
+            background-color: var(--card-bg);
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            width: 100%;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            text-align: left;
+        }
+
+        .data-table thead {
+            background-color: #F8FAFC;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .data-table th {
+            padding: 12px 16px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            white-space: nowrap;
+        }
+
+        .data-table tbody tr {
+            border-bottom: 1px solid var(--border-color);
+            transition: background-color 0.15s;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .data-table td {
+            padding: 14px 16px;
+            color: var(--text-dark);
+            vertical-align: middle;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Status & Category Badges */
+        .status-badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 11.5px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .status-badge.pending {
+            background-color: var(--status-pending-bg);
+            color: var(--status-pending-text);
+            border: 1px solid var(--status-pending-border);
+        }
+
+        .status-badge.approved {
+            background-color: var(--status-active-bg);
+            color: var(--status-active-text);
+            border: 1px solid var(--status-active-border);
+        }
+
+        .status-badge.ditolak {
+            background-color: var(--status-blocked-bg);
+            color: var(--status-blocked-text);
+            border: 1px solid var(--status-blocked-border);
+        }
+
+        .cat-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        .cat-badge.block-acc {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
+        .cat-badge.unblock-acc {
+            background: #DEF7EC;
+            color: #03543F;
+            border: 1px solid #A7F3D0;
+        }
+
+        .cat-badge.block-ewallet {
+            background: #FFEDD5;
+            color: #C2410C;
+            border: 1px solid #FFD8A8;
+        }
+
+        .cat-badge.unblock-ewallet {
+            background: #E0F2FE;
+            color: #0369A1;
+            border: 1px solid #BAE6FD;
+        }
+
+        .cat-badge.correct-nik {
+            background: #EDE9FE;
+            color: #6D28D9;
+            border: 1px solid #DDD6FE;
+        }
+
+        .cat-badge.escalate-nik {
+            background: #FEF3C7;
+            color: #92400E;
+            border: 1px solid #FDE68A;
+        }
+
+        .btn-detail-action {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 6px 12px;
+            font-size: 11.5px;
+            font-weight: 600;
+            color: #0284C7;
+            background: #F0F9FF;
+            border: 1px solid #BAE6FD;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-detail-action:hover {
+            background: #0284C7;
+            color: #FFFFFF;
+            border-color: #0284C7;
+            box-shadow: 0 2px 6px rgba(2, 132, 199, 0.25);
+        }
+
+        /* ==================== 7. SLIDE-OVER DETAIL AUDIT DRAWER ==================== */
+        .drawer-backdrop {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.5);
+            backdrop-filter: blur(2px);
+            z-index: 200;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .drawer-backdrop.active {
+            display: block;
+            opacity: 1;
+        }
+
+        .audit-drawer {
+            position: fixed;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            width: 580px;
+            max-width: 92vw;
+            background: #FFFFFF;
+            z-index: 210;
+            box-shadow: -6px 0 30px rgba(0, 0, 0, 0.15);
+            display: flex;
+            flex-direction: column;
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .drawer-backdrop.active .audit-drawer {
+            transform: translateX(0);
+        }
+
+        .drawer-header {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .drawer-header h3 {
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--text-dark);
+        }
+
+        .btn-close-drawer {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background: #FFFFFF;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+
+        .btn-close-drawer:hover {
+            background-color: #F1F5F9;
+            color: var(--text-dark);
+        }
+
+        .drawer-body {
+            flex: 1;
+            overflow-y: auto;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            background: #FFFFFF;
+        }
+
+        .drawer-section {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 14px 16px;
+            background: #FFFFFF;
+        }
+
+        .section-heading {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .info-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        .info-value {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        /* Cross-Check FDE Cards */
+        .fraud-check-card {
+            border-radius: 8px;
+            padding: 12px 14px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12.5px;
+        }
+
+        .fraud-check-card.clean {
+            background: #ECFDF5;
+            border: 1px solid #A7F3D0;
+            color: #065F46;
+        }
+
+        .fraud-check-card.danger {
+            background: #FEF2F2;
+            border: 1px solid #FECACA;
+            color: #991B1B;
+        }
+
+        .fraud-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-weight: 700;
+        }
+
+        .device-accounts-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 8px;
+            font-size: 11.5px;
+            background: #FFFFFF;
+            border-radius: 6px;
+            overflow: hidden;
+            border: 1px solid #FECACA;
+        }
+
+        .device-accounts-table th {
+            background: #FEE2E2;
+            color: #991B1B;
+            padding: 6px 10px;
+            font-weight: 700;
+            text-align: left;
+        }
+
+        .device-accounts-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #FEE2E2;
+            color: #1E293B;
+        }
+
+        /* Drawer Footer Actions */
+        .drawer-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--border-color);
+            background: #F8FAFC;
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+
+        .btn-footer {
+            flex: 1;
+            height: 42px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+        }
+
+        .btn-approve {
+            background: #10B981;
+            color: #FFFFFF;
+        }
+
+        .btn-approve:hover {
+            background: #059669;
+        }
+
+        .btn-reject {
+            background: #EF4444;
+            color: #FFFFFF;
+        }
+
+        .btn-reject:hover {
+            background: #DC2626;
+        }
+
+        /* ==================== 8. MODALS ==================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(2px);
+            z-index: 300;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .modal-card {
+            background: #FFFFFF;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 480px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            animation: modalPop 0.2s ease-out;
+        }
+
+        @keyframes modalPop {
+            from {
+                transform: scale(0.95);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .modal-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #F8FAFC;
+        }
+
+        .modal-header h3 {
+            font-size: 15px;
+            font-weight: 800;
+            color: var(--text-dark);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .modal-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .modal-footer {
+            padding: 14px 20px;
+            background: #F8FAFC;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn-modal {
+            height: 38px;
+            padding: 0 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .btn-modal.cancel {
+            background: #FFFFFF;
+            border: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+
+        .btn-modal.cancel:hover {
+            background: #F1F5F9;
+        }
+
+        .btn-modal.confirm-approve {
+            background: #10B981;
+            color: #FFFFFF;
+        }
+
+        .btn-modal.confirm-approve:hover {
+            background: #059669;
+        }
+
+        .btn-modal.confirm-reject {
+            background: #EF4444;
+            color: #FFFFFF;
+        }
+
+        .btn-modal.confirm-reject:hover {
+            background: #DC2626;
+        }
+
+        /* Toast Notifications */
+        .toast-container {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .toast-item {
+            background: #0F172A;
+            color: #FFFFFF;
+            padding: 12px 18px;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-left: 4px solid var(--primary-cyan);
+            animation: slideInToast 0.25s ease-out;
+        }
+
+        @keyframes slideInToast {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 1. TOP HEADER BAR GLOBAL -->
+    <header class="top-header">
+        <div class="header-left">
+            <button class="btn-hamburger"><i class="fa-solid fa-bars"></i></button>
+            <a href="scanwin-fde.html" class="brand-logo">
+                <i class="fa-solid fa-house-chimney" style="color: #FFD166;"></i>
+                <span>Toko Bangunan 1000saudara</span>
+            </a>
+        </div>
+
+        <div class="header-right">
+            <!-- Top Header Simulation Controls -->
+            <div class="header-simulation-group">
+                <div class="sim-control">
+                    <i class="fa-solid fa-user-shield" style="color: #FFD166;"></i>
+                    <span>Role Simulasi:</span>
+                    <select id="rbacSelect" onchange="handleRoleChange(this.value)">
+                        <option value="manager_scanwin" selected>Manager sCanWin (Approver)</option>
+                        <option value="non_manager">Non-Manager sCanWin (Finance Admin)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="user-profile">
+                <div class="user-avatar" id="userAvatar">HW</div>
+                <div style="font-size: 13px; line-height: 1.2;">
+                    <span style="font-weight: 700;" id="userName">Hendra Wijaya</span>
+                    <div style="font-size: 11px; opacity: 0.85;" id="userRoleTitle">Manager sCanWin</div>
+                </div>
+                <i class="fa-solid fa-chevron-down" style="font-size: 11px;"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- 2. LAYOUT CONTAINER & SIDEBAR -->
+    <div class="app-body">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar">
+            <div class="nav-category">Management sCanWin 1000s</div>
+            <a href="scanwin-admin-manajemen-pelanggan-tab-data-pelanggan.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Manajemen Pelanggan</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-pemberian-voucher.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Klaim Voucher</span>
+                </div>
+            </a>
+            <a href="scanwin-dashboard-monitoring-penarikan-ewallet.html" class="nav-item">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span>Monitoring Tarik Saldo</span>
+                </div>
+            </a>
+            <a href="scanwin-admin-pusat-approval-manager.html" class="nav-item active">
+                <div class="nav-item-left">
+                    <span class="nav-bullet"></span>
+                    <span style="font-weight: 700;">Pusat Approval Manager</span>
+                </div>
+                <span
+                    style="background:#FEF3C7; color:#D97706; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:10px;"
+                    id="sidebarBadgeCount">5</span>
+            </a>
+        </aside>
+
+        <!-- 3. MAIN CONTENT CANVAS -->
+        <main class="main-canvas" id="mainCanvas">
+            <div class="page-title-row">
+                <h1 class="page-title">Pusat Approval Manager</h1>
+                <div class="meta-desc">Pusat evaluasi dan persetujuan manajerial atas seluruh tiket eskalasi admin
+                    (Blokir/Unblok Akun, E-Wallet, Koreksi NIK).</div>
+            </div>
+
+            <!-- Seksi 1: 5 Summary Metric Cards -->
+            <div class="metrics-grid-5">
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Total Menunggu Review</h4>
+                        <div class="value" id="metricTotalPending" style="color:var(--primary-cyan);">5</div>
+                    </div>
+                    <div class="metric-icon blue"><i class="fa-solid fa-hourglass-half"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Blokir & Unblok Akun</h4>
+                        <div class="value" id="metricAccountPending">2</div>
+                    </div>
+                    <div class="metric-icon red"><i class="fa-solid fa-user-lock"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Kelola E-Wallet</h4>
+                        <div class="value" id="metricEwalletPending">1</div>
+                    </div>
+                    <div class="metric-icon orange"><i class="fa-solid fa-wallet"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Verifikasi & Koreksi NIK</h4>
+                        <div class="value" id="metricNikPending">2</div>
+                    </div>
+                    <div class="metric-icon teal"><i class="fa-solid fa-id-card"></i></div>
+                </div>
+                <div class="metric-card">
+                    <div class="metric-info">
+                        <h4>Disetujui Bulan Ini</h4>
+                        <div class="value" id="metricApprovedMonth" style="color:#10B981;">48</div>
+                    </div>
+                    <div class="metric-icon green"><i class="fa-solid fa-circle-check"></i></div>
+                </div>
+            </div>
+
+            <!-- Seksi 2: Filter & Control Card -->
+            <div class="filter-control-card">
+                <!-- Category Pills Bar -->
+                <div class="category-pills-bar">
+                    <button class="category-pill active" onclick="setCategoryFilter('ALL', this)">
+                        <i class="fa-solid fa-layer-group"></i> Semua Pengajuan
+                        <span class="pill-badge" id="badgeAll">5</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('BLOCK_ACCOUNT', this)">
+                        <i class="fa-solid fa-ban" style="color:#EF4444;"></i> Blokir Akun
+                        <span class="pill-badge" id="badgeBlockAcc">1</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('UNBLOCK_ACCOUNT', this)">
+                        <i class="fa-solid fa-unlock" style="color:#10B981;"></i> Buka Blokir Akun
+                        <span class="pill-badge" id="badgeUnblockAcc">1</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('BLOCK_EWALLET', this)">
+                        <i class="fa-solid fa-wallet" style="color:#EA580C;"></i> Blokir E-Wallet
+                        <span class="pill-badge" id="badgeBlockEw">1</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('UNBLOCK_EWALLET', this)">
+                        <i class="fa-solid fa-wallet" style="color:#0284C7;"></i> Unblok E-Wallet
+                        <span class="pill-badge" id="badgeUnblockEw">0</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('CORRECT_NIK', this)">
+                        <i class="fa-solid fa-id-card-clip" style="color:#7C3AED;"></i> Koreksi NIK
+                        <span class="pill-badge" id="badgeCorrectNik">1</span>
+                    </button>
+                    <button class="category-pill" onclick="setCategoryFilter('ESCALATE_NIK', this)">
+                        <i class="fa-solid fa-shield-halved" style="color:#D97706;"></i> Eskalasi NIK
+                        <span class="pill-badge" id="badgeEscalateNik">1</span>
+                    </button>
+                </div>
+
+                <!-- Search & Status Select Row -->
+                <div class="filter-left-group">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="searchInput"
+                            placeholder="Cari ID Tiket, ID Pelanggan, Nama, Maker, NIK, atau No HP..."
+                            oninput="handleSearch()">
+                    </div>
+
+                    <select class="filter-select" id="filterStatus" onchange="handleFilterChange()">
+                        <option value="ALL">Semua Status Tiket</option>
+                        <option value="pending" selected>Menunggu Approval Manager</option>
+                        <option value="approved">Disetujui (Approved)</option>
+                        <option value="rejected">Ditolak (Rejected)</option>
+                    </select>
+
+                    <button class="btn-reset" onclick="resetFilters()">
+                        <i class="fa-solid fa-rotate-left"></i> Reset
+                    </button>
+                </div>
+            </div>
+
+            <!-- Seksi 3: Data Table Card -->
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 36px;">No</th>
+                                <th>ID Tiket</th>
+                                <th>Kategori Tindakan</th>
+                                <th>Pelanggan</th>
+                                <th>Data Diajukan (Utuh)</th>
+                                <th>Diajukan Oleh (Maker)</th>
+                                <th>Tanggal Submit</th>
+                                <th>Status Tiket</th>
+                                <th style="text-align: center; width: 130px;">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="approvalTableBody">
+                            <!-- Populated via JavaScript -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ==================== SLIDE-OVER DETAIL AUDIT DRAWER ==================== -->
+    <div class="drawer-backdrop" id="drawerBackdrop" onclick="closeDrawerOnBackdrop(event)">
+        <div class="audit-drawer" id="auditDrawer">
+            <div class="drawer-header">
+                <div>
+                    <h3 id="drawerTicketId">Detail Tiket Eskalasi</h3>
+                    <div style="font-size: 11.5px; color:var(--text-muted);" id="drawerSubmittedTime">Diajukan: -</div>
+                </div>
+                <button class="btn-close-drawer" onclick="closeAuditDrawer()" title="Tutup Drawer">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div class="drawer-body" id="drawerBodyContent">
+                <!-- Section 1: Informasi Tiket Maker -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-ticket" style="color:var(--primary-cyan);"></i> Informasi Pengajuan Maker
+                    </div>
+                    <div class="info-grid-2">
+                        <div class="info-item">
+                            <span class="info-label">Inisiator Pengajuan (Maker)</span>
+                            <span class="info-value" id="dMakerName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Kategori Pengajuan</span>
+                            <span id="dCategoryBadge">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Waktu Pengajuan</span>
+                            <span class="info-value font-mono" id="dSubmittedAt">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status Tiket Saat Ini</span>
+                            <span id="dTicketStatus">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Profil Pelanggan -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-user" style="color:var(--primary-blue);"></i> Profil Pelanggan Terkait
+                    </div>
+                    <div class="info-grid-2">
+                        <div class="info-item">
+                            <span class="info-label">ID Pelanggan</span>
+                            <span class="info-value font-mono" id="dCustId">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nama Akun Terdaftar</span>
+                            <span class="info-value" id="dCustName">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Nomor HP Pelanggan</span>
+                            <span class="info-value font-mono" id="dCustPhone">-</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Status Akun Pelanggan</span>
+                            <span class="info-value" id="dCustStatus">-</span>
+                        </div>
+                    </div>
+
+                    <!-- Objek Data Khusus (Dynamic) -->
+                    <div id="dObjectDataContainer"
+                        style="margin-top:10px; padding-top:10px; border-top:1px dashed var(--border-color);">
+                        <!-- Injected via JS -->
+                    </div>
+                </div>
+
+                <!-- Section 3: Justifikasi & Catatan Maker -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-comment-dots" style="color:#D97706;"></i> Justifikasi & Catatan Admin
+                        Maker
+                    </div>
+                    <div style="background:#F8FAFC; border:1px solid var(--border-color); border-radius:6px; padding:10px 12px; font-size:12.5px; color:var(--text-dark); line-height:1.45;"
+                        id="dMakerReason">
+                        -
+                    </div>
+                </div>
+
+                <!-- Section 4: Cross-Check FDE Analisis Silang -->
+                <div class="drawer-section">
+                    <div class="section-heading">
+                        <i class="fa-solid fa-shield-virus" style="color:#EF4444;"></i> Analisis Silang Fraud FDE
+                    </div>
+                    <div class="fraud-check-card" id="dFdeCard">
+                        <!-- Dynamic via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Drawer Footer Actions -->
+            <div class="drawer-footer" id="drawerFooter">
+                <button class="btn-footer btn-approve" onclick="openApproveModal()">
+                    <i class="fa-solid fa-circle-check"></i> Setujui Pengajuan
+                </button>
+                <button class="btn-footer btn-reject" onclick="openRejectModal()">
+                    <i class="fa-solid fa-circle-xmark"></i> Tolak Pengajuan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 1: SETUJUI (APPROVE) ==================== -->
+    <div class="modal-overlay" id="modalApprove">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-circle-check" style="color:#10B981;"></i> Konfirmasi Persetujuan Manager</h3>
+                <button class="btn-close-drawer" onclick="closeModal('modalApprove')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px; color:var(--text-muted);">
+                    Apakah Anda yakin ingin menyetujui tiket <strong id="appModalTicketId" class="font-mono">-</strong>
+                    untuk pelanggan <strong id="appModalCustName">-</strong>?
+                </p>
+                <div style="background:#F0FDF4; border:1px solid #BBF7D0; padding:10px 12px; border-radius:6px; font-size:12px; color:#166534;"
+                    id="appModalImpactNotice">
+                    Tindakan ini akan langsung mengeksekusi perubahan data di sistem backend sCanWin.
+                </div>
+                <div>
+                    <label
+                        style="font-size:12px; font-weight:700; color:var(--text-dark); display:block; margin-bottom:4px;">Catatan
+                        Approval Manager (Opsional):</label>
+                    <textarea id="appManagerNote" rows="2"
+                        style="width:100%; border:1px solid var(--border-color); border-radius:6px; padding:8px; font-size:12px; outline:none;"
+                        placeholder="Tambahkan catatan jika diperlukan..."></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal cancel" onclick="closeModal('modalApprove')">Batal</button>
+                <button class="btn-modal confirm-approve" onclick="executeApprove()">
+                    <i class="fa-solid fa-check"></i> Ya, Setujui Sekarang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== MODAL 2: TOLAK (REJECT) ==================== -->
+    <div class="modal-overlay" id="modalReject">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-triangle-exclamation" style="color:#EF4444;"></i> Konfirmasi Penolakan
+                    Pengajuan</h3>
+                <button class="btn-close-drawer" onclick="closeModal('modalReject')">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p style="font-size:13px; color:var(--text-muted);">
+                    Menolak tiket <strong id="rejModalTicketId" class="font-mono">-</strong> akan membatalkan pengajuan
+                    dan mempertahankan data pelanggan pada kondisi semula.
+                </p>
+                <div>
+                    <label
+                        style="font-size:12px; font-weight:700; color:var(--text-dark); display:block; margin-bottom:4px;">
+                        Alasan Penolakan <span style="color:#EF4444;">* (Wajib, Min. 10 Karakter)</span>:
+                    </label>
+                    <textarea id="rejManagerReason" rows="3"
+                        style="width:100%; border:1px solid var(--border-color); border-radius:6px; padding:8px; font-size:12px; outline:none;"
+                        placeholder="Tuliskan alasan penolakan secara jelas untuk catatan audit..."></textarea>
+                    <div id="rejCharCount"
+                        style="font-size:11px; color:var(--text-light); text-align:right; margin-top:2px;">0 / 10
+                        karakter</div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-modal cancel" onclick="closeModal('modalReject')">Batal</button>
+                <button class="btn-modal confirm-reject" id="btnConfirmReject" onclick="executeReject()">
+                    <i class="fa-solid fa-ban"></i> Tolak Pengajuan
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- JavaScript Data & Logic Controller -->
+    <script>
+        // Master Eskalasi & Maker-Checker Dataset
+        let managerApprovalQueue = [
+            {
+                ticketId: 'REQ-BLK-202608-001',
+                category: 'BLOCK_ACCOUNT',
+                categoryLabel: 'Blokir Akun Pelanggan',
+                custId: 'CUST-1006543',
+                custName: 'Rudi Hartono (Fraud)',
+                custPhone: '081299001122',
+                custStatus: 'Aktif',
+                makerName: 'Budi Santoso (Admin CS)',
+                submittedAt: '21 Agu 2026, 09:15 WIB',
+                status: 'pending', // pending, approved, rejected
+                makerReason: 'Terdeteksi cloning multi-account emulator dan menggunakan e-KTP palsu untuk penarikan berulang.',
+                objectDataTitle: 'Target Intervensi Akun',
+                objectDataValue: 'Blokir Akun & Invalidate Sesi Login Mobile',
+                deviceId: 'DEV-EMULATOR-NOX-88991',
+                deviceStatus: 'multi',
+                deviceDetail: 'Perangkat Emulator terdeteksi aktif pada 5 akun bot sindikat.',
+                nameMatch: 'match',
+                boundAccounts: [
+                    { name: 'Rudi Hartono', phone: '081299001122', status: 'Aktif', isCurrent: true },
+                    { name: 'Bot Account 101', phone: '081299001123', status: 'Diblokir', isCurrent: false },
+                    { name: 'Bot Account 102', phone: '081299001124', status: 'Diblokir', isCurrent: false }
+                ]
+            },
+            {
+                ticketId: 'REQ-UBK-202608-002',
+                category: 'UNBLOCK_ACCOUNT',
+                categoryLabel: 'Buka Blokir Akun',
+                custId: 'CUST-1004892',
+                custName: 'Bambang Hariyanto',
+                custPhone: '081398761234',
+                custStatus: 'Diblokir',
+                makerName: 'Siti Rahma (Admin CS)',
+                submittedAt: '21 Agu 2026, 08:30 WIB',
+                status: 'pending',
+                makerReason: 'Pelanggan telah lolos verifikasi panggilan video call & dokumen fisik e-KTP terkonfirmasi valid.',
+                objectDataTitle: 'Target Pemulihan Akun',
+                objectDataValue: 'Pulihkan Status Akun menjadi Aktif & Kembalikan Akses Login',
+                deviceId: 'DEV-XIAOMI-M2012K11AG',
+                deviceStatus: 'clean',
+                deviceDetail: 'Perangkat ini unik dan hanya terikat pada 1 akun pelanggan ini.',
+                nameMatch: 'match'
+            },
+            {
+                ticketId: 'REQ-EWB-202608-003',
+                category: 'BLOCK_EWALLET',
+                categoryLabel: 'Blokir Nomor E-Wallet',
+                custId: 'CUST-1008761',
+                custName: 'Siti Aminah',
+                custPhone: '087812903456',
+                custStatus: 'Aktif',
+                makerName: 'Rian Pratama (Finance Admin)',
+                submittedAt: '20 Agu 2026, 17:10 WIB',
+                status: 'pending',
+                makerReason: 'Nomor e-wallet dilaporkan digunakan oleh akun lain untuk penarikan mencurigakan.',
+                objectDataTitle: 'Nomor E-Wallet Target',
+                objectDataValue: 'DANA - 087812903456 (Masuk ke Blacklist E-Wallet)',
+                deviceId: 'DEV-OPPO-CPH2269-1122',
+                deviceStatus: 'clean',
+                deviceDetail: 'Perangkat unik (1 akun).',
+                nameMatch: 'match'
+            },
+            {
+                ticketId: 'REQ-NIK-202608-005',
+                category: 'CORRECT_NIK',
+                categoryLabel: 'Koreksi NIK Pelanggan',
+                custId: 'CUST-1009124',
+                custName: 'Dewi Sartika',
+                custPhone: '085712349988',
+                custStatus: 'Aktif',
+                makerName: 'Budi Santoso (Admin CS)',
+                submittedAt: '20 Agu 2026, 14:05 WIB',
+                status: 'pending',
+                makerReason: 'Hasil Call Verification: Pelanggan salah ketik 1 digit terakhir NIK saat pendaftaran mandiri.',
+                objectDataTitle: 'Perubahan Data NIK',
+                objectDataValue: '3578019283740004 ➔ 3578019283740009 (Nama: Dewi Sartika)',
+                deviceId: 'DEV-IPHONE-14PRO-7712',
+                deviceStatus: 'clean',
+                deviceDetail: 'Perangkat unik (1 akun).',
+                nameMatch: 'match'
+            },
+            {
+                ticketId: 'REQ-ESN-202608-006',
+                category: 'ESCALATE_NIK',
+                categoryLabel: 'Eskalasi Verifikasi NIK',
+                custId: 'CUST-1006782',
+                custName: 'Hendra Setiawan',
+                custPhone: '085211993344',
+                custStatus: 'Aktif',
+                makerName: 'Budi Santoso (Admin CS)',
+                submittedAt: '20 Agu 2026, 11:45 WIB',
+                status: 'pending',
+                makerReason: 'Verifikasi NIK awal telah diperiksa. Dieskalasikan ke Manager karena terdeteksi Multi-Account Device.',
+                objectDataTitle: 'Data NIK Diajukan',
+                objectDataValue: '3275019283740008 (Hendra Setiawan)',
+                deviceId: 'DEV-INFINIX-X6815B-8831',
+                deviceStatus: 'multi',
+                deviceDetail: 'Device ID terdeteksi aktif pada 4 akun sCanWin berbeda.',
+                nameMatch: 'match',
+                boundAccounts: [
+                    { name: 'Hendra Setiawan', phone: '085211993344', status: 'Aktif', isCurrent: true },
+                    { name: 'Dimas Anggara', phone: '085222884455', status: 'Aktif', isCurrent: false },
+                    { name: 'Maya Indah', phone: '085233775566', status: 'Aktif', isCurrent: false },
+                    { name: 'Reza Fahlevi', phone: '085244667788', status: 'Diblokir', isCurrent: false }
+                ]
+            }
+        ];
+
+        // Global State
+        let currentRole = 'manager_scanwin';
+        let currentCategoryFilter = 'ALL';
+        let selectedTicket = null;
+
+        function showToast(msg, icon = 'fa-check-circle') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = 'toast-item';
+            toast.innerHTML = `<i class="fa-solid ${icon}" style="color:#00B4D8; font-size:16px;"></i><span>${msg}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(10px)';
+                setTimeout(() => toast.remove(), 250);
+            }, 3500);
+        }
+
+        function handleRoleChange(role) {
+            currentRole = role;
+            const titleEl = document.getElementById('userRoleTitle');
+            const nameEl = document.getElementById('userName');
+
+            if (role === 'manager_scanwin') {
+                nameEl.innerText = 'Hendra Wijaya';
+                titleEl.innerText = 'Manager sCanWin';
+                showToast('Role: Manager sCanWin (Memiliki Hak Approval Penuh)');
+                renderTable();
+            } else {
+                nameEl.innerText = 'Budi Santoso';
+                titleEl.innerText = 'Non-Manager (Admin CS)';
+                showToast('Peringatan: Role Non-Manager tidak memiliki wewenang approval!', 'fa-triangle-exclamation');
+                renderTable();
+            }
+        }
+
+        function getCategoryBadge(cat) {
+            switch (cat) {
+                case 'BLOCK_ACCOUNT': return '<span class="cat-badge block-acc"><i class="fa-solid fa-ban"></i> Blokir Akun</span>';
+                case 'UNBLOCK_ACCOUNT': return '<span class="cat-badge unblock-acc"><i class="fa-solid fa-unlock"></i> Buka Blokir</span>';
+                case 'BLOCK_EWALLET': return '<span class="cat-badge block-ewallet"><i class="fa-solid fa-wallet"></i> Blokir E-Wallet</span>';
+                case 'UNBLOCK_EWALLET': return '<span class="cat-badge unblock-ewallet"><i class="fa-solid fa-wallet"></i> Unblok E-Wallet</span>';
+                case 'CORRECT_NIK': return '<span class="cat-badge correct-nik"><i class="fa-solid fa-id-card-clip"></i> Koreksi NIK</span>';
+                case 'ESCALATE_NIK': return '<span class="cat-badge escalate-nik"><i class="fa-solid fa-shield-halved"></i> Eskalasi NIK</span>';
+                default: return '-';
+            }
+        }
+
+        function getStatusBadge(status) {
+            if (status === 'pending') {
+                return '<span class="status-badge pending"><i class="fa-solid fa-clock"></i> Menunggu Manager</span>';
+            } else if (status === 'approved') {
+                return '<span class="status-badge approved"><i class="fa-solid fa-check"></i> Disetujui</span>';
+            } else if (status === 'rejected') {
+                return '<span class="status-badge ditolak"><i class="fa-solid fa-xmark"></i> Ditolak</span>';
+            }
+            return '-';
+        }
+
+        function setCategoryFilter(cat, btn) {
+            currentCategoryFilter = cat;
+            document.querySelectorAll('.category-pill').forEach(b => b.classList.remove('active'));
+            if (btn) btn.classList.add('active');
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('approvalTableBody');
+            const searchVal = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const statusFilter = document.getElementById('filterStatus').value;
+
+            let filtered = managerApprovalQueue.filter(item => {
+                // Category Filter
+                const matchesCategory = (currentCategoryFilter === 'ALL') || (item.category === currentCategoryFilter);
+
+                // Status Filter
+                const matchesStatus = (statusFilter === 'ALL') || (item.status === statusFilter);
+
+                // Search
+                const matchesSearch = !searchVal ||
+                    item.ticketId.toLowerCase().includes(searchVal) ||
+                    item.custId.toLowerCase().includes(searchVal) ||
+                    item.custName.toLowerCase().includes(searchVal) ||
+                    item.makerName.toLowerCase().includes(searchVal) ||
+                    (item.custPhone && item.custPhone.includes(searchVal)) ||
+                    (item.objectDataValue && item.objectDataValue.toLowerCase().includes(searchVal));
+
+                return matchesCategory && matchesStatus && matchesSearch;
+            });
+
+            // Update Metrics
+            const totalPending = managerApprovalQueue.filter(i => i.status === 'pending').length;
+            const accPending = managerApprovalQueue.filter(i => (i.category === 'BLOCK_ACCOUNT' || i.category === 'UNBLOCK_ACCOUNT') && i.status === 'pending').length;
+            const ewPending = managerApprovalQueue.filter(i => (i.category === 'BLOCK_EWALLET' || i.category === 'UNBLOCK_EWALLET') && i.status === 'pending').length;
+            const nikPending = managerApprovalQueue.filter(i => (i.category === 'CORRECT_NIK' || i.category === 'ESCALATE_NIK') && i.status === 'pending').length;
+
+            document.getElementById('metricTotalPending').innerText = totalPending;
+            document.getElementById('metricAccountPending').innerText = accPending;
+            document.getElementById('metricEwalletPending').innerText = ewPending;
+            document.getElementById('metricNikPending').innerText = nikPending;
+            document.getElementById('sidebarBadgeCount').innerText = totalPending;
+
+            // Badges on Pills
+            document.getElementById('badgeAll').innerText = totalPending;
+            document.getElementById('badgeBlockAcc').innerText = managerApprovalQueue.filter(i => i.category === 'BLOCK_ACCOUNT' && i.status === 'pending').length;
+            document.getElementById('badgeUnblockAcc').innerText = managerApprovalQueue.filter(i => i.category === 'UNBLOCK_ACCOUNT' && i.status === 'pending').length;
+            document.getElementById('badgeBlockEw').innerText = managerApprovalQueue.filter(i => i.category === 'BLOCK_EWALLET' && i.status === 'pending').length;
+            document.getElementById('badgeUnblockEw').innerText = managerApprovalQueue.filter(i => i.category === 'UNBLOCK_EWALLET' && i.status === 'pending').length;
+            document.getElementById('badgeCorrectNik').innerText = managerApprovalQueue.filter(i => i.category === 'CORRECT_NIK' && i.status === 'pending').length;
+            document.getElementById('badgeEscalateNik').innerText = managerApprovalQueue.filter(i => i.category === 'ESCALATE_NIK' && i.status === 'pending').length;
+
+            if (filtered.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:32px; color:var(--text-muted);">
+                    <i class="fa-solid fa-folder-open" style="font-size:24px; margin-bottom:8px; display:block;"></i>
+                    Tidak ada pengajuan yang sesuai dengan filter saat ini.
+                </td></tr>`;
+                return;
+            }
+
+            tbody.innerHTML = filtered.map((item, idx) => `
+                <tr>
+                    <td style="color:var(--text-muted); font-weight:600;">${idx + 1}</td>
+                    <td class="font-mono" style="font-weight:700; color:var(--primary-cyan);">${item.ticketId}</td>
+                    <td>${getCategoryBadge(item.category)}</td>
+                    <td>
+                        <div style="font-weight:700;">${item.custName}</div>
+                        <div style="font-size:11px; color:var(--text-muted); font-family:'JetBrains Mono';">${item.custId}</div>
+                    </td>
+                    <td>
+                        <div style="font-size:12.5px; font-weight:600; color:#0F172A;">${item.objectDataValue}</div>
+                    </td>
+                    <td>
+                        <div style="font-weight:600; font-size:12px;">${item.makerName}</div>
+                    </td>
+                    <td style="font-size:12px; color:var(--text-muted);">${item.submittedAt}</td>
+                    <td>${getStatusBadge(item.status)}</td>
+                    <td style="text-align:center;">
+                        <button class="btn-detail-action" onclick="openAuditDrawer('${item.ticketId}')">
+                            <i class="fa-solid fa-eye"></i> Tinjau Detail
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function handleSearch() {
+            renderTable();
+        }
+
+        function handleFilterChange() {
+            renderTable();
+        }
+
+        function resetFilters() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('filterStatus').value = 'pending';
+            setCategoryFilter('ALL', document.querySelector('.category-pill'));
+            showToast('Filter berhasil di-reset.');
+        }
+
+        // ==================== DRAWER CONTROLLER ====================
+        function openAuditDrawer(ticketId) {
+            selectedTicket = managerApprovalQueue.find(i => i.ticketId === ticketId);
+            if (!selectedTicket) return;
+
+            document.getElementById('drawerTicketId').innerText = `Tinjau Tiket: ${selectedTicket.ticketId}`;
+            document.getElementById('drawerSubmittedTime').innerText = `Diajukan: ${selectedTicket.submittedAt}`;
+
+            // Section 1: Info Maker
+            document.getElementById('dMakerName').innerText = selectedTicket.makerName;
+            document.getElementById('dCategoryBadge').innerHTML = getCategoryBadge(selectedTicket.category);
+            document.getElementById('dSubmittedAt').innerText = selectedTicket.submittedAt;
+            document.getElementById('dTicketStatus').innerHTML = getStatusBadge(selectedTicket.status);
+
+            // Section 2: Profil Pelanggan
+            document.getElementById('dCustId').innerText = selectedTicket.custId;
+            document.getElementById('dCustName').innerText = selectedTicket.custName;
+            document.getElementById('dCustPhone').innerText = selectedTicket.custPhone;
+            document.getElementById('dCustStatus').innerText = selectedTicket.custStatus;
+
+            // Objek Data Khusus
+            document.getElementById('dObjectDataContainer').innerHTML = `
+                <div class="info-label">${selectedTicket.objectDataTitle}</div>
+                <div class="info-value font-mono" style="color:#0F172A; font-size:13.5px; margin-top:2px;">
+                    ${selectedTicket.objectDataValue}
+                </div>
+            `;
+
+            // Section 3: Justifikasi Maker
+            document.getElementById('dMakerReason').innerText = selectedTicket.makerReason;
+
+            // Section 4: FDE Card
+            const fdeCard = document.getElementById('dFdeCard');
+            if (selectedTicket.deviceStatus === 'clean') {
+                fdeCard.className = 'fraud-check-card clean';
+                fdeCard.innerHTML = `
+                    <div class="fraud-card-header">
+                        <span><i class="fa-solid fa-mobile-screen"></i> Status Perangkat (Device ID: <span class="font-mono">${selectedTicket.deviceId || 'DEV-UNIK-001'}</span>)</span>
+                        <span class="status-badge approved"><i class="fa-solid fa-check"></i> Device Clean</span>
+                    </div>
+                    <div style="font-size:12px; margin-top:2px;">${selectedTicket.deviceDetail}</div>
+                `;
+            } else {
+                fdeCard.className = 'fraud-check-card danger';
+                let accountsTableHtml = '';
+                if (selectedTicket.boundAccounts && selectedTicket.boundAccounts.length > 0) {
+                    accountsTableHtml = `
+                        <table class="device-accounts-table">
+                            <thead>
+                                <tr>
+                                    <th style="width:28px;">No</th>
+                                    <th>Nama Akun Terikat</th>
+                                    <th>Nomor HP (Utuh)</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${selectedTicket.boundAccounts.map((acc, idx) => `
+                                    <tr>
+                                        <td>${idx + 1}</td>
+                                        <td><strong>${acc.name}</strong> ${acc.isCurrent ? '<span style="font-size:9.5px; background:#EFF6FF; color:#1D4ED8; padding:1px 4px; border-radius:3px;">Pemohon</span>' : ''}</td>
+                                        <td class="font-mono">${acc.phone}</td>
+                                        <td><span class="status-badge ${acc.status === 'Aktif' ? 'approved' : 'ditolak'}" style="font-size:9.5px; padding:1px 5px;">${acc.status}</span></td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    `;
+                }
+
+                fdeCard.innerHTML = `
+                    <div class="fraud-card-header">
+                        <span><i class="fa-solid fa-triangle-exclamation"></i> Peringatan Multi-Account Device</span>
+                        <span class="status-badge ditolak"><i class="fa-solid fa-users"></i> Anomali</span>
+                    </div>
+                    <div style="font-size:12px; margin-top:2px;">${selectedTicket.deviceDetail}</div>
+                    ${accountsTableHtml}
+                `;
+            }
+
+            // Footer State
+            const footer = document.getElementById('drawerFooter');
+            if (selectedTicket.status !== 'pending') {
+                footer.innerHTML = `
+                    <div style="font-size:12.5px; color:var(--text-muted); text-align:center; width:100%;">
+                        <i class="fa-solid fa-lock"></i> Tiket ini telah diproses dengan status: <strong>${selectedTicket.status.toUpperCase()}</strong>.
+                    </div>
+                `;
+            } else if (currentRole !== 'manager_scanwin') {
+                footer.innerHTML = `
+                    <div style="font-size:12px; color:#C5221F; text-align:center; width:100%; background:#FCE8E6; padding:8px; border-radius:6px; border:1px solid #F8B4B1;">
+                        <i class="fa-solid fa-ban"></i> Anda login sebagai <strong>Non-Manager</strong>. Hanya <strong>Manager sCanWin</strong> yang memiliki hak eksekusi persetujuan.
+                    </div>
+                `;
+            } else {
+                footer.innerHTML = `
+                    <button class="btn-footer btn-approve" onclick="openApproveModal()">
+                        <i class="fa-solid fa-circle-check"></i> Setujui Pengajuan
+                    </button>
+                    <button class="btn-footer btn-reject" onclick="openRejectModal()">
+                        <i class="fa-solid fa-circle-xmark"></i> Tolak Pengajuan
+                    </button>
+                `;
+            }
+
+            document.getElementById('drawerBackdrop').classList.add('active');
+        }
+
+        function closeAuditDrawer() {
+            document.getElementById('drawerBackdrop').classList.remove('active');
+        }
+
+        function closeDrawerOnBackdrop(e) {
+            if (e.target.id === 'drawerBackdrop') closeAuditDrawer();
+        }
+
+        // ==================== MODALS & ACTIONS ====================
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        function openApproveModal() {
+            if (!selectedTicket) return;
+            document.getElementById('appModalTicketId').innerText = selectedTicket.ticketId;
+            document.getElementById('appModalCustName').innerText = selectedTicket.custName;
+            document.getElementById('appManagerNote').value = '';
+            document.getElementById('modalApprove').style.display = 'flex';
+        }
+
+        function executeApprove() {
+            if (!selectedTicket) return;
+            const note = document.getElementById('appManagerNote').value;
+            selectedTicket.status = 'approved';
+            selectedTicket.managerNote = note || 'Disetujui oleh Manager sCanWin.';
+
+            closeModal('modalApprove');
+            closeAuditDrawer();
+            renderTable();
+            showToast(`Tiket ${selectedTicket.ticketId} berhasil DISETUJUI oleh Manager.`);
+        }
+
+        function openRejectModal() {
+            if (!selectedTicket) return;
+            document.getElementById('rejModalTicketId').innerText = selectedTicket.ticketId;
+            document.getElementById('rejManagerReason').value = '';
+            document.getElementById('rejCharCount').innerText = '0 / 10 karakter';
+            document.getElementById('rejCharCount').style.color = 'var(--text-light)';
+            document.getElementById('modalReject').style.display = 'flex';
+
+            const textarea = document.getElementById('rejManagerReason');
+            textarea.oninput = function () {
+                const len = this.value.trim().length;
+                const countEl = document.getElementById('rejCharCount');
+                countEl.innerText = `${len} / 10 karakter`;
+                if (len >= 10) {
+                    countEl.style.color = '#10B981';
+                } else {
+                    countEl.style.color = '#EF4444';
+                }
+            };
+        }
+
+        function executeReject() {
+            if (!selectedTicket) return;
+            const reason = document.getElementById('rejManagerReason').value.trim();
+            if (reason.length < 10) {
+                alert('Alasan penolakan wajib diisi minimal 10 karakter!');
+                return;
+            }
+
+            selectedTicket.status = 'rejected';
+            selectedTicket.managerRejectReason = reason;
+
+            closeModal('modalReject');
+            closeAuditDrawer();
+            renderTable();
+            showToast(`Tiket ${selectedTicket.ticketId} telah DITOLAK. Data pelanggan tetap dipertahankan.`, 'fa-circle-xmark');
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', () => {
+            renderTable();
+        });
+    </script>
+</body>
+
+</html>
