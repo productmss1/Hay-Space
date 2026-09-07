@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>1000Saudara - Katalog Produk & Bahan Bangunan</title>
+
+  <!-- Google Fonts: Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+
+  <!-- Scoped Stylesheet -->
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/prototype.css">
+</head>
+
+<body>
+
+  <!-- Pure Mobile View Screen (No Device Frame / No Bezels) -->
+  <div class="mobile-view">
+
+    <!-- Sticky Header -->
+    <header class="app-header">
+      <div class="header-row">
+        <a href="#" class="brand-logo-wrap">
+          <div class="brand-logo-icon">1S</div>
+          <div>
+            <div class="brand-logo-text">1000Saudara</div>
+            <div class="brand-logo-sub">TB. Jakarta Maju</div>
+          </div>
+        </a>
+        <div class="header-actions">
+          <button class="icon-btn" title="Notifikasi" aria-label="Notifikasi">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+            </svg>
+          </button>
+          <button class="icon-btn" id="headerCartBtn" onclick="openCheckout()" title="Keranjang Belanja" aria-label="Keranjang Belanja">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="9" cy="21" r="1"></circle>
+              <circle cx="20" cy="21" r="1"></circle>
+              <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+            </svg>
+            <span class="cart-badge-dot" id="headerCartBadge" style="display: none;">0</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Real-Time Search Bar -->
+      <div class="search-container">
+        <div class="search-input-wrapper">
+          <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="search" id="searchInput" class="search-input"
+            placeholder="Cari semen, besi ulir, cat tembok, pipa..." autocomplete="off" aria-label="Cari produk" />
+          <button id="clearSearchBtn" class="clear-search-btn" title="Hapus pencarian" style="display: none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Category Pills Horizontal Scroll -->
+    <nav class="category-scroll-nav" aria-label="Filter Kategori">
+      <div class="category-scroll-inner">
+        <button class="category-pill active" data-category="all">Semua</button>
+        <button class="category-pill" data-category="semen">Semen</button>
+        <button class="category-pill" data-category="besi-baja">Besi & Baja</button>
+        <button class="category-pill" data-category="cat-finishing">Cat & Finishing</button>
+        <button class="category-pill" data-category="pipa-sanitari">Pipa & Sanitari</button>
+        <button class="category-pill" data-category="alat-listrik">Alat Listrik</button>
+      </div>
+    </nav>
+
+    <!-- Brand Scroller Section -->
+    <section class="brand-section">
+      <div class="section-header-compact">
+        <h2 class="section-title-sm">Brand Populer Mitra Resmi</h2>
+      </div>
+      <div class="brand-scroll-track">
+        <div class="brand-chip" data-brand="tiga-roda">
+          <div class="brand-avatar">TR</div>
+          <span>Tiga Roda</span>
+        </div>
+        <div class="brand-chip" data-brand="holcim">
+          <div class="brand-avatar">HC</div>
+          <span>Holcim</span>
+        </div>
+        <div class="brand-chip" data-brand="dulux">
+          <div class="brand-avatar">DL</div>
+          <span>Dulux</span>
+        </div>
+        <div class="brand-chip" data-brand="avian">
+          <div class="brand-avatar">AV</div>
+          <span>Avian</span>
+        </div>
+        <div class="brand-chip" data-brand="krakatau-steel">
+          <div class="brand-avatar">KS</div>
+          <span>Krakatau Steel</span>
+        </div>
+        <div class="brand-chip" data-brand="wavin">
+          <div class="brand-avatar">WV</div>
+          <span>Wavin</span>
+        </div>
+        <div class="brand-chip" data-brand="maspion">
+          <div class="brand-avatar">MP</div>
+          <span>Maspion</span>
+        </div>
+        <div class="brand-chip" data-brand="broco">
+          <div class="brand-avatar">BR</div>
+          <span>Broco</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flash Sale Section with Countdown Timer -->
+    <section class="flash-sale-section" id="flashSaleSection">
+      <div class="flash-sale-header">
+        <div class="flash-title-group">
+          <div class="flash-icon-badge">⚡ FLASH SALE</div>
+          <span class="flash-sub">Diskon Spesial Hari Ini</span>
+        </div>
+        <div class="countdown-wrap">
+          <span class="countdown-label">Berakhir dlm</span>
+          <div class="countdown-timer">
+            <span class="time-block" id="timerHours">02</span>
+            <span class="time-separator">:</span>
+            <span class="time-block" id="timerMinutes">45</span>
+            <span class="time-separator">:</span>
+            <span class="time-block" id="timerSeconds">18</span>
+          </div>
+        </div>
+      </div>
+      <div class="flash-sale-scroll" id="flashSaleGrid">
+        <!-- Injected via JavaScript -->
+      </div>
+    </section>
+
+    <!-- Main Product Catalog -->
+    <main class="catalog-main">
+      <div class="catalog-toolbar">
+        <div class="product-count" id="productCount">8 Produk Ditemukan</div>
+        <div class="sort-control">
+          <label for="sortSelect" class="sort-label">Urutkan:</label>
+          <div class="select-wrapper">
+            <select id="sortSelect" class="sort-select">
+              <option value="relevant">Paling Relevan</option>
+              <option value="price-asc">Harga Terendah</option>
+              <option value="price-desc">Harga Tertinggi</option>
+              <option value="discount">Diskon Terbesar</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2-Column Product Grid -->
+      <div class="product-grid" id="productGrid">
+        <!-- Injected dynamically via JS -->
+      </div>
+
+      <!-- Empty State -->
+      <div class="empty-state-card" id="emptyState" style="display: none;">
+        <div class="empty-icon-box">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#A0AEC0" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            <line x1="8" y1="11" x2="14" y2="11"></line>
+          </svg>
+        </div>
+        <h3 class="empty-title">Produk Tidak Ditemukan</h3>
+        <p class="empty-desc">Coba gunakan kata kunci lain seperti 'semen', 'besi', 'cat', atau reset filter Anda.</p>
+        <button class="btn-reset-search" id="resetSearchBtn">Reset Pencarian</button>
+      </div>
+    </main>
+
+    <!-- Floating Bottom Dock: Quick Cart Summary -->
+    <div class="cart-floating-dock" id="cartDock">
+      <div class="cart-dock-info">
+        <div class="cart-dock-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="9" cy="21" r="1"></circle>
+            <circle cx="20" cy="21" r="1"></circle>
+            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+          </svg>
+          <span class="cart-badge-count" id="cartCountBadge">0</span>
+        </div>
+        <div class="cart-dock-text">
+          <div class="cart-items-count" id="cartTotalItems">0 item</div>
+          <div class="cart-total-price" id="cartTotalAmount">Rp 0</div>
+        </div>
+      </div>
+      <button class="btn-checkout" id="btnOpenCart" onclick="openCheckout()">
+        <span>Lihat Keranjang</span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Feedback Toast -->
+    <div class="toast-feedback" id="feedbackToast">
+      <div class="toast-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <span class="toast-text" id="toastMessage">Produk ditambahkan ke keranjang</span>
+    </div>
+
+    <!-- Modal Bottom Sheet: Product Detail & Multi-Variant (PRD_Product_Detail.md) -->
+    <div class="bottom-sheet-overlay" id="productDetailOverlay" aria-hidden="true"></div>
+    <div class="bottom-sheet-drawer" id="productDetailSheet" role="dialog" aria-modal="true"
+      aria-labelledby="sheetProductDescription">
+      <div class="sheet-top-bar">
+        <div class="sheet-drag-handle"></div>
+        <button class="sheet-close-btn" id="closeDetailSheetBtn" title="Tutup Detail"
+          aria-label="Tutup Detail">✕</button>
+      </div>
+      <div class="sheet-scroll-container" id="sheetDynamicContainer">
+        <!-- Injected dynamically via prototype.js -->
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         FULLSCREEN VIEW: CHECKOUT & FAST BOOKING (PRD_Checkout_Booking.md)
+         ========================================================================= -->
+    <div class="checkout-screen" id="checkoutScreen" style="display: none;">
+      <!-- Sticky Checkout Header -->
+      <header class="checkout-header">
+        <button class="btn-back-nav" onclick="closeCheckout()" aria-label="Kembali ke Katalog">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+        </button>
+        <div class="checkout-header-title">
+          <h2>Checkout Booking</h2>
+          <span class="checkout-header-sub">TB. Jakarta Maju (Radius Toko Maks. 5.0 KM)</span>
+        </div>
+        <div style="width: 36px;"></div>
+      </header>
+
+      <!-- Checkout Scroll Body -->
+      <div class="checkout-body" id="checkoutBody">
+        <!-- Dynamic content injected by prototype.js -->
+      </div>
+
+      <!-- Sticky Bottom Bar Checkout -->
+      <div class="checkout-bottom-bar" id="checkoutBottomBar">
+        <div class="checkout-bar-info">
+          <span class="checkout-bar-label">Total Booking Estimasi</span>
+          <div class="checkout-bar-price" id="checkoutBarPrice">Rp 0</div>
+          <span class="checkout-bar-tonase" id="checkoutBarTonase">0 kg (0.00 ton)</span>
+        </div>
+        <button class="btn-submit-booking" id="btnSubmitBooking" onclick="submitBookingOrder()">
+          <span>Kirim Booking</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         FULLSCREEN VIEW: ORDER SUCCESS SCREEN (PRD_Checkout_Booking.md Story 6)
+         ========================================================================= -->
+    <div class="success-screen" id="successScreen" style="display: none;">
+      <div class="success-content" id="successContent">
+        <!-- Dynamic content injected by prototype.js -->
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL: RECEIPT STRUK PDF PREVIEW & DOWNLOAD
+         ========================================================================= -->
+    <div class="receipt-modal-overlay" id="receiptModalOverlay" style="display: none;" onclick="closeReceiptModal(event)">
+      <div class="receipt-modal-dialog" onclick="event.stopPropagation()">
+        <div class="receipt-modal-header">
+          <div class="receipt-modal-title">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+              <polyline points="10 9 9 9 8 9"></polyline>
+            </svg>
+            <span>Pratinjau Struk PDF Resmi</span>
+          </div>
+          <button class="receipt-close-btn" onclick="closeReceiptModal()">✕</button>
+        </div>
+        <div class="receipt-modal-body" id="receiptModalBody">
+          <!-- Injected Struk Receipt Preview -->
+        </div>
+        <div class="receipt-modal-actions">
+          <button class="btn-receipt-print" onclick="window.print()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <polyline points="6 9 6 2 18 2 18 9"></polyline>
+              <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path>
+              <rect x="6" y="14" width="12" height="8"></rect>
+            </svg>
+            <span>Cetak / Simpan PDF</span>
+          </button>
+          <button class="btn-receipt-download" onclick="downloadPdfFile()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+              <polyline points="7 10 12 15 17 10"></polyline>
+              <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Unduh Struk (.pdf)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- =========================================================================
+         MODAL / DRAWER: INTERACTIVE MAP LOCATION PICKER
+         ========================================================================= -->
+    <div class="map-modal-overlay" id="mapModalOverlay" style="display: none;" onclick="closeMapPicker(event)">
+      <div class="map-modal-dialog" onclick="event.stopPropagation()">
+        <div class="map-modal-header">
+          <div class="map-modal-title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+              <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+            <span>Pilih Titik Lokasi Pengiriman</span>
+          </div>
+          <button class="map-close-btn" onclick="closeMapPicker()">✕</button>
+        </div>
+        
+        <!-- Interactive Simulated Map Container -->
+        <div class="map-canvas-container" id="mapCanvas">
+          <!-- Visual Map Elements -->
+          <div class="map-grid-layer"></div>
+          
+          <!-- Store Origin Marker & Radius Circle -->
+          <div class="map-store-center">
+            <div class="map-radius-circle-5km">
+              <span class="radius-label">Batas Radius Armada Toko 5.0 KM</span>
+            </div>
+            <div class="store-pin-marker">
+              <span class="store-pin-badge">🏪 TB. Jakarta Maju (Toko)</span>
+              <div class="pin-dot store"></div>
+            </div>
+          </div>
+
+          <!-- Customer Draggable / Selectable Project Pin Marker -->
+          <div class="map-customer-pin" id="mapCustomerPin" style="left: 230px; top: 110px;">
+            <div class="pin-dot customer"></div>
+            <span class="customer-pin-badge" id="mapPinBadge">Proyek Anda (2.4 km)</span>
+          </div>
+
+          <!-- Connecting Distance Line -->
+          <svg class="map-distance-svg" id="mapDistanceSvg">
+            <line id="mapDistanceLine" x1="180" y1="130" x2="230" y2="110" stroke="#0A4D68" stroke-width="2" stroke-dasharray="4,4" />
+          </svg>
+
+          <!-- Current Distance Floating Pill -->
+          <div class="map-distance-pill" id="mapDistancePill">
+            Jarak: <strong>2.4 km</strong> (Aman)
+          </div>
+        </div>
+
+        <!-- Location Preset Chips -->
+        <div class="map-quick-locations">
+          <span class="quick-loc-label">Pilih Titik Simulasi:</span>
+          <div class="quick-loc-chips">
+            <button type="button" class="loc-chip active" id="chipPreset1" onclick="selectMapPreset('Jl. Terusan Danau Sentani No. 45, Sawojajar', 2.4, 230, 110, this)">
+              🟢 2.4 km (Dekat)
+            </button>
+            <button type="button" class="loc-chip" id="chipPreset2" onclick="selectMapPreset('Jl. Raya Ki Ageng Gribig No. 88, Kedungkandang', 4.7, 290, 70, this)">
+              🟡 4.7 km (Batas Max)
+            </button>
+            <button type="button" class="loc-chip out-range" id="chipPreset3" onclick="selectMapPreset('Jl. Raya Pakis Indah No. 12, Pakis', 7.2, 335, 35, this)">
+              🔴 7.2 km (Luar Radius)
+            </button>
+          </div>
+        </div>
+
+        <!-- Slider Control for Distance Testing -->
+        <div class="map-slider-control">
+          <div class="slider-header">
+            <span>Geser Jarak Simulasi:</span>
+            <span class="slider-val" id="mapSliderVal">2.4 km</span>
+          </div>
+          <input type="range" id="mapDistanceRange" min="0.5" max="9.0" step="0.1" value="2.4" oninput="onMapSliderChange(this.value)">
+        </div>
+
+        <!-- Map Confirmation Status Card -->
+        <div class="map-status-info" id="mapStatusInfo">
+          <!-- Injected status -->
+        </div>
+
+        <div class="map-modal-footer">
+          <button type="button" class="btn-confirm-pin" id="btnConfirmPin" onclick="confirmMapPinSelection()">
+            Gunakan Titik Lokasi Ini
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- JavaScript -->
+  <script src="js/prototype.js"></script>
+</body>
+</html>
