@@ -1584,7 +1584,7 @@ function confirmMapPinSelection() {
 }
 
 /* ==========================================================================
-   SUBMIT BOOKING & ORDER SUCCESS (PRD_Checkout_Booking.md Story 5 & 6)
+   SUBMIT BOOKING & WHATSAPP VALIDATION SIMULATOR
    ========================================================================== */
 
 function submitBookingOrder() {
@@ -1624,24 +1624,27 @@ function submitBookingOrder() {
     btnSubmit.disabled = true;
     btnSubmit.innerHTML = `
       <span class="spinner-inline"></span>
-      <span>Memproses Booking & Struk PDF...</span>
+      <span>Menghubungkan ke WhatsApp Toko...</span>
     `;
   }
 
-  // Generate Booking Record
+  // Generate Booking & Unique Validation Codes
   setTimeout(() => {
     const now = new Date();
     const yy = String(now.getFullYear()).slice(-2);
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const dd = String(now.getDate()).padStart(2, '0');
     const randomCode = Math.floor(1000 + Math.random() * 9000);
+    const randomVal = Math.floor(1000 + Math.random() * 9000);
     const bookingCode = `#BK-${yy}${mm}${dd}-${randomCode}`;
+    const validationCode = `#VAL-${randomVal}`;
 
     const totalWeightKg = state.cartItems.reduce((sum, item) => sum + (item.weightKg * item.qty), 0);
     const totalWeightTon = (totalWeightKg / 1000).toFixed(2);
 
     state.lastBooking = {
       code: bookingCode,
+      validationCode: validationCode,
       createdAt: now.toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }),
       customerName: name,
       customerPhone: phone.startsWith('0') ? '62' + phone.slice(1) : (phone.startsWith('62') ? phone : '62' + phone),
@@ -1658,119 +1661,179 @@ function submitBookingOrder() {
       branch: 'TB. Jakarta Maju (Sawojajar, Malang)'
     };
 
-    // Trigger WhatsApp notification simulator
-    showToast(`📲 Struk PDF resmi telah otomatis dikirimkan ke WhatsApp: +${state.lastBooking.customerPhone}`, 'success');
-
-    // Empty local cart
-    state.cartItems = [];
-    recalculateCartTotals();
-
-    // Close checkout and open Success Screen
+    // Close checkout and launch WhatsApp chat simulation
     closeCheckout();
-    renderSuccessScreen();
-  }, 700);
+    openWhatsAppSimulation();
+  }, 600);
 }
 
-function renderSuccessScreen() {
-  const screen = document.getElementById('successScreen');
-  const content = document.getElementById('successContent');
-  if (!screen || !content || !state.lastBooking) return;
+function openWhatsAppSimulation() {
+  const waScreen = document.getElementById('whatsappScreen');
+  const messagesList = document.getElementById('waMessagesList');
+  const headerStatus = document.getElementById('waHeaderStatus');
+  const quickActions = document.getElementById('waQuickActions');
+  const scrollContainer = document.getElementById('waChatScroll');
+
+  if (!waScreen || !messagesList || !state.lastBooking) return;
 
   const b = state.lastBooking;
   const isDelivery = b.fulfillment === 'delivery';
+  const now = new Date();
+  const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
 
-  // Construct Pre-filled WhatsApp Chat Link
-  const waItemsText = b.items.map(i => `• ${i.qty} ${i.unit.replace('Per ', '')} ${i.name} (${i.variantName})`).join('%0A');
-  const waMessage = `Halo Kasir 1000Saudara, saya ingin konfirmasi pesanan online:%0A%0A• *Kode Booking:* ${b.code}%0A• *Nama Pemesan:* ${b.customerName}%0A• *Metode:* ${isDelivery ? `Diantar Toko (${b.distanceKm.toFixed(1)} km)` : `Ambil di Toko (${b.pickupTime})`}%0A• *Estimasi Total:* ${formatIDR(b.totalAmount)} (${b.totalWeightTon} Ton)%0A%0ARincian Material:%0A${waItemsText}%0A%0ASaya sudah menerima dokumen Struk Booking PDF. Mohon konfirmasi ketersediaan fisik barang. Terima kasih!`;
-  const waLink = `https://wa.me/6285121339700?text=${waMessage}`;
+  // Reset chat list & status
+  messagesList.innerHTML = '';
+  if (headerStatus) {
+    headerStatus.textContent = 'online';
+    headerStatus.className = 'wa-status';
+  }
+  if (quickActions) quickActions.style.display = 'none';
 
-  content.innerHTML = `
-    <!-- Success Animated Badge -->
-    <div class="success-icon-badge">
-      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <polyline points="20 6 9 17 4 12"></polyline>
-      </svg>
-    </div>
+  // Display WhatsApp Screen
+  waScreen.style.display = 'flex';
 
-    <!-- Title & Subtitle -->
-    <div class="success-title-wrap">
-      <h2 class="success-title">Booking Berhasil Dibuat!</h2>
-      <p class="success-subtitle">Pesanan Anda telah diteruskan ke terminal kasir POS cabang toko aktif.</p>
-    </div>
-
-    <!-- Unique Booking Code Box -->
-    <div class="booking-code-card">
-      <span class="booking-code-label">Nomor Kode Booking Resmi</span>
-      <div class="booking-code-val" id="displayBookingCode">${b.code}</div>
-      <button class="btn-copy-code" onclick="copyBookingCode('${b.code}')">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
-        <span>Salin Kode Booking</span>
-      </button>
-    </div>
-
-    <!-- Automated WhatsApp PDF Confirmation Banner -->
-    <div class="wa-notice-banner">
-      <div class="wa-notice-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+  // Step 1: Customer Sent Message (Outbound with Unique Code & Single Checkmark)
+  const custMsgId = 'cust-msg-' + Date.now();
+  const custMsgHtml = `
+    <div class="wa-bubble-out" id="${custMsgId}">
+      <div class="wa-bubble-text">
+        Halo <strong>1000Saudara</strong>, saya ingin memvalidasi booking material pesanan online saya:<br><br>
+        🔑 <strong>Kode Validasi:</strong> <span class="wa-code-pill">${b.validationCode}</span><br>
+        👤 <strong>Nama Pemesan:</strong> ${b.customerName}<br>
+        📱 <strong>No. WhatsApp:</strong> +${b.customerPhone}<br>
+        📦 <strong>Rincian Muatan:</strong> ${b.items.length} Macam Material (${b.totalWeightTon} Ton)<br><br>
+        Mohon verifikasi nomor WhatsApp ini & proses pesanan saya. Terima kasih!
       </div>
-      <div class="wa-notice-text">
-        <h4>Struk PDF Terkirim Otomatis ke WhatsApp</h4>
-        <p>File dokumen <strong>Struk-Booking-${b.code.replace('#', '')}.pdf</strong> telah otomatis dikirimkan ke nomor WhatsApp pemesan: <strong>+${b.customerPhone}</strong>.</p>
+      <div class="wa-bubble-meta">
+        <span>${timeStr}</span>
+        <svg class="wa-check-gray" id="${custMsgId}-check" width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
+          <path d="M11.07 1.25L4.82 7.5 1.93 4.61.87 5.67 4.82 9.62 12.13 2.31z"/>
+        </svg>
       </div>
-    </div>
-
-    <!-- Booking Summary Details -->
-    <div class="success-summary-card">
-      <div class="success-summary-row">
-        <span class="success-summary-label">Nama Pemesan</span>
-        <span class="success-summary-val">${b.customerName}</span>
-      </div>
-      <div class="success-summary-row">
-        <span class="success-summary-label">Waktu Pemesanan</span>
-        <span class="success-summary-val">${b.createdAt}</span>
-      </div>
-      <div class="success-summary-row">
-        <span class="success-summary-label">Metode Pemenuhan</span>
-        <span class="success-summary-val">${isDelivery ? `Diantar Armada Toko (${b.distanceKm.toFixed(1)} km)` : `Ambil Sendiri (${b.pickupTime})`}</span>
-      </div>
-      ${isDelivery ? `
-        <div class="success-summary-row">
-          <span class="success-summary-label">Alamat Proyek</span>
-          <span class="success-summary-val" style="max-width: 200px; text-align: right;">${b.deliveryAddress}</span>
-        </div>
-      ` : ''}
-      <div class="success-summary-row">
-        <span class="success-summary-label">Total Berat Muatan</span>
-        <span class="success-summary-val">⚖️ ${b.totalWeightKg.toLocaleString('id-ID')} kg (${b.totalWeightTon} ton)</span>
-      </div>
-      <div class="success-summary-row">
-        <span class="success-summary-label">Total Booking Estimasi</span>
-        <span class="success-summary-val">${formatIDR(b.totalAmount)}</span>
-      </div>
-    </div>
-
-    <!-- Action Buttons -->
-    <div class="success-actions-group">
-      <!-- Direct Download PDF Struk Button -->
-      <button class="btn-download-receipt" onclick="openReceiptModal()">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-        <span>Unduh Struk Booking (PDF)</span>
-      </button>
-
-      <!-- Direct Chat WhatsApp Kasir -->
-      <a href="${waLink}" target="_blank" class="btn-chat-wa-kasir">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
-        <span>Chat WhatsApp Kasir Toko</span>
-      </a>
-
-      <!-- Shop Again Button -->
-      <button class="btn-shop-again" onclick="resetAndShopAgain()">
-        <span>Belanja Lagi / Kembali ke Katalog</span>
-      </button>
     </div>
   `;
 
-  screen.style.display = 'flex';
+  messagesList.innerHTML = custMsgHtml;
+  if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+  // Step 2: Read Receipt (Checkmark turns double blue) after 650ms
+  setTimeout(() => {
+    const checkEl = document.getElementById(`${custMsgId}-check`);
+    if (checkEl) {
+      checkEl.outerHTML = `
+        <svg class="wa-check-blue" width="16" height="11" viewBox="0 0 16 11" fill="currentColor">
+          <path d="M11.07 1.25L4.82 7.5 1.93 4.61.87 5.67 4.82 9.62 12.13 2.31z"/>
+          <path d="M15.07 1.25L8.82 7.5 7.41 6.09 6.35 7.15 8.82 9.62 16.13 2.31z"/>
+        </svg>
+      `;
+    }
+  }, 650);
+
+  // Step 3: Cashier Typing Indicator after 1100ms
+  setTimeout(() => {
+    if (headerStatus) {
+      headerStatus.textContent = 'sedang mengetik...';
+      headerStatus.className = 'wa-status typing';
+    }
+
+    const typingHtml = `
+      <div class="wa-typing-card" id="waTypingIndicator">
+        <span style="font-size: 11px; color: #64748B; font-weight: 600; margin-right: 4px;">1000Saudara</span>
+        <div class="wa-typing-dot"></div>
+        <div class="wa-typing-dot"></div>
+        <div class="wa-typing-dot"></div>
+      </div>
+    `;
+    messagesList.insertAdjacentHTML('beforeend', typingHtml);
+    if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+  }, 1100);
+
+  // Step 4: Bot Auto-Reply with Official Order Code & Clickable Receipt Link after 2400ms
+  setTimeout(() => {
+    const typingIndicator = document.getElementById('waTypingIndicator');
+    if (typingIndicator) typingIndicator.remove();
+
+    if (headerStatus) {
+      headerStatus.textContent = 'online';
+      headerStatus.className = 'wa-status';
+    }
+
+    const itemsSummary = b.items.map(i => `• ${i.qty} ${i.unit.replace('Per ', '')} ${i.name} (${i.variantName})`).join('<br>');
+
+    const botMsgHtml = `
+      <div class="wa-bubble-in">
+        <div class="wa-verified-pill">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+          <span>Nomor WhatsApp Tervalidasi Aktif</span>
+        </div>
+        <div class="wa-bubble-text">
+          Halo <strong>${b.customerName}</strong>, terima kasih! Nomor WhatsApp Anda telah berhasil kami <strong>VERIFIKASI AKTIF</strong> di sistem 1000Saudara. ✅<br><br>
+          Berikut detail pesanan booking material Anda:<br>
+          📋 <strong>No. Order Resmi:</strong> <span class="wa-code-pill" style="background:#008069;">${b.code}</span><br>
+          🏢 <strong>Cabang Toko:</strong> ${b.branch}<br>
+          🚚 <strong>Metode:</strong> ${isDelivery ? `Diantar Armada Toko (${b.distanceKm.toFixed(1)} km)` : `Ambil Sendiri di Toko (${b.pickupTime})`}<br>
+          💰 <strong>Total Estimasi:</strong> <strong>${formatIDR(b.totalAmount)}</strong> (${b.totalWeightTon} Ton)<br><br>
+          📦 <strong>Rincian Material:</strong><br>
+          ${itemsSummary}
+        </div>
+
+        <!-- Interactive Receipt Card Link -->
+        <div class="wa-receipt-card" onclick="openReceiptFromWA()" role="button" tabindex="0" title="Klik untuk membuka Struk PDF Resmi">
+          <div class="wa-receipt-icon-wrap">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+              <polyline points="14 2 14 8 20 8"></polyline>
+              <line x1="16" y1="13" x2="8" y2="13"></line>
+              <line x1="16" y1="17" x2="8" y2="17"></line>
+            </svg>
+          </div>
+          <div class="wa-receipt-info">
+            <div class="wa-receipt-title">📄 Struk-Booking-${b.code.replace('#', '')}.pdf</div>
+            <div class="wa-receipt-sub">Klik tautan untuk melihat & mencetak struk</div>
+          </div>
+          <div class="wa-receipt-btn-badge">BUKA STRUK</div>
+        </div>
+
+        <div class="wa-bubble-text" style="font-size: 11px; color: #54656F; margin-top: 6px;">
+          Pesanan Anda sedang diproses oleh tim gudang & kasir. Silakan klik struk di atas untuk bukti resmi.
+        </div>
+
+        <div class="wa-bubble-meta">
+          <span>${timeStr}</span>
+        </div>
+      </div>
+    `;
+
+    messagesList.insertAdjacentHTML('beforeend', botMsgHtml);
+    if (quickActions) quickActions.style.display = 'flex';
+    if (scrollContainer) scrollContainer.scrollTop = scrollContainer.scrollHeight;
+
+    // Reset local cart
+    state.cartItems = [];
+    recalculateCartTotals();
+
+    showToast('✅ WhatsApp Tervalidasi Aktif & Struk Resmi Diterbitkan!', 'success');
+  }, 2400);
+}
+
+function openReceiptFromWA() {
+  openReceiptModal();
+}
+
+function returnToCatalogFromWA() {
+  const waScreen = document.getElementById('whatsappScreen');
+  if (waScreen) waScreen.style.display = 'none';
+
+  // Ensure cart is reset
+  state.cartItems = [];
+  recalculateCartTotals();
+  renderProducts();
+
+  // Scroll smoothly to top
+  const mobileView = document.querySelector('.mobile-view');
+  if (mobileView) mobileView.scrollIntoView({ behavior: 'smooth' });
+
+  showToast('Kembali ke Katalog Produk 1000Saudara.');
 }
 
 function copyBookingCode(code) {
@@ -1784,6 +1847,8 @@ function copyBookingCode(code) {
 function resetAndShopAgain() {
   const screen = document.getElementById('successScreen');
   if (screen) screen.style.display = 'none';
+  const waScreen = document.getElementById('whatsappScreen');
+  if (waScreen) waScreen.style.display = 'none';
   renderProducts();
 }
 
@@ -1819,7 +1884,7 @@ function openReceiptModal() {
         <div class="struk-brand-title">1000SAUDARA INDONESIA</div>
         <div class="struk-brand-sub">TB. Jakarta Maju - Cabang Sawojajar</div>
         <div class="struk-brand-sub">Jl. Danau Toba No. 12, Malang • Telp: (0341) 712345</div>
-        <div style="font-size: 9px; font-weight: 800; color: #0A4D68; margin-top: 4px;">STRUK BUKTI BOOKING MATERIAL POS</div>
+        <div style="font-size: 9px; font-weight: 800; color: #0A4D68; margin-top: 4px;">STRUK BUKTI BOOKING MATERIAL</div>
       </div>
 
       <!-- Booking Metadata Grid -->
@@ -1827,6 +1892,10 @@ function openReceiptModal() {
         <div class="struk-info-row">
           <span>NO. BOOKING:</span>
           <strong style="color: #0A4D68;">${b.code}</strong>
+        </div>
+        <div class="struk-info-row">
+          <span>STATUS VALIDASI WA:</span>
+          <span style="font-weight: 750; color: #008069;">${b.validationCode || '#VAL-OK'} (AKTIF ✅)</span>
         </div>
         <div class="struk-info-row">
           <span>TANGGAL:</span>
@@ -1897,7 +1966,11 @@ function openReceiptModal() {
     </div>
   `;
 
+  // Display and smoothly trigger active transition
   modal.style.display = 'flex';
+  requestAnimationFrame(() => {
+    modal.classList.add('active');
+  });
 }
 
 function closeReceiptModal(e) {
@@ -1905,7 +1978,14 @@ function closeReceiptModal(e) {
     return;
   }
   const modal = document.getElementById('receiptModalOverlay');
-  if (modal) modal.style.display = 'none';
+  if (modal) {
+    modal.classList.remove('active');
+    setTimeout(() => {
+      if (!modal.classList.contains('active')) {
+        modal.style.display = 'none';
+      }
+    }, 280);
+  }
 }
 
 function downloadPdfFile() {
